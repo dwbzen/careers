@@ -1,0 +1,155 @@
+{
+	"name" : "UF",
+	"configuration" : {
+		"occupationClass" : "college",
+		"fullName" : "University of Florida",
+		"background_image" : "occupation_entrance.png",
+		"image" : "UF logo.jpg",
+		"text" : "Must have: $500 tuition<br/>Degrees available:<br/>**Aerospace, Agronomy, Business Admin, Computer Science, Hospitality, Journalism, Law, Marketting and Pharmacy**",
+		"entryFee" : 500,
+		"degrees" : ["Aerospace", "Agronomy", "Business Admin", "Computer Science", "Hospitality", "Journalism", "Law", "Marketing", "Pharmacy"],
+		"maxDegrees" : 4
+	},
+	"occupationSquares" : [ 
+		{
+			"number" : 0,
+			"background_image" : "occupation_square.png",
+			"text" : "You need serious counseling",
+			"image" : "frown_emoji.png",
+			"stars" : 0,
+			"hearts" : 0,
+			"bonus" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "Lose next turn",
+			"specialProcessing" : "loseNextTurn"
+		},
+		{
+			"number" : 1,
+			"background_image" : "occupation_square.png",
+			"text" : "Attend Group Love concert",
+			"image" : "",
+			"stars" : 0,
+			"hearts" : 2,
+			"bonus" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 2,
+			"background_image" : "occupation_square.png",
+			"text" : "Super-smart, may take shortcut",
+			"image" : "shortcut_emoji.png",
+			"stars" : 0,
+			"hearts" : 0,
+			"bonus" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : {
+				"type" : "shortcut",
+				"next_square" : 9
+			}
+		},
+		{
+			"number" : 3,
+			"background_image" : "occupation_square.png",
+			"text" : "Publish research paper",
+			"image" : "",
+			"stars" : 4,
+			"hearts" : 0,
+			"bonus" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 4,
+			"background_image" : "occupation_square.png",
+			"text" : "Partner has connections",
+			"stars" : 0,
+			"hearts" : 0,
+			"experience" : 0,
+			"opportunities" : 2,
+			"action_text" : "Draw 2 OPPORTUNITY CARDS",
+			"specialProcessing" : {}
+		},		
+		{
+			"number" : 5,
+			"background_image" : "danger_occupation_square.png",
+			"text" : "Flunk out - too much partying",
+			"stars" : 0,
+			"hearts" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "Pay $5000 for tutoring OR go to Unemployment",
+			"specialProcessing" : {
+				"type" : "cashLossOrUnemployment",
+				"fixedAmount" : 5000,
+				"percentAmount" : 0
+			}
+		},
+		{
+			"number" : 6,
+			"background_image" : "occupation_square.png",
+			"text" : "Pledge Sorority/Fraternity",
+			"stars" : 2,
+			"hearts" : 4,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 7,
+			"background_image" : "occupation_square.png",
+			"text" : "Take advanced seminar",
+			"stars" : 0,
+			"hearts" : 0,
+			"bonus" : 0,
+			"experience" : 1,
+			"opportunities" : 0,
+			"action_text" : "Draw 1 EXPERIENCE CARD",
+			"specialProcessing" : ""
+		},		
+		{
+			"number" : 8,
+			"background_image" : "occupation_square.png",
+			"text" : "Great party in the Commons",
+			"stars" : 0,
+			"hearts" : 6,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 9,
+			"background_image" : "occupation_square.png",
+			"text" : "4.0 GPA",
+			"stars" : 0,
+			"hearts" : 0,
+			"experience" : 0,
+			"opportunities" : 2,
+			"action_text" : "Draw 2 OPPORTUNITY CARDS",
+			"specialProcessing" : {}
+		},		
+		{
+			"number" : 10,
+			"background_image" : "occupation_square.png",
+			"text" : "Your YouTube channel has 100K followers",
+			"stars" : 0,
+			"hearts" : 0,
+			"experience" : 6,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : {
+				"type" : "occupationExit",
+				"next_square" : 11
+			}
+		}
+	]
+}

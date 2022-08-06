@@ -1,0 +1,11 @@
+{
+	"starting_salary" : 2000,
+	"starting_cash" : 2000,
+	"currency" : "dollars",
+	"currency_symbol" : "$",
+	"starting_experience_cards" : 0,
+	"starting_opportunity_cards" : 0,
+	"default_game_points" : 100,
+	"timed_game" : 0,
+	"default_game_minutes" : 60
+}

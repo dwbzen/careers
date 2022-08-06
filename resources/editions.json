@@ -1,0 +1,36 @@
+{
+	"editions" : [ "Hi-Tech", "UK"],
+	
+	"Hi-Tech" : {
+			"version" : "1.1",
+			"full_name" : "Hi Tech Edition",
+			"Help" : "Rule Book v2 booklet.pdf",
+			"Game Parameters" : "gameParameters_Hi-Tech.json",
+			"Opportunity Cards" : "opportunityCards_Hi-Tech.json",
+			"Experience Cards" : "experienceCards_Hi-Tech.json",
+			"Occupations" : "occupations_Hi-Tech.json",
+			"Players" : "players_Hi-Tech.json",
+			"Layout" : "gameLayout_Hi-Tech.json",
+			"Rules" : "rules.json",
+			"configuration" : {
+					"starting_salary" : 2000,
+					"initial_cash" : 2000
+			}
+	},
+	"UK" : {
+			"version" : "1.0",
+			"full_name" : "UK Edition: Destination London",
+			"Help" : "Rule Book Destination London.pdf",
+			"Game Parameters" : "gameParameters_UK.json",
+			"Opportunity Cards" : "opportunityCards_UK.json",
+			"Experience Cards" : "experienceCards_UK.json",
+			"Occupations" : "occupations_UK.json",
+			"Players" : "players_UK.json",
+			"Layout" : "gameLayout_UK.json",
+			"Rules" : "rules_UK.json",
+			"configuration" : {
+					"starting_salary" : 2000,
+					"initial_cash" : 2500
+			}	
+	}
+}

@@ -1,0 +1,168 @@
+{
+	"name" : "FMC",
+	"configuration" : {
+		"occupationClass" : "occupation",
+		"fullName" : "FMC",
+		"background_image" : "occupation_entrance.png",
+		"image" : "FMC logo.jpg",
+		"entryFee" : 1000,
+		"text" : "Must have:<br/>**$1000 recruiting fee; or Agronomy degree; or FMC experience**",
+		"degreeRequirements" : { 
+			"degreeName" : "Agronomy",
+			"numberRequired" : 1
+		}
+	},
+	"occupationSquares" : [
+		{
+			"number" : 0,
+			"background_image" : "occupation_square.png",
+			"text" : "Partner with Research Biologist",
+			"stars" : 0,
+			"hearts" : 2,
+			"bonus" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 1,
+			"background_image" : "occupation_square.png",
+			"text" : "Work with machine learning",
+			"stars" : 0,
+			"hearts" : 0,
+			"bonus" : 0,
+			"experience" : 1,
+			"opportunities" : 0,
+			"action_text" : "Draw 1 EXPERIENCE CARD",
+			"specialProcessing" : {}
+		},		
+		{
+			"number" : 2,
+			"background_image" : "occupation_square.png",
+			"text" : "Granted stock options",
+			"stars" : 0,
+			"hearts" : 3,
+			"bonus" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 3,
+			"background_image" : "occupation_square.png",
+			"text" : "GMO corn feed shows promise",
+			"stars" : 4,
+			"hearts" : 2,
+			"bonus" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 4,
+			"background_image" : "occupation_square.png",
+			"text" : "Gamble in FMC stock",
+			"stars" : 0,
+			"hearts" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "Collect $1000 x roll of 1 die",
+			"specialProcessing" : {
+				"type" : "singleDieRoll",
+				"amount" : 1000
+			}
+		},
+		{
+			"number" : 5,
+			"background_image" : "occupation_square.png",
+			"text" : "You have a bad feeling about this...",
+			"stars" : 4,
+			"hearts" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "CALL IN FAVORS",
+			"specialProcessing" : {
+				"type" : "favors"
+			}
+		},
+		{
+			"number" : 6,
+			"background_image" : "occupation_square.png",
+			"text" : "Represent FMC at trade show",
+			"stars" : 2,
+			"hearts" : 4,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 7,
+			"background_image" : "occupation_square.png",
+			"text" : "Lunch with Agriculture Secretary",
+			"stars" : 0,
+			"hearts" : 0,
+			"experience" : 0,
+			"opportunities" : 1,
+			"action_text" : "Draw 1 OPPORTUNITY CARD",
+			"specialProcessing" : {}
+		},		
+		{
+			"number" : 8,
+			"background_image" : "occupation_square.png",
+			"text" : "Discover new fungicide",
+			"stars" : 0,
+			"hearts" : 0, 
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "Collect bonus $5000",
+			"specialProcessing" : {
+				"type" : "bonus",
+				"amount" : 5000
+			}
+		},
+		{
+			"number" : 9,
+			"background_image" : "occupation_square.png",
+			"text" : "Cameo in TV commercial",
+			"stars" : 2,
+			"hearts" : 6,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 10,
+			"background_image" : "danger_occupation_square.png",
+			"text" : "Sued for breaking ND agreement",
+			"stars" : 0,
+			"hearts" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "Lose 1/2 your cash",
+			"specialProcessing" : {
+				"type" : "cashLoss",
+				"amount" : 0,
+				"percentAmount" : 0.5
+			}
+		},
+		{
+			"number" : 11,
+			"background_image" : "occupation_square.png",
+			"text" : "Promoted to biological SME",
+			"stars" : 2,
+			"hearts" : 4,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "Salary up $2000",
+			"specialProcessing" : {
+				"type" : "salaryIncrease",
+				"amount" : 2000
+			}
+		}
+	]
+}

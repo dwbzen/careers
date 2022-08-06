@@ -1,0 +1,403 @@
+{
+	"Comments" : "Board layout for the Hi-Tech version.",
+	"layout" : [
+			{
+				"number" : 0,
+				"name" : "Payday",
+				"type" : "corner_square",
+				"background_image" : "corner_square.png",
+				"image" : "startHereAndArrow.jpg",
+				"text" : "Collect Salary<br/>as you pass<p/><h1>PAYDAY</h1><h2>Collect DOUBLE if you land here</h2>",
+				"specialProcessing" : {
+						"type" : "payday",
+						"amount" : "$Salary"
+				}
+			},
+			{
+				"number" : 1,
+				"name" : "Opportunity",
+				"type" : "opportunity_square",
+				"background_image" : "opportunity.png",
+				"text" : "**OPPORTUNITY KNOCKS**",
+				"specialProcessing" : {
+						"type" : "opportunity"
+				}
+			},
+			{
+				"number" : 2,
+				"name" : "IncomeTax",
+				"type" : "danger_square",
+				"background_image" : "danger_border_square.png",
+				"text" : "**INCOME TAX DUE**",
+				"specialProcessing" : {
+						"type" : "incomeTax",
+						"amount" : "$Salary"
+				}
+			},
+			{
+				"number" :3,
+				"name" : "Amtrak",
+				"type" : "travel_square",
+				"background_image" : "amtrak.png",
+				"text" : "",
+				"specialProcessing" : {
+						"type" : "railTravel",
+						"destinationSquare" : 13
+				}
+			},
+			{
+				"number" : 4,
+				"name" : "FMC",
+				"type" : "occupation_entrance_square",
+				"background_image" : "occupation_entrance_square.png",
+				"image" : "fmc-logo small.jpg",
+				"text" : "",
+				"specialProcessing" : {
+						"type" : "enterOccupation",
+						"destinationOccupation" : "FMC"
+				}
+			},
+			{
+				"number" : 5,
+				"name" : "Opportunity",
+				"type" : "opportunity_square",
+				"background_image" : "opportunity.png",
+				"text" : "**OPPORTUNITY KNOCKS**",
+				"specialProcessing" : {
+						"type" : "opportunity"
+				}
+			},
+			{
+				"number" : 6,
+				"name" : "TechConvention",
+				"type" : "action_square",
+				"background_image" : "light blue action square.png"
+			},
+			{
+				"number" : 7,
+				"name" : "UF",
+				"background_image" : "occupation_entrance_square.png",
+				"image" : "UF logo.jpg",
+				"type" : "occupation_entrance_square",
+				"text" : "",
+				"specialProcessing" : {
+						"type" : "enterCollege",
+						"destinationOccupation" : "UF"
+				}
+			},
+			{
+				"number" : 8,
+				"name" : "Opportunity",
+				"type" : "opportunity_square",
+				"background_image" : "opportunity.png",
+				"text" : "**OPPORTUNITY KNOCKS**",
+				"specialProcessing" : {
+						"type" : "opportunity"
+				}
+			},
+			{
+				"number" : 9,
+				"name" : "Hospital",
+				"type" : "corner_square",
+				"background_image" : "corner_square.png"
+			},
+			{
+				"number" : 10,
+				"name" : "Opportunity",
+				"type" : "opportunity_square",
+				"background_image" : "opportunity.png",
+				"text" : "**OPPORTUNITY KNOCKS**",
+				"specialProcessing" : {
+						"type" : "opportunity"
+				}
+			},
+			{
+				"number" : 11,
+				"name" : "DonateNow",
+				"type" : "danger_square",
+				"background_image" : "danger_border_square.png",
+				"text" : "**DONATE NOW**",
+				"specialProcessing" : {
+						"type" : "singleDieRoll",
+						"amount" : 1000
+				}
+			},
+			{
+				"number" : 12,
+				"name" : "Amtrak",
+				"type" : "travel_square",
+				"background_image" : "amtrak.png",
+				"text" : "",
+				"specialProcessing" : {
+						"type" : "railTravel",
+						"destinationSquare" : 23
+				}
+			},
+			{
+				"number" : 13,
+				"name" : "Amazon",
+				"type" : "occupation_entrance_square",
+				"background_image" : "occupation_entrance_square.png",
+				"image" : "amazon logo.jpg",
+				"text" : "",
+				"specialProcessing" : {
+						"type" : "enterOccupation",
+						"destinationOccupation" : "Amazon"
+				}
+			},
+			{
+				"number" : 14,
+				"name" : "Opportunity",
+				"type" : "opportunity_square",
+				"background_image" : "opportunity.png",
+				"text" : "**OPPORTUNITY KNOCKS**",
+				"specialProcessing" : {
+						"type" : "opportunity"
+				}
+			},
+			{
+				"number" : 15,
+				"name" : "ESPN",
+				"type" : "occupation_entrance_square",
+				"background_image" : "occupation_entrance_square.png",
+				"image" : "ESPN logo.jpg",
+				"text" : "",
+				"specialProcessing" : {
+						"type" : "enterOccupation",
+						"destinationOccupation" : "ESPN"
+				}
+			},
+			{
+				"number" : 16,
+				"name" : "Opportunity",
+				"type" : "opportunity_square",
+				"background_image" : "opportunity.png",
+				"text" : "**OPPORTUNITY KNOCKS**",
+				"specialProcessing" : {
+						"type" : "opportunity"
+				}
+			},
+			{
+				"number" : 17,
+				"name" : "CarPayment",
+				"background_image" : "danger_border_square.png",
+				"text" : "**CAR PAYMENT DUE**"
+			},
+			{
+				"number" : 18,
+				"name" : "Disney",
+				"type" : "occupation_entrance_square"
+			},
+			{
+				"number" : 19,
+				"name" : "Opportunity",
+				"type" : "opportunity_square",
+				"background_image" : "opportunity.png",
+				"text" : "**OPPORTUNITY KNOCKS**",
+				"specialProcessing" : {
+						"type" : "opportunity"
+				}
+			},
+			{
+				"number" : 20,
+				"name" : "BuyExperience",
+				"type" : "action_square",
+				"background_image" : "light blue action square.png"
+			},
+			{
+				"number" : 21,
+				"name" : "Unemployment",
+				"type" : "corner_square",
+				"background_image" : "corner_square.png"
+			},
+			{
+				"number" : 22,
+				"name" : "Amtrak",
+				"type" : "travel_square",
+				"background_image" : "amtrak.png",
+				"text" : "",
+				"specialProcessing" : {
+						"type" : "railTravel",
+						"destinationSquare" : 36
+				}
+			}, 
+			{
+				"number" : 23,
+				"name" : "PayRent",
+				"background_image" : "danger_border_square.png",
+				"text" : "**PAY RENT HERE**"
+			},
+			{
+				"number" : 24,
+				"name" : "ListerAndBacon",
+				"type" : "occupation_entrance_square",
+				"background_image" : "occupation_entrance_square.png",
+				"image" : "Lister and Bacon.jpg",
+				"text" : "",
+				"specialProcessing" : {
+						"type" : "enterOccupation",
+						"destinationOccupation" : "ListerAndBacon"
+				}
+			},
+			{
+				"number" : 25,
+				"name" : "Opportunity",
+				"type" : "opportunity_square",
+				"background_image" : "opportunity.png",
+				"text" : "**OPPORTUNITY KNOCKS**",
+				"specialProcessing" : {
+						"type" : "opportunity"
+				}
+			},
+			{
+				"number" : 26,
+				"name" : "ShoppingSpree",
+				"type" : "IncomeTax",
+				"background_image" : "danger_border_square.png",
+				"text" : "**ONLINE SHOPPING SPREE**"
+			},
+			{
+				"number" : 27,
+				"name" : "Facebook",
+				"type" : "occupation_entrance_square",
+				"background_image" : "occupation_entrance_square.png",
+				"image" : "facebook logo.jpg",
+				"text" : "",
+				"specialProcessing" : {
+						"type" : "enterOccupation",
+						"destinationOccupation" : "Facebook"
+				}
+			},
+			{
+				"number" : 28,
+				"name" : "Opportunity",
+				"type" : "opportunity_square",
+				"background_image" : "opportunity.png",
+				"text" : "**OPPORTUNITY KNOCKS**",
+				"specialProcessing" : {
+						"type" : "opportunity"
+				}
+			},
+			{
+				"number" : 29,
+				"name" : "BuyInsurance",
+				"type" : "action_square",
+				"background_image" : "light blue action square.png"
+			},
+			{
+				"number" : 30,
+				"name" : "SpringBreak",
+				"type" : "corner_square",
+				"background_image" : "corner_square.png"
+			},
+			{
+				"number" : 31,
+				"name" : "Opportunity",
+				"type" : "opportunity_square",
+				"background_image" : "opportunity.png",
+				"text" : "**OPPORTUNITY KNOCKS**",
+				"specialProcessing" : {
+						"type" : "opportunity"
+				}
+			},
+			{
+				"number" : 32,
+				"name" : "GambleInVegas",
+				"type" : "action_square",
+				"background_image" : "light blue action square.png",
+				"image" : "Las Vegas.jpg"
+			},
+			{
+				"number" : 33,
+				"name" : "Google",
+				"type" : "occupation_entrance_square",
+				"background_image" : "occupation_entrance_square.png",
+				"image" : "google logo.jpg",
+				"text" : "",
+				"specialProcessing" : {
+						"type" : "enterOccupation",
+						"destinationOccupation" : "Google"
+				}
+			},
+			{
+				"number" : 34,
+				"name" : "Opportunity",
+				"type" : "opportunity_square",
+				"background_image" : "opportunity.png",
+				"text" : "**OPPORTUNITY KNOCKS**",
+				"specialProcessing" : {
+						"type" : "opportunity"
+				}
+			},
+			{
+				"number" : 35,
+				"name" : "Amtrak",
+				"type" : "travel_square",
+				"background_image" : "amtrak.png",
+				"text" : "",
+				"specialProcessing" : {
+						"type" : "railTravel",
+						"destinationSquare" : 4
+				}
+			},
+			{
+				"number" : 36,
+				"name" : "Pfizer",
+				"type" : "occupation_entrance_square",
+				"background_image" : "occupation_entrance_square.png",
+				"image" : "pfizer logo.jpg",
+				"text" : "",
+				"specialProcessing" : {
+						"type" : "enterOccupation",
+						"destinationOccupation" : "Pfizer"
+				}
+			},
+			{
+				"number" : 37,
+				"name" : "Opportunity",
+				"type" : "opportunity_square",
+				"background_image" : "opportunity.png",
+				"text" : "**OPPORTUNITY KNOCKS**",
+				"specialProcessing" : {
+						"type" : "opportunity"
+				}
+			},
+			{
+				"number" : 38,
+				"name" : "DivorceCourt",
+				"background_image" : "danger_border_square.png",
+				"image" : "divorce icon.jpg",
+				"text" : "**DIVORCE COURT**",
+				"specialProcessing" : {
+						"type" : "diceRoll",
+						"amount" : "$Salary"
+				}
+			},
+			{
+				"number" : 39,
+				"name" : "VintageCars",
+				"type" : "action_square",
+				"background_image" : "light blue action square.png",
+				"text" : "**VINTAGE CARS**"
+			},
+			{
+				"number" : 40,
+				"name" : "SpaceX",
+				"type" : "occupation_entrance_square",
+				"background_image" : "occupation_entrance_square.png",
+				"image" : "SpaceX logo.jpg",
+				"text" : "",
+				"specialProcessing" : {
+						"type" : "enterOccupation",
+						"destinationOccupation" : "SpaceX"
+				}
+			},
+			{
+				"number" : 41,
+				"name" : "WebPresence",
+				"type" : "action_square",
+				"background_image" : "light blue action square.png",
+				"text" : "**WEB PRESENCE**"
+			}
+	]
+}
