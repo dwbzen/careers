@@ -28,7 +28,7 @@ class Environment(object):
         if package in self.resources:
             return self.resources[package]
         else:
-            print(file=sys.stderr, f"Invalid package {package}")
+            print(f'Invalid package {package}', file=sys.stderr)
             return None
 
     def add_item(self, key, value):

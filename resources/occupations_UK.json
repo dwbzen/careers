@@ -1,0 +1,6 @@
+{
+	"Help" : "This file has the keys to individual occupation files for the Hi-Tech Edition.",
+	"occupations" : [
+		"AGRIVI", "Oxford", "Harrods", "Arsenal", "Stonehenge", "ListerAndBacon", "BBC News", "Tower Of London", "Pfizer", "Rolls Royce"
+	]
+}

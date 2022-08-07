@@ -5,12 +5,14 @@
 		"fullName" : "University of Florida",
 		"background_image" : "occupation_entrance.png",
 		"image" : "UF logo.jpg",
-		"text" : "Must have: $500 tuition<br/>Degrees available:<br/>**Aerospace, Agronomy, Business Admin, Computer Science, Hospitality, Journalism, Law, Marketting and Pharmacy**",
 		"entryFee" : 500,
-		"degrees" : ["Aerospace", "Agronomy", "Business Admin", "Computer Science", "Hospitality", "Journalism", "Law", "Marketing", "Pharmacy"],
-		"maxDegrees" : 4
+		"text" : "Must have: $500 tuition<br/>Degrees available:<br/>**Aerospace, Agronomy, Business Admin, Computer Science, Hospitality, Journalism, Law, Marketting and Pharmacy**",
+		"degreePrograms" : ["Aerospace", "Agronomy", "Business Admin", "Computer Science", "Hospitality", "Journalism", "Law", "Marketing", "Pharmacy"],
+		"maxDegrees" : 4,
+		"degrees" : ["Bachelor", "Masters", "PhD", "Post-Doc"],
+		"Help" : [ "Each Degree Program is with a specific occupation. maxDegrees is the maximum number of degrees attainable in any degree program." ]
 	},
-	"occupationSquares" : [ 
+	"occupationSquares" : [
 		{
 			"number" : 0,
 			"background_image" : "occupation_square.png",

@@ -1,5 +1,5 @@
 {
-	"Comments" : "This file has the keys to individual occupation files for the Hi-Tech Edition.",
+	"Help" : "This file has the keys to individual occupation files for the Hi-Tech Edition.",
 	"occupations" : [
 		"FMC", "UF", "Amazon", "ESPN", "Disney", "ListerAndBacon", "Facebook", "Google", "Pfizer", "SpaceX"
 	]

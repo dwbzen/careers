@@ -4,19 +4,19 @@ Created on Aug 6, 2022
 @author: don_bacon
 '''
 
-from ..environment import Environment
+from careers.environment import Environment
 import json
 from pathlib import Path
 
 class CareersGame(object):
-    '''
+    """
     Represents a Careers Game instance.
-    '''
+    """
 
     def __init__(self, edition_name):
-        '''
-        Constructor
-        '''
+        """CareersGame Constructor
+        
+        """
         self._edition_name = edition_name
         self._env = Environment.get_environment()
         self._resource_folder = self._env.get_resource_folder()     # base resource folder
@@ -36,6 +36,9 @@ class CareersGame(object):
         self._load_game_configuration()
         
     def _load_game_configuration(self):
+        """Loads the game parameters, layout and occupations JSON files for this edition.
+        
+        """
         fp = open(self._resource_folder + "/gameParameters_" + self._edition_name + ".json", "r")
         jtxt = fp.read()
         self._game_parameters = json.loads(jtxt)
@@ -54,6 +57,12 @@ class CareersGame(object):
     
     @staticmethod
     def load_occupations(occupation_list : list) -> dict:
+        """Loads individual occupation JSON files for this edition.
+            Arguments: occupation_list - a list of occupation names
+            Returns: a dict with the occupation name as the key and contents
+                of the corresponding occupation JSON file as the value.
+                If the occupation JSON file doesn't exist, the value is None.
+        """
         occupations = dict()
         for name in occupation_list:
             filepath = self._resource_folder + "/" + name + self._edition_name + ".json"

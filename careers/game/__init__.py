@@ -7,9 +7,11 @@ from .__version__ import __copyright__
 
 __all__ = [
     'player',
-    'successFormula'
+    'successFormula',
+    'careersGame'
 ]
 
 from .player import Player
 from .successFormula import SuccessFormula
+from .careersGame import CareersGame
 
