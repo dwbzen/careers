@@ -54,6 +54,8 @@ class CareersGame(object):
         fp.close()
         
         self._occupations = CareersGame.load_occupations(self._occupation_list)
+        self._opportunities = CareersGame.load_opportunity_cards(self._edition_name)
+        self._experience_cards = CareersGame.load_experience_cards(self._edition_name)
     
     @staticmethod
     def load_occupations(occupation_list : list) -> dict:
@@ -74,6 +76,26 @@ class CareersGame(object):
             else:
                 occupations[name] = None
         return occupations
+    
+    @staticmethod
+    def load_opportunity_cards(edition_name) -> dict:
+        cards = dict()
+        filepath = self._resource_folder + "/opportunityCards_" + edition_name + ".json"
+        p = Path(filepath)
+        if p.exists():
+            fp = open(filepath, "r")
+            cards = json.loads(fp.read())
+        return cards
+    
+    @staticmethod
+    def load_experience_cards(edition_name) -> dict:
+        cards = dict()
+        filepath = self._resource_folder + "/experienceCards_" + edition_name + ".json"
+        p = Path(filepath)
+        if p.exists():
+            fp = open(filepath, "r")
+            cards = json.loads(fp.read())
+        return cards
     
     @property
     def edition(self):
@@ -97,11 +119,19 @@ class CareersGame(object):
     @property
     def occupations(self):
         return self._occupations
-      
+    
+    @property
+    def opportunities(self):
+        return self._opportunities
+    
+    @property
+    def experience_cards(self):
+        return self._experience_cards
     
     def start_game(self):
         """
         Initializes game state and starts the game
+        TODO
         """
         pass
     

@@ -3,6 +3,7 @@
 	"starting_cash" : 2000,
 	"currency" : "dollars",
 	"currency_symbol" : "$",
+	"date_format" : "yyyy-mm-dd",
 	"starting_experience_cards" : 0,
 	"starting_opportunity_cards" : 0,
 	"default_game_points" : 100,

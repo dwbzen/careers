@@ -8,7 +8,7 @@ from datetime import datetime
 
 class Player(object):
     
-    def __init__(self, name="Player", salary=2000, cash=2000, initials="PPP"):
+    def __init__(self, name="Player", salary=2000, cash=2000, initials="xxx"):
         self._player_name = name
         self._player_initials = initials
         self._salary = salary

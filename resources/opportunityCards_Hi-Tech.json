@@ -1,0 +1,194 @@
+{
+	"Help" : "Hi-Tech Edition Opportunity cards",
+	"types" : [
+		{
+			"type" : "occupation",
+			"Help" : "Advance to the occupation named as 'border_square'. Player enters immediately."
+		},
+		{
+			"type" : "occupation_choice",
+			"Help" : "Advance to the occupation chosen by the player. Player enters immediately."
+		},
+		{
+			"type" : "border_square",
+			"Help" : "Advance to the border square named as 'border_square'. Further player action depends on the landing square."
+		},
+		{
+			"type" : "border_square_choice",
+			"Help" : "Advance to any border square chosen by the player. Further player action depends on the landing square."
+		},
+		{
+			"type" : "action",
+			"Help" : "Non-movement player action. There are three action types: action_extra_turn, action_leave_unemployment, action_collect_experience."
+		},
+		{
+			"type" : "travel",
+			"Help" : "Advance to the nearest Amtrak station and roll again."
+		}
+	],
+	"cards" : [
+		{
+			"number" : 0,
+			"type" : "occupation",
+			"border_square" : "FMC",
+			"expenses_paid" : 0,
+			"double_happiness" : 0,
+			"text" : "OPPORTUNITY to join FMC<br/>*meet normal requirements*<br/>May save or sell.",
+			"quantity" : 3
+		},
+		{
+			"number" : 1,
+			"type" : "occupation",
+			"border_square" : "Amazon",
+			"expenses_paid" : 0,
+			"double_happiness" : 0,
+			"text" : "OPPORTUNITY to join Amazon<br/>*meet normal requirements*<br/>May save or sell.",
+			"quantity" : 3
+		},
+		{
+			"number" : 2,
+			"type" : "occupation",
+			"border_square" : "Pfizer",
+			"expenses_paid" : 0,
+			"double_happiness" : 0,
+			"text" : "OPPORTUNITY to join Pfizer<br/>*meet normal requirements*<br/>May save or sell.",
+			"quantity" : 3
+		},
+		{
+			"number" : 3,
+			"type" : "occupation",
+			"border_square" : "SpaceX",
+			"expenses_paid" : 0,
+			"double_happiness" : 0,
+			"text" : "OPPORTUNITY to join SpaceX<br/>*meet normal requirements*<br/>May save or sell.",
+			"quantity" : 2
+		},
+		{
+			"number" : 4,
+			"type" : "occupation",
+			"border_square" : "SpaceX",
+			"expenses_paid" : 1,
+			"double_happiness" : 0,
+			"text" : "SPECIAL OPPORTUNITY to join SpaceX because of your technical brilliance.<br/>All expenses paid and no prior experience required.<br/>May save or sell.",
+			"quantity" : 1
+		},
+		{
+			"number" : 5,
+			"type" : "occupation",
+			"border_square" : "Disney",
+			"expenses_paid" : 0,
+			"double_happiness" : 0,
+			"text" : "OPPORTUNITY to join Disney<br/>*meet normal requirements*<br/>May save or sell.",
+			"quantity" : 2
+		},
+		{
+			"number" : 6,
+			"type" : "occupation",
+			"border_square" : "Disney",
+			"expenses_paid" : 0,
+			"double_happiness" : 1,
+			"text" : "SPECIAL OPPORTUNITY to join Disney because of your “Magic” touch.<br/>DOUBLE all Happiness earned<br/>*meet normal requirements*<br/>May save or sell.",
+			"quantity" : 2
+		},
+		{
+			"number" : 7,
+			"type" : "occupation",
+			"border_square" : "Google",
+			"expenses_paid" : 0,
+			"double_happiness" : 0,
+			"text" : "OPPORTUNITY to join Google<br/>*meet normal requirements*<br/>May save or sell.",
+			"quantity" : 2
+		},
+		{
+			"number" : 8,
+			"type" : "occupation",
+			"border_square" : "Google",
+			"expenses_paid" : 1,
+			"double_happiness" : 0,
+			"text" : "SPECIAL OPPORTUNITY to join Google because of your technical brilliance. <br/>All expenses paid and no prior experience required.<br/>May save or sell.",
+			"quantity" :1
+		},
+		{
+			"number" : 9,
+			"type" : "occupation",
+			"border_square" : "Facebook",
+			"expenses_paid" : 0,
+			"double_happiness" : 0,
+			"text" : "OPPORTUNITY to join Facebook<br/>*meet normal requirements*<br/>May save or sell.",
+			"quantity" : 2
+		},
+		{
+			"number" : 10,
+			"type" : "occupation",
+			"border_square" : "Facebook",
+			"expenses_paid" : 1,
+			"double_happiness" : 0,
+			"text" : "SPECIAL OPPORTUNITY to join Facebook  because of your problem solving skills.<br/>All expenses paid and no prior experience required.<br/>May save or sell.",
+			"quantity" : 1
+		},
+		{
+			"number" : 11,
+			"type" : "occupation",
+			"border_square" : "ESPN",
+			"expenses_paid" : 0,
+			"double_happiness" : 0,
+			"text" : "OPPORTUNITY to join ESPN<br/>*meet normal requirements*<br/>May save or sell.",
+			"quantity" : 2
+		},
+		{
+			"number" : 12,
+			"type" : "occupation",
+			"border_square" : "ESPN",
+			"expenses_paid" : 1,
+			"double_happiness" : 0,
+			"text" : "SPECIAL OPPORTUNITY to join ESPN  because of your sports knowledge.<br/>All expenses paid and no prior experience required.<br/>May save or sell.",
+			"quantity" : 1
+		},
+		{
+			"number" : 13,
+			"type" : "occupation",
+			"border_square" : "UF",
+			"expenses_paid" : 0,
+			"double_happiness" : 0,
+			"text" : "OPPORTUNITY to enter the University of Florida<br/>*meet normal requirements*<br/>May save or sell.",
+			"quantity" : 3
+		},
+		{
+			"number" : 14,
+			"type" : "occupation",
+			"border_square" : "UF",
+			"expenses_paid" : 1,
+			"double_happiness" : 0,
+			"text" : "SPECIAL OPPORTUNITY to enter College on Scholarship, all expenses paid.<br/>May save or sell.",
+			"quantity" : 2
+		},
+		{
+			"number" : 15,
+			"type" : "occupation",
+			"border_square" : "ListerAndBacon",
+			"expenses_paid" : 0,
+			"double_happiness" : 0,
+			"text" : "OPPORTUNITY to join Lister & Bacon<br/>*meet normal requirements*<br/>May save or sell.",
+			"quantity" : 3
+		},
+		{
+			"number" : 16,
+			"type" : "occupation_choice",
+			"border_square" : "",
+			"expenses_paid" : 0,
+			"double_happiness" : 0,
+			"text" : "GOLDEN  OPPORTUNITY to join the Company of your choice<br/>*meet normal requirements*<br/>May save or sell.",
+			"quantity" : 2
+		},
+		{
+			"number" : 17,
+			"type" : "border_square_choice",
+			"border_square" : "",
+			"expenses_paid" : 0,
+			"double_happiness" : 0,
+			"text" : "GOLDEN  OPPORTUNITY to advance to   ANY border square<br/>*meet normal requirements for Occupation or College entrance*<br/>May save or sell.",
+			"quantity" : 2
+		}
+	]
+}
+ 
