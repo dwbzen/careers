@@ -5,6 +5,7 @@ Created on Aug 6, 2022
 '''
 
 from careers.environment import Environment
+from careers.game import Player, SuccessFormula
 import json
 from pathlib import Path
 
@@ -34,6 +35,7 @@ class CareersGame(object):
         # load game parameters, layout and occupations
         #
         self._load_game_configuration()
+        self._players = []   # list of Player
         
     def _load_game_configuration(self):
         """Loads the game parameters, layout and occupations JSON files for this edition.
@@ -128,6 +130,13 @@ class CareersGame(object):
     def experience_cards(self):
         return self._experience_cards
     
+    @property
+    def players(self):
+        return self._players
+    
+    def add_player(self, aplayer):
+        self.players.append(aplayer)
+    
     def start_game(self):
         """
         Initializes game state and starts the game
@@ -135,4 +144,10 @@ class CareersGame(object):
         """
         pass
     
-    
+if __name__ == '__main__':
+    player = Player(name='Don', initials='DWB')
+    sf = SuccessFormula(stars=40, hearts=10, cash=50)
+    player.success_formula = sf
+    game = CareersGame('Hi-Tech')
+    game.add_player(player)
+

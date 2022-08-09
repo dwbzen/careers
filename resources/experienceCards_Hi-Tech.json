@@ -1,0 +1,83 @@
+{
+	"Help" : "Hi-Tech Edition Experience cards",
+	"types" : [
+		{
+			"type" : "fixed",
+			"Help" : "Advance a fixed number of spaces as indicated by 'spaces'. Range is 1 to 7."
+		},
+		{
+			"type" : "1-die wild",
+			"Help" : "Advance the number of spaces chosen by the player. Can be used only when on an occupation path. Range is 1 to 6."
+		},
+		{
+			"type" : "2-dice wild",
+			"Help" : "Advance the number of spaces chosen by the player. Can be used only on border squares. Range is 2 to 12."
+		},
+		{
+			"type" : "triple wild",
+			"Help" : "Can be used as a 1- or 2- die wild card. Range is 1 to 6 on an occupation path, 2 to 12 on a border square."
+		}
+	],
+	"cards" : [
+		{
+			"spaces" : 1,
+			"type" : "fixed",
+			"quantity" : 8,
+			"negativeQuantity" : 2
+		},
+		{
+			"spaces" : 2,
+			"type" : "fixed",
+			"quantity" : 8,
+			"negativeQuantity" : 2
+		},
+		{
+			"spaces" : 3,
+			"type" : "fixed",
+			"quantity" : 6,
+			"negativeQuantity" : 0
+		},
+		{
+			"spaces" : 4,
+			"type" : "fixed",
+			"quantity" : 6,
+			"negativeQuantity" : 0
+		},
+		{
+			"spaces" : 5,
+			"type" : "fixed",
+			"quantity" : 4,
+			"negativeQuantity" : 0
+		},
+		{
+			"spaces" : 6,
+			"type" : "fixed",
+			"quantity" : 4,
+			"negativeQuantity" : 0
+		},
+		{
+			"spaces" : 7,
+			"type" : "fixed",
+			"quantity" : 2,
+			"negativeQuantity" : 0
+		},
+		{
+			"spaces" : 0,
+			"type" : "1-die wild",
+			"quantity" : 4,
+			"negativeQuantity" : 0
+		},
+		{
+			"spaces" : 0,
+			"type" : "2-die wild",
+			"quantity" : 4,
+			"negativeQuantity" : 0
+		},
+		{
+			"spaces" : 0,
+			"type" : "triple wild",
+			"quantity" : 4,
+			"negativeQuantity" : 0
+		}
+	]
+}

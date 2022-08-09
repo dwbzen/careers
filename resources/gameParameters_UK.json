@@ -8,5 +8,6 @@
 	"starting_opportunity_cards" : 0,
 	"default_game_points" : 100,
 	"timed_game" : 0,
-	"default_game_minutes" : 60
+	"default_game_minutes" : 60,
+	"allow_negative_experience" : 1
 }
