@@ -11,19 +11,23 @@
 		},
 		{
 			"type" : "border_square",
-			"Help" : "Advance to the border square named as 'border_square'. Further player action depends on the landing square."
+			"Help" : "Advance to the border square named as 'border_square'. Subsequent player action depends on the landing square."
 		},
 		{
 			"type" : "border_square_choice",
-			"Help" : "Advance to any border square chosen by the player. Further player action depends on the landing square."
+			"Help" : "Advance to any border square chosen by the player. Subsequent player action depends on the landing square."
 		},
 		{
 			"type" : "action",
-			"Help" : "Non-movement player action. There are three action types: action_extra_turn, action_leave_unemployment, action_collect_experience."
+			"Help" : "Non-movement player action. There are three action types: action:extra_turn, action:leave_unemployment, action:collect_experience."
 		},
 		{
 			"type" : "travel",
 			"Help" : "Advance to the nearest Amtrak station and roll again."
+		},
+		{
+			"type" : "opportunity",
+			"Help" : "Advance to the nearest Opportunity space and roll again."
 		}
 	],
 	"cards" : [
@@ -186,8 +190,98 @@
 			"border_square" : "",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
-			"text" : "GOLDEN  OPPORTUNITY to advance to   ANY border square<br/>*meet normal requirements for Occupation or College entrance*<br/>May save or sell.",
+			"text" : "GOLDEN  OPPORTUNITY to advance to ANY border square<br/>*meet normal requirements for Occupation or College entrance*<br/>May save or sell.",
 			"quantity" : 2
+		},
+		{
+			"number" : 18,
+			"type" : "border_square",
+			"border_square" : "BuyInsurance",
+			"expenses_paid" : 0,
+			"double_happiness" : 0,
+			"text" : "OPPORTUNITY to buy Insurance<br/>Advance to the Insurance Store and pay $5,000 premium<br/>May save or sell.",
+			"quantity" : 4
+		},
+		{
+			"number" : 19,
+			"type" : "border_square",
+			"border_square" : "SpringBreak",
+			"expenses_paid" : 0,
+			"double_happiness" : 0,
+			"text" : "OPPORTUNITY to go on Spring Break!<br/>May save or sell.",
+			"quantity" : 4
+		},
+		{
+			"number" : 20,
+			"type" : "border_square",
+			"border_square" : "Payday",
+			"expenses_paid" : 0,
+			"double_happiness" : 0,
+			"text" : "SPECIAL OPPORTUNITY to collect needed cash!<br/>Advance to PAYDAY and collect DOUBLE your annual salary.<br/>May save or sell.",
+			"quantity" : 3
+		},
+		{
+			"number" : 21,
+			"type" : "border_square",
+			"border_square" : "GambleInVegas",
+			"expenses_paid" : 0,
+			"double_happiness" : 0,
+			"text" : "OPPORTUNITY to Gamble in Las Vegas<br/>May save or sell.",
+			"quantity" : 3
+		},
+		{
+			"number" : 22,
+			"type" : "border_square",
+			"border_square" : "BuyExperience",
+			"expenses_paid" : 0,
+			"double_happiness" : 0,
+			"text" : "SPECIAL OPPORTUNITY to buy needed padding! Advance to EXPERIENCE square and buy at least 1 and up to 3 EXPERIENCE cards.<br/>May save or sell.",
+			"quantity" : 2
+		},
+		{
+			"number" : 23,
+			"type" : "travel",
+			"border_square" : "Amtrak",
+			"expenses_paid" : 0,
+			"double_happiness" : 0,
+			"text" : "TRAVEL OPPORTUNITY Advance to the nearest Amtrak Station and roll again.<br/>May save or sell.",
+			"quantity" : 4
+		},
+		{
+			"number" : 24,
+			"type" : "opportunity",
+			"border_square" : "Opportunity",
+			"expenses_paid" : 0,
+			"double_happiness" : 0,
+			"text" : "OPPORTUNITY KNOCKS<br/>Advance to the nearest OPPORTUNITY square and roll again<br/>May save or sell.",
+			"quantity" : 3
+		},
+		{
+			"number" : 25,
+			"type" : "action:collect_experience",
+			"border_square" : "",
+			"expenses_paid" : 0,
+			"double_happiness" : 0,
+			"text" : "SPECIAL OPPORTUNITY to gain EXPERIENCE!<br/>Collect one randomly selected EXPERIENCE card from each player.<br/>May save or sell.",
+			"quantity" : 2
+		},
+		{
+			"number" : 26,
+			"type" : "action:leave_unemployment",
+			"border_square" : "",
+			"expenses_paid" : 0,
+			"double_happiness" : 0,
+			"text" : "Get out of Unemployment free<p/>Play this card to immediately leave Unemployment.<br/>May save or sell.",
+			"quantity" : 4
+		},
+		{
+			"number" : 27,
+			"type" : "action:extra_turn",
+			"border_square" : "",
+			"expenses_paid" : 0,
+			"double_happiness" : 0,
+			"text" : "SPECIAL OPPORTUNITY to Get an Extra Turn<br/>*play at the start of your turn*<br/>May save or sell.",
+			"quantity" : 6
 		}
 	]
 }

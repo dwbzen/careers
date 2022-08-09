@@ -36,6 +36,11 @@ class CareersGame(object):
         #
         self._load_game_configuration()
         self._players = []   # list of Player
+        #
+        # create the Opportunity and Experience card decks
+        #
+        self._create_opportunity_deck()
+        self._create_experience_deck()
         
     def _load_game_configuration(self):
         """Loads the game parameters, layout and occupations JSON files for this edition.
@@ -98,6 +103,12 @@ class CareersGame(object):
             fp = open(filepath, "r")
             cards = json.loads(fp.read())
         return cards
+    
+    def _create_opportunity_deck(self):
+        pass
+    
+    def _create_experience_deck(self):
+        pass
     
     @property
     def edition(self):

@@ -6,12 +6,21 @@ from .__version__ import __copyright__
 
 
 __all__ = [
+    'actionType',
+    'careersGame',
+    'experienceCard',
+    'experienceCardType',
+    'opportunityCard',
+    'opportunityCardType',
     'player',
-    'successFormula',
-    'careersGame'
+    'successFormula'
 ]
 
 from .player import Player
 from .successFormula import SuccessFormula
 from .careersGame import CareersGame
-
+from .actionType import ActionType
+from .opportunityType import OpportunityType
+from .opportunityCard import OpportunityCard
+from .experienceCard import ExperienceCard
+from .experienceCardType import ExperienceCardType
