@@ -1,5 +1,8 @@
 {
 	"Help" : "Hi-Tech Edition Experience cards",
+	"type_list" : [
+		"fixed", "1-die wild", "2-dice wild", "triple wild"
+	],
 	"types" : [
 		{
 			"type" : "fixed",
@@ -22,62 +25,62 @@
 		{
 			"spaces" : 1,
 			"type" : "fixed",
-			"quantity" : 8,
-			"negativeQuantity" : 2
+			"quantity" : 8
+		},
+		{
+			"spaces" : -1,
+			"type" : "fixed",
+			"quantity" : 2
 		},
 		{
 			"spaces" : 2,
 			"type" : "fixed",
-			"quantity" : 8,
-			"negativeQuantity" : 2
+			"quantity" : 8
+		},
+		{
+			"spaces" : -2,
+			"type" : "fixed",
+			"quantity" : 2
 		},
 		{
 			"spaces" : 3,
 			"type" : "fixed",
-			"quantity" : 6,
-			"negativeQuantity" : 0
+			"quantity" : 6
 		},
 		{
 			"spaces" : 4,
 			"type" : "fixed",
-			"quantity" : 6,
-			"negativeQuantity" : 0
+			"quantity" : 6
 		},
 		{
 			"spaces" : 5,
 			"type" : "fixed",
-			"quantity" : 4,
-			"negativeQuantity" : 0
+			"quantity" : 4
 		},
 		{
 			"spaces" : 6,
 			"type" : "fixed",
-			"quantity" : 4,
-			"negativeQuantity" : 0
+			"quantity" : 4
 		},
 		{
 			"spaces" : 7,
 			"type" : "fixed",
-			"quantity" : 2,
-			"negativeQuantity" : 0
+			"quantity" : 2
 		},
 		{
 			"spaces" : 0,
 			"type" : "1-die wild",
-			"quantity" : 4,
-			"negativeQuantity" : 0
+			"quantity" : 4
 		},
 		{
 			"spaces" : 0,
 			"type" : "2-die wild",
-			"quantity" : 4,
-			"negativeQuantity" : 0
+			"quantity" : 4
 		},
 		{
 			"spaces" : 0,
 			"type" : "triple wild",
-			"quantity" : 4,
-			"negativeQuantity" : 0
+			"quantity" : 4
 		}
 	]
 }

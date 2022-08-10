@@ -15,17 +15,6 @@ class ActionType(Enum):
     DRAW_EXPERIENCE = 4     # draw an experience card from the deck
     DRAW_OPPORTUNITY = 5    # draw an opportunity card from the deck
 
-    def __init__(self, params):
-        '''
-        Constructor
-        '''
-        self.action_types = {}
-        self.action_types[ActionType.EXTRA_TURN] = "action:extra_turn"
-        self.action_types[ActionType.LEAVE_UNEMPLOYMENT] = "action:leave_unemployment"
-        self.action_types[ActionType.COLLECT_EXPERIENCE] = "action:collect_experience"
-        self.action_types[ActionType.DRAW_EXPERIENCE] = "action:drawt_experience"
-        self.action_types[ActionType.DRAW_OPPORTUNITY] = "action:draw_opportunity"
-
     def describe(self):
         # self is the member here
         return self.name, self.value

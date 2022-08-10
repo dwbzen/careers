@@ -5,9 +5,12 @@ Created on Aug 6, 2022
 '''
 
 from careers.environment import Environment
-from careers.game import Player, SuccessFormula
+from game.player import Player
+from game.successFormula import SuccessFormula
 import json
 from pathlib import Path
+from game.opportunityCardDeck import OpportunityCardDeck
+from game.experienceCardDeck import ExperienceCardDeck
 
 class CareersGame(object):
     """
@@ -61,8 +64,9 @@ class CareersGame(object):
         fp.close()
         
         self._occupations = CareersGame.load_occupations(self._occupation_list)
-        self._opportunities = CareersGame.load_opportunity_cards(self._edition_name)
-        self._experience_cards = CareersGame.load_experience_cards(self._edition_name)
+        
+        self._opportunities = OpportunityCardDeck(self._resource_folder, self._edition_name)
+        self._experience_cards = ExperienceCardDeck(self._resource_folder, self._edition_name)
     
     @staticmethod
     def load_occupations(occupation_list : list) -> dict:
@@ -83,32 +87,6 @@ class CareersGame(object):
             else:
                 occupations[name] = None
         return occupations
-    
-    @staticmethod
-    def load_opportunity_cards(edition_name) -> dict:
-        cards = dict()
-        filepath = self._resource_folder + "/opportunityCards_" + edition_name + ".json"
-        p = Path(filepath)
-        if p.exists():
-            fp = open(filepath, "r")
-            cards = json.loads(fp.read())
-        return cards
-    
-    @staticmethod
-    def load_experience_cards(edition_name) -> dict:
-        cards = dict()
-        filepath = self._resource_folder + "/experienceCards_" + edition_name + ".json"
-        p = Path(filepath)
-        if p.exists():
-            fp = open(filepath, "r")
-            cards = json.loads(fp.read())
-        return cards
-    
-    def _create_opportunity_deck(self):
-        pass
-    
-    def _create_experience_deck(self):
-        pass
     
     @property
     def edition(self):

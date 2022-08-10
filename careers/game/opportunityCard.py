@@ -4,30 +4,36 @@ Created on Aug 9, 2022
 @author: don_bacon
 '''
 
-from careers.game import OpportunityType
-
 class OpportunityCard(object):
     """
     Represents a single Opportunity card
     """
 
-    def __init__(self, atype=OpportunityType.OCCUPATION, border_square=None, text="", expenses_paid=False, double_happiness=False):
+    def __init__(self, opportunity_type, border_square=None, text="", expenses_paid=False, double_happiness=False):
+        """Constructor
+            Arguments:
+                opp_type - the OpportunityType of this card
+                border_square - the "name" of the corresponding border square if there is a destination, otherwise None
+                text - the Opportunity card text
+                expenses_paid - Applies to OpportunityType.OCCUPATION: True if the player can enter for free.
+                double_happiness - Applies to OpportunityType.OCCUPATION: True if happiness point values are doubled.
         """
-        Constructor
-        """
-        self._card_type = atype
-        self._border_square = border_square
+        self._opportunity_type = opportunity_type
+        if border_square == "":
+            self._border_square = None
+        else:
+            self._border_square = border_square
         self._text = text
         self._expenses_paid = expenses_paid
         self._double_happiness = double_happiness
         
     @property
-    def card_type(self) -> OpportunityType:
-        return self._card_type
+    def opportunity_type(self) ->str:
+        return self._opportunity_type
     
-    @card_type.setter
-    def card_type(self, ctype:OpportunityType):
-        self._card_type = ctype
+    @opportunity_type.setter
+    def opportunity_type(self, ctype:str):
+        self._opportunity_type = ctype
     
     @property
     def border_square(self):
@@ -60,5 +66,6 @@ class OpportunityCard(object):
     @double_happiness.setter
     def double_happiness(self, dh):
         self._double_happiness = dh
-    
+
+        
     

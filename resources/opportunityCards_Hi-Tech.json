@@ -1,5 +1,8 @@
 {
 	"Help" : "Hi-Tech Edition Opportunity cards",
+	"type_list" : [
+		"triple wild", "occupation_choice", "border_square", "border_square_choice", "action", "travel", "opportunity"
+	],
 	"types" : [
 		{
 			"type" : "occupation",

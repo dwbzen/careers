@@ -3,26 +3,25 @@ Created on Aug 9, 2022
 
 @author: don_bacon
 '''
-from careers.game import ExperienceCardType
 
 class ExperienceCard(object):
     """
     Represents a single Experience card
     """
 
-    def __init__(self, atype=ExperienceCardType.FIXED, spaces=0):
+    def __init__(self, experience_card_type, spaces):
         """
         Constructor
         """
-        self._card_type = atype
+        self._card_type = experience_card_type
         self._spaces = spaces       # can be negative
         
     @property
-    def card_type(self) -> ExperienceCardType:
+    def card_type(self) -> str:
         return self._card_type
     
     @card_type.setter
-    def card_type(self, ct:ExperienceCardType) :
+    def card_type(self, ct:str) :
         self._card_type = ct
         
     @property
