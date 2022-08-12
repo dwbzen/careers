@@ -8,10 +8,9 @@ from game.cardDeck import CardDeck
 from game.opportunityCard import OpportunityCard
 
 class OpportunityCardDeck(CardDeck):
-    '''
-    classdocs
-    '''
-
+    """The deck of Opportunity Cards used in game play.
+    
+    """
 
     def __init__(self, resource_path, edition_name):
         '''
@@ -20,8 +19,11 @@ class OpportunityCardDeck(CardDeck):
         super().__init__(resource_path, "opportunityCards", edition_name)    # loads the card deck
         
     def save_card(self, card_spec, qty):
-        """Save a single Opportunity card.
+        """Appends n-instances of a single Opportunity card to the card deck.
             Arguments: card_spec - the JSON opportunity card content as a dict
+            
+        card_spec includes "quantity" tag that specifies the number of this cards that appear in the deck.
+        
         """
         border_square = card_spec['border_square']
         ctype = card_spec['type']

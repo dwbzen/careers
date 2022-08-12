@@ -1,0 +1,186 @@
+{
+	"name" : "Amazon",
+	"configuration" : {
+		"occupationClass" : "occupation",
+		"fullName" : "Amazon",
+		"background_image" : "occupation_entrance.png",
+		"image" : "Amazon logo.jpg",
+		"entryFee" : 1000,
+		"text" : "Must have:<br/>**$1000 for AWS training; or Computer Science degree; or Amazon experience**",
+		"degreeRequirements" : { 
+			"degreeName" : "Computer Science",
+			"numberRequired" : 1
+		}
+	},
+	"occupationSquares" : [
+		{
+			"number" : 0,
+			"background_image" : "occupation_square.png",
+			"text" : "Earn AWS Cloud Practitioner Certification",
+			"stars" : 0,
+			"hearts" : 0,
+			"bonus" : 0,
+			"experience" : 1,
+			"opportunities" : 0,
+			"action_text" : "Draw 1 EXPERIENCE CARD",
+			"specialProcessing" : {}
+		},		
+		{
+			"number" : 1,
+			"background_image" : "occupation_square.png",
+			"text" : "Lunch with Jeff Bezon",
+			"stars" : 0,
+			"hearts" : 0,
+			"experience" : 0,
+			"opportunities" : 2,
+			"action_text" : "Draw 2 OPPORTUNITY CARDS",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 2,
+			"background_image" : "occupation_square.png",
+			"text" : "Introduce new web service",
+			"stars" : 0,
+			"hearts" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "**Salary up** $2000",
+			"specialProcessing" : {
+				"type" : "salaryIncrease",
+				"amount" : 2000
+			}
+		},
+		{
+			"number" : 3,
+			"background_image" : "occupation_square.png",
+			"text" : "Code requires all-nighter to fix",
+			"image" : "frown_emoji.png",
+			"stars" : 0,
+			"hearts" : 0,
+			"bonus" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "Lose next turn",
+			"specialProcessing" : "loseTurn"
+		},
+		{
+			"number" : 4,
+			"background_image" : "occupation_square.png",
+			"text" : "Testify before Congress",
+			"stars" : 0,
+			"hearts" : 0,
+			"bonus" : 0,
+			"experience" : 2,
+			"opportunities" : 0,
+			"action_text" : "Draw 2 EXPERIENCE CARD",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 5,
+			"background_image" : "danger_occupation_square.png",
+			"text" : "AMZN stock slumps",
+			"stars" : 0,
+			"hearts" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "Cut salary by 1/2",
+			"specialProcessing" : {
+				"type" : "salaryCut",
+				"amount" : 0,
+				"percentAmount" : 0.5
+			}
+		},
+		{
+			"number" : 6,
+			"background_image" : "occupation_square.png",
+			"text" : "AWS Architect Certified!",
+			"stars" : 0,
+			"hearts" : 0, 
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "Collect bonus $3000",
+			"specialProcessing" : {
+				"type" : "bonus_amount",
+				"amount" : 3000
+			}
+		},
+		{
+			"number" : 7,
+			"background_image" : "danger_occupation_square.png",
+			"text" : "Too ambitious",
+			"stars" : 0,
+			"hearts" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "Go to Unemployment",
+			"specialProcessing" : {
+				"type" : "travel:border",
+				"next_square" : "Unemployment"
+			}
+		},
+		{
+			"number" : 8,
+			"background_image" : "occupation_square.png",
+			"text" : "May backstab a colleague",
+			"stars" : 0,
+			"hearts" : -4,
+			"bonus" : 0,
+			"experience" : 2,
+			"opportunities" : 0,
+			"action_text" : "You lose 4<img src=\"heart.jpg\"><br/>They lose 12<img src=\"heart.jpg\">",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 9,
+			"background_image" : "occupation_square.png",
+			"text" : "Promotion to Team Lead",
+			"stars" : 0,
+			"hearts" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "Salary up $1000 x roll of 1 die",
+			"specialProcessing" : {
+				"type" : "salary_dieRoll",
+				"amount" : 1000
+			}
+		},
+		{
+			"number" : 10,
+			"background_image" : "occupation_square.png",
+			"text" : "Successful recruiting trip",
+			"stars" : 0,
+			"hearts" : 2,
+			"bonus" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 10,
+			"background_image" : "occupation_square.png",
+			"text" : "Granted AMZN stock options",
+			"stars" : 0,
+			"hearts" : 4,
+			"bonus" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 11,
+			"background_image" : "occupation_square.png",
+			"text" : "Employee of the year",
+			"stars" : 4,
+			"hearts" : 6, 
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "Salary up $3000",
+			"specialProcessing" : {
+				"type" : "salaryIncrease",
+				"amount" : 3000
+			}
+		}
+	]
+}

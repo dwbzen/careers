@@ -37,7 +37,10 @@ class SuccessFormula(object):
         self._cash = value
     
     def __str__(self):
-        return f'money: ${self._cash},000  fame: {self._fame}  happiness: {self._happiness}'
+        return f'money: ${self.cash},000  fame: {self.fame}  happiness: {self.happiness}'
+    
+    def __repr__(self):
+        return "{" + f' "money": {self.cash}, "fame": {self.fame}, "happiness": {self.happiness}' + "}"
 
     def total_points(self):
         return self.cash() + self.fame() + self.happiness()

@@ -3,8 +3,9 @@ Created on Aug 9, 2022
 
 @author: don_bacon
 '''
-import json, random
+import json
 from pathlib import Path
+from game.gameUtils import GameUtils
 
 class CardDeck(object):
     """Abstract class representing a deck of game cards a player draws or is given.
@@ -29,7 +30,7 @@ class CardDeck(object):
 
         self._cards_index = []
         self._size = self.create_card_deck()
-        self.shuffle()
+        self._cards_index = GameUtils.shuffle(self._size)
         self._next_index = 0
         
     @property
@@ -77,9 +78,6 @@ class CardDeck(object):
             cards = json.loads(fp.read())
         return cards
     
-    def shuffle(self):
-        self._cards_index = random.sample(list(range(0,self._size)), self._size)
-    
     def create_card_deck(self):
         count = 0
         for card_spec in self._cards:
@@ -90,8 +88,8 @@ class CardDeck(object):
         
     def save_card(self, card_spec, qty):
         """Saves a single Opportunity or Experience card.
-        Override in concrete class.
         
+        Abstract method - Override in concrete class.
         """
         pass
     

@@ -1,0 +1,31 @@
+{
+	"name" : "Disney",
+	"configuration" : {
+		"occupationClass" : "occupation",
+		"fullName" : "Disney",
+		"background_image" : "occupation_entrance.png",
+		"image" : "disney logo.jpg",
+		"entryFee" : 500,
+		"text" : "Must have:<br/>**$500 for Magic Coach; or a Hospitality degree; or Magic Kingdom experience**",
+		"degreeRequirements" : { 
+			"degreeName" : "Hospitality",
+			"numberRequired" : 1
+		}
+	},
+	"occupationSquares" : [
+		{
+			"number" : 0,
+			"background_image" : "danger_occupation_square.png",
+			"text" : "Get the flu first day at work",
+			"stars" : 0,
+			"hearts" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "Go to Hospital",
+			"specialProcessing" : {
+				"type" : "travel:border",
+				"next_square" : "Hospital"
+			}
+		}
+	]
+}

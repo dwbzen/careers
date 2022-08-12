@@ -1,5 +1,34 @@
 {
 	"Help" : "Board layout for the Hi-Tech version.",
+	"type_list" : [
+		"corner_square", "opportunity_square", "danger_square", "travel_square", "occupation_entrance_square", "action_square"
+	],
+	"types" : [
+		{
+			"type" : "corner_square",
+			"Help" : "Payday, Hospital, Unemployment and SpringBreak are the corner squares."
+		},
+	    {
+			"type" : "opportunity_square",
+			"Help" : "Collect an Opportunity Card."
+		},
+	    {
+			"type" : "danger_square",
+			"Help" : "A square where the player can expect to lose some cash."
+		},
+	    {
+			"type" : "travel_square",
+			"Help" : "Travel by rail on Amtrak."
+		},
+	    {
+			"type" : "occupation_entrance_square",
+			"Help" : "A player may enter an occupation after meeting the requirments."
+		},
+	    {
+			"type" : "action_square",
+			"Help" : "Perform a non-movement action."
+		}		
+	],
 	"layout" : [
 			{
 				"number" : 0,
@@ -10,7 +39,7 @@
 				"text" : "Collect Salary<br/>as you pass<p/><h1>PAYDAY</h1><h2>Collect DOUBLE if you land here</h2>",
 				"specialProcessing" : {
 						"type" : "payday",
-						"amount" : "$Salary"
+						"amount" : "salary"
 				}
 			},
 			{
@@ -30,8 +59,8 @@
 				"background_image" : "danger_border_square.png",
 				"text" : "**INCOME TAX DUE**",
 				"specialProcessing" : {
-						"type" : "incomeTax",
-						"amount" : "$Salary"
+						"type" : "payTax",
+						"amount" : "%salary"
 				}
 			},
 			{
@@ -41,8 +70,8 @@
 				"background_image" : "amtrak.png",
 				"text" : "",
 				"specialProcessing" : {
-						"type" : "railTravel",
-						"destinationSquare" : 13
+						"type" : "travel_border",
+						"next_square" : 13
 				}
 			},
 			{
@@ -119,6 +148,7 @@
 				"text" : "**DONATE NOW**",
 				"specialProcessing" : {
 						"type" : "singleDieRoll",
+						"dice" : 0,
 						"amount" : 1000
 				}
 			},
@@ -129,8 +159,8 @@
 				"background_image" : "amtrak.png",
 				"text" : "",
 				"specialProcessing" : {
-						"type" : "railTravel",
-						"destinationSquare" : 23
+						"type" : "travel_border",
+						"next_square" : 23
 				}
 			},
 			{
@@ -180,8 +210,13 @@
 			{
 				"number" : 17,
 				"name" : "CarPayment",
+				"type" : "danger_square",
 				"background_image" : "danger_border_square.png",
-				"text" : "**CAR PAYMENT DUE**"
+				"text" : "**CAR PAYMENT DUE**",
+				"specialProcessing" : {
+						"type" : "cashLoss",
+						"amount" : "25% salary"
+				}
 			},
 			{
 				"number" : 18,
@@ -217,15 +252,20 @@
 				"background_image" : "amtrak.png",
 				"text" : "",
 				"specialProcessing" : {
-						"type" : "railTravel",
-						"destinationSquare" : 36
+						"type" : "travel_border",
+						"next_square" : 36
 				}
 			}, 
 			{
 				"number" : 23,
 				"name" : "PayRent",
+				"type" : "danger_square",
 				"background_image" : "danger_border_square.png",
-				"text" : "**PAY RENT HERE**"
+				"text" : "**PAY RENT HERE**",
+				"specialProcessing" : {
+						"type" : "cashLoss",
+						"amount" : "50% salary"
+				}
 			},
 			{
 				"number" : 24,
@@ -252,9 +292,14 @@
 			{
 				"number" : 26,
 				"name" : "ShoppingSpree",
-				"type" : "IncomeTax",
+				"type" : "danger_square",
 				"background_image" : "danger_border_square.png",
-				"text" : "**ONLINE SHOPPING SPREE**"
+				"text" : "**ONLINE SHOPPING SPREE**",
+				"specialProcessing" : {
+						"type" : "cashLossRoll",
+						"dice" : 1,
+						"amount" : "10% cash"
+				}
 			},
 			{
 				"number" : 27,
@@ -336,8 +381,8 @@
 				"background_image" : "amtrak.png",
 				"text" : "",
 				"specialProcessing" : {
-						"type" : "railTravel",
-						"destinationSquare" : 4
+						"type" : "travel_border",
+						"next_square" : 4
 				}
 			},
 			{
@@ -365,12 +410,14 @@
 			{
 				"number" : 38,
 				"name" : "DivorceCourt",
+				"type" : "danger_square",
 				"background_image" : "danger_border_square.png",
 				"image" : "divorce icon.jpg",
 				"text" : "**DIVORCE COURT**",
 				"specialProcessing" : {
-						"type" : "diceRoll",
-						"amount" : "$Salary"
+						"type" : "cashLossRoll",
+						"dice" : 2,
+						"amount" : "10% salary"
 				}
 			},
 			{

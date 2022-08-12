@@ -24,7 +24,9 @@
 			"experience" : 0,
 			"opportunities" : 0,
 			"action_text" : "Lose next turn",
-			"specialProcessing" : "loseNextTurn"
+			"specialProcessing" :  {
+				"type" : "loseNextTurn"
+			}
 		},
 		{
 			"number" : 1,
@@ -51,7 +53,7 @@
 			"opportunities" : 0,
 			"action_text" : "",
 			"specialProcessing" : {
-				"type" : "shortcut",
+				"type" : "travel:shortcut",
 				"next_square" : 9
 			}
 		},
@@ -138,7 +140,7 @@
 			"opportunities" : 2,
 			"action_text" : "Draw 2 OPPORTUNITY CARDS",
 			"specialProcessing" : {}
-		},		
+		},
 		{
 			"number" : 10,
 			"background_image" : "occupation_square.png",
@@ -148,10 +150,7 @@
 			"experience" : 6,
 			"opportunities" : 0,
 			"action_text" : "",
-			"specialProcessing" : {
-				"type" : "occupationExit",
-				"next_square" : 11
-			}
+			"specialProcessing" : {	}
 		}
 	]
 }

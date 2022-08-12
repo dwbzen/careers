@@ -1,0 +1,29 @@
+{
+	"name" : "Pfizer",
+	"configuration" : {
+		"occupationClass" : "occupation",
+		"fullName" : "Pfizer",
+		"background_image" : "occupation_entrance.png",
+		"image" : "Pfizer logo.jpg",
+		"entryFee" : 10000,
+		"text" : "Must have:<br/>**$10,000 for special training; or Pharmacy Board Certification; or Pfizer experience**",
+		"degreeRequirements" : { 
+			"degreeName" : "Pharmacy",
+			"numberRequired" : 2
+		}
+	},
+	"occupationSquares" : [
+		{
+			"number" : 0,
+			"background_image" : "occupation_square.png",
+			"text" : "Group lunch with CTO",
+			"stars" : 0,
+			"hearts" : 0,
+			"bonus" : 0,
+			"experience" : 0,
+			"opportunities" : 1,
+			"action_text" : "Draw 1 OPPORTUNITY CARD",
+			"specialProcessing" : {}
+		}
+	]
+}

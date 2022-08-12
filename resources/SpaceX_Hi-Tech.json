@@ -1,0 +1,29 @@
+{
+	"name" : "SpaceX",
+	"configuration" : {
+		"occupationClass" : "occupation",
+		"fullName" : "SpaceX",
+		"background_image" : "occupation_entrance.png",
+		"image" : "spacex logo.jpg",
+		"entryFee" : 500,
+		"text" : "Must have:<br/>**$5000 recruiting fee; or Aerospace Engineering degree; or SpaceX experience**",
+		"degreeRequirements" : { 
+			"degreeName" : "Aerospace",
+			"numberRequired" : 1
+		}
+	},
+	"occupationSquares" : [
+		{
+			"number" : 0,
+			"background_image" : "occupation_square.png",
+			"text" : "Cape Canaveral is beautiful",
+			"stars" : 0,
+			"hearts" : 2,
+			"bonus" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : {}
+		}
+	]
+}

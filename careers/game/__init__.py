@@ -7,8 +7,11 @@ from .__version__ import __copyright__
 
 __all__ = [
     'actionType',
+    'borderSquare',
     'cardDeck',
     'careersGame',
+    'gamePlayer',
+    'gameUtils',
     'experienceCard',
     'experienceCardDeck',
     'experienceCardType',
@@ -16,12 +19,16 @@ __all__ = [
     'opportunityCardDeck',
     'opportunityType',
     'player',
+    'specialProcessing',
     'successFormula'
 ]
 
 from .actionType import ActionType
+from careers.game.borderSquare import BorderSquare
 from .cardDeck import CardDeck
 from .careersGame import CareersGame
+from  careers.game.gameRunner import GameRunner
+from .gameUtils import GameUtils
 from .player import Player
 from .successFormula import SuccessFormula
 from .opportunityType import OpportunityType
@@ -30,3 +37,4 @@ from .opportunityCardDeck import OpportunityCardDeck
 from .experienceCard import ExperienceCard
 from .experienceCardType import ExperienceCardType
 from .experienceCardDeck import ExperienceCardDeck
+from .specialProcessing import SpecialProcessing

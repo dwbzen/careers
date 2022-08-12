@@ -14,6 +14,7 @@ class Player(object):
         self._salary = salary
         self._cash = cash
         self._success_formula = SuccessFormula()     # default values
+        self._number = 0
         
     @property
     def player_name(self):
@@ -43,6 +44,14 @@ class Player(object):
     @success_formula.setter
     def success_formula(self, value):
         self._success_formula = value
+        
+    @property
+    def number(self):
+        return self._number
+    
+    @number.setter
+    def number(self, value):
+        self._number = value
     
     def save(self):
         """Persist this player's state to a JSON file.
@@ -55,6 +64,8 @@ class Player(object):
         filename = "player_" + self._player_initials + fdate +" _state.json"
         return filename
     
+    def __str__(self):
+        return f'{self.number}. {self.player_name} ({self.player_initials}) : salary:{self.salary}, cash:{self.cash}, formula: {self.success_formula} '
 
 if __name__ == '__main__':
     player = Player(name='Don', initials='DWB')
@@ -63,7 +74,7 @@ if __name__ == '__main__':
     
     print(str(player.success_formula))
     
-    print(f' cash: {player.cash}')
+    print(str(player))
     
     
     
