@@ -29,7 +29,7 @@ class SpecialProcessing(object):
         self._next_square = None    # square number to advance to, relative to the overall game layout or occupation
         self._amount_calc = None    # how a money amount is calculated
         self._amount = 0            # a discrete money amount which may be salary or cash depending on type
-        self._destination = None    # the name of a destination occupation
+        self._destination = None    # the name of a destination occupation or border square
         
         if 'dice' in special_processing_txt:
             self._dice = special_processing_txt['dice']

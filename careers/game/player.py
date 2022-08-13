@@ -3,18 +3,20 @@ Created on Aug 5, 2022
 
 @author: don_bacon
 '''
-from game.successFormula import SuccessFormula
+from game import SuccessFormula, CareersObject
 from datetime import datetime
 
-class Player(object):
+class Player(CareersObject):
     
-    def __init__(self, name="Player", salary=2000, cash=2000, initials="xxx"):
+    def __init__(self, number, name="Player", salary=2000, cash=2000, initials="XXX"):
         self._player_name = name
         self._player_initials = initials
         self._salary = salary
-        self._cash = cash
-        self._success_formula = SuccessFormula()     # default values
-        self._number = 0
+        self._cash = cash                           # cash on hand
+        self._success_formula = SuccessFormula()    # default values
+        self._number = number               # my player number, values 0 to #players-1
+        self._my_experience_cards = []      # list of ExperienceCard
+        self._my_opportunitiy_cards = []    # list of OpportunityCard
         
     @property
     def player_name(self):
@@ -62,16 +64,32 @@ class Player(object):
         today = datetime.now()
         fdate = '{0:d}-{1:02d}-{2:02d}_{3:02d}:{4:02d}:{5:02d}'.format(today.year,today.month, today.day, today.hour, today.minute, today.second)
         filename = "player_" + self._player_initials + fdate +" _state.json"
+        #
+        # 
         return filename
     
     def __str__(self):
-        return f'{self.number}. {self.player_name} ({self.player_initials}) : salary:{self.salary}, cash:{self.cash}, formula: {self.success_formula} '
-
+        return f'{self.number}. {self.player_name} ({self.player_initials}) : salary:{self.salary}, cash:{self.cash}, formula: {self.success_formula}'
+    
+    def __repr__(self):
+        """Returns the JSON representation of this player
+        
+        """
+        pass
+    
+    def to_JSON(self):
+        return self.__repr__()
+    
+    def is_complete(self):
+        """Returns True if this players's total points are >= game total points, False otherwise
+    
+        """
+        return self.success_formula.is_complete()
+    
 if __name__ == '__main__':
     player = Player(name='Don', initials='DWB')
     sf = SuccessFormula(stars=40, hearts=10, cash=50)
     player.success_formula = sf
-    
     print(str(player.success_formula))
     
     print(str(player))

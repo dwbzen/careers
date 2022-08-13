@@ -18,7 +18,7 @@ class CareersGame(object):
     Represents a Careers Game instance.
     """
 
-    def __init__(self, edition_name):
+    def __init__(self, edition_name, total_points):
         """CareersGame Constructor
         
         """
@@ -49,10 +49,13 @@ class CareersGame(object):
         #
         # load the game board
         #
-        self._game_board = []       # list of BorderSquare
+        self._game_board = []                   # list of BorderSquare
         self._create_game_board()
         self._number_of_players = 0
-        
+        self._current_player_number = 0         # the current player number
+        self._current_player = None             # Player reference
+        self._total_points = total_points
+        self._winning_player = None
         
     def _load_game_configuration(self):
         """Loads the game parameters, layout and occupations JSON files for this edition.
@@ -139,14 +142,75 @@ class CareersGame(object):
     def players(self):
         return self._players
     
-    def add_player(self, aplayer:Player):
-        aplayer.number = self.number_of_players
-        self.players.append(aplayer)
-        self._number_of_players += 1
+    @property
+    def winning_player(self):
+        return self._winning_player
+    
+    @property
+    def current_player(self):
+        return self._current_player
+    
+    @current_player.setter
+    def current_player(self, value):
+        self._current_player = value
+    
+    @property
+    def current_player_number(self):
+        return self._current_player_number
+    
+    @current_player_number.setter
+    def current_player_number(self, value):
+        self._current_player_number = value
     
     @property
     def number_of_players(self):
         return self._number_of_players
+    
+    def next_player_number(self):
+        """Returns the player number of the next player. And sets the value of current_player.
+        
+        """
+        p = self.current_player_number + 1
+        if p >= self.number_of_players:
+            self.current_player_number = 0
+        else:
+            self.current_player_number = p
+        self.current_player = self.players[self.current_player_number]
+        return self.current_player_number
+    
+    def add_player(self, aplayer:Player):
+        aplayer.number = self.number_of_players
+        self.players.append(aplayer)
+        self._number_of_players += 1
+        
+    def complete_player_move(self):
+        """Completes the move of the current player and determines if there's a winner and returns winning_player.
+            If so winning_player is set. Otherise, current_player and current_player_number advanced to the next player.
+            Returns: winning_player or None
+        
+        """
+        winner = None
+        if self.is_game_complete():
+            winner = self.winning_player
+        else:
+            self.next_player_number()
+        return winner
+            
+    
+    def is_game_complete(self):
+        """Iterates over the players to see who, if anyone, has won.
+            Returns: True if there's a winner, else False.
+                    sets self.winning_player to the Player who won.
+            NOTE - returns the first winning player if there happens to be more than 1.
+            To prevent this from happening, this should be called at the end of each player's turn.
+        """
+        completed = False
+        for p in self.players:
+            if p.is_complete():
+                self._winning_player = p
+                completed = True
+                break
+        return completed
     
     def start_game(self):
         """
@@ -155,18 +219,15 @@ class CareersGame(object):
         """
         pass
     
-if __name__ == '__main__':
-    player1 = Player(name='Don', initials='DWB')
-    sf = SuccessFormula(stars=40, hearts=10, cash=50)
-    player1.success_formula = sf
-    game = CareersGame('Hi-Tech')
-    game.add_player(player1)
-    player2 = Player(name="Scott", initials="SFP")
-    sf = SuccessFormula(stars=20, hearts=30, cash=50)
-    player2.success_formula = sf
-    game.add_player(player2)
+    def complete_turn(self):
+        """Completes the turn of the current_player
+        
+        """
+        pass
     
+if __name__ == '__main__':
+
+    game = CareersGame('Hi-Tech')
     print(game.occupation_list)
     
     
-

@@ -10,6 +10,7 @@ __all__ = [
     'borderSquare',
     'cardDeck',
     'careersGame',
+    'careersObject',
     'gamePlayer',
     'gameUtils',
     'experienceCard',
@@ -25,6 +26,7 @@ __all__ = [
 
 from .actionType import ActionType
 from careers.game.borderSquare import BorderSquare
+from careers.game.careersObject import CareersObject
 from .cardDeck import CardDeck
 from .careersGame import CareersGame
 from  careers.game.gameRunner import GameRunner
