@@ -61,7 +61,9 @@
 			"experience" : 0,
 			"opportunities" : 0,
 			"action_text" : "Lose next turn",
-			"specialProcessing" : "loseTurn"
+			"specialProcessing" : {
+				"type" : "loseTurn"
+			}
 		},
 		{
 			"number" : 4,
@@ -87,7 +89,7 @@
 			"specialProcessing" : {
 				"type" : "salaryCut",
 				"amount" : 0,
-				"percentAmount" : 0.5
+				"percent" : 0.5
 			}
 		},
 		{
@@ -100,7 +102,7 @@
 			"opportunities" : 0,
 			"action_text" : "Collect bonus $3000",
 			"specialProcessing" : {
-				"type" : "bonus_amount",
+				"type" : "bonus",
 				"amount" : 3000
 			}
 		},
@@ -114,7 +116,7 @@
 			"opportunities" : 0,
 			"action_text" : "Go to Unemployment",
 			"specialProcessing" : {
-				"type" : "travel:border",
+				"type" : "travelBorder",
 				"next_square" : "Unemployment"
 			}
 		},
@@ -140,7 +142,8 @@
 			"opportunities" : 0,
 			"action_text" : "Salary up $1000 x roll of 1 die",
 			"specialProcessing" : {
-				"type" : "salary_dieRoll",
+				"type" : "salaryIncrease",
+				"dice" : 1,
 				"amount" : 1000
 			}
 		},

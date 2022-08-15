@@ -33,6 +33,7 @@
 			{
 				"number" : 0,
 				"name" : "Payday",
+				"class" : "Border",
 				"type" : "corner_square",
 				"background_image" : "corner_square.png",
 				"image" : "startHereAndArrow.jpg",
@@ -70,7 +71,7 @@
 				"background_image" : "amtrak.png",
 				"text" : "",
 				"specialProcessing" : {
-						"type" : "travel_border",
+						"type" : "travelBorder",
 						"next_square" : 13
 				}
 			},
@@ -100,7 +101,9 @@
 				"number" : 6,
 				"name" : "TechConvention",
 				"type" : "action_square",
-				"background_image" : "light blue action square.png"
+				"background_image" : "light blue action square.png",
+				"text" : "TODO",
+				"specialProcessing" : { }
 			},
 			{
 				"number" : 7,
@@ -128,7 +131,9 @@
 				"number" : 9,
 				"name" : "Hospital",
 				"type" : "corner_square",
-				"background_image" : "corner_square.png"
+				"background_image" : "corner_square.png",
+				"text" : "TODO",
+				"specialProcessing" : { }
 			},
 			{
 				"number" : 10,
@@ -147,7 +152,7 @@
 				"background_image" : "danger_border_square.png",
 				"text" : "**DONATE NOW**",
 				"specialProcessing" : {
-						"type" : "singleDieRoll",
+						"type" : "cashLoss",
 						"dice" : 0,
 						"amount" : 1000
 				}
@@ -159,7 +164,7 @@
 				"background_image" : "amtrak.png",
 				"text" : "",
 				"specialProcessing" : {
-						"type" : "travel_border",
+						"type" : "travelBorder",
 						"next_square" : 23
 				}
 			},
@@ -221,7 +226,14 @@
 			{
 				"number" : 18,
 				"name" : "Disney",
-				"type" : "occupation_entrance_square"
+				"type" : "occupation_entrance_square",
+				"background_image" : "occupation_entrance_square.png",
+				"image" : "Disney logo.jpg",
+				"text" : "",
+				"specialProcessing" : {
+						"type" : "enterOccupation",
+						"destinationOccupation" : "Disney"
+				}				
 			},
 			{
 				"number" : 19,
@@ -237,13 +249,17 @@
 				"number" : 20,
 				"name" : "BuyExperience",
 				"type" : "action_square",
-				"background_image" : "light blue action square.png"
+				"background_image" : "light blue action square.png",
+				"text" : "TODO",
+				"specialProcessing" : { }
 			},
 			{
 				"number" : 21,
 				"name" : "Unemployment",
 				"type" : "corner_square",
-				"background_image" : "corner_square.png"
+				"background_image" : "corner_square.png",
+				"text" : "TODO",
+				"specialProcessing" : { }
 			},
 			{
 				"number" : 22,
@@ -252,7 +268,7 @@
 				"background_image" : "amtrak.png",
 				"text" : "",
 				"specialProcessing" : {
-						"type" : "travel_border",
+						"type" : "travelBorder",
 						"next_square" : 36
 				}
 			}, 
@@ -296,9 +312,9 @@
 				"background_image" : "danger_border_square.png",
 				"text" : "**ONLINE SHOPPING SPREE**",
 				"specialProcessing" : {
-						"type" : "cashLossRoll",
+						"type" : "cashLoss",
 						"dice" : 1,
-						"amount" : "10% cash"
+						"percent" : 0.1
 				}
 			},
 			{
@@ -327,13 +343,17 @@
 				"number" : 29,
 				"name" : "BuyInsurance",
 				"type" : "action_square",
-				"background_image" : "light blue action square.png"
+				"background_image" : "light blue action square.png",
+				"text" : "TODO",
+				"specialProcessing" : { }
 			},
 			{
 				"number" : 30,
 				"name" : "SpringBreak",
 				"type" : "corner_square",
-				"background_image" : "corner_square.png"
+				"background_image" : "corner_square.png",
+				"text" : "TODO",
+				"specialProcessing" : { }
 			},
 			{
 				"number" : 31,
@@ -350,7 +370,9 @@
 				"name" : "GambleInVegas",
 				"type" : "action_square",
 				"background_image" : "light blue action square.png",
-				"image" : "Las Vegas.jpg"
+				"image" : "Las Vegas.jpg",
+				"text" : "TODO",
+				"specialProcessing" : { }
 			},
 			{
 				"number" : 33,
@@ -381,7 +403,7 @@
 				"background_image" : "amtrak.png",
 				"text" : "",
 				"specialProcessing" : {
-						"type" : "travel_border",
+						"type" : "travelBorder",
 						"next_square" : 4
 				}
 			},
@@ -415,9 +437,9 @@
 				"image" : "divorce icon.jpg",
 				"text" : "**DIVORCE COURT**",
 				"specialProcessing" : {
-						"type" : "cashLossRoll",
+						"type" : "cashLoss",
 						"dice" : 2,
-						"amount" : "10% salary"
+						"percent" : 0.1
 				}
 			},
 			{
@@ -425,7 +447,8 @@
 				"name" : "VintageCars",
 				"type" : "action_square",
 				"background_image" : "light blue action square.png",
-				"text" : "**VINTAGE CARS**"
+				"text" : "**VINTAGE CARS**",
+				"specialProcessing" : { }
 			},
 			{
 				"number" : 40,
@@ -444,7 +467,8 @@
 				"name" : "WebPresence",
 				"type" : "action_square",
 				"background_image" : "light blue action square.png",
-				"text" : "**WEB PRESENCE**"
+				"text" : "**WEB PRESENCE**",
+				"specialProcessing" : { }
 			}
 	]
 }

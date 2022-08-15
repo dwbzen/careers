@@ -6,21 +6,29 @@ Created on Aug 6, 2022
 
 from careers.environment import Environment
 from game.player import Player
-from game.successFormula import SuccessFormula
 import json
 from pathlib import Path
 from game.opportunityCardDeck import OpportunityCardDeck
 from game.experienceCardDeck import ExperienceCardDeck
 from game.borderSquare import BorderSquare
+from game.occupationSquare import OccupationSquare
+from game.gameState import GameState
 
 class CareersGame(object):
     """
     Represents a Careers Game instance.
+        The CareersGame model class has instances of all the components used in game play:
+        Opportunity and Experience card decks, the game board, parameters for a given edition, occupations, players, and the game state.
+        
     """
 
     def __init__(self, edition_name, total_points):
         """CareersGame Constructor
-        
+            Arguments:
+                edition_name - the name of the edition to create. This must be a key in editions.json file.
+                total_points - total number of points in the success formula.
+            Raises:
+                ValueError if there is no such edition
         """
         self._edition_name = edition_name
         self._env = Environment.get_environment()
@@ -40,7 +48,7 @@ class CareersGame(object):
         # load game parameters, layout and occupations
         #
         self._load_game_configuration()
-        self._players = []   # list of Player
+ 
         #
         # create the Opportunity and Experience card decks
         #
@@ -49,16 +57,14 @@ class CareersGame(object):
         #
         # load the game board
         #
-        self._game_board = []                   # list of BorderSquare
-        self._create_game_board()
-        self._number_of_players = 0
-        self._current_player_number = 0         # the current player number
-        self._current_player = None             # Player reference
-        self._total_points = total_points
-        self._winning_player = None
+        self._game_board = self._create_game_board()   # list of BorderSquare
+        #
+        # create & initialize the game state
+        #
+        self._game_state = GameState(total_points)
         
     def _load_game_configuration(self):
-        """Loads the game parameters, layout and occupations JSON files for this edition.
+        """Loads the game parameters and occupations JSON files for this edition.
         
         """
         fp = open(self._resource_folder + "/gameParameters_" + self._edition_name + ".json", "r")
@@ -72,7 +78,10 @@ class CareersGame(object):
         self._occupation_list = occupations['occupations']
         fp.close()
         
+        # load the individual occupation files
         self._occupations = self.load_occupations()
+        # create the layout (occupation squares) for each occupation
+        self._occupation_squares_dict = self._create_occupation_squares()
         
     def _create_opportunity_deck(self):
         self._opportunities = OpportunityCardDeck(self._resource_folder, self._edition_name)
@@ -82,11 +91,13 @@ class CareersGame(object):
         
     def _create_game_board(self):
         fp = open(self._resource_folder + "/gameLayout_" + self._edition_name + ".json", "r")
-        self._game_board_txt = json.loads(fp.read())
-        self._game_layout = self._game_board_txt['layout']
+        self._game_board_dict = json.loads(fp.read())
+        self._game_layout = self._game_board_dict['layout']
+        game_board = list()
         for border_square_text in self._game_layout:
             border_square = BorderSquare(border_square_text)
-            self._game_board.append(border_square)
+            game_board.append(border_square)
+        return game_board
 
     def load_occupations(self) -> dict:
         """Loads individual occupation JSON files for this edition.
@@ -107,6 +118,20 @@ class CareersGame(object):
                 occupations[name] = None
         return occupations
     
+    def _create_occupation_squares(self) -> dict:
+        """For each Occupation create a list of OccupationSquare corresponding to the "occupationSquares" of that occupation.
+            Returns: a dictionary with the occupation name as the key, and a [OccupationSquare] as the value.
+        """
+        occupation_squares_dict = dict()
+        for occupation_name in self.occupation_list:
+            squares = self.occupations[occupation_name]['occupationSquares']
+            occupation_squares = list()
+            for occupation_square_dict in squares:
+                occupation_square = OccupationSquare(occupation_square_dict)
+                occupation_squares.append(occupation_square)
+            occupation_squares_dict[occupation_name] = occupation_squares
+        return occupation_squares_dict
+    
     @property
     def edition(self):
         return self._edition
@@ -118,6 +143,10 @@ class CareersGame(object):
     @property
     def game_parameters(self):
         return self._game_parameters
+    
+    @property
+    def game_state(self):
+        return self._game_state
     
     @property
     def occupation_list(self):
@@ -138,59 +167,17 @@ class CareersGame(object):
     def experience_cards(self):
         return self._experience_cards
     
-    @property
-    def players(self):
-        return self._players
+    def add_player(self, aplayer):
+        self.game_state.add_player(aplayer)
     
-    @property
-    def winning_player(self):
-        return self._winning_player
-    
-    @property
-    def current_player(self):
-        return self._current_player
-    
-    @current_player.setter
-    def current_player(self, value):
-        self._current_player = value
-    
-    @property
-    def current_player_number(self):
-        return self._current_player_number
-    
-    @current_player_number.setter
-    def current_player_number(self, value):
-        self._current_player_number = value
-    
-    @property
-    def number_of_players(self):
-        return self._number_of_players
-    
-    def next_player_number(self):
-        """Returns the player number of the next player. And sets the value of current_player.
-        
-        """
-        p = self.current_player_number + 1
-        if p >= self.number_of_players:
-            self.current_player_number = 0
-        else:
-            self.current_player_number = p
-        self.current_player = self.players[self.current_player_number]
-        return self.current_player_number
-    
-    def add_player(self, aplayer:Player):
-        aplayer.number = self.number_of_players
-        self.players.append(aplayer)
-        self._number_of_players += 1
-        
     def complete_player_move(self):
         """Completes the move of the current player and determines if there's a winner and returns winning_player.
             If so winning_player is set. Otherise, current_player and current_player_number advanced to the next player.
-            Returns: winning_player or None
+            Returns: winning_player (Player instance) or None
         
         """
         winner = None
-        if self.is_game_complete():
+        if self.is_game_complete():       # sets winning_player if True
             winner = self.winning_player
         else:
             self.next_player_number()

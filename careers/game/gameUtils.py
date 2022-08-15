@@ -4,7 +4,7 @@ Created on Aug 12, 2022
 @author: don_bacon
 '''
 import random
-from game import SuccessFormula
+from game.successFormula import SuccessFormula
 
 class GameUtils(object):
     """
@@ -25,4 +25,8 @@ class GameUtils(object):
         hearts = random.randint(1, 100-cash)
         stars = random.randint(1,100-(cash+hearts))
         return SuccessFormula(stars, hearts, cash)
+    
+    @staticmethod
+    def roll(number_of_dice):
+        return random.choices(population=[1,2,3,4,5,6],k=number_of_dice)
         

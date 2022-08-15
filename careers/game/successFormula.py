@@ -4,7 +4,7 @@ Created on Aug 5, 2022
 @author: don_bacon
 '''
 
-from game import CareersObject
+from game.careersObject import CareersObject
 
 class SuccessFormula(CareersObject):
     '''

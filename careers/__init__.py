@@ -33,5 +33,6 @@ __all__ = [
 # this brings all of our own __all__ names into the dwbzen package namespace
 # pylint: disable=wildcard-import
 # 
+from careers.environment import Environment
 import game
 import server

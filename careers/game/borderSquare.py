@@ -4,41 +4,41 @@ Created on Aug 12, 2022
 @author: don_bacon
 '''
 
-from game.specialProcessing import SpecialProcessing
+from game.gameSquare import GameSquare
 
-class BorderSquare(object):
+class BorderSquare(GameSquare):
     """Encapsulates a Careers game border (non-occupation) square.
     Border squares are numbered consecutively starting with 0 (Payday by convention).
     They also have a name which may not be unique. For example, there are 12 squares named "Opportunity"
-    The border square "type" is enumerated in the game layout JSON as "types"
+    The border square "type" is enumerated in the gameLayout JSON as "types_list
     """
 
+    types_list = ["corner_square", "opportunity_square", "danger_square", "travel_square", "occupation_entrance_square", "action_square"]
 
-    def __init__(self, border_square_txt):
+    def __init__(self, border_square_dict):
         """
         Constructor
         """
-        self._text = None
-        self._special_processing = None
-        self._number = border_square_txt['number']
-        self._name = border_square_txt['name']
-        self._square_type = border_square_txt['type']
-        if 'text' in border_square_txt:
-            self._text = border_square_txt['text']
-        if 'specialProcessing' in border_square_txt:
-            self._special_processing_txt = border_square_txt['specialProcessing']
-            self._special_processing = SpecialProcessing(self._special_processing_txt, "border")
-    
+        super().__init__("Border", name=border_square_dict['name'], number= border_square_dict['number'], \
+                         text=border_square_dict['text'], special_processing_dict=border_square_dict['specialProcessing'])
+        
+        self._game_square_dict = border_square_dict
+        self._square_type = border_square_dict['type']
+        
     @property
-    def number(self):
-        return self._number
-    
-    @property
-    def name(self):
-        return self._name
-    
-    @property
-    def special_processing(self):
-        return self._special_processing
+    def square_type(self):
+        return self._square_type
+        
+    def to_JSON(self):
+        txt = f'''{{
+        "square_class" : "{self.square_class}",
+        "name":{self.name},
+        "number":"{self.number}",
+        "text":"{self.text}",
+        "type":"{self.square_type}",
+        "special_processing_txt" : {self._special_processing_txt} 
+        }}'''
+        return txt
+
     
     
