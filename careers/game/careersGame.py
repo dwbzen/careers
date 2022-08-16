@@ -6,7 +6,8 @@ Created on Aug 6, 2022
 
 from careers.environment import Environment
 from game.player import Player
-import json
+import json, random
+from datetime import datetime
 from pathlib import Path
 from game.opportunityCardDeck import OpportunityCardDeck
 from game.experienceCardDeck import ExperienceCardDeck
@@ -54,14 +55,22 @@ class CareersGame(object):
         #
         self._create_opportunity_deck()
         self._create_experience_deck()
+        self._college_degrees =  self._load_college_degrees()  # dict with keys: degreePrograms (list), maxDegrees (int), degreeNames (list)
         #
         # load the game board
         #
         self._game_board = self._create_game_board()   # list of BorderSquare
+        self._game_type = 'points'  # 'points' or 'timed' (which is not yet supported)
+
         #
-        # create & initialize the game state
+        # create & initialize the GameState which includes a list of Players
         #
         self._game_state = GameState(total_points)
+        #
+        # create a unique ID for this game, used for logging
+        #
+        today = datetime.now()
+        self._gameId = '{0:d}{1:02d}{2:02d}_{3:02d}{4:02d}_{5:04d}'.format(today.year, today.month, today.day,today.hour, today.minute, random.randint(1000,9999))
         
     def _load_game_configuration(self):
         """Loads the game parameters and occupations JSON files for this edition.
@@ -103,8 +112,10 @@ class CareersGame(object):
         """Loads individual occupation JSON files for this edition.
             Arguments: occupation_list - a list of occupation names
             Returns: a dict with the occupation name as the key and contents
-                of the corresponding occupation JSON file as the value.
+                of the corresponding occupation JSON file (as a dict) as the value.
                 If the occupation JSON file doesn't exist, the value is None.
+            Note: the filename is the occupation name + "_" + the edition_name + ".json"
+                The file path is the resource_folder set in the Environment
         """
         occupations = dict()
         for name in self._occupation_list:
@@ -132,9 +143,18 @@ class CareersGame(object):
             occupation_squares_dict[occupation_name] = occupation_squares
         return occupation_squares_dict
     
+    def _load_college_degrees(self):
+        fp = open(self._resource_folder + "/collegeDegrees_" + self._edition_name + ".json", "r")
+        degrees = json.loads(fp.read())
+        return degrees
+    
     @property
     def edition(self):
         return self._edition
+    
+    @property
+    def edition_name(self):
+        return self._edition_name
     
     @property
     def game_layout(self):
@@ -147,6 +167,10 @@ class CareersGame(object):
     @property
     def game_state(self):
         return self._game_state
+    
+    @property
+    def gameId(self):
+        return self._gameId
     
     @property
     def occupation_list(self):
@@ -167,7 +191,7 @@ class CareersGame(object):
     def experience_cards(self):
         return self._experience_cards
     
-    def add_player(self, aplayer):
+    def add_player(self, aplayer:Player):
         self.game_state.add_player(aplayer)
     
     def complete_player_move(self):

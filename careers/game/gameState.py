@@ -18,7 +18,7 @@ class GameState(object):
         '''
         self._number_of_players = 0
         self._players = []   # list of Player
-        self._current_player_number = 0     # the current player number
+        self._current_player_number = -1    # the current player number
         self._current_player = None         # Player reference
         self._total_points = total_points
         self._winning_player = None         # Player reference
@@ -26,6 +26,9 @@ class GameState(object):
         self._turn_number = 1               # current turn#
         self._game_start = datetime.now()
         self._game_complete = None
+        self._seconds_remaining = 0         # number of seconds remaining if a timed game
+        self._game_type = 'points'          # or 'timed'
+    
     
     @property
     def number_of_players(self):

@@ -19,10 +19,11 @@ class Player(CareersObject):
         self._number = number               # my player number, values 0 to #players-1
         self._my_experience_cards = []      # list of ExperienceCard
         self._my_opportunitiy_cards = []    # list of OpportunityCard
+        self._my_degrees = []               # list of dict where key is the degree program and the values the number of degrees attained
         self._current_square_number = 0     # the border square# this player currently occupies
         self._current_occupation_name = None            # the name of occupation the player is currently in
         self._current_occupation_square_number = 0      # the square number within that occupation (if name is not None)
-        
+        self._can_retire = False           
         
     @property
     def player_name(self):
@@ -70,6 +71,46 @@ class Player(CareersObject):
     def number(self, value):
         self._number = value
         
+    @property
+    def my_degrees(self):
+        return self._my_degrees
+    
+    @property
+    def can_retire(self):
+        return self._can_retire
+    
+    def add_degree(self, degree_program):
+        if degree_program in self.my_degrees:
+            count = self.my_degrees[degree_program]
+            # max of 4 degrees in any degree program
+            if count <= 4:
+                count += 1
+                self._my_degrees[degree_program] = count
+            if count >= 3:
+                self._can_retire = True
+        else:
+            self._my_degrees[degree_program] = 1
+        
+    def add_hearts(self, nhearts):
+        self.hearts = self.hearts + nhearts
+    
+    def add_stars(self, nstars):
+        self.stars = self.stars + nstars
+        
+    def add_cash(self, money):  # could be a negative amount
+        self.cash = self.cash + money
+    
+    def add_to_salary(self, money): #  again, could be negative amount
+        self.salary = self.salary + money
+        
+    def total_points(self):
+        return self.hearts + self.stars + self.cash_points()
+    
+    def cash_points(self):
+        """Cash points is the amount of cash/1000
+        
+        """
+        return self.cash // 1000
     
     def save(self):
         """Persist this player's state to a JSON file.
@@ -81,7 +122,6 @@ class Player(CareersObject):
         fdate = '{0:d}-{1:02d}-{2:02d}_{3:02d}:{4:02d}:{5:02d}'.format(today.year,today.month, today.day, today.hour, today.minute, today.second)
         filename = "player_" + self._player_initials + fdate +" _state.json"
         #
-        # 
         return filename
     
     def __str__(self):
@@ -100,7 +140,7 @@ class Player(CareersObject):
         """Returns True if this players's total points are >= game total points, False otherwise
     
         """
-        return self.success_formula.is_complete()
+        return  self.total_points() >= self.success_formula.total_points()
     
 if __name__ == '__main__':
     player = Player(0, name='Don', initials='DWB')

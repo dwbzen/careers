@@ -1,0 +1,5 @@
+{
+	"degreePrograms" : ["Aerospace", "Agronomy", "Business Admin", "Computer Science", "Hospitality", "Journalism", "Law", "Marketing", "Pharmacy"],
+	"maxDegrees" : 4,
+	"degreeNames" : ["Bachelor", "Masters", "PhD", "Post-Doc"]
+}

@@ -219,8 +219,8 @@
 				"background_image" : "danger_border_square.png",
 				"text" : "**CAR PAYMENT DUE**",
 				"specialProcessing" : {
-						"type" : "cashLoss",
-						"amount" : "25% salary"
+						"type" : "salaryCut",
+						"percent" : "0.25"
 				}
 			},
 			{

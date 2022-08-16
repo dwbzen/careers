@@ -130,7 +130,9 @@
 			"experience" : 2,
 			"opportunities" : 0,
 			"action_text" : "You lose 4<img src=\"heart.jpg\"><br/>They lose 12<img src=\"heart.jpg\">",
-			"specialProcessing" : {}
+			"specialProcessing" : {
+				"type" : "backstab"
+			}
 		},
 		{
 			"number" : 9,
@@ -160,7 +162,7 @@
 			"specialProcessing" : {}
 		},
 		{
-			"number" : 10,
+			"number" : 11,
 			"background_image" : "occupation_square.png",
 			"text" : "Granted AMZN stock options",
 			"stars" : 0,
@@ -172,7 +174,7 @@
 			"specialProcessing" : {}
 		},
 		{
-			"number" : 11,
+			"number" : 12,
 			"background_image" : "occupation_square.png",
 			"text" : "Employee of the year",
 			"stars" : 4,

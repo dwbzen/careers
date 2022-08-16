@@ -20,7 +20,7 @@ class GameRunner(object):
         """
         self.game = CareersGame('Hi-Tech', total_points)
         self.total_points = total_points
-        self._trace = True         # traces the action by describing each step
+        self._trace = True          # traces the action by describing each step
         self.game_engine = None     # CareersGameEngine
         
 
@@ -43,13 +43,43 @@ class GameRunner(object):
     def number_of_players(self):
         return self.game.game_state.number_of_players
     
-    def run_game(self):
-        if(self.trace):
-            print(f'Starting game with {self.number_of_players()} players ')
-        self.game_engine = CareersGameEngine(self.game)
+    def get_game_state(self):
+        return self.game_engine.game_state
+    
+    def execute_command(self, cmd, aplayer):
+        """Command format is command name + optional arguments
+            The command and arguments passed to the game engine for execution
         
-        if(self.trace):
-            print("Game over")
+        """
+        command = cmd.split(" ")     # TODO
+        if len(command) > 1:
+            args = command[1:]
+        else:
+            args = []
+        result = self.game_engine.execute_command(command[0], args, aplayer)
+    
+    def run_game(self):
+        self.game_engine = CareersGameEngine(self.game)
+        self.game_engine.trace = self.trace
+        self.game_engine.start()
+        game_over = False
+        game_state = self.get_game_state()
+        nplayers = game_state.number_of_players
+        turn_number = 1
+        while not game_over:
+            for i in range(nplayers):
+                pn = game_state.next_player_number()
+                current_player = game_state.current_player
+                prompt = f'{current_player.player_initials} ({turn_number}): '
+                cmd = input(prompt)
+                if cmd=='quit':
+                    game_over = True
+                    break
+                else:
+                    self.execute_command(cmd, current_player)
+            turn_number += 1
+        
+        self.game_engine.end()
         
 
 if __name__ == '__main__':

@@ -7,9 +7,6 @@
 		"image" : "UF logo.jpg",
 		"entryFee" : 500,
 		"text" : "Must have: $500 tuition<br/>Degrees available:<br/>**Aerospace, Agronomy, Business Admin, Computer Science, Hospitality, Journalism, Law, Marketting and Pharmacy**",
-		"degreePrograms" : ["Aerospace", "Agronomy", "Business Admin", "Computer Science", "Hospitality", "Journalism", "Law", "Marketing", "Pharmacy"],
-		"maxDegrees" : 4,
-		"degrees" : ["Bachelor", "Masters", "PhD", "Post-Doc"],
 		"Help" : [ "Each Degree Program is with a specific occupation. maxDegrees is the maximum number of degrees attainable in any degree program." ]
 	},
 	"occupationSquares" : [

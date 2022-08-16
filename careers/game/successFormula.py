@@ -12,9 +12,10 @@ class SuccessFormula(CareersObject):
     '''
 
     def __init__(self, stars=0, hearts=0, cash=0):
-        '''
-        Constructor
-        '''
+        """Initialize the success formula with the number of stars (Fame), hearts (Happiness) and cash (money in 1000s) specified.
+            Computes game_total_points as the sum.
+        
+        """
         self._fame = stars
         self._happiness = hearts
         self._cash = cash
@@ -39,12 +40,6 @@ class SuccessFormula(CareersObject):
     def cash(self, value):
         self._cash = value
     
-    def is_complete(self):
-        """Returns True if this formula's total points are >= game total points, False otherwise
-        
-        """
-        return self.total_points() >= self._game_total_points
-    
     def __str__(self):
         return f'money: ${self.cash},000  fame: {self.fame}  happiness: {self.happiness}'
     
@@ -60,7 +55,8 @@ class SuccessFormula(CareersObject):
         """
         return self.__repr__()
     
+    @property
     def total_points(self):
-        return self.cash() + self.fame() + self.happiness()
+        return self._game_total_points
     
     
