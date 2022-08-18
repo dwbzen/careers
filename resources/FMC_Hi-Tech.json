@@ -6,7 +6,7 @@
 		"background_image" : "occupation_entrance.png",
 		"image" : "FMC logo.jpg",
 		"entryFee" : 1000,
-		"text" : "Must have:<br/>**$1000 recruiting fee; or Agronomy degree; or FMC experience**",
+		"text" : "Must have: $1000 recruiting fee; or Agronomy degree; or FMC experience",
 		"degreeRequirements" : { 
 			"degreeName" : "Agronomy",
 			"numberRequired" : 1

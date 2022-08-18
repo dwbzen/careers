@@ -21,3 +21,6 @@ class CareersObject(object):
         """
         return None
     
+    def __repr__(self):
+        return self.to_JSON()
+    

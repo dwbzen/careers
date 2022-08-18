@@ -6,7 +6,7 @@
 		"background_image" : "occupation_entrance.png",
 		"image" : "disney logo.jpg",
 		"entryFee" : 500,
-		"text" : "Must have:<br/>**$500 for Magic Coach; or a Hospitality degree; or Magic Kingdom experience**",
+		"text" : "Must have: $500 for Magic Coach; or a Hospitality degree; or Magic Kingdom experience",
 		"degreeRequirements" : { 
 			"degreeName" : "Hospitality",
 			"numberRequired" : 1
@@ -74,7 +74,7 @@
 			"bonus" : 0,
 			"experience" : 2,
 			"opportunities" : 0,
-			"action_text" : "You lose 4<img src=\"heart.jpg\"><br/>They lose 12<img src=\"heart.jpg\">",
+			"action_text" : "You lose 4 Hearts\n They lose 12 Hearts",
 			"specialProcessing" : {
 				"type" : "backstab"
 			}

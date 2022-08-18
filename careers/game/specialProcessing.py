@@ -10,9 +10,11 @@ class SpecialProcessing(object):
     
     """
     
-    border_types = ["payday", "opportunity", "payTax", "enterOccupation", "enterCollege"]
+    border_types = ["payday", "opportunity", "payTax", "enterOccupation", "enterCollege", "buyHearts", "buyStars", "buyExperience",\
+                    "hospital", "unemployment" ]
 
-    occupation_types = ["loseNextTurn", "travelShortcut", "travelOccupation", "cashLossOrUnemployment", "salaryIncrease", "salaryCut", "bonus", "favors", "backstab"]
+    occupation_types = ["loseNextTurn", "travelShortcut", "travelOccupation", "cashLossOrUnemployment",\
+                         "salaryIncrease", "salaryCut", "bonus", "favors", "backstab", "fameLoss", "hapinessLoss"]
     
     common_types = ["travelBorder", "cashLoss"]
 

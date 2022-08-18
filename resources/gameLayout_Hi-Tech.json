@@ -37,10 +37,10 @@
 				"type" : "corner_square",
 				"background_image" : "corner_square.png",
 				"image" : "startHereAndArrow.jpg",
-				"text" : "Collect Salary<br/>as you pass<p/><h1>PAYDAY</h1><h2>Collect DOUBLE if you land here</h2>",
+				"text" : " Collect Salary as you pass PAYDAY\n Collect DOUBLE if you land here",
 				"specialProcessing" : {
-						"type" : "payday",
-						"amount" : "salary"
+					"type" : "payday",
+					"amount" : "salary"
 				}
 			},
 			{
@@ -48,9 +48,9 @@
 				"name" : "Opportunity",
 				"type" : "opportunity_square",
 				"background_image" : "opportunity.png",
-				"text" : "**OPPORTUNITY KNOCKS**",
+				"text" : "OPPORTUNITY KNOCKS",
 				"specialProcessing" : {
-						"type" : "opportunity"
+					"type" : "opportunity"
 				}
 			},
 			{
@@ -58,10 +58,11 @@
 				"name" : "IncomeTax",
 				"type" : "danger_square",
 				"background_image" : "danger_border_square.png",
-				"text" : "**INCOME TAX DUE**",
+				"text" : "INCOME TAX DUE",
+				"action_text" : "If salary is: $3,000 or less pay 20%\n $3,001 to $10,000 pay 40%\n $10,001 to $20,000 pay 60%\n $20,001 or more pay 90%\n of 1 years salary",
 				"specialProcessing" : {
-						"type" : "payTax",
-						"amount" : "%salary"
+					"type" : "payTax",
+					"amount" : "%salary"
 				}
 			},
 			{
@@ -71,8 +72,8 @@
 				"background_image" : "amtrak.png",
 				"text" : "",
 				"specialProcessing" : {
-						"type" : "travelBorder",
-						"next_square" : 13
+					"type" : "travelBorder",
+					"next_square" : 13
 				}
 			},
 			{
@@ -83,8 +84,8 @@
 				"image" : "fmc-logo small.jpg",
 				"text" : "",
 				"specialProcessing" : {
-						"type" : "enterOccupation",
-						"destinationOccupation" : "FMC"
+					"type" : "enterOccupation",
+					"destinationOccupation" : "FMC"
 				}
 			},
 			{
@@ -92,9 +93,9 @@
 				"name" : "Opportunity",
 				"type" : "opportunity_square",
 				"background_image" : "opportunity.png",
-				"text" : "**OPPORTUNITY KNOCKS**",
+				"text" : "OPPORTUNITY KNOCKS",
 				"specialProcessing" : {
-						"type" : "opportunity"
+					"type" : "opportunity"
 				}
 			},
 			{
@@ -102,8 +103,13 @@
 				"name" : "TechConvention",
 				"type" : "action_square",
 				"background_image" : "light blue action square.png",
-				"text" : "TODO",
-				"specialProcessing" : { }
+				"text" : "May spend up to 1 year's annual salary for the latest gaming system.\nScore 1 Heart for each $1000 spend,\nor lose 1 for 'just looking'",
+				"specialProcessing" : {
+					"type" : "buyHearts",
+					"amount" : 1000,
+					"limit" : "salary",
+					"penalty" : 1
+				}
 			},
 			{
 				"number" : 7,
@@ -113,8 +119,8 @@
 				"type" : "occupation_entrance_square",
 				"text" : "",
 				"specialProcessing" : {
-						"type" : "enterCollege",
-						"destinationOccupation" : "UF"
+					"type" : "enterCollege",
+					"destinationOccupation" : "UF"
 				}
 			},
 			{
@@ -122,9 +128,9 @@
 				"name" : "Opportunity",
 				"type" : "opportunity_square",
 				"background_image" : "opportunity.png",
-				"text" : "**OPPORTUNITY KNOCKS**",
+				"text" : "OPPORTUNITY KNOCKS",
 				"specialProcessing" : {
-						"type" : "opportunity"
+					"type" : "opportunity"
 				}
 			},
 			{
@@ -132,17 +138,20 @@
 				"name" : "Hospital",
 				"type" : "corner_square",
 				"background_image" : "corner_square.png",
-				"text" : "TODO",
-				"specialProcessing" : { }
+				"text" : "HOSPITAL",
+				"action_text" : "You are LAID UP until you throw 5 or less\nor pay the Pharmacist/Paymaster 1/2 your salary\nfor experimental drugs."
+				"specialProcessing" : { 
+					"type" : "hospital"
+				}
 			},
 			{
 				"number" : 10,
 				"name" : "Opportunity",
 				"type" : "opportunity_square",
 				"background_image" : "opportunity.png",
-				"text" : "**OPPORTUNITY KNOCKS**",
+				"text" : "OPPORTUNITY KNOCKS",
 				"specialProcessing" : {
-						"type" : "opportunity"
+					"type" : "opportunity"
 				}
 			},
 			{
@@ -152,9 +161,9 @@
 				"background_image" : "danger_border_square.png",
 				"text" : "**DONATE NOW**",
 				"specialProcessing" : {
-						"type" : "cashLoss",
-						"dice" : 0,
-						"amount" : 1000
+					"type" : "cashLoss",
+					"dice" : 0,
+					"amount" : 1000
 				}
 			},
 			{
@@ -164,8 +173,8 @@
 				"background_image" : "amtrak.png",
 				"text" : "",
 				"specialProcessing" : {
-						"type" : "travelBorder",
-						"next_square" : 23
+					"type" : "travelBorder",
+					"next_square" : 23
 				}
 			},
 			{
@@ -176,8 +185,8 @@
 				"image" : "amazon logo.jpg",
 				"text" : "",
 				"specialProcessing" : {
-						"type" : "enterOccupation",
-						"destinationOccupation" : "Amazon"
+					"type" : "enterOccupation",
+					"destinationOccupation" : "Amazon"
 				}
 			},
 			{
@@ -185,9 +194,9 @@
 				"name" : "Opportunity",
 				"type" : "opportunity_square",
 				"background_image" : "opportunity.png",
-				"text" : "**OPPORTUNITY KNOCKS**",
+				"text" : "OPPORTUNITY KNOCKS",
 				"specialProcessing" : {
-						"type" : "opportunity"
+					"type" : "opportunity"
 				}
 			},
 			{
@@ -198,8 +207,8 @@
 				"image" : "ESPN logo.jpg",
 				"text" : "",
 				"specialProcessing" : {
-						"type" : "enterOccupation",
-						"destinationOccupation" : "ESPN"
+					"type" : "enterOccupation",
+					"destinationOccupation" : "ESPN"
 				}
 			},
 			{
@@ -207,9 +216,9 @@
 				"name" : "Opportunity",
 				"type" : "opportunity_square",
 				"background_image" : "opportunity.png",
-				"text" : "**OPPORTUNITY KNOCKS**",
+				"text" : "OPPORTUNITY KNOCKS",
 				"specialProcessing" : {
-						"type" : "opportunity"
+					"type" : "opportunity"
 				}
 			},
 			{
@@ -217,10 +226,10 @@
 				"name" : "CarPayment",
 				"type" : "danger_square",
 				"background_image" : "danger_border_square.png",
-				"text" : "**CAR PAYMENT DUE**",
+				"text" : "CAR PAYMENT DUE",
 				"specialProcessing" : {
-						"type" : "salaryCut",
-						"percent" : "0.25"
+					"type" : "salaryCut",
+					"percent" : "0.25"
 				}
 			},
 			{
@@ -231,8 +240,8 @@
 				"image" : "Disney logo.jpg",
 				"text" : "",
 				"specialProcessing" : {
-						"type" : "enterOccupation",
-						"destinationOccupation" : "Disney"
+					"type" : "enterOccupation",
+					"destinationOccupation" : "Disney"
 				}				
 			},
 			{
@@ -240,9 +249,9 @@
 				"name" : "Opportunity",
 				"type" : "opportunity_square",
 				"background_image" : "opportunity.png",
-				"text" : "**OPPORTUNITY KNOCKS**",
+				"text" : "OPPORTUNITY KNOCKS",
 				"specialProcessing" : {
-						"type" : "opportunity"
+					"type" : "opportunity"
 				}
 			},
 			{
@@ -250,16 +259,25 @@
 				"name" : "BuyExperience",
 				"type" : "action_square",
 				"background_image" : "light blue action square.png",
-				"text" : "TODO",
-				"specialProcessing" : { }
+				"text" : "EXPERIENCE",
+				"action_text" : "Who says you can't buy experience? Buy up to 3 EXPERIENCE cards or lose 1 card for being curious."
+				"specialProcessing" : { 
+					"type" : "buyExperience",
+					"amount" : { "1" : 2000, "2" : "4000", "3" : 6000},
+					"limit" : "",
+					"penalty" : 1
+				}
 			},
 			{
 				"number" : 21,
 				"name" : "Unemployment",
 				"type" : "corner_square",
 				"background_image" : "corner_square.png",
-				"text" : "TODO",
-				"specialProcessing" : { }
+				"text" : "UNEMPLOYMENT",
+				"action_text" : "You were LAID OFF and must throw 7, 11, or doubles to move on.\nOR pay 1 year's Salary for additional training."
+				"specialProcessing" : {
+					"type" : "unemployment"
+				}
 			},
 			{
 				"number" : 22,
@@ -277,7 +295,7 @@
 				"name" : "PayRent",
 				"type" : "danger_square",
 				"background_image" : "danger_border_square.png",
-				"text" : "**PAY RENT HERE**",
+				"text" : "PAY RENT HERE",
 				"specialProcessing" : {
 						"type" : "cashLoss",
 						"amount" : "50% salary"
@@ -300,7 +318,7 @@
 				"name" : "Opportunity",
 				"type" : "opportunity_square",
 				"background_image" : "opportunity.png",
-				"text" : "**OPPORTUNITY KNOCKS**",
+				"text" : "OPPORTUNITY KNOCKS",
 				"specialProcessing" : {
 						"type" : "opportunity"
 				}
@@ -310,7 +328,7 @@
 				"name" : "ShoppingSpree",
 				"type" : "danger_square",
 				"background_image" : "danger_border_square.png",
-				"text" : "**ONLINE SHOPPING SPREE**",
+				"text" : "ONLINE SHOPPING SPREE",
 				"specialProcessing" : {
 						"type" : "cashLoss",
 						"dice" : 1,
@@ -334,7 +352,7 @@
 				"name" : "Opportunity",
 				"type" : "opportunity_square",
 				"background_image" : "opportunity.png",
-				"text" : "**OPPORTUNITY KNOCKS**",
+				"text" : "OPPORTUNITY KNOCKS",
 				"specialProcessing" : {
 						"type" : "opportunity"
 				}
@@ -360,7 +378,7 @@
 				"name" : "Opportunity",
 				"type" : "opportunity_square",
 				"background_image" : "opportunity.png",
-				"text" : "**OPPORTUNITY KNOCKS**",
+				"text" : "OPPORTUNITY KNOCKS",
 				"specialProcessing" : {
 						"type" : "opportunity"
 				}
@@ -391,7 +409,7 @@
 				"name" : "Opportunity",
 				"type" : "opportunity_square",
 				"background_image" : "opportunity.png",
-				"text" : "**OPPORTUNITY KNOCKS**",
+				"text" : "OPPORTUNITY KNOCKS",
 				"specialProcessing" : {
 						"type" : "opportunity"
 				}
@@ -424,7 +442,7 @@
 				"name" : "Opportunity",
 				"type" : "opportunity_square",
 				"background_image" : "opportunity.png",
-				"text" : "**OPPORTUNITY KNOCKS**",
+				"text" : "OPPORTUNITY KNOCKS",
 				"specialProcessing" : {
 						"type" : "opportunity"
 				}
@@ -435,7 +453,7 @@
 				"type" : "danger_square",
 				"background_image" : "danger_border_square.png",
 				"image" : "divorce icon.jpg",
-				"text" : "**DIVORCE COURT**",
+				"text" : "DIVORCE COURT",
 				"specialProcessing" : {
 						"type" : "cashLoss",
 						"dice" : 2,
@@ -447,8 +465,13 @@
 				"name" : "VintageCars",
 				"type" : "action_square",
 				"background_image" : "light blue action square.png",
-				"text" : "**VINTAGE CARS**",
-				"specialProcessing" : { }
+				"text" : "VINTAGE CARS",
+				"specialProcessing" : {
+					"type" : "buyHearts",
+					"amount" : {"4" : 2000, "8" : 8000, "12" : "16000"},
+					"limit" : "",
+					"penalty" : 0
+				}
 			},
 			{
 				"number" : 40,
@@ -467,8 +490,14 @@
 				"name" : "WebPresence",
 				"type" : "action_square",
 				"background_image" : "light blue action square.png",
-				"text" : "**WEB PRESENCE**",
-				"specialProcessing" : { }
+				"text" : "WEB PRESENCE",
+				"action_text" : "May hire consultant to build web site. Score Fame points as follows:"
+				"specialProcessing" : {
+					"type" : "buyStars",
+					"amount" : {"4" : 4000, "10" : 8000, "16" : "12000", "22" : 16000},
+					"limit" : "",
+					"penalty" : 0
+				}
 			}
 	]
 }

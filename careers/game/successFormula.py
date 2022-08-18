@@ -41,19 +41,13 @@ class SuccessFormula(CareersObject):
         self._cash = value
     
     def __str__(self):
-        return f'money: ${self.cash},000  fame: {self.fame}  happiness: {self.happiness}'
-    
-    def __repr__(self):
-        """Returns the JSON serialization of SuccessFormula.
-        
-        """
-        return "{" + f' "money": {self.cash}, "fame": {self.fame}, "happiness": {self.happiness}' + "}"
+        return f'Money: ${self.cash},000  Fame: {self.fame}  Happiness: {self.happiness}'
 
     def to_JSON(self):
-        """Overrides base class method.
-        
+        """Returns the JSON serialization of SuccessFormula.
+            NOTE - without opening and closing braces
         """
-        return self.__repr__()
+        return f'"money": "{self.cash}", "fame": "{self.fame}", "happiness": "{self.happiness}"'
     
     @property
     def total_points(self):
