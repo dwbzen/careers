@@ -139,7 +139,7 @@
 				"type" : "corner_square",
 				"background_image" : "corner_square.png",
 				"text" : "HOSPITAL",
-				"action_text" : "You are LAID UP until you throw 5 or less\nor pay the Pharmacist/Paymaster 1/2 your salary\nfor experimental drugs."
+				"action_text" : "You are LAID UP until you throw 5 or less\nor pay the Pharmacist/Paymaster 1/2 your salary\nfor experimental drugs.",
 				"specialProcessing" : { 
 					"type" : "hospital"
 				}
@@ -228,8 +228,8 @@
 				"background_image" : "danger_border_square.png",
 				"text" : "CAR PAYMENT DUE",
 				"specialProcessing" : {
-					"type" : "salaryCut",
-					"percent" : "0.25"
+					"type" : "cashLoss",
+					"percent" : "25% Salary"
 				}
 			},
 			{
@@ -260,7 +260,7 @@
 				"type" : "action_square",
 				"background_image" : "light blue action square.png",
 				"text" : "EXPERIENCE",
-				"action_text" : "Who says you can't buy experience? Buy up to 3 EXPERIENCE cards or lose 1 card for being curious."
+				"action_text" : "Who says you can't buy experience? Buy up to 3 EXPERIENCE cards or lose 1 card for being curious.",
 				"specialProcessing" : { 
 					"type" : "buyExperience",
 					"amount" : { "1" : 2000, "2" : "4000", "3" : 6000},
@@ -274,7 +274,7 @@
 				"type" : "corner_square",
 				"background_image" : "corner_square.png",
 				"text" : "UNEMPLOYMENT",
-				"action_text" : "You were LAID OFF and must throw 7, 11, or doubles to move on.\nOR pay 1 year's Salary for additional training."
+				"action_text" : "You were LAID OFF and must throw 7, 11, or doubles to move on.\nOR pay 1 year's Salary for additional training.",
 				"specialProcessing" : {
 					"type" : "unemployment"
 				}
@@ -362,8 +362,11 @@
 				"name" : "BuyInsurance",
 				"type" : "action_square",
 				"background_image" : "light blue action square.png",
-				"text" : "TODO",
-				"specialProcessing" : { }
+				"text" : "Insurance Store",
+				"action_text" : "May purchase insurance to protect your cash,\nHappiness and Fame from catastrophic loss.\nCost of coverage is $5,000.",
+				"specialProcessing" : { 
+					"type" : "buyInsurance"
+				}
 			},
 			{
 				"number" : 30,
@@ -389,8 +392,12 @@
 				"type" : "action_square",
 				"background_image" : "light blue action square.png",
 				"image" : "Las Vegas.jpg",
-				"text" : "TODO",
-				"specialProcessing" : { }
+				"text" : "Gamble in Vegas",
+				"action_text" : "Roll 2 dice to start gambling.\n6 or less - lose $1000 x roll of 1 die\n7 - Jackpot! Collect $10,000\n8 or more - collect $1000 x roll of 1 die",
+				"specialProcessing" : {
+					"type" : "gamble",
+					"dice" : 2
+				}
 			},
 			{
 				"number" : 33,
@@ -491,7 +498,7 @@
 				"type" : "action_square",
 				"background_image" : "light blue action square.png",
 				"text" : "WEB PRESENCE",
-				"action_text" : "May hire consultant to build web site. Score Fame points as follows:"
+				"action_text" : "May hire consultant to build web site. Score Fame points as follows:",
 				"specialProcessing" : {
 					"type" : "buyStars",
 					"amount" : {"4" : 4000, "10" : 8000, "16" : "12000", "22" : 16000},

@@ -24,6 +24,207 @@
 			"opportunities" : 1,
 			"action_text" : "Draw 1 OPPORTUNITY CARD",
 			"specialProcessing" : {}
+		},
+		{
+			"number" : 1,
+			"background_image" : "occupation_square.png",
+			"text" : "Super-smart, may take shortcut",
+			"image" : "shortcut_emoji.png",
+			"stars" : 0,
+			"hearts" : 0,
+			"bonus" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : {
+				"type" : "travelShortcut",
+				"next_square" : 13
+			}
+		},
+		{
+			"number" : 2,
+			"background_image" : "occupation_square.png",
+			"text" : "Attend mRNA seminar",
+			"stars" : 0,
+			"hearts" : 0,
+			"bonus" : 0,
+			"experience" : 2,
+			"opportunities" : 0,
+			"action_text" : "Draw 2 EXPERIENCE CARDS",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 3,
+			"background_image" : "occupation_square.png",
+			"text" : "POTUS advisor appointment",
+			"stars" : 4,
+			"hearts" : 4,
+			"bonus" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 4,
+			"background_image" : "danger_occupation_square.png",
+			"text" : "Vaccine has weird side-effects",
+			"stars" : 0,
+			"hearts" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "Go to Hospital",
+			"specialProcessing" : {
+				"type" : "travelBorder",
+				"next_square" : "Hospital"
+			}
+		},
+		{
+			"number" : 5,
+			"background_image" : "occupation_square.png",
+			"text" : "Publish research paper",
+			"stars" : 0,
+			"hearts" : 0, 
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "Collect bonus $4000",
+			"specialProcessing" : {
+				"type" : "bonus",
+				"amount" : 4000
+			}
+		},
+		{
+			"number" : 6,
+			"background_image" : "occupation_square.png",
+			"text" : "Develop new Alzheimers drug",
+			"stars" : 6,
+			"hearts" : 2,
+			"bonus" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 7,
+			"background_image" : "occupation_square.png",
+			"text" : "You have a bad feeling about this...",
+			"stars" : 4,
+			"hearts" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "CALL IN FAVORS",
+			"specialProcessing" : {
+				"type" : "favors"
+			}
+		},
+		{
+			"number" : 8,
+			"background_image" : "danger_occupation_square.png",
+			"text" : "Caught up in ethics scandal",
+			"stars" : 0,
+			"hearts" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "Lose ALL your Happiness",
+			"specialProcessing" : {
+				"type" : "hapinessLoss",
+				"amount" : 0,
+				"percent" : 1.0
+			}
+		},
+		{
+			"number" : 9,
+			"background_image" : "occupation_square.png",
+			"text" : "Tour CDC",
+			"stars" : 0,
+			"hearts" : 4,
+			"bonus" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 10,
+			"background_image" : "occupation_square.png",
+			"text" : "May backstab a colleague",
+			"stars" : 0,
+			"hearts" : -4,
+			"bonus" : 0,
+			"experience" : 2,
+			"opportunities" : 0,
+			"action_text" : "You lose 4 Hearts\n They lose 12 Hearts",
+			"specialProcessing" : {
+				"type" : "backstab"
+			}
+		},		
+		{
+			"number" : 11,
+			"background_image" : "occupation_square.png",
+			"text" : "Forge agreement with BioTech",
+			"stars" : 0,
+			"hearts" : 0, 
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "Collect bonus $5000",
+			"specialProcessing" : {
+				"type" : "bonus",
+				"amount" : 5000
+			}
+		},		
+		{
+			"number" : 12,
+			"background_image" : "occupation_square.png",
+			"text" : "Promising vaccine trial results",
+			"stars" : 0,
+			"hearts" : 8,
+			"bonus" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : {
+				"type" : "travelShortcut",
+				"next_square" : 15
+			}
+		},
+		{
+			"number" : 13,
+			"background_image" : "occupation_square.png",
+			"text" : "Healthy lifestyle",
+			"stars" : 0,
+			"hearts" : 6,
+			"bonus" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 14,
+			"background_image" : "occupation_square.png",
+			"text" : "Story about you on CNN",
+			"stars" : 4,
+			"hearts" : 4,
+			"bonus" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 15,
+			"background_image" : "occupation_square.png",
+			"text" : "Researcher of the year",
+			"stars" : 10,
+			"hearts" : 0, 
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "Salary up $3000",
+			"specialProcessing" : {
+				"type" : "salaryIncrease",
+				"amount" : 3000
+			}
 		}
 	]
 }

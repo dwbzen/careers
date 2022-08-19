@@ -49,14 +49,17 @@ class GameRunner(object):
     def execute_command(self, cmd, aplayer):
         """Command format is command name + optional arguments
             The command and arguments passed to the game engine for execution
-        
+            Arguments:
+                cmd - the command string
+                aplayer - a Player reference
+            Returns:
+                result - result dictionary.
         """
-        command = cmd.split(" ")     # TODO
-        if len(command) > 1:
-            args = command[1:]
-        else:
-            args = []
-        result = self.game_engine.execute_command(command[0], args, aplayer)
+
+        args = []
+            
+        result = self.game_engine.execute_command(cmd, aplayer, args)
+        return result
     
     def run_game(self):
         self.game_engine = CareersGameEngine(self.game)
@@ -70,13 +73,17 @@ class GameRunner(object):
             for i in range(nplayers):
                 pn = game_state.next_player_number()
                 current_player = game_state.current_player
-                prompt = f'{current_player.player_initials} ({turn_number}): '
-                cmd = input(prompt)
-                if cmd=='quit':
-                    game_over = True
+                done = False
+                while not done:
+                    prompt = f'{current_player.player_initials} ({turn_number}): '
+                    cmd = input(prompt)
+                    result = self.execute_command(cmd, current_player)
+                    print(result['message'])
+                    done = result['done']
+                    if result['result'] == 2:
+                        game_over = True
+                if game_over:
                     break
-                else:
-                    self.execute_command(cmd, current_player)
             turn_number += 1
         
         self.game_engine.end()

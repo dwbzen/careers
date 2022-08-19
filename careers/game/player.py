@@ -26,7 +26,7 @@ class Player(CareersObject):
         # dict where key is the degree program and the values the number of degrees attained
         # when number of degrees in any program >= 4, the can_retire flag is automatically set
         self._my_degrees = dict()
-        self._current_square_number = 0     # the border square# this player currently occupies
+        self._current_border_square_number = 0     # the border square# this player currently occupies
         self._current_occupation_name = None            # the name of occupation the player is currently in
         self._current_occupation_square_number = 0      # the square number within that occupation (if name is not None)
         self._can_retire = False
@@ -114,6 +114,18 @@ class Player(CareersObject):
     def fame(self):
         return self._fame[-1]
     
+    @property
+    def current_border_square_number(self):
+        return self._current_border_square_number
+    
+    @property
+    def current_occupation_name(self):
+        return self._current_occupation_name
+    
+    @property
+    def current_occupation_square_number(self):
+        return self._current_occupation_square_number
+    
     def add_degree(self, degree_program):
         if degree_program in self.my_degrees:
             count = self.my_degrees[degree_program]
@@ -182,6 +194,13 @@ class Player(CareersObject):
             return f'{fstring}\nSuccess Formula: {self.success_formula}'
         else:
             return fstring
+    
+    def get_current_location(self):
+        """Gets the location of this player on the board.
+            Returns: a 3-tupple: (current_border_square_number, current_occupation_name, current_occupation_board_number)
+        
+        """
+        return  (self.current_border_square_number, self.current_occupation_name, self.current_occupation_square_number)
     
     def __str__(self):
         fstring = f'Cash: {self.cash}  Fame: {self.fame}  Happiness: {self.happiness}'

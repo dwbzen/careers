@@ -103,8 +103,8 @@ class CareersGame(object):
         self._game_board_dict = json.loads(fp.read())
         self._game_layout = self._game_board_dict['layout']
         game_board = list()
-        for border_square_text in self._game_layout:
-            border_square = BorderSquare(border_square_text)
+        for border_square_dict in self._game_layout:
+            border_square = BorderSquare(border_square_dict)
             game_board.append(border_square)
         return game_board
 
@@ -172,10 +172,12 @@ class CareersGame(object):
     def gameId(self):
         return self._gameId
     
+    def game_type(self):
+        return self._game_type
+    
     @property
     def occupation_list(self):
         """List of occupation handles (keys) for this edition
-        
         """
         return self._occupation_list
     
@@ -184,12 +186,20 @@ class CareersGame(object):
         return self._occupations
     
     @property
+    def occupation_squares_dict(self):
+        return self._occupation_squares_dict
+    
+    @property
     def opportunities(self):
         return self._opportunities
     
     @property
     def experience_cards(self):
         return self._experience_cards
+    
+    @property
+    def game_board(self):
+        return self._game_board
     
     def add_player(self, aplayer:Player):
         self.game_state.add_player(aplayer)

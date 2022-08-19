@@ -32,11 +32,11 @@ class BorderSquare(GameSquare):
     def to_JSON(self):
         txt = f'''{{
         "square_class" : "{self.square_class}",
-        "name":{self.name},
+        "name":"{self.name}",
         "number":"{self.number}",
         "text":"{self.text}",
         "type":"{self.square_type}",
-        "special_processing_txt" : {self._special_processing_txt} 
+        "special_processing_txt" : {self._special_processing_dict} 
         }}'''
         return txt
 
