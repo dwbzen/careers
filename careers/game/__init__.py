@@ -12,6 +12,7 @@ __all__ = [
     'careersGame',
     'careersGameEngine',
     'careersObject',
+    'commandResult',
     'experienceCard',
     'experienceCardDeck',
     'experienceCardType',
@@ -19,6 +20,7 @@ __all__ = [
     'gameSquare',
     'gameState',
     'gameUtils',
+    'occupation',
     'occupationSquare',
     'opportunityCard',
     'opportunityCardDeck',
@@ -32,6 +34,7 @@ from careers.game.actionType import ActionType
 from careers.game.borderSquare import BorderSquare
 from careers.game.gameSquare import GameSquare
 from careers.game.gameState import GameState
+from careers.game.occupation import Occupation
 from careers.game.occupationSquare import OccupationSquare
 from careers.game.careersObject import CareersObject
 from careers.game.cardDeck import CardDeck
@@ -48,3 +51,5 @@ from careers.game.experienceCard import ExperienceCard
 from careers.game.experienceCardType import ExperienceCardType
 from careers.game.experienceCardDeck import ExperienceCardDeck
 from careers.game.specialProcessing import SpecialProcessing
+from careers.game.commandResult import CommandResult
+

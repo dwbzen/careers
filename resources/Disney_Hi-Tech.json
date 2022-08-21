@@ -6,6 +6,7 @@
 		"background_image" : "occupation_entrance.png",
 		"image" : "disney logo.jpg",
 		"entryFee" : 500,
+		"size" : 11,
 		"text" : "Must have: $500 for Magic Coach; or a Hospitality degree; or Magic Kingdom experience",
 		"degreeRequirements" : { 
 			"degreeName" : "Hospitality",

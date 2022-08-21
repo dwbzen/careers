@@ -4,7 +4,8 @@ Created on Aug 14, 2022
 @author: don_bacon
 '''
 
-from careers.game import CareersGame
+from game.careersGame import CareersGame
+from game.commandResult import CommandResult
 from game.player import  Player
 from datetime import datetime
 import random
@@ -45,7 +46,7 @@ class CareersGameEngine(object):
         self._gameId = careersGame.gameId
         
         # valid commands listed here
-        self.commands = ["roll", "use", "retire", "bump", "bankrupt", "list", "status", "quit"]
+        self.commands = ["roll", "use", "retire", "bump", "bankrupt", "list", "status", "quit", "done", "next", "exit", "end", "load", "where" ]
         self._current_player = None
     
     @property
@@ -112,18 +113,23 @@ class CareersGameEngine(object):
         """
         
         self.log(f'{player.player_initials}: {command} {args}')
-        cmd_result = self.evaluate(command, args)
-        self.log(f'  {player.player_initials} results: {cmd_result["result"]} {cmd_result["message"]}')
+        cmd_result = self._evaluate(command, args)
+        self.log(f'  {player.player_initials} results: {cmd_result.return_code} {cmd_result.message}')
         return cmd_result
         
-    def evaluate(self, commandTxt, args=[]):
-        command = "self." + self.parse_command_string(commandTxt, args)
+    def _evaluate(self, commandTxt, args=[]):
+        command = "self." + self._parse_command_string(commandTxt, args)
+        cmd_result = None
         print("execute " + command)
-        cmd_result = eval(command)
+        try:
+            cmd_result = eval(command)
+        except Exception as ex:
+            #print("Invalid command syntax")
+            cmd_result = CommandResult(1,  "Invalid command",  False)
         return cmd_result
         
-    def parse_command_string(self, txt, addl_args=[]):
-        """Parses a command string into a string that can be evaulated using eval()
+    def _parse_command_string(self, txt, addl_args=[]):
+        """Parses a command string into a string that can be evaluated with eval()
         
         """
         command_args = txt.split()
@@ -149,11 +155,11 @@ class CareersGameEngine(object):
         return command + ")"
     
     def get_player_game_square(self, player):
-        current_border_square_number, current_occupation_name, current_occupation_board_number = player.get_current_location()
+        current_border_square_number, current_occupation_name, current_occupation_square_number = player.get_current_location()
         game_square = None
         if current_occupation_name is not None:    # get the Occupation square
-            occupation_squares = self._careersGame.occupation_squares_dict[current_occupation_name]
-            game_square = occupation_squares[current_occupation_board_number]
+            occupation = self._careersGame.occupations[current_occupation_name]    # Occupation instance
+            game_square = occupation.occupationSquares[current_occupation_square_number]
         else:       # get the border square
             game_square = self._careersGame.game_board[current_border_square_number]
         
@@ -173,6 +179,7 @@ class CareersGameEngine(object):
         return player
     
     ############
+    #
     # command functions
     # 
     ##########
@@ -183,36 +190,70 @@ class CareersGameEngine(object):
         done = False
         player = self.game_state.current_player
         game_square = self.get_player_game_square(player)
-        border_square_number, occupation_name, occupation_board_number = player.get_current_location()
+        border_square_number, occupation_name, occupation_square_number = player.get_current_location()
         
         dice = random.choices(population=[1,2,3,4,5,6], k=number_of_dice)
         total = sum(dice)
         
         message = f' {player.player_initials}  rolled {total} {dice}'
-        result = {"result" : 0, "message" : message, "done" : done}
+        result = CommandResult(0, message, done)
         return result
+    
+    def goto(self, square_number):
+        """Immediately place the current player on the designated border square.
+            
+        """
+        if square_number >= 0 and square_number <= self._careersGame.game_layout_dimensions['size']:
+            player = self.game_state.current_player
+            player.current_border_square_number = square_number
+            player.current_occupation_name = None
+            return self.where("am","I")
+        else:
+            return CommandResult(1, "No such border square", False)
+    
+    def enter(self, occupation_name, square_number=0):
+        """Enter the named occupation at the designated square number and execute the occupation square.
+        
+        """
+        if occupation_name in self._careersGame.occupation_names:
+            player = self.game_state.current_player
+            player.current_occupation_name = occupation_name
+            player.current_occupation_square_number = square_number
+            # TODO - execute the contents of the occupation square
+            return self.where("am","I")
+        else:
+            return CommandResult(1, "No such occupation", False)
     
     def status(self):
         player = self.game_state.current_player
         message = player.player_info(include_successFormula=True)
-        result = {"result" : 0, "message" : message, "done" : False}
+        result = CommandResult(0,  message, False)
         return result       
     
     def done(self):
-        result = {"result" : 0, "message" : "Turn is complete" , "done" : True}
+        """End my turn and go to the next player
+        
+        """
+        result = CommandResult(0,  "Turn is complete" , True)
         return result
     
     def next(self):
+        """Synonym for done - go to the next player
+        
+        """
         return self.done()
     
-    def quit(self):
-        return  {"result" : 2, "message" : "Game is complete" , "done" : True}
+    def exit(self):
+        return CommandResult(2, "Game is complete" , True)
     
-    def where(self, t1, t2):   # where am I
+    def quit(self):
+        return CommandResult(2, "Game is complete" , True)
+    
+    def where(self, t1:str="am", t2:str="I"):   # where am I
         player = None 
         
         result = 0
-        if t1=='am' and t2 == 'I':
+        if t1=='am' and t2.lower() == 'i':
             player = self.game_state.current_player
             message = "You are on square# "
         elif t1=='is':
@@ -224,13 +265,13 @@ class CareersGameEngine(object):
             game_square = self.get_player_game_square(player)
             message += str(game_square.number)
             if game_square.square_class == 'Occupation':
-                message += " of " + occupation_name + game_square.text
+                message += " of " + occupation_name + ": '" +  game_square.text + "' " + game_square.action_text
             else:    # a border square
                 message += ": " + game_square.name
         else:
             message = f'No such player: {t2}'
             result = 1
         
-        return {"result" : result, "message" : message , "done" : False}
+        return CommandResult(result, message, False)
         
         

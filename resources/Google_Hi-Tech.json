@@ -6,6 +6,7 @@
 		"background_image" : "occupation_entrance.png",
 		"image" : "google logo.jpg",
 		"entryFee" : 500,
+		"size" : 14,
 		"text" : "Must have:<br/>**$4000 for cloud training; or Marketing degree; or Google experience**",
 		"degreeRequirements" : { 
 			"degreeName" : "Marketing",

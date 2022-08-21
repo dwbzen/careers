@@ -14,6 +14,7 @@ from game.experienceCardDeck import ExperienceCardDeck
 from game.borderSquare import BorderSquare
 from game.occupationSquare import OccupationSquare
 from game.gameState import GameState
+from game.occupation import Occupation
 
 class CareersGame(object):
     """
@@ -83,14 +84,13 @@ class CareersGame(object):
 
         fp = open(self._resource_folder + "/occupations_" + self._edition_name + ".json", "r")
         jtxt = fp.read()
-        occupations = json.loads(jtxt)
-        self._occupation_list = occupations['occupations']
+        occupations_dict = json.loads(jtxt)
+        self._occupation_names = occupations_dict['occupations']
         fp.close()
         
         # load the individual occupation files
-        self._occupations = self.load_occupations()
-        # create the layout (occupation squares) for each occupation
-        self._occupation_squares_dict = self._create_occupation_squares()
+        self._occupations = self.load_occupations()     # dictionary of Occupation instances keyed by name
+
         
     def _create_opportunity_deck(self):
         self._opportunities = OpportunityCardDeck(self._resource_folder, self._edition_name)
@@ -102,6 +102,7 @@ class CareersGame(object):
         fp = open(self._resource_folder + "/gameLayout_" + self._edition_name + ".json", "r")
         self._game_board_dict = json.loads(fp.read())
         self._game_layout = self._game_board_dict['layout']
+        self._game_layout_dimensions = self._game_board_dict['dimensions']
         game_board = list()
         for border_square_dict in self._game_layout:
             border_square = BorderSquare(border_square_dict)
@@ -118,30 +119,19 @@ class CareersGame(object):
                 The file path is the resource_folder set in the Environment
         """
         occupations = dict()
-        for name in self._occupation_list:
+        for name in self._occupation_names:
             filepath = self._resource_folder + "/" + name + "_" + self._edition_name + ".json"
             p = Path(filepath)
             if p.exists():
                 fp = open(filepath, "r")
-                occupation = json.loads(fp.read())
+                occupation_dict = json.loads(fp.read())
+                # create an Occupation object for this occupation
+                occupation = Occupation(occupation_dict)
                 occupations[name] = occupation
             else:
                 occupations[name] = None
         return occupations
-    
-    def _create_occupation_squares(self) -> dict:
-        """For each Occupation create a list of OccupationSquare corresponding to the "occupationSquares" of that occupation.
-            Returns: a dictionary with the occupation name as the key, and a [OccupationSquare] as the value.
-        """
-        occupation_squares_dict = dict()
-        for occupation_name in self.occupation_list:
-            squares = self.occupations[occupation_name]['occupationSquares']
-            occupation_squares = list()
-            for occupation_square_dict in squares:
-                occupation_square = OccupationSquare(occupation_square_dict)
-                occupation_squares.append(occupation_square)
-            occupation_squares_dict[occupation_name] = occupation_squares
-        return occupation_squares_dict
+
     
     def _load_college_degrees(self):
         fp = open(self._resource_folder + "/collegeDegrees_" + self._edition_name + ".json", "r")
@@ -161,6 +151,12 @@ class CareersGame(object):
         return self._game_layout
     
     @property
+    def game_layout_dimensions(self):
+        """size (number of squares), sides (4-element list of #squares/side)
+        """
+        return self._game_layout_dimensions
+    
+    @property
     def game_parameters(self):
         return self._game_parameters
     
@@ -176,18 +172,16 @@ class CareersGame(object):
         return self._game_type
     
     @property
-    def occupation_list(self):
-        """List of occupation handles (keys) for this edition
+    def occupation_names(self) ->list:
+        """List of occupation names (keys) for this edition
         """
-        return self._occupation_list
+        return self._occupation_names
     
     @property
-    def occupations(self):
+    def occupations(self) -> dict:
+        """Dictionary of Occupation instances keyed by occupation name
+        """
         return self._occupations
-    
-    @property
-    def occupation_squares_dict(self):
-        return self._occupation_squares_dict
     
     @property
     def opportunities(self):

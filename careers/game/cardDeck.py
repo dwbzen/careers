@@ -33,6 +33,9 @@ class CardDeck(object):
         self._cards_index = GameUtils.shuffle(self._size)
         self._next_index = 0
         
+    def shuffle(self):
+        self._cards_index = GameUtils.shuffle(self._size)
+        
     @property
     def size(self):
         return self._size

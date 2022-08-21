@@ -29,6 +29,10 @@
 			"Help" : "Perform a non-movement action."
 		}		
 	],
+	"dimensions" : {
+		"size" : 42,
+		"sides" : [10, 13, 10, 13]
+	},
 	"layout" : [
 			{
 				"number" : 0,

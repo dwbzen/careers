@@ -5,6 +5,8 @@ Created on Aug 12, 2022
 '''
 
 from game.gameSquare import GameSquare
+from game.player import Player
+from game.commandResult import CommandResult
 
 class BorderSquare(GameSquare):
     """Encapsulates a Careers game border (non-occupation) square.
@@ -28,6 +30,14 @@ class BorderSquare(GameSquare):
     @property
     def square_type(self):
         return self._square_type
+    
+    def execute(self, player:Player) -> CommandResult:
+        """Execute the actions associated with this BorderSquare. Overrides GameSquare.execute().
+            Assumes the Player's current location is this BorderSquare.
+            Returns: CommandResult
+        """
+        result = CommandResult(0, "TODO", False)   #  TODO
+        return result
         
     def to_JSON(self):
         txt = f'''{{

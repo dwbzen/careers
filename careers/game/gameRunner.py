@@ -8,6 +8,7 @@ from game.careersGame import CareersGame
 from game.successFormula import SuccessFormula
 from game.player import  Player
 from game.careersGameEngine import CareersGameEngine
+from game.commandResult import CommandResult
 
 class GameRunner(object):
     """A command-line text version of Careers game play used for testing.
@@ -53,7 +54,7 @@ class GameRunner(object):
                 cmd - the command string
                 aplayer - a Player reference
             Returns:
-                result - result dictionary.
+                result - result dictionary (result, message, done)
         """
 
         args = []
@@ -78,9 +79,9 @@ class GameRunner(object):
                     prompt = f'{current_player.player_initials} ({turn_number}): '
                     cmd = input(prompt)
                     result = self.execute_command(cmd, current_player)
-                    print(result['message'])
-                    done = result['done']
-                    if result['result'] == 2:
+                    print(result.message)
+                    done = result.done_flag
+                    if result.return_code == 2:
                         game_over = True
                 if game_over:
                     break

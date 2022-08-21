@@ -4,6 +4,8 @@ Created on Aug 14, 2022
 @author: don_bacon
 '''
 from game.gameSquare import GameSquare
+from game.player import Player
+from game.commandResult import CommandResult
 
 class OccupationSquare(GameSquare):
     '''
@@ -38,11 +40,21 @@ class OccupationSquare(GameSquare):
     def experience(self):
         return self._experience
     
+    @property
     def opportunities(self):
         return self._opportunities
     
+    @property
     def action_text(self):
         return self._action_text
+    
+    def execute(self, player:Player) -> CommandResult:
+        """Executes the actions associated with this occupation square for a given Player
+            Returns: CommandResult
+        """
+        result = CommandResult(0, "TODO", False)   #  TODO
+        return result
+    
     
     def to_JSON(self):
         txt = f'''{{
@@ -54,10 +66,9 @@ class OccupationSquare(GameSquare):
         "hearts":"{self.hearts}",
         "experience":"{self.experience}",
         "opportunities":"{self.opportunities}",
-        "special_processing_txt" : {self._special_processing_txt} 
+        "action_text":"{self.action_text}",
+        "special_processing_txt" : {self._special_processing_dict} 
         }}'''
         return txt
-        
-        
         
     

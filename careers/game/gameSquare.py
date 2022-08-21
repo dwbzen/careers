@@ -6,6 +6,8 @@ Created on Aug 14, 2022
 
 from game.specialProcessing import SpecialProcessing
 from game.careersObject import CareersObject
+from game.player import Player
+from game.commandResult import CommandResult
 
 class GameSquare(CareersObject):
     """Represents a square a player can land on. This can be a Border or Occupation.
@@ -62,9 +64,16 @@ class GameSquare(CareersObject):
     def text(self, value):
         self._text = value
         
+    def execute(self, player:Player) -> CommandResult:
+        """Execute actions associated with this Occupation or Border square
+            Override in derived class. Base implementation returns None.
+        
+        """
+        return None
+        
     def to_JSON(self):
         #
-        # override in child class
+        # override in derived class
         #
         return None
     

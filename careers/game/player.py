@@ -13,7 +13,7 @@ class Player(CareersObject):
         self._player_name = name
         self._player_initials = initials
         self._salary_history = []                   # list of salaries the player has attained
-        self.salary = salary                        # my current salary
+        self._salary = salary                        # my current salary
         self._cash = cash                           # cash on hand
         self._success_formula = None        # my SuccessFormula
         self._happiness = [0]                # record of happiness (hearts) earned. Cumulative amounts, total is happiness[-1]
@@ -118,13 +118,25 @@ class Player(CareersObject):
     def current_border_square_number(self):
         return self._current_border_square_number
     
+    @current_border_square_number.setter
+    def current_border_square_number(self, value):
+        self._current_border_square_number = value
+    
     @property
     def current_occupation_name(self):
         return self._current_occupation_name
     
+    @current_occupation_name.setter
+    def current_occupation_name(self, value):
+        self._current_occupation_name = value
+    
     @property
     def current_occupation_square_number(self):
         return self._current_occupation_square_number
+    
+    @current_occupation_square_number.setter
+    def current_occupation_square_number(self, value):
+        self._current_occupation_square_number = value
     
     def add_degree(self, degree_program):
         if degree_program in self.my_degrees:
