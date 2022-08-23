@@ -220,8 +220,14 @@ class Player(CareersObject):
 
     def to_JSON(self):
         sf = f'"SuccessFormula" : ' + '{\n    ' +  self._success_formula.to_JSON() + '\n  }'
-        score = f'"cash" : "{self.cash}",  "fame" : "{self.fame}",  "hapiness" : "{self.happiness}"'
-        jstr = f' "name" : "{self.player_name}",  "number" : "{self.number}",  "initials" : "{self.player_initials}",\n  {score},\n  {sf}'
+        score = f' "cash" : "{self.cash}",  "fame" : "{self.fame}",  "hapiness" : "{self.happiness}"'
+        info = f' "name" : "{self.player_name}",  "number" : "{self.number}",  "initials" : "{self.player_initials}"'
+        if self.current_occupation_name is not None:
+            locn = f' "current_occupation_name" : "{self.current_occupation_name}", "current_occupation_square_number" : "{self.current_occupation_square_number}"'
+        else:
+            locn = f' "current_border_square_number" : "{self.current_border_square_number}"'
+        
+        jstr = f'{info},\n {score},\n {locn},\n  {sf}'
         return  '{' + jstr + '\n}'
     
 if __name__ == '__main__':
@@ -237,5 +243,7 @@ if __name__ == '__main__':
     player.add_stars(6)
     print("\n" + player.player_info(include_successFormula=False) )
     player.add_to_salary(2000)
-    print("\n" + player.player_info(include_successFormula=True) )
+    print("\n" + player.player_info(include_successFormula=True) + "\n" )
+    
+    print(player.to_JSON())
     

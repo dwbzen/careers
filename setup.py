@@ -15,7 +15,7 @@ requirements = [
 
 setup(
     name="careers",
-    version="0.0.1",
+    version="0.0.2",
     author="Donald Bacon",
     author_email="dwbzen@gmail.com",
     description="Careers Game game engine and server",

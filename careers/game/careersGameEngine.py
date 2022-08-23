@@ -1,8 +1,14 @@
-'''
-Created on Aug 14, 2022
-
-@author: don_bacon
-'''
+# ------------------------------------------------------------------------------
+# Name:          careersGameEngine.py
+# Purpose:       CareersGameEngine class.
+#
+#                CareersGameEngine executes commands against player-board position
+#
+# Authors:      Donald Bacon
+#
+# Copyright:    Copyright (c) 2022 Donald Bacon
+# License:      BSD, see license.txt
+# ------------------------------------------------------------------------------
 
 from game.careersGame import CareersGame
 from game.commandResult import CommandResult
@@ -13,7 +19,8 @@ import random
 class CareersGameEngine(object):
     """CareersGameEngine executes the action(s) associated with each player's turn.
     Valid commands + arguments:
-        command :: <roll> | <use> | <retire> | <bump> | <bankrupt> | <list> | <status> | <quit> | <done> | <end game> | <saved games> | <load> | <query>
+        command :: <roll> | <use> | <retire> | <bump> | <bankrupt> | <list> | <status> | <quit> | <done> | <end game>
+                     | <saved games> | <save> | <load> | <query> | <enter> | <goto>
         <use> :: "use"  <card-type>
         <card_type> :: "opportunity" | "experience" 
         <roll> :: "roll"                        ;roll 1 or 2 dice depending on where the player is on the board
@@ -26,12 +33,18 @@ class CareersGameEngine(object):
         <done> :: "done" | "next"               ;done with my turn - next player's turn
         <end game> :: "end game"                ;saves the current game state then ends the game
         <saved games> :: "saved games"          ;list any saved games by date/time and gameID
+        <save> :: "save"                        ;saves the current game state to a file as JSON
         <load> :: "load" game-id                ;load a game and start play with the next player
         <query> :: "where" <who>                ;gets info on a player's current location on the board
         <who> :: "am I" | "is" <playerID>
         <playerID> :: player_name | player_initials
+        <enter> :: "enter" <occupation_name> [<square_number>]        ;enter occupation at occupation square square_number
+        <goto> :: "goto" <square_number>                              ;go to border square square_number
     """
-
+    
+    COMMANDS = ['roll', 'use', 'goto', 'enter', 'status', 'done', 'next', 'end', 'quit', 'save', 'where', \
+                'retire', 'bump', 'bankrupt', 'list', 'saved', 'load',  'who']
+    
     def __init__(self, careersGame:CareersGame):
         '''
         Constructor
@@ -45,8 +58,6 @@ class CareersGameEngine(object):
         self._start_date_time = datetime.now()
         self._gameId = careersGame.gameId
         
-        # valid commands listed here
-        self.commands = ["roll", "use", "retire", "bump", "bankrupt", "list", "status", "quit", "done", "next", "exit", "end", "load", "where" ]
         self._current_player = None
     
     @property
@@ -94,11 +105,7 @@ class CareersGameEngine(object):
     def start(self):
         self.fp = open(self.logfile_path + "/" + self.logfile_name + "_" + self.gameId + ".log", "w")
         self.log("Starting game: " + self.gameId)
-    
-    def end(self):
-        self.log("Ending game: " + self.gameId)
-        self.fp.close()
-    
+
     def execute_command(self, command:str, player:Player, args:list=[]):
         """Executes a command for a given Player
             Arguments:
@@ -113,27 +120,36 @@ class CareersGameEngine(object):
         """
         
         self.log(f'{player.player_initials}: {command} {args}')
+        if command is None or len(command) == 0:
+            return CommandResult(0, "", False)
         cmd_result = self._evaluate(command, args)
         self.log(f'  {player.player_initials} results: {cmd_result.return_code} {cmd_result.message}')
         return cmd_result
         
     def _evaluate(self, commandTxt, args=[]):
-        command = "self." + self._parse_command_string(commandTxt, args)
-        cmd_result = None
+        command_result = self._parse_command_string(commandTxt, args)
+        if command_result.return_code != 0: # must be an error
+            return command_result
+        
+        command = "self." + command_result.message
+        command_result = None
         print("execute " + command)
         try:
-            cmd_result = eval(command)
+            command_result = eval(command)
         except Exception as ex:
-            #print("Invalid command syntax")
-            cmd_result = CommandResult(1,  "Invalid command",  False)
-        return cmd_result
+            command_result = CommandResult(1,  "Invalid command syntax",  False, exception=ex)
+        return command_result
         
     def _parse_command_string(self, txt, addl_args=[]):
         """Parses a command string into a string that can be evaluated with eval()
-        
+            Returns: if return_code == 0, a CommandResult with commandResult.message as the string to eval()
+                else if return_code == 1, commandResult.message has the error message
         """
         command_args = txt.split()
+            
         command = command_args[0]
+        if not command in CareersGameEngine.COMMANDS:
+            return CommandResult(1,  "Invalid command: "+ '"command"',  False)
         if len(command_args) > 1:
             args = command_args[1:]
             command = command + "("
@@ -151,8 +167,8 @@ class CareersGameEngine(object):
             for arg in addl_args:
                 command = command + f'"{arg}",'
             command = command[:-1]
-            
-        return command + ")"
+        command += ")"   
+        return CommandResult(0, command, False)
     
     def get_player_game_square(self, player):
         current_border_square_number, current_occupation_name, current_occupation_square_number = player.get_current_location()
@@ -180,12 +196,11 @@ class CareersGameEngine(object):
     
     ############
     #
-    # command functions
+    # command implementations
     # 
     ##########
     def roll(self, number_of_dice=2):
-        """Roll 1 or 2 dice and advance that number of squares for current_player
-        
+        """Roll 1 or 2 dice and advance that number of squares for current_player and execute the occupation or border square.
         """
         done = False
         player = self.game_state.current_player
@@ -199,8 +214,15 @@ class CareersGameEngine(object):
         result = CommandResult(0, message, done)
         return result
     
+    def use(self, what):
+        """Use an Experience or Opportunity card in place of rolling the die
+        
+        """
+        result = CommandResult(0, "Command not yet implemented", False)
+        return result
+        
     def goto(self, square_number):
-        """Immediately place the current player on the designated border square.
+        """Immediately place the current player on the designated border square execute that border square.
             
         """
         if square_number >= 0 and square_number <= self._careersGame.game_layout_dimensions['size']:
@@ -232,24 +254,41 @@ class CareersGameEngine(object):
     
     def done(self):
         """End my turn and go to the next player
-        
         """
         result = CommandResult(0,  "Turn is complete" , True)
         return result
     
     def next(self):
         """Synonym for done - go to the next player
-        
         """
         return self.done()
     
-    def exit(self):
-        return CommandResult(2, "Game is complete" , True)
+    def end(self, save=None):
+        """Ends the game and exits.
+        """
+        self.log("Ending game: " + self.gameId)
+        if save is not None and save.lower()=='save':    # save the game state first
+            sg_result = self.save_game()
+            result = CommandResult(2, f'Game is complete and saved to file: {sg_result.message}', True)
+        else:
+            result = CommandResult(2, "Game is complete" , True)
+
+        return result
     
-    def quit(self):
-        return CommandResult(2, "Game is complete" , True)
+    def quit(self, initials):
+        """A single player, identified by initials, leaves the game.
+        """
+        result = CommandResult(0, "Command not yet implemented", False)
+        return result
     
-    def where(self, t1:str="am", t2:str="I"):   # where am I
+    def save(self):
+        """Save the current game state
+        """
+        return self.save_game()
+    
+    def where(self, t1:str="am", t2:str="I"):
+        """where am I or where is <player>
+        """
         player = None 
         
         result = 0
@@ -273,5 +312,24 @@ class CareersGameEngine(object):
             result = 1
         
         return CommandResult(result, message, False)
+        
+    #####################################
+    #
+    # Game engine action implementations
+    #
+    #####################################
+    
+    def save_game(self):
+        jstr = f'{{\n  "game_id" : "{self.gameId}",\n'
+        jstr += f'  "gameState" : {{\n'
+        jstr += self.game_state.to_JSON()
+        jstr += "\n  }\n}"
+        
+        self.log(jstr)
+        filename = self._logfile_path + "/" + self.gameId + "_saved.json"
+        with open(filename, "w") as fp:
+            fp.write(jstr)
+        fp.close()
+        return CommandResult(0, filename, True)
         
         

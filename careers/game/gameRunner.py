@@ -96,7 +96,7 @@ if __name__ == '__main__':
     game_runner = GameRunner(total_points)
     
     game_runner.add_player('Don', 'DWB', stars=40, hearts=10, cash=50)
-    game_runner.add_player('Scott','SFP', stars=20, hearts=40, cash=40)
+    game_runner.add_player('Brian','BDB', stars=20, hearts=40, cash=40)
     
     game_runner.run_game()
     
