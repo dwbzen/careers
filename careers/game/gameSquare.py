@@ -14,7 +14,7 @@ class GameSquare(CareersObject):
     
     """
 
-    def __init__(self, square_class:str, name=None, number=-1, text=None, special_processing_dict = None):
+    def __init__(self, square_class:str, name=None, number=-1, text=None, special_processing_dict=None, action_text=None):
         """Create a GameSquare
         
         """
@@ -22,6 +22,7 @@ class GameSquare(CareersObject):
         self._name = name
         self._number = number
         self._text = text
+        self._action_text = action_text
         self._special_processing_dict = special_processing_dict
         self._game_square_dict = None       # populated by concrete class
         if special_processing_dict is not None and len(special_processing_dict) > 0:
@@ -63,6 +64,14 @@ class GameSquare(CareersObject):
     @text.setter
     def text(self, value):
         self._text = value
+    
+    @property
+    def action_text(self):
+        return self._action_text
+    
+    @action_text.setter
+    def action_text(self, value):
+        self._action_text = value
         
     def execute(self, player:Player) -> CommandResult:
         """Execute actions associated with this Occupation or Border square

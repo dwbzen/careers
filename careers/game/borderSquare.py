@@ -26,6 +26,8 @@ class BorderSquare(GameSquare):
         
         self._game_square_dict = border_square_dict
         self._square_type = border_square_dict['type']
+        if "action_text" in border_square_dict:
+            self.action_text = border_square_dict['action_text']
         
     @property
     def square_type(self):

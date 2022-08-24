@@ -5,6 +5,8 @@ Created on Aug 5, 2022
 '''
 from game.successFormula import SuccessFormula
 from game.careersObject import CareersObject
+from game.boardLocation import BoardLocation
+
 from datetime import datetime
 
 class Player(CareersObject):
@@ -26,10 +28,12 @@ class Player(CareersObject):
         # dict where key is the degree program and the values the number of degrees attained
         # when number of degrees in any program >= 4, the can_retire flag is automatically set
         self._my_degrees = dict()
-        self._current_border_square_number = 0     # the border square# this player currently occupies
-        self._current_occupation_name = None            # the name of occupation the player is currently in
-        self._current_occupation_square_number = 0      # the square number within that occupation (if name is not None)
-        self._can_retire = False
+        self._current_board_location = BoardLocation(0, None, 0, border_square_name="Payday")
+        #self._current_border_square_number = 0     # the border square# this player currently occupies
+        #self._current_border_square_name = None
+        #self._current_occupation_name = None            # the name of occupation the player is currently in
+        #self._current_occupation_square_number = 0      # the square number within that occupation (if name is not None)
+        #self._can_retire = False
         self._has_insurance = False
         
         # dict where key is occupation name, value is the number of completed trips
@@ -115,28 +119,26 @@ class Player(CareersObject):
         return self._fame[-1]
     
     @property
+    def current_board_location(self):
+        return self._current_board_location
+    
+    @current_board_location.setter
+    def current_board_location(self, value):
+        self._current_board_location = value
+
+
     def current_border_square_number(self):
-        return self._current_border_square_number
-    
-    @current_border_square_number.setter
-    def current_border_square_number(self, value):
-        self._current_border_square_number = value
-    
-    @property
+        return self.current_board_location.border_square_number
+        
+    def current_border_square_name(self):
+        return self.current_board_location.border_square_name
+
     def current_occupation_name(self):
-        return self._current_occupation_name
+        return self.current_board_location.occupation_name
     
-    @current_occupation_name.setter
-    def current_occupation_name(self, value):
-        self._current_occupation_name = value
-    
-    @property
     def current_occupation_square_number(self):
-        return self._current_occupation_square_number
+        return self.current_board_location.occupation_square_number
     
-    @current_occupation_square_number.setter
-    def current_occupation_square_number(self, value):
-        self._current_occupation_square_number = value
     
     def add_degree(self, degree_program):
         if degree_program in self.my_degrees:
@@ -207,12 +209,12 @@ class Player(CareersObject):
         else:
             return fstring
     
-    def get_current_location(self):
+    def get_current_location(self) -> BoardLocation:
         """Gets the location of this player on the board.
-            Returns: a 3-tupple: (current_border_square_number, current_occupation_name, current_occupation_board_number)
+            Returns: current_board_location
         
         """
-        return  (self.current_border_square_number, self.current_occupation_name, self.current_occupation_square_number)
+        return  self.current_board_location
     
     def __str__(self):
         fstring = f'Cash: {self.cash}  Fame: {self.fame}  Happiness: {self.happiness}'
@@ -222,11 +224,8 @@ class Player(CareersObject):
         sf = f'"SuccessFormula" : ' + '{\n    ' +  self._success_formula.to_JSON() + '\n  }'
         score = f' "cash" : "{self.cash}",  "fame" : "{self.fame}",  "hapiness" : "{self.happiness}"'
         info = f' "name" : "{self.player_name}",  "number" : "{self.number}",  "initials" : "{self.player_initials}"'
-        if self.current_occupation_name is not None:
-            locn = f' "current_occupation_name" : "{self.current_occupation_name}", "current_occupation_square_number" : "{self.current_occupation_square_number}"'
-        else:
-            locn = f' "current_border_square_number" : "{self.current_border_square_number}"'
-        
+        locn =   self.current_board_location.to_JSON()
+
         jstr = f'{info},\n {score},\n {locn},\n  {sf}'
         return  '{' + jstr + '\n}'
     

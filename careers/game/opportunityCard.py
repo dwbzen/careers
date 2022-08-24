@@ -3,6 +3,8 @@ Created on Aug 9, 2022
 
 @author: don_bacon
 '''
+from game.player import Player
+from game.commandResult import CommandResult
 
 class OpportunityCard(object):
     """
@@ -67,5 +69,11 @@ class OpportunityCard(object):
     def double_happiness(self, dh):
         self._double_happiness = dh
 
-        
+    def execute(self, player:Player) -> CommandResult:
+        """Execute the actions associated with this Opportunity card.
+            Needs to handle the types of opportunity cards.
+            Returns: CommandResult
+        """
+        result = CommandResult(0, "Not yet implemented", False)   #  TODO
+        return result
     

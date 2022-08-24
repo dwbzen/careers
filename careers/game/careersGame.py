@@ -15,6 +15,7 @@ from game.borderSquare import BorderSquare
 from game.occupationSquare import OccupationSquare
 from game.gameState import GameState
 from game.occupation import Occupation
+from plotly.validators.pointcloud.marker import border
 
 class CareersGame(object):
     """
@@ -60,6 +61,8 @@ class CareersGame(object):
         #
         # load the game board
         #
+        self._occupation_entrance_squares = {}     # dictionary of BorderSquare that are type "occupation_entrance_square" indexed by name
+        self._travel_squares = []                  # list of BorderSquare that are type "travel_square"
         self._game_board = self._create_game_board()   # list of BorderSquare
         self._game_type = 'points'  # 'points' or 'timed' (which is not yet supported)
 
@@ -103,10 +106,17 @@ class CareersGame(object):
         self._game_board_dict = json.loads(fp.read())
         self._game_layout = self._game_board_dict['layout']
         self._game_layout_dimensions = self._game_board_dict['dimensions']
+        self._game_board_size = self._game_layout_dimensions['size']
         game_board = list()
         for border_square_dict in self._game_layout:
             border_square = BorderSquare(border_square_dict)
             game_board.append(border_square)
+            
+            if border_square.square_type == "occupation_entrance_square":
+                self._occupation_entrance_squares[border_square.name] = border_square
+                
+            if border_square.square_type == "travel_square":
+                self._travel_squares.append(border)
         return game_board
 
     def load_occupations(self) -> dict:
@@ -157,6 +167,10 @@ class CareersGame(object):
         return self._game_layout_dimensions
     
     @property
+    def game_board_size(self):      # this cannot be set
+        return self._game_board_size
+    
+    @property
     def game_parameters(self):
         return self._game_parameters
     
@@ -182,6 +196,14 @@ class CareersGame(object):
         """Dictionary of Occupation instances keyed by occupation name
         """
         return self._occupations
+    
+    @property
+    def occupation_entrance_squares(self) -> dict:
+        return self._occupation_entrance_squares
+    
+    @property
+    def travel_squares(self) -> list:
+        return self._travel_squares
     
     @property
     def opportunities(self):

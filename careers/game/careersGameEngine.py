@@ -171,13 +171,13 @@ class CareersGameEngine(object):
         return CommandResult(0, command, False)
     
     def get_player_game_square(self, player):
-        current_border_square_number, current_occupation_name, current_occupation_square_number = player.get_current_location()
+        current_board_location = player.current_board_location
         game_square = None
-        if current_occupation_name is not None:    # get the Occupation square
-            occupation = self._careersGame.occupations[current_occupation_name]    # Occupation instance
-            game_square = occupation.occupationSquares[current_occupation_square_number]
+        if current_board_location.occupation_name is not None:    # get the Occupation square
+            occupation = self._careersGame.occupations[current_board_location.occupation_name]    # Occupation instance
+            game_square = occupation.occupationSquares[current_board_location.occupation_square_number]
         else:       # get the border square
-            game_square = self._careersGame.game_board[current_border_square_number]
+            game_square = self._careersGame.game_board[current_board_location.border_square_number]
         
         return game_square
     
@@ -204,10 +204,13 @@ class CareersGameEngine(object):
         """
         done = False
         player = self.game_state.current_player
+        ndice = number_of_dice
         game_square = self.get_player_game_square(player)
-        border_square_number, occupation_name, occupation_square_number = player.get_current_location()
+        current_board_location = player.current_board_location
+        if current_board_location.occupation_name is not None:    # then I am on an occupation path so roll 1 die
+            ndice = 1
         
-        dice = random.choices(population=[1,2,3,4,5,6], k=number_of_dice)
+        dice = random.choices(population=[1,2,3,4,5,6], k=ndice)
         total = sum(dice)
         
         message = f' {player.player_initials}  rolled {total} {dice}'
@@ -215,10 +218,10 @@ class CareersGameEngine(object):
         return result
     
     def use(self, what):
-        """Use an Experience or Opportunity card in place of rolling the die
+        """Use an Experience or Opportunity card in place of rolling the die, or use Insurance if needed.
         
         """
-        result = CommandResult(0, "Command not yet implemented", False)
+        result = CommandResult(0, "'use' command not yet implemented", False)
         return result
         
     def goto(self, square_number):
@@ -227,8 +230,10 @@ class CareersGameEngine(object):
         """
         if square_number >= 0 and square_number <= self._careersGame.game_layout_dimensions['size']:
             player = self.game_state.current_player
-            player.current_border_square_number = square_number
-            player.current_occupation_name = None
+            
+            player.current_board_location.border_square_number = square_number
+            player.current_board_location.border_square_name = self._careersGame.game_layout[square_number]['name']
+            player.current_board_location.occupation_name = None
             return self.where("am","I")
         else:
             return CommandResult(1, "No such border square", False)
@@ -239,8 +244,11 @@ class CareersGameEngine(object):
         """
         if occupation_name in self._careersGame.occupation_names:
             player = self.game_state.current_player
-            player.current_occupation_name = occupation_name
-            player.current_occupation_square_number = square_number
+            player.current_board_location.occupation_name = occupation_name
+            player.current_board_location.occupation_square_number = square_number
+            occupation_entrance_square = self._careersGame.occupation_entrance_squares[occupation_name]    # BorderSquare instance
+            player.current_board_location.border_square_number = occupation_entrance_square.number
+            player.current_board_location.border_square_name = occupation_entrance_square.name
             # TODO - execute the contents of the occupation square
             return self.where("am","I")
         else:
@@ -278,7 +286,7 @@ class CareersGameEngine(object):
     def quit(self, initials):
         """A single player, identified by initials, leaves the game.
         """
-        result = CommandResult(0, "Command not yet implemented", False)
+        result = CommandResult(0, "'quit' command not yet implemented", False)
         return result
     
     def save(self):
@@ -300,19 +308,71 @@ class CareersGameEngine(object):
             message = f'{t2} is on square# '
             player = self.get_player(t2)
         if player is not None:
-            border_square_number, occupation_name, occupation_board_number = player.get_current_location()
+            current_board_location = player.current_board_location
             game_square = self.get_player_game_square(player)
             message += str(game_square.number)
             if game_square.square_class == 'Occupation':
-                message += " of " + occupation_name + ": '" +  game_square.text + "' " + game_square.action_text
+                message += " of " + current_board_location.occupation_name + ": '" +  game_square.text + "' " 
             else:    # a border square
                 message += ": " + game_square.name
+            if game_square.action_text is not None:
+                message += "\n" + game_square.action_text
         else:
             message = f'No such player: {t2}'
             result = 1
         
         return CommandResult(result, message, False)
+    
+    def retire(self):
+        """Retire this player to the retirement corner square (Spring Break, Holiday)
         
+        """
+        result = CommandResult(0, "'retire' command not yet implemented", False)
+        return result
+    
+    def bump(self):
+        """The current player bumps another player occupying the same board square to Unemployment
+        
+        """
+        result = CommandResult(0, "'bump' command not yet implemented", False)
+        return result
+    
+    def bankrupt(self):
+        """The current player declares bankruptcy.
+        
+        """
+        result = CommandResult(0, "'bankrupt' command not yet implemented", False)
+        return result
+    
+    def list(self, what):
+        """List the Experience or Opportunity cards held by the current player
+        
+        """
+        result = CommandResult(0, "'list' command not yet implemented", False)
+        return result    
+
+    def saved(self):
+        """List the saved games, if any
+        
+        """
+        result = CommandResult(0, "'saved' command not yet implemented", False)
+        return result    
+
+    def load(self, gameid):
+        """Load a previously saved game, identified by the game Id
+        
+        """
+        result = CommandResult(0, "'load' command not yet implemented", False)
+        return result    
+
+    def who(self, t1:str="am", t2:str="I"):
+        """Who am I or who is <player>
+        """
+        player = None
+        result = 0
+        result = CommandResult(0, "'who' command not yet implemented", False)
+        return result
+    
     #####################################
     #
     # Game engine action implementations
@@ -321,9 +381,9 @@ class CareersGameEngine(object):
     
     def save_game(self):
         jstr = f'{{\n  "game_id" : "{self.gameId}",\n'
-        jstr += f'  "gameState" : {{\n'
+        jstr += f'  "gameState" : '
         jstr += self.game_state.to_JSON()
-        jstr += "\n  }\n}"
+        jstr += "}\n"
         
         self.log(jstr)
         filename = self._logfile_path + "/" + self.gameId + "_saved.json"

@@ -7,6 +7,7 @@ from .__version__ import __copyright__
 
 __all__ = [
     'actionType',
+    'boardLocation',
     'borderSquare',
     'cardDeck',
     'careersGame',
@@ -31,6 +32,7 @@ __all__ = [
 ]
 
 from careers.game.actionType import ActionType
+from careers.game.boardLocation import BoardLocation
 from careers.game.borderSquare import BorderSquare
 from careers.game.gameSquare import GameSquare
 from careers.game.gameState import GameState

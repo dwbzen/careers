@@ -25,8 +25,10 @@ class OccupationSquare(GameSquare):
         self._hearts = occupation_square_dict["hearts"]
         self._experience = occupation_square_dict["experience"]         # the number of Experience cards to collect on this square
         self._opportunities = occupation_square_dict["opportunities"]   # the number of Opportunity cards to collect on this square
-        self._action_text = occupation_square_dict['action_text']
+        if "action_text" in occupation_square_dict:
+            self.action_text = occupation_square_dict['action_text']
         self._bonus = occupation_square_dict.get('bonus',0)
+        
         
     @property
     def stars(self):
@@ -43,10 +45,6 @@ class OccupationSquare(GameSquare):
     @property
     def opportunities(self):
         return self._opportunities
-    
-    @property
-    def action_text(self):
-        return self._action_text
     
     def execute(self, player:Player) -> CommandResult:
         """Executes the actions associated with this occupation square for a given Player
