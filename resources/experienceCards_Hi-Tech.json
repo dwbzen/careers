@@ -23,61 +23,73 @@
 	],
 	"cards" : [
 		{
+			"number" : 0,
 			"spaces" : 1,
 			"type" : "fixed",
 			"quantity" : 8
 		},
 		{
+			"number" : 1,
 			"spaces" : -1,
 			"type" : "fixed",
 			"quantity" : 2
 		},
 		{
+			"number" : 2,
 			"spaces" : 2,
 			"type" : "fixed",
 			"quantity" : 8
 		},
 		{
+			"number" : 3,
 			"spaces" : -2,
 			"type" : "fixed",
 			"quantity" : 2
 		},
 		{
+			"number" : 4,
 			"spaces" : 3,
 			"type" : "fixed",
 			"quantity" : 6
 		},
 		{
+			"number" : 5,
 			"spaces" : 4,
 			"type" : "fixed",
 			"quantity" : 6
 		},
 		{
+			"number" : 6,
 			"spaces" : 5,
 			"type" : "fixed",
 			"quantity" : 4
 		},
 		{
+			"number" : 7,
 			"spaces" : 6,
 			"type" : "fixed",
 			"quantity" : 4
 		},
 		{
+			"number" : 8,
 			"spaces" : 7,
 			"type" : "fixed",
 			"quantity" : 2
 		},
 		{
+			"number" : 9,
 			"spaces" : 0,
 			"type" : "1-die wild",
 			"quantity" : 4
 		},
 		{
+			"number" : 10,
 			"spaces" : 0,
 			"type" : "2-die wild",
 			"quantity" : 4
 		},
 		{
+			"number" : 11,
 			"spaces" : 0,
 			"type" : "triple wild",
 			"quantity" : 4

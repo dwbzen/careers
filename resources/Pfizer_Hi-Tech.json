@@ -7,6 +7,8 @@
 		"image" : "Pfizer logo.jpg",
 		"entryFee" : 10000,
 		"size" : 16,
+		"entrance_square_number" : 36,
+		"exit_square_number" : 37,
 		"text" : "Must have:<br/>**$10,000 for special training; or Pharmacy Board Certification; or Pfizer experience**",
 		"degreeRequirements" : { 
 			"degreeName" : "Pharmacy",
@@ -38,7 +40,7 @@
 			"opportunities" : 0,
 			"action_text" : "",
 			"specialProcessing" : {
-				"type" : "travelShortcut",
+				"type" : "shortcut",
 				"next_square" : 13
 			}
 		},
@@ -185,7 +187,7 @@
 			"opportunities" : 0,
 			"action_text" : "",
 			"specialProcessing" : {
-				"type" : "travelShortcut",
+				"type" : "goto",
 				"next_square" : 15
 			}
 		},
@@ -211,7 +213,10 @@
 			"experience" : 0,
 			"opportunities" : 0,
 			"action_text" : "",
-			"specialProcessing" : {}
+			"specialProcessing" : {
+				"type" : "goto",
+				"next_square" : 12
+			}
 		},
 		{
 			"number" : 15,

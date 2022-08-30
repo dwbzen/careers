@@ -7,6 +7,8 @@
 		"image" : "disney logo.jpg",
 		"entryFee" : 500,
 		"size" : 11,
+		"entrance_square_number" : 18,
+		"exit_square_number" : 19,
 		"text" : "Must have: $500 for Magic Coach; or a Hospitality degree; or Magic Kingdom experience",
 		"degreeRequirements" : { 
 			"degreeName" : "Hospitality",
@@ -62,7 +64,7 @@
 			"opportunities" : 0,
 			"action_text" : "Move ahead 5 squares",
 			"specialProcessing" : {
-				"type" : "travelOccupation",
+				"type" : "goto",
 				"next_square" : 8
 			}
 		},

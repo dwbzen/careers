@@ -1,12 +1,12 @@
 {
 	"Help" : "Hi-Tech Edition Opportunity cards",
 	"type_list" : [
-		"triple wild", "occupation_choice", "border_square", "border_square_choice", "action", "travel", "opportunity"
+		"occupation", "occupation_choice", "border_square", "border_square_choice", "action", "travel", "opportunity"
 	],
 	"types" : [
 		{
 			"type" : "occupation",
-			"Help" : "Advance to the occupation named as 'border_square'. Player enters immediately."
+			"Help" : "Advance to the occupation named as 'destination'. Player enters immediately."
 		},
 		{
 			"type" : "occupation_choice",
@@ -14,7 +14,7 @@
 		},
 		{
 			"type" : "border_square",
-			"Help" : "Advance to the border square named as 'border_square'. Subsequent player action depends on the landing square."
+			"Help" : "Advance to the border square named as 'destination'. Subsequent player action depends on the landing square."
 		},
 		{
 			"type" : "border_square_choice",
@@ -22,7 +22,7 @@
 		},
 		{
 			"type" : "action",
-			"Help" : "Non-movement player action. There are three action types: action:extra_turn, action:leave_unemployment, action:collect_experience."
+			"Help" : "Non-movement player action. There are three action types: extra_turn, leave_unemployment, collect_experience."
 		},
 		{
 			"type" : "travel",
@@ -37,7 +37,7 @@
 		{
 			"number" : 0,
 			"type" : "occupation",
-			"border_square" : "FMC",
+			"destination" : "FMC",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
 			"text" : "OPPORTUNITY to join FMC\nMeet Normal Requirements\nMay save or sell.",
@@ -46,7 +46,7 @@
 		{
 			"number" : 1,
 			"type" : "occupation",
-			"border_square" : "Amazon",
+			"destination" : "Amazon",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
 			"text" : "OPPORTUNITY to join Amazon\nMeet Normal Requirements\nMay save or sell.",
@@ -55,7 +55,7 @@
 		{
 			"number" : 2,
 			"type" : "occupation",
-			"border_square" : "Pfizer",
+			"destination" : "Pfizer",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
 			"text" : "OPPORTUNITY to join Pfizer\nMeet Normal Requirements\nMay save or sell.",
@@ -64,7 +64,7 @@
 		{
 			"number" : 3,
 			"type" : "occupation",
-			"border_square" : "SpaceX",
+			"destination" : "SpaceX",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
 			"text" : "OPPORTUNITY to join SpaceX\nMeet Normal Requirements\nMay save or sell.",
@@ -73,7 +73,7 @@
 		{
 			"number" : 4,
 			"type" : "occupation",
-			"border_square" : "SpaceX",
+			"destination" : "SpaceX",
 			"expenses_paid" : 1,
 			"double_happiness" : 0,
 			"text" : "SPECIAL OPPORTUNITY to join SpaceX because of your technical brilliance.\nAll expenses paid and no prior experience required.\nMay save or sell.",
@@ -82,7 +82,7 @@
 		{
 			"number" : 5,
 			"type" : "occupation",
-			"border_square" : "Disney",
+			"destination" : "Disney",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
 			"text" : "OPPORTUNITY to join Disney\nMeet Normal Requirements\nMay save or sell.",
@@ -91,7 +91,7 @@
 		{
 			"number" : 6,
 			"type" : "occupation",
-			"border_square" : "Disney",
+			"destination" : "Disney",
 			"expenses_paid" : 0,
 			"double_happiness" : 1,
 			"text" : "SPECIAL OPPORTUNITY to join Disney because of your Magic touch.\nDOUBLE all Happiness earned\nMeet Normal Requirements\nMay save or sell.",
@@ -100,7 +100,7 @@
 		{
 			"number" : 7,
 			"type" : "occupation",
-			"border_square" : "Google",
+			"destination" : "Google",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
 			"text" : "OPPORTUNITY to join Google\nMeet Normal Requirements\nMay save or sell.",
@@ -109,7 +109,7 @@
 		{
 			"number" : 8,
 			"type" : "occupation",
-			"border_square" : "Google",
+			"destination" : "Google",
 			"expenses_paid" : 1,
 			"double_happiness" : 0,
 			"text" : "SPECIAL OPPORTUNITY to join Google because of your technical brilliance. \nAll expenses paid and no prior experience required.\nMay save or sell.",
@@ -118,7 +118,7 @@
 		{
 			"number" : 9,
 			"type" : "occupation",
-			"border_square" : "Facebook",
+			"destination" : "Facebook",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
 			"text" : "OPPORTUNITY to join Facebook\nMeet Normal Requirements\nMay save or sell.",
@@ -127,7 +127,7 @@
 		{
 			"number" : 10,
 			"type" : "occupation",
-			"border_square" : "Facebook",
+			"destination" : "Facebook",
 			"expenses_paid" : 1,
 			"double_happiness" : 0,
 			"text" : "SPECIAL OPPORTUNITY to join Facebook  because of your problem solving skills.\nAll expenses paid and no prior experience required.\nMay save or sell.",
@@ -136,7 +136,7 @@
 		{
 			"number" : 11,
 			"type" : "occupation",
-			"border_square" : "ESPN",
+			"destination" : "ESPN",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
 			"text" : "OPPORTUNITY to join ESPN\nMeet Normal Requirements\nMay save or sell.",
@@ -145,7 +145,7 @@
 		{
 			"number" : 12,
 			"type" : "occupation",
-			"border_square" : "ESPN",
+			"destination" : "ESPN",
 			"expenses_paid" : 1,
 			"double_happiness" : 0,
 			"text" : "SPECIAL OPPORTUNITY to join ESPN  because of your sports knowledge.\nAll expenses paid and no prior experience required.\nMay save or sell.",
@@ -154,7 +154,7 @@
 		{
 			"number" : 13,
 			"type" : "occupation",
-			"border_square" : "UF",
+			"destination" : "UF",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
 			"text" : "OPPORTUNITY to enter the University of Florida\nMeet Normal Requirements\nMay save or sell.",
@@ -163,7 +163,7 @@
 		{
 			"number" : 14,
 			"type" : "occupation",
-			"border_square" : "UF",
+			"destination" : "UF",
 			"expenses_paid" : 1,
 			"double_happiness" : 0,
 			"text" : "SPECIAL OPPORTUNITY to enter College on Scholarship, all expenses paid.\nMay save or sell.",
@@ -172,7 +172,7 @@
 		{
 			"number" : 15,
 			"type" : "occupation",
-			"border_square" : "ListerAndBacon",
+			"destination" : "ListerAndBacon",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
 			"text" : "OPPORTUNITY to join Lister & Bacon\nMeet Normal Requirements\nMay save or sell.",
@@ -181,7 +181,7 @@
 		{
 			"number" : 16,
 			"type" : "occupation_choice",
-			"border_square" : "",
+			"destination" : "",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
 			"text" : "GOLDEN  OPPORTUNITY to join the Company of your choice\nMeet Normal Requirements\nMay save or sell.",
@@ -190,7 +190,7 @@
 		{
 			"number" : 17,
 			"type" : "border_square_choice",
-			"border_square" : "",
+			"destination" : "",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
 			"text" : "GOLDEN  OPPORTUNITY to advance to ANY border square\n*meet normal requirements for Occupation or College entrance*\nMay save or sell.",
@@ -199,7 +199,7 @@
 		{
 			"number" : 18,
 			"type" : "border_square",
-			"border_square" : "BuyInsurance",
+			"destination" : "BuyInsurance",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
 			"text" : "OPPORTUNITY to buy Insurance\nAdvance to the Insurance Store and pay $5,000 premium\nMay save or sell.",
@@ -208,7 +208,7 @@
 		{
 			"number" : 19,
 			"type" : "border_square",
-			"border_square" : "SpringBreak",
+			"destination" : "SpringBreak",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
 			"text" : "OPPORTUNITY to go on Spring Break!\nMay save or sell.",
@@ -217,7 +217,7 @@
 		{
 			"number" : 20,
 			"type" : "border_square",
-			"border_square" : "Payday",
+			"destination" : "Payday",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
 			"text" : "SPECIAL OPPORTUNITY to collect needed cash!\nAdvance to PAYDAY and collect DOUBLE your annual salary.\nMay save or sell.",
@@ -226,7 +226,7 @@
 		{
 			"number" : 21,
 			"type" : "border_square",
-			"border_square" : "GambleInVegas",
+			"destination" : "GambleInVegas",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
 			"text" : "OPPORTUNITY to Gamble in Las Vegas\nMay save or sell.",
@@ -235,7 +235,7 @@
 		{
 			"number" : 22,
 			"type" : "border_square",
-			"border_square" : "BuyExperience",
+			"destination" : "BuyExperience",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
 			"text" : "SPECIAL OPPORTUNITY to buy needed padding! Advance to EXPERIENCE square and buy at least 1 and up to 3 EXPERIENCE cards.\nMay save or sell.",
@@ -244,7 +244,7 @@
 		{
 			"number" : 23,
 			"type" : "travel",
-			"border_square" : "Amtrak",
+			"destination" : "Amtrak",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
 			"text" : "TRAVEL OPPORTUNITY Advance to the nearest Amtrak Station and roll again.\nMay save or sell.",
@@ -253,7 +253,7 @@
 		{
 			"number" : 24,
 			"type" : "opportunity",
-			"border_square" : "Opportunity",
+			"destination" : "Opportunity",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
 			"text" : "OPPORTUNITY KNOCKS\nAdvance to the nearest OPPORTUNITY square and roll again\nMay save or sell.",
@@ -261,8 +261,9 @@
 		},
 		{
 			"number" : 25,
-			"type" : "action:collect_experience",
-			"border_square" : "",
+			"type" : "action", 
+			"action_type" : "collect_experience",
+			"destination" : "",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
 			"text" : "SPECIAL OPPORTUNITY to gain EXPERIENCE!\nCollect one randomly selected EXPERIENCE card from each player.\nMay save or sell.",
@@ -270,8 +271,9 @@
 		},
 		{
 			"number" : 26,
-			"type" : "action:leave_unemployment",
-			"border_square" : "",
+			"type" : "action",
+			"action_type" : "leave_unemployment",
+			"destination" : "",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
 			"text" : "Get out of Unemployment free<p/>Play this card to immediately leave Unemployment.\nMay save or sell.",
@@ -279,8 +281,9 @@
 		},
 		{
 			"number" : 27,
-			"type" : "action:extra_turn",
-			"border_square" : "",
+			"type" : "action", 
+			"action_type" : "extra_turn",
+			"destination" : "",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
 			"text" : "SPECIAL OPPORTUNITY to Get an Extra Turn\nPlay at the start of your turn\nMay save or sell.",

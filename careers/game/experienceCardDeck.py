@@ -25,7 +25,8 @@ class ExperienceCardDeck(CardDeck):
         card_spec includes "quantity" tag that specifies the number of this cards that appear in the deck.
 
         """
-        for ncards in range(1, qty+1):
-            experience_card = ExperienceCard(card_spec['type'], card_spec['spaces'])
+        number = card_spec['number']
+        for ncard in range(1, qty+1):
+            experience_card = ExperienceCard(number, ncard, card_spec['type'], card_spec['spaces'])
             self._deck.append(experience_card)
     

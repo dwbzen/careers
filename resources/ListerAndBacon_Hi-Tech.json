@@ -7,6 +7,8 @@
 		"image" : "Lister and Bacon.jpg",
 		"entryFee" : 8000,
 		"size" : 12,
+		"entrance_square_number" : 24,
+		"exit_square_number" : 25,
 		"text" : "Must have:<br/>**$8000 for bar exam; or a Law Board Certification degree; or Law Firm experience**",
 		"degreeRequirements" : { 
 			"degreeName" : "Law",

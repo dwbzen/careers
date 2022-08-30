@@ -14,22 +14,31 @@ class GameState(CareersObject):
 
 
     def __init__(self, total_points):
-        '''
-        Constructor
-        '''
+        """Create and initialize a Careers GameState
+            The GameState encapsulates the following dynamic game state properties:
+                number_of_players
+                players - a [Player]
+                current_player_number -  the current player number (whose turn it is)
+                current_player - a Player instance
+                winning_player - a Player instance, None until the game determines a winner
+                turns - total number of completed turns taken by all players
+                turn_number - the current turn number
+                game_start - the datetime when the game started (when this object was created)
+                seconds_remaining - number of seconds remaining if a timed game
+                game_type - 'points' (the default) or 'timed'
+        """
         self._number_of_players = 0
         self._players = []   # list of Player
-        self._current_player_number = -1    # the current player number
-        self._current_player = None         # Player reference
+        self._current_player_number = -1
+        self._current_player = None
         self._total_points = total_points
-        self._winning_player = None         # Player reference
-        self._turns = 0                     # total number of turns completed
-        self._turn_number = 1               # current turn#
+        self._winning_player = None
+        self._turns = 0
+        self._turn_number = 1
         self._game_start = datetime.now()
         self._game_complete = False
-        self._seconds_remaining = 0         # number of seconds remaining if a timed game
-        self._game_type = 'points'          # or 'timed'
-    
+        self._seconds_remaining = 0
+        self._game_type = 'points'
     
     @property
     def number_of_players(self):

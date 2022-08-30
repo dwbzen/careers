@@ -17,6 +17,7 @@ __all__ = [
     'experienceCard',
     'experienceCardDeck',
     'experienceCardType',
+    'gameBoard',
     'gamePlayer',
     'gameSquare',
     'gameState',
@@ -36,6 +37,7 @@ from careers.game.boardLocation import BoardLocation
 from careers.game.borderSquare import BorderSquare
 from careers.game.gameSquare import GameSquare
 from careers.game.gameState import GameState
+from careers.game.gameBoard import GameBoard
 from careers.game.occupation import Occupation
 from careers.game.occupationSquare import OccupationSquare
 from careers.game.careersObject import CareersObject

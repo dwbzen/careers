@@ -145,7 +145,9 @@
 				"text" : "HOSPITAL",
 				"action_text" : "You are LAID UP until you throw 5 or less\nor pay the Pharmacist/Paymaster 1/2 your salary\nfor experimental drugs.",
 				"specialProcessing" : { 
-					"type" : "hospital"
+					"type" : "hospital",
+					"must_roll" : [2, 3, 4, 5],
+					"require_doubles" : 0
 				}
 			},
 			{
@@ -280,7 +282,9 @@
 				"text" : "UNEMPLOYMENT",
 				"action_text" : "You were LAID OFF and must throw 7, 11, or doubles to move on.\nOR pay 1 year's Salary for additional training.",
 				"specialProcessing" : {
-					"type" : "unemployment"
+					"type" : "unemployment",
+					"must_roll" : [7, 11, 2, 4, 6, 8, 10, 12],
+					"require_doubles" : 1
 				}
 			},
 			{

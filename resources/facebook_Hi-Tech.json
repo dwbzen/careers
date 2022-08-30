@@ -7,6 +7,8 @@
 		"image" : "facebook logo.jpg",
 		"entryFee" : 500,
 		"size" : 11,
+		"entrance_square_number" : 27,
+		"exit_square_number" : 31,
 		"text" : "Must have:<br/>**$2000 for a new laptop; or Business Admin degree; or Facebook experience**",
 		"degreeRequirements" : { 
 			"degreeName" : "Business Admin",

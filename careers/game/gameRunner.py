@@ -19,19 +19,15 @@ class GameRunner(object):
         """
         Constructor
         """
-        self.game = CareersGame('Hi-Tech', total_points)
+        self._careersGame = CareersGame('Hi-Tech', total_points)
         self.total_points = total_points
         self._trace = True          # traces the action by describing each step
-        self.game_engine = None     # CareersGameEngine
+        self.game_engine = CareersGameEngine(self._careersGame)
+        self.game_engine.trace = self._trace
         
 
     def add_player(self, name, initials, stars=0, hearts=0, cash=0):
-        sf = SuccessFormula(stars=stars, hearts=hearts, cash=cash)
-        player = Player(name=name, initials=initials)
-        player.success_formula = sf
-        player.salary = self.game.game_parameters['starting_salary']
-        player.cash = self.game.game_parameters['starting_cash']
-        self.game.add_player(player)        # adds to GameState
+        self.game_engine.add(name, initials, stars, hearts, cash)
     
     @property
     def trace(self):
@@ -63,8 +59,7 @@ class GameRunner(object):
         return result
     
     def run_game(self):
-        self.game_engine = CareersGameEngine(self.game)
-        self.game_engine.trace = self.trace
+
         self.game_engine.start()
         game_over = False
         game_state = self.get_game_state()
@@ -81,7 +76,7 @@ class GameRunner(object):
                     result = self.execute_command(cmd, current_player)
                     print(result.message)
                     done = result.done_flag
-                    if result.return_code == 2:
+                    if result.return_code == CommandResult.TERMINATE:
                         game_over = True
                 if game_over:
                     break

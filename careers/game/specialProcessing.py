@@ -13,7 +13,7 @@ class SpecialProcessing(object):
     border_types = ["payday", "opportunity", "payTax", "enterOccupation", "enterCollege", "buyHearts", "buyStars", "buyExperience",\
                     "hospital", "unemployment", "buyInsurance", "gamble" ]
 
-    occupation_types = ["loseNextTurn", "travelShortcut", "travelOccupation", "cashLossOrUnemployment",\
+    occupation_types = ["loseNextTurn", "shortcut", "cashLossOrUnemployment", "goto",\
                          "salaryIncrease", "salaryCut", "bonus", "favors", "backstab", "fameLoss", "hapinessLoss"]
     
     common_types = ["travelBorder", "cashLoss", "extraTurn"]
@@ -56,6 +56,8 @@ class SpecialProcessing(object):
 
         self._destination = special_processing_dict.get('destinationOccupation', None)  # the name of a destination occupation
         self._percent = special_processing_dict.get('percent', 0)       # a percent amount of salary or cash depending on type
+        self._must_roll = special_processing_dict.get('must_roll', [])  # a list of numbers that must be rolled in order to leave this square
+        self._require_doubles = special_processing_dict.get('require_doubles', 0)==1
     
     @property
     def square_type(self):
@@ -100,6 +102,14 @@ class SpecialProcessing(object):
     @property
     def percent(self):
         return self._percent
+    
+    @property
+    def must_roll(self):
+        return self._must_roll
+    
+    @property
+    def require_doubles(self):
+        return self._require_doubles
     
     def __str__(self):
         return self._special_processing_dict

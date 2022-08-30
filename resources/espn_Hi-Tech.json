@@ -7,6 +7,8 @@
 		"image" : "ESPN logo.jpg",
 		"entryFee" : 500,
 		"size" : 11,
+		"entrance_square_number" : 15,
+		"exit_square_number" : 16,
 		"text" : "Must have: $500 for sports training; or Journalism degree; or ESPN experience",
 		"degreeRequirements" : { 
 			"degreeName" : "Journalism",

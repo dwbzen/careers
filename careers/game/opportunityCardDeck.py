@@ -17,20 +17,30 @@ class OpportunityCardDeck(CardDeck):
         Constructor
         '''
         super().__init__(resource_path, "opportunityCards", edition_name)    # loads the card deck
+        self._opportunity_types = ["occupation", "occupation_choice", "border_square", "border_square_choice", "action", "travel", "opportunity" ]
+
         
-    def save_card(self, card_spec, qty):
+    def save_card(self, card_spec:dict, qty):
         """Appends n-instances of a single Opportunity card to the card deck.
             Arguments: card_spec - the JSON opportunity card content as a dict
             
-        card_spec includes "quantity" tag that specifies the number of this cards that appear in the deck.
+        card_spec includes:
+            "number" - the unique card number. Cards having the same number are identical.
+            "quantity" - specifies the number of this card that appear in the deck.
         
         """
-        border_square = card_spec['border_square']
+        number = card_spec['number']
+        destination = card_spec['destination']
         ctype = card_spec['type']
-        expenses_paid = card_spec['expenses_paid'] == 1
-        double_happiness = card_spec['double_happiness'] == 1
-        for ncards in range(1, qty+1):
-            opportunity_card = OpportunityCard(ctype, border_square, card_spec['text'], expenses_paid, double_happiness)
+        expenses_paid = card_spec.get('expenses_paid', 0) == 1
+        double_happiness = card_spec.get('double_happiness', 0) == 1
+
+        for ncard in range(1, qty+1):
+            opportunity_card = OpportunityCard(ctype, number, ncard, destination, card_spec['text'], expenses_paid, double_happiness)
+            opportunity_card.action_type = card_spec.get("action_type", None)
             self._deck.append(opportunity_card)
 
-        
+    @property
+    def opportunity_types(self):
+        return self._opportunity_types
+

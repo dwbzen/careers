@@ -3,31 +3,36 @@ Created on Aug 9, 2022
 
 @author: don_bacon
 '''
-from game.player import Player
-from game.commandResult import CommandResult
 
-class OpportunityCard(object):
+from game.careersObject import CareersObject
+
+class OpportunityCard(CareersObject):
     """
     Represents a single Opportunity card
     """
 
-    def __init__(self, opportunity_type, border_square=None, text="", expenses_paid=False, double_happiness=False):
+    def __init__(self, opportunity_type, number, ncard, destination=None, text="", expenses_paid=False, double_happiness=False):
         """Constructor
             Arguments:
-                opp_type - the OpportunityType of this card
-                border_square - the "name" of the corresponding border square if there is a destination, otherwise None
+                opportunity_type - the OpportunityType of this card
+                number - the unique number identifying this card
+                ncard - the ordinal of this type of card (from 0 to quantity-1)
+                destination - the "name" of the corresponding border square if there is a destination, otherwise None
                 text - the Opportunity card text
                 expenses_paid - Applies to OpportunityType.OCCUPATION: True if the player can enter for free.
                 double_happiness - Applies to OpportunityType.OCCUPATION: True if happiness point values are doubled.
         """
         self._opportunity_type = opportunity_type
-        if border_square == "":
-            self._border_square = None
+        if destination == "":
+            self._destination = None
         else:
-            self._border_square = border_square
+            self._destination = destination
         self._text = text
         self._expenses_paid = expenses_paid
         self._double_happiness = double_happiness
+        self._action_type = None
+        self._ncard = ncard
+        self._number = number
         
     @property
     def opportunity_type(self) ->str:
@@ -38,12 +43,12 @@ class OpportunityCard(object):
         self._opportunity_type = ctype
     
     @property
-    def border_square(self):
-        return self._border_square
+    def destination(self):
+        return self._destination
     
-    @border_square.setter
-    def border_square(self, bs):
-        self._border_square = bs
+    @destination.setter
+    def destination(self, bs):
+        self._destination = bs
     
     @property
     def text(self):
@@ -69,11 +74,28 @@ class OpportunityCard(object):
     def double_happiness(self, dh):
         self._double_happiness = dh
 
-    def execute(self, player:Player) -> CommandResult:
-        """Execute the actions associated with this Opportunity card.
-            Needs to handle the types of opportunity cards.
-            Returns: CommandResult
-        """
-        result = CommandResult(0, "Not yet implemented", False)   #  TODO
-        return result
+    @property
+    def action_type(self):
+        return self._action_type
+    
+    @action_type.setter
+    def action_type(self, value):
+        self._action_type = value
+        
+    @property
+    def ncard(self):
+        return self._ncard
+    
+    @property
+    def number(self):
+        return self._number
+
+    def __str__(self):
+        return self.text
+    
+    def to_JSON(self):
+        jtxt = f'{{"number" : "{self.number}", '
+        jtxt += f'"text" : "{self.text}" }}'
+        return jtxt
+    
     

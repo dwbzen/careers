@@ -15,7 +15,7 @@ from game.borderSquare import BorderSquare
 from game.occupationSquare import OccupationSquare
 from game.gameState import GameState
 from game.occupation import Occupation
-from plotly.validators.pointcloud.marker import border
+from game.gameBoard import GameBoard
 
 class CareersGame(object):
     """
@@ -61,9 +61,7 @@ class CareersGame(object):
         #
         # load the game board
         #
-        self._occupation_entrance_squares = {}     # dictionary of BorderSquare that are type "occupation_entrance_square" indexed by name
-        self._travel_squares = []                  # list of BorderSquare that are type "travel_square"
-        self._game_board = self._create_game_board()   # list of BorderSquare
+        self._game_board = self._create_game_board()   # GameBoard instance
         self._game_type = 'points'  # 'points' or 'timed' (which is not yet supported)
 
         #
@@ -102,21 +100,8 @@ class CareersGame(object):
         self._experience_cards = ExperienceCardDeck(self._resource_folder, self._edition_name)
         
     def _create_game_board(self):
-        fp = open(self._resource_folder + "/gameLayout_" + self._edition_name + ".json", "r")
-        self._game_board_dict = json.loads(fp.read())
-        self._game_layout = self._game_board_dict['layout']
-        self._game_layout_dimensions = self._game_board_dict['dimensions']
-        self._game_board_size = self._game_layout_dimensions['size']
-        game_board = list()
-        for border_square_dict in self._game_layout:
-            border_square = BorderSquare(border_square_dict)
-            game_board.append(border_square)
-            
-            if border_square.square_type == "occupation_entrance_square":
-                self._occupation_entrance_squares[border_square.name] = border_square
-                
-            if border_square.square_type == "travel_square":
-                self._travel_squares.append(border)
+        game_layout_filename = self._resource_folder + "/gameLayout_" + self._edition_name + ".json"
+        game_board = GameBoard(game_layout_filename)
         return game_board
 
     def load_occupations(self) -> dict:
@@ -157,18 +142,23 @@ class CareersGame(object):
         return self._edition_name
     
     @property
-    def game_layout(self):
-        return self._game_layout
+    def game_board(self) -> GameBoard:
+        return self._game_board
     
-    @property
-    def game_layout_dimensions(self):
+    def get_border_square(self, num) -> BorderSquare:
+        """Convenience method to get a BorderSquare instance from the GameBoard
+        """
+        return self._game_board.get_square(num)
+    
+    def get_game_layout_dimensions(self):
         """size (number of squares), sides (4-element list of #squares/side)
         """
-        return self._game_layout_dimensions
+        return self.game_board.game_layout_dimensions
     
-    @property
-    def game_board_size(self):      # this cannot be set
-        return self._game_board_size
+
+    def get_game_board_size(self):
+        return self.game_board.game_board_size
+    
     
     @property
     def game_parameters(self):
@@ -182,6 +172,7 @@ class CareersGame(object):
     def gameId(self):
         return self._gameId
     
+    @property
     def game_type(self):
         return self._game_type
     
@@ -197,13 +188,15 @@ class CareersGame(object):
         """
         return self._occupations
     
-    @property
-    def occupation_entrance_squares(self) -> dict:
-        return self._occupation_entrance_squares
+
+    def get_occupation_entrance_squares(self) -> dict:
+        return self.game_board.occupation_entrance_squares
     
-    @property
-    def travel_squares(self) -> list:
-        return self._travel_squares
+    def get_travel_squares(self) -> list:
+        return self.game_board.travel_squares
+    
+    def get_corner_squares(self) -> dict:
+        return self.game_board.corner_squares
     
     @property
     def opportunities(self):
@@ -213,10 +206,7 @@ class CareersGame(object):
     def experience_cards(self):
         return self._experience_cards
     
-    @property
-    def game_board(self):
-        return self._game_board
-    
+   
     def add_player(self, aplayer:Player):
         self.game_state.add_player(aplayer)
     
@@ -263,7 +253,6 @@ class CareersGame(object):
         pass
     
 if __name__ == '__main__':
-
     game = CareersGame('Hi-Tech')
     print(game.occupation_list)
     
