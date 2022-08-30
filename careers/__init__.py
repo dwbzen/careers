@@ -5,6 +5,13 @@ import sys
 minPythonVersion = (3, 9)
 minPythonVersionStr = '.'.join([str(x) for x in minPythonVersion])
 
+import sys  
+from pathlib import Path  
+file = Path(__file__). resolve()  
+package_root_directory = file.parents [1]  
+sys.path.append(str(package_root_directory))  
+sys.path.append(str(package_root_directory) + "\\careers")  
+
 del sys
 del minPythonVersion
 del minPythonVersionStr
