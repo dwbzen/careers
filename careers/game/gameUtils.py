@@ -6,6 +6,7 @@ Created on Aug 12, 2022
 import random
 from game.successFormula import SuccessFormula
 
+
 class GameUtils(object):
     """
     General purpose routines.
@@ -29,4 +30,6 @@ class GameUtils(object):
     @staticmethod
     def roll(number_of_dice):
         return random.choices(population=[1,2,3,4,5,6],k=number_of_dice)
+    
+
         

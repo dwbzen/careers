@@ -13,15 +13,17 @@ class GameBoard(object):
         They are accessed from CareersGame.
     """
 
-    def __init__(self, game_layout_filename):
-        """
-        Constructor
+    def __init__(self, game_layout_filename, game=None):
+        """Create a new GameBoard
+            Arguments:
+                game_layout_filename - the full path to the gameLayout JSON file, for example: "/Compile/careers/resources/gameLayout_Hi-Tech.json"
+                game - a CareersGame instance
         """
         self._game_layout_filename = game_layout_filename
         self._occupation_entrance_squares = {}         # dictionary of BorderSquare that are type "occupation_entrance_square" indexed by name
         self._travel_squares = []                      # list of BorderSquare that are type "travel_square"
         self._corner_squares = {}                      # dict of BorderSquare that are type "corner_square" indexed by name
-        
+        self._opportunity_squares = []                 # list of BorderSquare that are type 'opportunity_square'
         fp = open(game_layout_filename, "r")
         self._game_board_dict = json.loads(fp.read())
         self._game_layout = self._game_board_dict['layout']
@@ -30,7 +32,7 @@ class GameBoard(object):
         self._types = self._game_board_dict['type_list']        # a list of border square types
         self._border_squares = list()
         for border_square_dict in self._game_layout:
-            border_square = BorderSquare(border_square_dict)
+            border_square = BorderSquare(border_square_dict, game=game)
             self._border_squares.append(border_square)
             
             if border_square.square_type == "occupation_entrance_square":
@@ -41,6 +43,9 @@ class GameBoard(object):
         
             if border_square.square_type == "corner_square":
                 self._corner_squares[border_square.name] = border_square
+                
+            if border_square.square_type == "opportunity_square":
+                self._opportunity_squares.append(border_square)
     
     @property
     def border_squares(self) ->list:    # list of BorderSquare
@@ -72,6 +77,10 @@ class GameBoard(object):
     @property
     def corner_squares(self) ->dict:
         return self._corner_squares
+    
+    @property
+    def opportunity_squares(self):
+        return self._opportunity_squares
     
     @property
     def types(self) ->list:

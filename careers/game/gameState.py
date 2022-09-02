@@ -4,6 +4,7 @@ Created on Aug 15, 2022
 @author: don_bacon
 '''
 from datetime import datetime
+import json
 from game.player import Player
 from game.careersObject import CareersObject
 
@@ -96,17 +97,28 @@ class GameState(CareersObject):
     def seconds_remaining(self):
         return self._seconds_remaining
 
-    def next_player_number(self):
+    def set_next_player(self):
         """Returns the player number of the next player. And sets the value of current_player.
+            If the next player has lose_turn == True, the current_player is set to the next player
+            after that player and their lose_turn flag is reset to False.
         
         """
-        p = self.current_player_number + 1
-        if p >= self.number_of_players:
-            self.current_player_number = 0
-        else:
-            self.current_player_number = p
+        npn = self._get_next_player_number()
+        if self.players[npn].lose_turn:
+            self.current_player_number = npn
+            self.players[npn].lose_turn = False
+            npn = self._get_next_player_number()
+            
+        self.current_player_number = npn    
         self.current_player = self.players[self.current_player_number]
         return self.current_player_number
+    
+    def _get_next_player_number(self):
+        p = self.current_player_number + 1
+        if p >= self.number_of_players:
+            return 0
+        else:
+            return p
     
     def add_player(self, aplayer:Player):
         """Add a Player to the game and increments the number_of_players.
@@ -116,29 +128,30 @@ class GameState(CareersObject):
         self._players.append(aplayer)
         self._number_of_players += 1
     
+    def get_player_by_initials(self, initials):
+        player = None
+        for p in self.players:
+            if p.player_initials.lower() == initials.lower():
+                player = p
+                break
+        return player
+    
     def to_JSON(self):
         
-        jstr = "{\n"
-        jstr += f' "game_type" : "{self.game_type}",\n'
-        jstr += f' "number_of_players" : "{self.number_of_players}",\n'
-        jstr += f' "current_player_number" : "{self.current_player_number}",\n'
-        jstr += f' "turns" : "{self.turns}",\n'
-        jstr += f' "turn_number" : "{self.turn_number}",\n'
-        jstr += f' "total_points" : "{self.total_points}",\n'
-        jstr += f' "seconds_remaining" : "{self.seconds_remaining}",\n'
+        gs = {"game_type" : self.game_type, "number_of_players" : self.number_of_players, "current_player_number" : self.current_player_number }
+        gs["turns"] = self.turns
+        gs["turn_number"] = self.turn_number
+        gs["total_points"] = self.total_points
+        gs["seconds_remaining"] = self.seconds_remaining
         if self.winning_player is not None:
-            jstr += f' "winning_player" : "{self.winning_player.initials}",\n'
-        jstr += ' "players" : [\n'
-        i = 1
+            gs["winning_player"] = self.winning_player.initials
+        gs["game_complete"] = self.game_complete
+        #gs["players"] 
+
+        players = []
         for player in self.players:
-            jstr += player.to_JSON()
-            if i < self.number_of_players:
-                jstr += ",\n"
-            else:
-                jstr += "\n"
-            i += 1
-        jstr += "],\n"
-        jstr += f' "game_complete" : "{self.game_complete}"\n'
-        jstr += "}\n"
-        return jstr
+            players.append(player.to_dict())
+        gs["players"] = players
+
+        return json.dumps(gs, indent=2)
         

@@ -25,12 +25,12 @@ from datetime import datetime
 import random
 
 
-
 class CareersGameEngine(object):
     """CareersGameEngine executes the action(s) associated with each player's turn.
     Valid commands + arguments:
-        command :: <roll> | <use> | <retire> | <bump> | <bankrupt> | <list> | <status> | <quit> | <done> | <end game>
-                     | <saved games> | <save> | <load> | <query> | <enter> | <goto> | <add> | <use insurance>
+        command :: <roll> | <use> | <retire> | <bump> | <bankrupt> | <list> | <status> | <quit> | <done> | <end game> |
+                   <saved games> | <save> | <load> | <query> | <enter> | <goto> | <add> | <use insurance> | <add degree> |
+                   <pay> | <transfer> | <game_status>
         <use> :: "use"  <card-type>
         <card_type> :: "opportunity" | "experience" 
         <roll> :: "roll"                        ;roll 1 or 2 dice depending on where the player is on the board
@@ -48,14 +48,20 @@ class CareersGameEngine(object):
         <query> :: "where" <who>                ;gets info on a player's current location on the board
         <who> :: "am I" | "is" <playerID>
         <playerID> :: player_name | player_initials
-        <enter> :: "enter" <occupation_name> [<square_number>]          ;enter occupation at occupation square square_number
-        <goto> :: "goto" <square_number>                                ;go to border square square_number
-        <add> :: "add" player_name player_initials cash stars hearts    ;adds a new player to the game
+        <enter> :: "enter" <occupation_name> [<square_number>]                 ;enter occupation at occupation square square_number
+        <goto> :: "goto" <square_number>                                       ;go to border square square_number
+        <add> :: "add player" player_name player_initials cash stars hearts    ;adds a new player to the game
         <use insurance> :: "use_insurance"
+        <add degree> :: "add degree" <degree program>
+        <degree program> :: See collegeDegrees-<edition name>.json "degreePrograms"
+        <pay> :: "pay" amount                ;current player makes a payment associated with their current board location
+        <transfer> :: "transfer" quantity ("cash" | "opportunity" | "experience) player_number
+        <game_status> :: "game_status"
     """
     
-    COMMANDS = ['roll', 'use', 'goto', 'enter', 'status', 'done', 'next', 'end', 'quit', 'save', 'where', \
-                'retire', 'bump', 'bankrupt', 'list', 'saved', 'load',  'who', 'add']
+    COMMANDS = ['roll', 'use', 'goto', 'enter', 'status', 'done', 'next', 'end', 'quit', 'save', 'where',
+                'retire', 'bump', 'bankrupt', 'list', 'saved', 'load',  'who', 'add', 'use_insurance', 
+                'pay', 'transfer', 'game_status']
     
     def __init__(self, careersGame:CareersGame):
         '''
@@ -72,6 +78,7 @@ class CareersGameEngine(object):
         
         self._current_player = None
         self._admin_player = Player(number=-1, name='Administrator', initials='admin')
+        self.fp = open(self.logfile_path + "/" + self.logfile_name + "_" + self.gameId + ".log", "w")
     
     @property
     def fp(self):
@@ -116,8 +123,8 @@ class CareersGameEngine(object):
             print(msg)
     
     def start(self):
-        self.fp = open(self.logfile_path + "/" + self.logfile_name + "_" + self.gameId + ".log", "w")
         self.log("Starting game: " + self.gameId)
+        self.game_state.set_next_player()    # sets the player number to 0 and the curent_player Player reference
 
     def execute_command(self, command:str, aplayer:Player, args:list=[]):
         """Executes a command for a given Player
@@ -132,15 +139,21 @@ class CareersGameEngine(object):
         player = aplayer
         if aplayer is None:
             player = self._admin_player
-            
-        self.log(f'{player.player_initials}: {command} {args}')
-        if command is None or len(command) == 0:
-            return CommandResult(CommandResult.SUCCESS, "", False)
-        cmd_result = self._evaluate(command, args)
         
-        board_location = player.board_location    # current board location AFTER the command is executed
-        self.log(f'  {player.player_initials} results: {cmd_result.return_code} {cmd_result.message}\n{board_location}')
-        cmd_result.board_location = board_location
+        commands = command.split(';')
+        messages = ""
+        for command in commands:
+            self.log(f'{player.player_initials}: {command} {args}')
+            if command is None or len(command) == 0:
+                return CommandResult(CommandResult.SUCCESS, "", False)
+            cmd_result = self._evaluate(command, args)
+            
+            board_location = player.board_location    # current board location AFTER the command is executed
+            self.log(f'  {player.player_initials} results: {cmd_result.return_code} {cmd_result.message}\n{board_location}')
+            cmd_result.board_location = board_location
+            messages += cmd_result.message + "\n"
+        
+        cmd_result.message = messages
         return cmd_result
         
     def _evaluate(self, commandTxt, args=[]) -> CommandResult:
@@ -173,7 +186,7 @@ class CareersGameEngine(object):
             
         command = command_args[0]
         if not command in CareersGameEngine.COMMANDS:
-            return CommandResult(1,  "Invalid command: "+ '"command"',  False)
+            return CommandResult(1,  f'Invalid command: {command}',  False)
         if len(command_args) > 1:
             args = command_args[1:]
             command = command + "("
@@ -280,6 +293,7 @@ class CareersGameEngine(object):
             if thecard is None:    # no such card
                 result = CommandResult(CommandResult.ERROR, f"No {what} card exists with number {card_number} ", False)
             else:
+                player.opportunity_card = thecard
                 result = self.execute_card(player, opportunityCard=thecard)
         elif what.lower() == 'experience':
             cards = player.get_experience_cards()   # dict with number as the key
@@ -287,6 +301,7 @@ class CareersGameEngine(object):
             if thecard is None:    # no such card
                 result = CommandResult(CommandResult.ERROR, f"No {what} card exists with number {card_number} ", False)
             else:
+                player.experience_card = thecard
                 result = self.execute_card(player, experienceCard=thecard, spaces=spaces)
         else:
             result = CommandResult(CommandResult.ERROR, f"use can't use a '{what}' ", False)
@@ -318,19 +333,22 @@ class CareersGameEngine(object):
         game_square = self.get_player_game_square(player)
         board_location = player.board_location
         result = None
-        if game_square.square_class == 'occupation':
+        if game_square.square_class == 'occupation':        # If player is currently in or completing an Occupation
             
             occupation_name =  player.board_location.occupation_name
             occupation = self._careersGame.occupations[occupation_name]
             if square_number >= occupation.size:
+                
+                exit_result =  self.exit_occupation(player, board_location)
+                
                 #
-                # go to next border square after the occupation exit
+                # go to next border square and update board_location after the occupation exit
                 #
                 board_location.border_square_number = square_number - occupation.size + occupation.exit_square_number - 1
                 board_location.occupation_name = None
                 game_square =  self._careersGame.get_border_square(board_location.border_square_number)
-                board_location.border_square_name = game_square.name
-                exit_result =  self.exit_occupation(player, board_location)
+                board_location.border_square_name = game_square.name                
+                
                 result = self.execute_game_square(player, board_location)
                 result.message = exit_result.message + "\n" + result.message
                 return result
@@ -339,7 +357,7 @@ class CareersGameEngine(object):
                 return self.execute_game_square(player, board_location)
                 
         else:   # goto designated border square
-            if square_number >= 0 and square_number <= self._careersGame.game_board.game_layout_dimensions['size']:
+            if square_number >= 0 and square_number < self._careersGame.game_board.game_layout_dimensions['size'] and square_number > board_location.border_square_number :
                 player = self.game_state.current_player
                 border_square = self._careersGame.get_border_square(square_number)
                 board_location.border_square_number = square_number
@@ -347,8 +365,13 @@ class CareersGameEngine(object):
                 board_location.occupation_name = None
                 #
                 # execute this game square
+                # unless it's a travel_square and we just game from a travel_square
+                # otherwise we'd get into an endless travel loop
                 #
-                result = self.execute_game_square(player, board_location)
+                if border_square.square_type == 'travel_square' and self.was_prior_travel(player):
+                    result = CommandResult(CommandResult.SUCCESS, "", True)
+                else:
+                    result = self.execute_game_square(player, board_location)
                 return result
             else:    # player passed or landed on Payday
                 square_number = square_number - self._careersGame.game_board.game_board_size - 1
@@ -356,7 +379,14 @@ class CareersGameEngine(object):
                 board_location.border_square_number = square_number
                 board_location.border_square_name = border_square.name
                 payday_result = self.pass_payday(player, board_location)
-                result = self.execute_game_square(player, board_location)
+                #
+                # again, check travel arrangements
+                #
+                if border_square.square_type == 'travel_square' and self.was_prior_travel(player):
+                    result = CommandResult(CommandResult.SUCCESS, "", True)
+                else:
+                    result = self.execute_game_square(player, board_location)
+            
                 result.message = payday_result.message + "\n" + result.message
                 return result
                 
@@ -389,6 +419,12 @@ class CareersGameEngine(object):
                     result = self.roll(1)
                 else:
                     player.board_location.occupation_square_number=square_number
+                
+                #
+                # if player used an Opportunity to get here, remove that from their deck and set their opportunity_card to None
+                #
+                if player.opportunity_card is not None and player.opportunity_card.opportunity_type  == 'occupation' and player.opportunity_card == occupation_name:
+                    player.used_opportunity()
                     
                 # execute the contents of the occupation square
                 board_location = player.board_location
@@ -404,8 +440,8 @@ class CareersGameEngine(object):
         else:
             return CommandResult(CommandResult.ERROR, "No such occupation", False)
     
-    def status(self):
-        player = self.game_state.current_player
+    def status(self, initials=None):
+        player = self.game_state.current_player if initials is None else self.get_player(initials)
         message = player.player_info(include_successFormula=True)
         result = CommandResult(CommandResult.SUCCESS,  message, False)
         return result       
@@ -413,10 +449,13 @@ class CareersGameEngine(object):
     def done(self):
         """End my turn and go to the next player
         """
+        cp = self.game_state.current_player
+        cp.board_location.reset_prior()            # this player's prior board position no longer relevant
+        npn = self.game_state.set_next_player()    # sets current_player and returns the next player number (npn)
         player = self.game_state.current_player
         player.opportunity_card = None
         player.experience_card = None
-        result = CommandResult(CommandResult.SUCCESS,  "Turn is complete" , True)
+        result = CommandResult(CommandResult.SUCCESS,  f"{cp.player_initials} Turn is complete, {player.player_initials}'s ({npn}) turn " , True)
         return result
     
     def next(self):
@@ -503,24 +542,64 @@ class CareersGameEngine(object):
         result = CommandResult(CommandResult.SUCCESS, "'bankrupt' command not yet implemented", False)
         return result
     
-    def list(self, what) ->str:
+    def pay(self, amount_str, initials=None):
+        """The current player, or the player whose initials are provided, makes a payment associated with their current board position.
+            If the paying player has sufficient cash to make the payment that amount is subtracted
+            from their cash on hand and CommandResult.SUCCESS with done_flag = True is returned 
+            Otherwise, CommandResult.ERROR is returned with done_flag = False.
+            This does NOT bankrupt the player automatically because a player may bargain with other
+            player(s) to get a loan to pay off the debt.
+            If no such arrangement is made (in the UI), a bankrupt command is sent.
+            Experience and Opportunity cards can be transfered from one player to another using the transfer() command.
+            
+            NOTE - "loans" are not paid off automatically. HOWEVER a player's net worth, which determines total_points,
+            will subtract all loan amounts from cash on hand.
+            
+        """
+        amount = int(amount_str)
+        player = self.game_state.current_player if initials is None else self.get_player(initials)
+        if player.cash >= amount:
+            player.cash = player.cash - amount
+            message = f'{player.player_initials} paid {amount}'
+            return CommandResult(CommandResult.SUCCESS, message, True)
+        else:
+            message = f'{player.player_initials} has insufficient funds to cover {amount} and must either borrow cash from another player or declare bankruptcy'
+            return CommandResult(CommandResult.ERROR, message, False)
+        
+    def transfer(self, quantity, what, from_player_number):
+        """Transfers cash, opportunities or experience cards from one player to the current player
+            Arguments:
+                from_player_number - the player number transferring
+                what - "cash", "opportunity", "experience"
+                quantity - the amount of cash or number of experience/opportunity cards being transferred
+        """
+        CommandResult(CommandResult.SUCCESS, "transfer command not implemented", True)
+        
+    
+    def list(self, what='all') ->str:
         """List the Experience or Opportunity cards held by the current player
-            Arguments: what - 'experience' or 'opportunity'
+            Arguments: what - 'experience', 'opportunity', or 'all'
             Returns: CommandResult.message is the stringified list of str(card).
                 For Opportunity cards this is the text property.
                 For Experience cards this is the number of spaces (if type is fixed), otherwise the type.
             
         """
-        my_cards = []
         message = ""
         player = self.game_state.current_player
-        if what is not None:
-            if what.lower()=='opportunity':
-                my_cards = player.my_opportunity_cards
-            elif what.lower()=='experience':
-                my_cards = player.my_experience_cards
-        for card in my_cards:
-            message += str(card) + "\n"
+        listall = (what.lower() == 'all')
+
+        if what.lower().startswith('opportun') or listall:
+            if len(player.my_opportunity_cards) == 0:
+                message += "No Opportunity cards\n"
+            else:
+                for card in player.my_opportunity_cards:
+                    message += str(card) + "\n"
+        if what.lower().startswith('exp') or listall:
+            if len(player.my_experience_cards) == 0:
+                message += "No Experience cards"
+            else:
+                for card in player.my_experience_cards:
+                    message += str(card) + "\n"
             
         result = CommandResult(CommandResult.SUCCESS, message, False)
         return result    
@@ -559,15 +638,34 @@ class CareersGameEngine(object):
             
         return CommandResult(result, message, True)
     
-    def add(self, name, initials, stars=0, hearts=0, cash=0):
-        """Add a player to the Game.
+    def add(self, what, name, initials=None, stars=0, hearts=0, cash=0):
+        """Add a new player to the Game OR add a degree to the current player or the player whose initials are provided.
+    
         """
-        sf = SuccessFormula(stars=stars, hearts=hearts, cash=cash)
-        player = Player(name=name, initials=initials)
-        player.success_formula = sf
-        player.salary = self._careersGame.game_parameters['starting_salary']
-        player.cash = self._careersGame.game_parameters['starting_cash']
-        self._careersGame.add_player(player)        # adds to GameState
+        if what == 'player':
+            sf = SuccessFormula(stars=stars, hearts=hearts, cash=cash)
+            player = Player(name=name, initials=initials)
+            player.success_formula = sf
+            player.salary = self._careersGame.game_parameters['starting_salary']
+            player.cash = self._careersGame.game_parameters['starting_cash']
+            self._careersGame.add_player(player)        # adds to GameState
+            
+            message = f'Player "{name}" "{initials} number: {player.number}" added'
+        else:    # adds a degree in the current (or named) player's degree programs
+            # name is the name of the degree program
+            player = self.game_state.current_player if initials is None else self.get_player(initials)
+            result = self.add_degree(player, name)
+            message = result.message
+        
+        self.log(message)
+        return CommandResult(CommandResult.SUCCESS, message, False)
+    
+    def game_status(self):
+        """Get information about the current game in progress and return in JSON format
+        """
+        message =  self.game_state.to_JSON()
+        
+        return CommandResult(CommandResult.SUCCESS, message, True)
     
     #####################################
     #
@@ -673,10 +771,19 @@ class CareersGameEngine(object):
         return CommandResult(CommandResult.SUCCESS, message, False)
     
     def _execute_border_square(self, player:Player, game_square:BorderSquare, board_location:BoardLocation):
-        message = f'execute_border_square {game_square.name}  {board_location.border_square_number} for {player.player_initials}'
+        message = f'{player.player_initials} landed on {game_square.name}  ({board_location.border_square_number})'
         self.log(message)
-        
-        return CommandResult(CommandResult.SUCCESS, message, False)
+        result = game_square.execute(player)
+        result.message = message + "\n" + result.message
+        #
+        # if there is a next action to perform then do it
+        #
+        if result.next_action is not None:
+            action_result = self.execute_command(result.next_action, player)
+            result.message = result.message + "\n" + action_result.message
+            result.return_code = action_result.return_code
+            result.done_flag = action_result.done_flag
+        return result
     
     
     def exit_occupation(self, player, board_location:BoardLocation):
@@ -685,10 +792,38 @@ class CareersGameEngine(object):
             The occupation could be College ("occupationClass" : "college") or a regular Occupation ("occupationClass" : "occupation")
             * if the player entered the Occupation via Opportunity card, that card is removed from the player's hand
             * if the player completed the Occupation, credit is applied to the player's occupation record and up to 3 Experience cards given
-            *
+            
+            Note that exit_occupation does NOT update the player's board position.  
+            That is done by goto() which calls this method before updating the board position.
+            So upon entry, border square location is the occupation entrance square for this occupation (or college).
+            Note also that the player's salary is NOT adjusted when completing college. That is done by the add_degree() method.
+            
         """
-        # TODO
-        message = f'{player.initials} Leaving {board_location.occupation_name}'
+        nexperience = 0
+        trips = 1
+        if board_location.occupation_name in player.occupation_record:
+            trips = player.occupation_record[board_location.occupation_name]   # number of trips not counting this one
+            player.occupation_record[board_location.occupation_name] = trips + 1
+            
+        else:
+            player.occupation_record[board_location.occupation_name] = trips
+        
+        #
+        # No experience given for completing College
+        # 
+        game_square = self._careersGame.get_border_square(board_location.border_square_number)
+        if game_square.square_class == 'occupation_entrance_square':
+            if trips <= 3:  # at most 3 experience cards can be given
+                nexperience = trips
+            else:
+                nexperience = 3
+
+        deck = self._careersGame.experience_cards     # ExperienceCardDeck
+        for i in range(nexperience):
+            card = deck.draw()
+            player.my_experience_cards.append(card)
+        
+        message = f'{player.initials} Leaving {board_location.occupation_name}, collects {nexperience} Experience cards'
         self.log(message)
         result = CommandResult(CommandResult.SUCCESS, message, True)
         return result
@@ -706,9 +841,56 @@ class CareersGameEngine(object):
             salary += salary
         player.cash += salary
         player.laps += 1
-        message =  f'{player.initials} Collects {salary} salary'
+        message =  f'{player.player_initials} Passes Payday, Collects {salary} salary'
         self.log(message)
         return CommandResult(CommandResult.SUCCESS, message, False)
+    
+    def was_prior_travel(self, player):
+        """Returns True if the player's prior border position was a travel square, False otherwise
+        """
+        result = False
+        ps = player.board_location.prior_border_square_number
+        if ps is not None and self._careersGame.game_board.border_squares[ps].square_type == 'travel_square':
+            result = True
+        return result
+        
+    def add_degree(self, player, degreeProgram):
+        """Adds a degree to the player and adjusts the salary as needed.
+            The maximum number of degrees a player can have in any degree program is "maxDegrees".
+            Player's Salary is not adjusted if their number of degrees exceeds that.
+        """
+        game_degrees = self._careersGame.college_degrees
+        degree_names = game_degrees['degreeNames']
+        if degreeProgram not in game_degrees['degreePrograms']:
+            return CommandResult(CommandResult.ERROR, f"No such degree program: {degreeProgram}", False)
+        
+        max_allowed = game_degrees['maxDegrees']
+        salary_increases = game_degrees['salaryIncreases']
+        my_degrees = player.my_degrees
+        ndegrees = 0
+        salary_inc = 0
+        if degreeProgram in my_degrees:
+            ndegrees = player.my_degrees[degreeProgram]
+        
+        if ndegrees == 0:
+            player.my_degrees[degreeProgram] = 1
+            salary_inc = salary_increases[0]
+            player.salary = player.salary + salary_inc   # automatically adds to salary_history
+            
+        elif ndegrees + 1 <= max_allowed:
+            salary_inc = salary_increases[ndegrees]
+            player.my_degrees[degreeProgram] = ndegrees + 1
+            player.salary = player.salary + salary_inc
+        
+        else:
+            ndegrees = 3  # already maxed out
+        
+        message = f'{player.player_initials} awarded {degree_names[ndegrees]} degree in {degreeProgram}'
+        if salary_inc > 0:
+            currency = self._careersGame.game_parameters['currency']
+            message += f' and a Salary increase of {salary_inc} {currency}'
+        
+        return CommandResult(CommandResult.SUCCESS, message, True)
         
         
         

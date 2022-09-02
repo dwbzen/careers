@@ -11,11 +11,10 @@ from datetime import datetime
 from pathlib import Path
 from game.opportunityCardDeck import OpportunityCardDeck
 from game.experienceCardDeck import ExperienceCardDeck
-from game.borderSquare import BorderSquare
-from game.occupationSquare import OccupationSquare
 from game.gameState import GameState
 from game.occupation import Occupation
 from game.gameBoard import GameBoard
+from game.borderSquare import BorderSquare
 
 class CareersGame(object):
     """
@@ -101,7 +100,7 @@ class CareersGame(object):
         
     def _create_game_board(self):
         game_layout_filename = self._resource_folder + "/gameLayout_" + self._edition_name + ".json"
-        game_board = GameBoard(game_layout_filename)
+        game_board = GameBoard(game_layout_filename, game=self)
         return game_board
 
     def load_occupations(self) -> dict:
@@ -206,6 +205,9 @@ class CareersGame(object):
     def experience_cards(self):
         return self._experience_cards
     
+    @property
+    def college_degrees(self):
+        return self._college_degrees
    
     def add_player(self, aplayer:Player):
         self.game_state.add_player(aplayer)
@@ -252,6 +254,37 @@ class CareersGame(object):
         """
         pass
     
+    def find_next_border_square(self, current_square_number, atype:str, name:str=None) -> int:
+        """Find the next border square of a given type and optional name
+            Arguments:
+                current_square_number - square number on the game board
+                game_board - a GameBoard instance
+                atype - the square type to look for. Valid values are 'travel_square', 'corner_square', 'travel_square', and 'occupation_entrance_square'
+                name - optional square.name to use for comparison. For example in the UK edition, the travel squares
+                       all have different names.
+            Returns: the next square number OR None if no square of a given type/name is found.
+            BTW, the next_square_number could be < current_square_number if it's past Payday
+        """
+        squares = []
+        next_square_num = None
+        if atype=='travel_square':
+            squares = self.game_board.travel_squares
+        elif atype=='opportunity_square':
+            squares=self.game_board.opportunity_squares
+        elif atype=='occupation_entrance_square':
+            squares = self.game_board.occupation_entrance_squares
+        elif atype=='corner_square':
+            squares = self.game_board.corner_squares
+        
+        for square in squares:      # square is a BorderSquare instance, they are in square# order
+            if square.square_type == atype and (name is None or square.name==name):
+                if square.number > current_square_number:
+                    next_square_num = square.number
+                    break
+        if next_square_num is None:     # wrap-around the board
+            next_square_num = squares[0].number
+        return next_square_num
+
 if __name__ == '__main__':
     game = CareersGame('Hi-Tech')
     print(game.occupation_list)

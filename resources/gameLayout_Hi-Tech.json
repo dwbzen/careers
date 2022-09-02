@@ -41,7 +41,7 @@
 				"type" : "corner_square",
 				"background_image" : "corner_square.png",
 				"image" : "startHereAndArrow.jpg",
-				"text" : " Collect Salary as you pass PAYDAY\n Collect DOUBLE if you land here",
+				"text" : "Collect Salary as you pass PAYDAY\n Collect DOUBLE if you land here",
 				"specialProcessing" : {
 					"type" : "payday",
 					"amount" : "salary"

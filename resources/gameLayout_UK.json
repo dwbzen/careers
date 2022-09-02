@@ -1,5 +1,5 @@
 {
-	"Help" : "Board layout for the UK version. NOTE - not completed.",
+	"Help" : "Board layout for the UK version. NOTE: do not use - still in development.",
 	"type_list" : [
 		"corner_square", "opportunity_square", "danger_square", "travel_square", "occupation_entrance_square", "action_square"
 	],
@@ -18,7 +18,7 @@
 		},
 	    {
 			"type" : "travel_square",
-			"Help" : "Travel by rail on British Rail or Underground."
+			"Help" : "Travel by rail on British Rail or the Underground."
 		},
 	    {
 			"type" : "occupation_entrance_square",
@@ -40,7 +40,7 @@
 				"type" : "corner_square",
 				"background_image" : "corner_square.png",
 				"image" : "startHereAndArrow.jpg",
-				"text" : "Collect Salary<br/>as you pass<p/><h1>PAYDAY</h1><h2>Collect DOUBLE if you land here</h2>",
+				"text" : "Collect Salary as you pass PAYDAY\n Collect DOUBLE if you land here",
 				"specialProcessing" : {
 						"type" : "payday",
 						"amount" : "$Salary"
@@ -51,7 +51,7 @@
 				"name" : "Opportunity",
 				"type" : "opportunity_square",
 				"background_image" : "opportunity.png",
-				"text" : "**OPPORTUNITY KNOCKS**",
+				"text" : "OPPORTUNITY KNOCKS",
 				"specialProcessing" : {
 						"type" : "opportunity"
 				}
@@ -61,7 +61,7 @@
 				"name" : "IncomeTax",
 				"type" : "danger_square",
 				"background_image" : "danger_border_square.png",
-				"text" : "**INCOME TAX DUE**",
+				"text" : "INCOME TAX DUE",
 				"specialProcessing" : {
 						"type" : "incomeTax",
 						"amount" : "$Salary"
@@ -96,7 +96,7 @@
 				"name" : "Opportunity",
 				"type" : "opportunity_square",
 				"background_image" : "opportunity.png",
-				"text" : "**OPPORTUNITY KNOCKS**",
+				"text" : "OPPORTUNITY KNOCKS",
 				"specialProcessing" : {
 						"type" : "opportunity"
 				}
@@ -109,14 +109,14 @@
 			},
 			{
 				"number" : 7,
-				"name" : "UF",
+				"name" : "Oxford",
 				"background_image" : "occupation_entrance_square.png",
-				"image" : "UF logo.jpg",
+				"image" : "Oxford logo.png",
 				"type" : "occupation_entrance_square",
 				"text" : "",
 				"specialProcessing" : {
 						"type" : "enterCollege",
-						"destinationOccupation" : "UF"
+						"destinationOccupation" : "Oxford"
 				}
 			},
 			{
@@ -124,7 +124,7 @@
 				"name" : "Opportunity",
 				"type" : "opportunity_square",
 				"background_image" : "opportunity.png",
-				"text" : "**OPPORTUNITY KNOCKS**",
+				"text" : "OPPORTUNITY KNOCKS",
 				"specialProcessing" : {
 						"type" : "opportunity"
 				}
@@ -140,7 +140,7 @@
 				"name" : "Opportunity",
 				"type" : "opportunity_square",
 				"background_image" : "opportunity.png",
-				"text" : "**OPPORTUNITY KNOCKS**",
+				"text" : "OPPORTUNITY KNOCKS",
 				"specialProcessing" : {
 						"type" : "opportunity"
 				}
@@ -158,9 +158,9 @@
 			},
 			{
 				"number" : 12,
-				"name" : "Amtrak",
+				"name" : "Leicester Square",
 				"type" : "travel_square",
-				"background_image" : "amtrak.png",
+				"background_image" : "Underground logo.jpg",
 				"text" : "",
 				"specialProcessing" : {
 						"type" : "railTravel",
@@ -184,7 +184,7 @@
 				"name" : "Opportunity",
 				"type" : "opportunity_square",
 				"background_image" : "opportunity.png",
-				"text" : "**OPPORTUNITY KNOCKS**",
+				"text" : "OPPORTUNITY KNOCKS",
 				"specialProcessing" : {
 						"type" : "opportunity"
 				}
@@ -206,7 +206,7 @@
 				"name" : "Opportunity",
 				"type" : "opportunity_square",
 				"background_image" : "opportunity.png",
-				"text" : "**OPPORTUNITY KNOCKS**",
+				"text" : "OPPORTUNITY KNOCKS",
 				"specialProcessing" : {
 						"type" : "opportunity"
 				}
@@ -227,7 +227,7 @@
 				"name" : "Opportunity",
 				"type" : "opportunity_square",
 				"background_image" : "opportunity.png",
-				"text" : "**OPPORTUNITY KNOCKS**",
+				"text" : "OPPORTUNITY KNOCKS",
 				"specialProcessing" : {
 						"type" : "opportunity"
 				}
@@ -246,9 +246,9 @@
 			},
 			{
 				"number" : 22,
-				"name" : "Amtrak",
+				"name" : "Charing Cross",
 				"type" : "travel_square",
-				"background_image" : "amtrak.png",
+				"background_image" : "1200px-British_Rail_-_Flame_Red_logo.svg.png",
 				"text" : "",
 				"specialProcessing" : {
 						"type" : "railTravel",
@@ -278,7 +278,7 @@
 				"name" : "Opportunity",
 				"type" : "opportunity_square",
 				"background_image" : "opportunity.png",
-				"text" : "**OPPORTUNITY KNOCKS**",
+				"text" : "OPPORTUNITY KNOCKS",
 				"specialProcessing" : {
 						"type" : "opportunity"
 				}
@@ -307,7 +307,7 @@
 				"name" : "Opportunity",
 				"type" : "opportunity_square",
 				"background_image" : "opportunity.png",
-				"text" : "**OPPORTUNITY KNOCKS**",
+				"text" : "OPPORTUNITY KNOCKS",
 				"specialProcessing" : {
 						"type" : "opportunity"
 				}
@@ -329,7 +329,7 @@
 				"name" : "Opportunity",
 				"type" : "opportunity_square",
 				"background_image" : "opportunity.png",
-				"text" : "**OPPORTUNITY KNOCKS**",
+				"text" : "OPPORTUNITY KNOCKS",
 				"specialProcessing" : {
 						"type" : "opportunity"
 				}
@@ -358,16 +358,16 @@
 				"name" : "Opportunity",
 				"type" : "opportunity_square",
 				"background_image" : "opportunity.png",
-				"text" : "**OPPORTUNITY KNOCKS**",
+				"text" : "OPPORTUNITY KNOCKS",
 				"specialProcessing" : {
 						"type" : "opportunity"
 				}
 			},
 			{
 				"number" : 35,
-				"name" : "Amtrak",
+				"name" : "Pimlico",
 				"type" : "travel_square",
-				"background_image" : "amtrak.png",
+				"background_image" : "Underground logo.jpg",
 				"text" : "",
 				"specialProcessing" : {
 						"type" : "railTravel",
@@ -391,7 +391,7 @@
 				"name" : "Opportunity",
 				"type" : "opportunity_square",
 				"background_image" : "opportunity.png",
-				"text" : "**OPPORTUNITY KNOCKS**",
+				"text" : "OPPORTUNITY KNOCKS",
 				"specialProcessing" : {
 						"type" : "opportunity"
 				}

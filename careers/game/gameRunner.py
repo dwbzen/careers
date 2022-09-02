@@ -5,14 +5,12 @@ Created on Aug 12, 2022
 '''
 
 from game.careersGame import CareersGame
-from game.successFormula import SuccessFormula
 from game.player import  Player
 from game.careersGameEngine import CareersGameEngine
 from game.commandResult import CommandResult
 
 class GameRunner(object):
-    """A command-line text version of Careers game play used for testing.
-        Uses a default game of 100 points and 2 players.
+    """A command-line text version of Careers game play used for testing and simulating web server operation.
     """
 
     def __init__(self, total_points):
@@ -43,7 +41,7 @@ class GameRunner(object):
     def get_game_state(self):
         return self.game_engine.game_state
     
-    def execute_command(self, cmd, aplayer):
+    def execute_command(self, cmd, aplayer:Player):
         """Command format is command name + optional arguments
             The command and arguments passed to the game engine for execution
             Arguments:
@@ -67,11 +65,12 @@ class GameRunner(object):
         turn_number = 1
         while not game_over:
             for i in range(nplayers):
-                pn = game_state.next_player_number()
+                # 
                 current_player = game_state.current_player
+                pn = current_player.number
                 done = False
                 while not done:
-                    prompt = f'{current_player.player_initials} ({turn_number}): '
+                    prompt = f'player {pn} {current_player.player_initials} ({turn_number}): '
                     cmd = input(prompt)
                     result = self.execute_command(cmd, current_player)
                     print(result.message)
@@ -88,10 +87,15 @@ class GameRunner(object):
 if __name__ == '__main__':
 
     total_points = 100
-    game_runner = GameRunner(total_points)
+    game_runner = GameRunner(total_points)  # creates a CareersGame and CareersGameEngine
     
-    game_runner.add_player('Don', 'DWB', stars=40, hearts=10, cash=50)
-    game_runner.add_player('Brian','BDB', stars=20, hearts=40, cash=40)
+    #game_runner.add_player('Don', 'DWB', stars=40, hearts=10, cash=50)
+    #game_runner.add_player('Brian','BDB', stars=20, hearts=40, cash=40)
+    #
+    # add 2 players
+    #
+    game_runner.execute_command("add player Don DWB 40 10 50", None)
+    game_runner.execute_command("add player Brian BDB 20 40 40", None)
     
     game_runner.run_game()
     

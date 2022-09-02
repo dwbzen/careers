@@ -14,7 +14,7 @@ class GameSquare(CareersObject):
     
     """
 
-    def __init__(self, square_class:str, name=None, number=-1, text=None, special_processing_dict=None, action_text=None):
+    def __init__(self, square_class:str, name=None, number=-1, text=None, special_processing_dict=None, action_text=None, game=None):
         """Create a GameSquare
         
         """
@@ -27,6 +27,14 @@ class GameSquare(CareersObject):
         self._game_square_dict = None       # populated by concrete class
         if special_processing_dict is not None and len(special_processing_dict) > 0:
             self._special_processing = SpecialProcessing(special_processing_dict, square_class)
+        self._careersGame = None
+        #
+        # avoids circular import
+        #
+        if game is not None:
+            from game.careersGame import CareersGame
+            assert isinstance(game,CareersGame)
+            self._careersGame = game
         
     @property
     def square_class(self):

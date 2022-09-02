@@ -13,12 +13,15 @@ class OccupationSquare(GameSquare):
     '''
 
 
-    def __init__(self, occupation_square_dict):
-        """ Create an OccupationSquare
-        
+    def __init__(self, occupation_square_dict, game=None):
+        """Create a OccupationSquare instance.
+            Arguments:
+                occupation_square_dict - the dictionary defining this OccupationSquare. This would be an element of occupationSquares.
+                game - a CareersGame instance
+
         """
         super().__init__("Occupation", name=None, number= occupation_square_dict['number'], \
-                         text=occupation_square_dict['text'], special_processing_dict=occupation_square_dict['specialProcessing'])
+                         text=occupation_square_dict['text'], special_processing_dict=occupation_square_dict['specialProcessing'], game=game)
         
         self._game_square_dict = occupation_square_dict
         self._stars = occupation_square_dict["stars"]

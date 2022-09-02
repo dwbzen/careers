@@ -5,6 +5,7 @@ Created on Aug 5, 2022
 '''
 
 from game.careersObject import CareersObject
+import json
 
 class SuccessFormula(CareersObject):
     '''
@@ -42,12 +43,14 @@ class SuccessFormula(CareersObject):
     
     def __str__(self):
         return f'Money: ${self.cash},000  Fame: {self.fame}  Happiness: {self.happiness}'
+    
+    def to_dict(self):
+        return {"cash" : self.cash, "fame" : self.fame, "happiness" : self.happiness}
 
     def to_JSON(self):
         """Returns the JSON serialization of SuccessFormula.
-            NOTE - without opening and closing braces
         """
-        return f'"money": "{self.cash}", "fame": "{self.fame}", "happiness": "{self.happiness}"'
+        return json.dumps(self.to_dict())
     
     @property
     def total_points(self):

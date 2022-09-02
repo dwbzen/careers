@@ -10,13 +10,14 @@ from game.opportunityCard import OpportunityCard
 from game.experienceCard import ExperienceCard
 
 from datetime import datetime
+import json
 
 class Player(CareersObject):
     
     def __init__(self, number=0, name="Player", salary=2000, cash=2000, initials="XXX"):
         self._player_name = name
-        self._player_initials = initials            # unique initials
-        self._salary_history = []                   # list of salaries the player has attained
+        self._player_initials = initials            # unique initials - no player can have the same initials
+        self._salary_history = [salary]             # list of salaries the player has attained
         self._salary = salary                       # my current salary
         self._cash = cash                           # cash on hand
         self._success_formula = None         # my SuccessFormula
@@ -36,10 +37,14 @@ class Player(CareersObject):
         self._is_insured = False
         self._is_unemployed = False         # True when player lands on (or is sent to) Unemployment
         self._is_sick = False               # True when player lands on Hospital
+        self._lose_turn = False             # If True the player loses their next turn. This is automatically reset when the turn is skipped.
         
         # dict where key is occupation name, value is the number of completed trips
         # when completed trips >= 3, the can_retire flag is automatically set
         self._occupation_record = dict()
+        
+        # player loan obligations are indexed by player_number: loans[player_number] = <loan amount>
+        self._loans = {}
         
         self._opportunity_card = None   # the OpportunityCard instance of the card currently in play, or None otherwise
         self._experience_card = None    # the ExperienceCard instance of the card currently in play, or None otherwise
@@ -66,6 +71,10 @@ class Player(CareersObject):
     def salary(self, newSalary):
         self._salary = newSalary
         self._salary_history.append(newSalary)
+        
+    @property
+    def salary_history(self):
+        return self._salary_history
     
     @property
     def cash(self):
@@ -146,7 +155,7 @@ class Player(CareersObject):
     
     @property
     def my_opportunity_cards(self):
-        return self._my_opportunitiy_cards
+        return self._my_opportunity_cards
     
     @property
     def opportunity_card(self) -> OpportunityCard:
@@ -193,12 +202,36 @@ class Player(CareersObject):
         self._is_sick = value
         
     @property
+    def lose_turn(self):
+        return self._lose_turn
+    
+    @lose_turn.setter
+    def lose_turn(self, value):
+        self._lose_turn = value
+        
+    @property
     def laps(self):
         return self._laps
     
     @laps.setter
     def laps(self, value):
         self._laps = value
+    
+    @property
+    def loans(self):
+        return self._loans
+    
+    def get_total_loans(self):
+        total = 0
+        for v in self._loans.values():
+            total += v
+        return total
+    
+    def add_loan(self, amt, player_number):
+        if player_number in self._loans:
+            self._loans[player_number] = self._loans[player_number] + amt
+        else:
+            self._loans[player_number] = amt
     
     def get_opportunity_cards(self) -> list:
         """Returns a of dict of Opportunity cards indexed by number
@@ -235,6 +268,20 @@ class Player(CareersObject):
                 else:
                     cards_dict[key] = {"quantity" : 1, "spaces" : card.type, "card" : cd}
         return cards_dict
+    
+    def used_opportunity(self):
+        """The player has used the saved Opportunity card. Set it to None and remove from their deck
+        """
+        if self.opportunity_card is not None:
+            self.my_opportunity_cards.remove(self._opportunity_card)
+            self._opportunity_card = None
+    
+    def used_experience(self):
+        """The player has used the saved Experience card. Set it to None and remove from their deck
+        """
+        if self.experience_card is not None:
+            self.my_experience_cards.remove(self.experience_card)
+            self._experience_card = None
                 
     def add_degree(self, degree_program):
         if degree_program in self.my_degrees:
@@ -272,19 +319,21 @@ class Player(CareersObject):
         self._salary_history.append(self.salary)
         
     def total_points(self):
-        return self.hapiness + self.fame + self.cash_points()
+        return self.hapiness + self.fame + self.cash_points() - self.loan_points()
     
     def cash_points(self):
         """Cash points is the amount of cash/1000
         """
         return self.cash // 1000
     
+    def loan_points(self):
+        return self.get_total_loans() // 1000
+    
     def is_complete(self):
         """Returns True if this players's total points are >= game total points, False otherwise
     
         """
         return  self.total_points() >= self.success_formula.total_points()
-    
 
     def save(self):
         """Persist this player's state to a JSON file.
@@ -299,11 +348,13 @@ class Player(CareersObject):
         return filename
     
     def player_info(self, include_successFormula=False):
+        v = self.get_total_loans()
         fstring = f'salary:{self.salary}, Cash: {self.cash},  Fame: {self.fame},  Happiness: {self.happiness}, Is insured: {self.is_insured}'
         if include_successFormula:
-            return f'{fstring}\nSuccess Formula: {self.success_formula}'
-        else:
-            return fstring
+            fstring = f'{fstring}\nSuccess Formula: {self.success_formula}'
+        if v > 0:
+            fstring = f'{fstring}\nloans: {v}'
+        return fstring
     
     def get_current_location(self) -> BoardLocation:
         """Gets the location of this player on the board.
@@ -318,14 +369,18 @@ class Player(CareersObject):
     def __str__(self):
         fstring = f'Cash: {self.cash}  Fame: {self.fame}  Happiness: {self.happiness}'
         return f'{self.number}. {self.player_name} ({self.player_initials}) : salary:{self.salary}\n{fstring}\nSuccess Formula: {self.success_formula}'
+    
+    def to_dict(self):
+        pdict = {"name" : self.player_name, "number" : self.number, "initials" : self.player_initials}
+        pdict['successFormula'] = self._success_formula.to_dict()
+        pdict['score'] = {"cash":self.cash, "fame":self.fame, "happiness":self.happiness, "is_insured":self.is_insured}
+        pdict['loans'] = self.loans
+        pdict['board_location'] = self.board_location.to_dict()
+        
+        return pdict
 
     def to_JSON(self):
-        sf = f'"SuccessFormula" : ' + '{\n    ' +  self._success_formula.to_JSON() + '\n  }'
-        score = f' "cash" : "{self.cash}",  "fame" : "{self.fame}",  "hapiness" : "{self.happiness}", "is_insured: "{self.is_insured}" '
-        locn =   self.board_location.to_JSON()
-
-        jstr = f'{self.info()},\n {score},\n {locn},\n  {sf}'
-        return  '{' + jstr + '\n}'
+        return json.dumps(self.to_dict())
     
 if __name__ == '__main__':
     player = Player(0, name='Don', initials='DWB')

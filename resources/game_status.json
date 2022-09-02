@@ -1,0 +1,58 @@
+{
+  "game_type": "points",
+  "number_of_players": 2,
+  "current_player_number": 1,
+  "turns": 0,
+  "turn_number": 1,
+  "total_points": 100,
+  "seconds_remaining": 0,
+  "game_complete": false,
+  "players": [
+    {
+      "name": "Don",
+      "number": 0,
+      "initials": "DWB",
+      "successFormula": {
+        "cash": 50,
+        "fame": 40,
+        "happiness": 10
+      },
+      "score": {
+        "cash": 4000,
+        "fame": 0,
+        "happiness": 0,
+        "is_insured": false
+      },
+      "loans": {},
+      "board_location": {
+        "border_square_number": 16,
+        "border_square_name": "Opportunity",
+        "occupation_square_number": 0,
+        "occupation_name": null
+      }
+    },
+    {
+      "name": "Brian",
+      "number": 1,
+      "initials": "BDB",
+      "successFormula": {
+        "cash": 40,
+        "fame": 20,
+        "happiness": 40
+      },
+      "score": {
+        "cash": 2000,
+        "fame": 0,
+        "happiness": 0,
+        "is_insured": false
+      },
+      "loans": {},
+      "board_location": {
+        "border_square_number": 32,
+        "border_square_name": "GambleInVegas",
+        "occupation_square_number": 0,
+        "occupation_name": null
+      }
+    }
+  ]
+}

@@ -11,7 +11,7 @@ class Occupation(object):
     """
 
 
-    def __init__(self, occupation_dict:dict):
+    def __init__(self, occupation_dict:dict, game=None):
         """
         Constructor
         """
@@ -25,17 +25,17 @@ class Occupation(object):
         self._entry_text = self._configuration['text']
         self._fullName = self._configuration['fullName']
         self._degreeRequirements = self._configuration.get('degreeRequirements', None)
-        self._occupationSquares = self._create_occupation_squares(occupation_dict["occupationSquares"])
+        self._occupationSquares = self._create_occupation_squares(occupation_dict["occupationSquares"], game)
         self._double_happiness = False      # this is temporarily set by a "double_happiness" Opportunity card
         
     
-    def _create_occupation_squares(self, occupationSquares:list) -> list:
+    def _create_occupation_squares(self, occupationSquares:list, game) -> list:
         """For this Occupation create a list of OccupationSquare corresponding to the "occupationSquares".
             Returns: a List of  OccupationSquare
         """
         occupation_squares = list()
         for occupation_square_dict in occupationSquares:
-            occupation_square = OccupationSquare(occupation_square_dict)
+            occupation_square = OccupationSquare(occupation_square_dict, game=game)
             occupation_squares.append(occupation_square)
         return occupation_squares
     

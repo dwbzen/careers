@@ -31,6 +31,13 @@ class BoardLocation(CareersObject):
             self._border_square_name = border_square_name
             self._occupation_name = occupation_name
             self._occupation_square_number = occupation_square_number
+        #
+        # these properties track where we came from and are all read-only
+        #
+        self._prior_border_square_number = None
+        self._prior_border_square_name = None
+        self._prior_occupation_square_number = None
+        self._prior_occupation_name = None
     
     def from_JSON(self, jstr):
         bs_dict = json.loads(jstr)    # this could raise a TypeError
@@ -45,6 +52,7 @@ class BoardLocation(CareersObject):
     
     @border_square_number.setter
     def border_square_number(self, value):
+        self._prior_border_square_number = self.border_square_number
         self._border_square_number = value
         
     @property
@@ -53,6 +61,7 @@ class BoardLocation(CareersObject):
     
     @occupation_name.setter
     def occupation_name(self, value):
+        self._prior_occupation_name = self.occupation_name
         self._occupation_name = value
         
     @property
@@ -61,6 +70,7 @@ class BoardLocation(CareersObject):
     
     @occupation_square_number.setter
     def occupation_square_number(self, value):
+        self._prior_occupation_square_number = self.occupation_square_number
         self._occupation_square_number = value
         
     @property
@@ -69,8 +79,29 @@ class BoardLocation(CareersObject):
     
     @border_square_name.setter
     def border_square_name(self, value):
+        self._prior_border_square_name = self.border_square_name
         self._border_square_name = value
+        
+    @property
+    def prior_border_square_number(self):
+        return self._prior_border_square_number
+    @property
+    def prior_border_square_name(self):
+        return self._prior_border_square_name
+    @property
+    def prior_occupation_square_number(self):
+        return self._occupation_square_number
+    def prior_occupation_name(self):
+        return self._prior_occupation_name
     
+    def reset_prior(self):
+        """After a player's turn is complete their prior location is no longer relevant. This sets all the prior_ values to None
+        """
+        self._prior_border_square_number = None
+        self._prior_border_square_name = None
+        self._prior_occupation_name = None
+        self._prior_occupation_square_number = None
+        
     def __str__(self):
         locn = f'Border square#: {self.border_square_number}'
         if self.border_square_name is not None:
@@ -79,10 +110,10 @@ class BoardLocation(CareersObject):
             locn += f'\tOccupation: {self.occupation_name}   square#: {self._occupation_square_number}'
         return locn
     
+    def to_dict(self):
+        return {"border_square_number":self.border_square_number, "border_square_name":self.border_square_name, \
+                "occupation_square_number":self.occupation_square_number, "occupation_name":self.occupation_name }
+    
     def to_JSON(self):
-        jstr = f'{{\n  "border_square_number" : "{self.border_square_number}",\n'
-        jstr += f'  "border_square_name" : "{self.border_square_name}",\n'
-        jstr += f'  "occupation_square_number" : "{self.occupation_square_number}",\n'
-        jstr += f'  "occupation_name" : "{self.occupation_name}"\n}}'
-        return jstr
+        return json.dumps(self.to_dict(), indent=2)
     
