@@ -2,7 +2,7 @@
 	"editions" : [ "Hi-Tech", "UK"],
 	
 	"Hi-Tech" : {
-			"version" : "0.0.4",
+			"version" : "0.0.5",
 			"full_name" : "Hi Tech Edition",
 			"Help" : "Rule Book v2 booklet.pdf",
 			"Game Parameters" : "gameParameters_Hi-Tech.json",
