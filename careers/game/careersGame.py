@@ -24,7 +24,7 @@ class CareersGame(object):
         
     """
 
-    def __init__(self, edition_name, total_points):
+    def __init__(self, edition_name, total_points, game_id):
         """CareersGame Constructor
             Arguments:
                 edition_name - the name of the edition to create. This must be a key in editions.json file.
@@ -66,12 +66,17 @@ class CareersGame(object):
         #
         # create & initialize the GameState which includes a list of Players
         #
-        self._game_state = GameState(total_points)
+        self._game_state = GameState(total_points, self._game_type)
         #
         # create a unique ID for this game, used for logging
         #
         today = datetime.now()
-        self._gameId = '{0:d}{1:02d}{2:02d}_{3:02d}{4:02d}_{5:04d}'.format(today.year, today.month, today.day,today.hour, today.minute, random.randint(1000,9999))
+        self._gameId = game_id
+        #
+        # if a gameId is not provided, create one
+        #
+        if game_id is None:
+            self._gameId = '{0:d}{1:02d}{2:02d}_{3:02d}{4:02d}_{5:04d}'.format(today.year, today.month, today.day,today.hour, today.minute, random.randint(1000,9999))
         
     def _load_game_configuration(self):
         """Loads the game parameters and occupations JSON files for this edition.

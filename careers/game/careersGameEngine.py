@@ -25,12 +25,13 @@ from datetime import datetime
 import random
 
 
+
 class CareersGameEngine(object):
     """CareersGameEngine executes the action(s) associated with each player's turn.
     Valid commands + arguments:
         command :: <roll> | <use> | <retire> | <bump> | <bankrupt> | <list> | <status> | <quit> | <done> | <end game> |
                    <saved games> | <save> | <load> | <query> | <enter> | <goto> | <add> | <use insurance> | <add degree> |
-                   <pay> | <transfer> | <game_status>
+                   <pay> | <transfer> | <game_status> | <create> | <start> | <buy>
         <use> :: "use"  <card-type>
         <card_type> :: "opportunity" | "experience" 
         <roll> :: "roll"                        ;roll 1 or 2 dice depending on where the player is on the board
@@ -57,28 +58,27 @@ class CareersGameEngine(object):
         <pay> :: "pay" amount                ;current player makes a payment associated with their current board location
         <transfer> :: "transfer" quantity ("cash" | "opportunity" | "experience) player_number
         <game_status> :: "game_status"
+        <create> :: "create" points [id]      ;create a new CareersGame with specified total points and optional gameId
+        <start> :: "start"                    ;starts a newly created CareersGame
+        <buy>  :: "buy"  ( "hearts" | "stars" | "experience" | "opportunity" ) quantity cash_amount  ;buy some number of items for the cash_amount provided
     """
     
     COMMANDS = ['roll', 'use', 'goto', 'enter', 'status', 'done', 'next', 'end', 'quit', 'save', 'where',
                 'retire', 'bump', 'bankrupt', 'list', 'saved', 'load',  'who', 'add', 'use_insurance', 
-                'pay', 'transfer', 'game_status']
+                'pay', 'transfer', 'game_status', 'create', 'start', 'buy']
     
-    def __init__(self, careersGame:CareersGame):
+    def __init__(self):
         '''
         Constructor
         '''
-        self._careersGame = careersGame
-        self._game_state = self._careersGame.game_state
-        self._trace = True         # traces the action by describing each step and logs to a file
-        self._logfile_name = "careersLog_" + careersGame.edition_name
-        self._logfile_path = "/data/log"    # TODO put in Environment
-        self._fp = None     # log file open channel
+        self._fp = None             # logging file pointer
+        self._careersGame = None    # create a new CareersGame with create()
+        self._trace = True          # traces the action by describing each step and logs to a file
         self._start_date_time = datetime.now()
-        self._gameId = careersGame.gameId
+        self._gameId = None
         
         self._current_player = None
         self._admin_player = Player(number=-1, name='Administrator', initials='admin')
-        self.fp = open(self.logfile_path + "/" + self.logfile_name + "_" + self.gameId + ".log", "w")
     
     @property
     def fp(self):
@@ -112,19 +112,20 @@ class CareersGameEngine(object):
     def game_state(self):
         return self._game_state
     
+    @property
+    def careersGame(self):
+        return self._careersGame
+    
     def get_datetime(self) -> str:
         now = datetime.today()
         return '{0:d}{1:02d}{2:02d}_{3:02d}{4:02d}'.format(now.year, now.month, now.day, now.hour, now.minute)
     
     def log(self, message):
         msg = self.get_datetime() + f'  {message}\n'
-        self.fp.write(msg)
+        if self.fp is not None:     # may be logging isn't initialized yet or logging option is False
+            self.fp.write(msg)
         if self.trace:
             print(msg)
-    
-    def start(self):
-        self.log("Starting game: " + self.gameId)
-        self.game_state.set_next_player()    # sets the player number to 0 and the curent_player Player reference
 
     def execute_command(self, command:str, aplayer:Player, args:list=[]):
         """Executes a command for a given Player
@@ -667,12 +668,68 @@ class CareersGameEngine(object):
         
         return CommandResult(CommandResult.SUCCESS, message, True)
     
+    def create(self, points, game_id=None):
+        self._edition = 'Hi-Tech'
+        self._careersGame = CareersGame(self._edition, points, game_id)
+        self._game_state = self._careersGame.game_state
+        self._gameId = self._careersGame.gameId
+        self._logfile_name = "careersLog_" + self._careersGame.edition_name
+        self._logfile_path = "/data/log"    # TODO put in Environment   
+        self.fp = open(self.logfile_path + "/" + self.logfile_name + "_" + self.gameId + ".log", "w")   # log file open channel
+        
+        message = f'Created game {self._gameId}'
+        self.log(message)
+        return CommandResult(CommandResult.SUCCESS, message, True)
+    
+    def start(self):
+        return self._start()
+    
+    def buy(self, what, qty_str, amount_str):
+        """Buy a number of items for the current player
+            Arguments:
+                what - "hearts" | "stars" | "experience" | "opportunity"
+                qty - how many to buy (adds to the player's score or card deck)
+                amount - cash amount cost
+            Returns:
+                CommandResult.SUCCESS if the player can cover the cost, otherwise CommandResult.ERROR with an appropriate error message
+            Okay to have a negative quantity and zero amount. For example, to lose 1 heart send: "buy hearts -1 0"
+        """
+        return self._buy(what, qty_str, amount_str)
+    
     #####################################
     #
     # Game engine action implementations
     #
     #####################################
+        
+    def _start(self):
+        message = f'Starting game {self.gameId}'
+
+        self.log(message)
+        self.game_state.set_next_player()    # sets the player number to 0 and the curent_player Player reference
+        return CommandResult(CommandResult.SUCCESS, message, True)
     
+    def _buy(self, what, qty_str, amount_str):
+        """Implements the buy command
+        """
+        player = self.game_state.current_player
+        amount = int(amount_str)
+        qty = int(qty_str)
+        if player.cash < amount:
+            return CommandResult(CommandResult.ERROR, f'Insufficient funds {player.cash} for amount {amount}', True)
+        player.add_cash(amount)
+        if what.lower().startswith('heart'):
+            player.add_hearts(qty)
+        elif what.lower().startswith('star'):
+            player.add_stars(qty)
+        elif what.lower().startswith('exp'):
+            self.add_experience_cards(player, qty)
+        elif what.lower().startswith('opp'):
+            self.add_opportunity_cards(player, qty)
+        else:
+            return CommandResult(CommandResult.ERROR, f'Cannot add {qty} {what}', False)
+        return CommandResult(CommandResult.SUCCESS, f'{qty} {what} added', True)
+        
     def save_game(self):
         jstr = f'{{\n  "game_id" : "{self.gameId}",\n'
         jstr += f'  "gameState" : '
@@ -818,16 +875,25 @@ class CareersGameEngine(object):
             else:
                 nexperience = 3
 
-        deck = self._careersGame.experience_cards     # ExperienceCardDeck
-        for i in range(nexperience):
-            card = deck.draw()
-            player.my_experience_cards.append(card)
+        self.add_experience_cards(player, nexperience)
         
         message = f'{player.initials} Leaving {board_location.occupation_name}, collects {nexperience} Experience cards'
         self.log(message)
         result = CommandResult(CommandResult.SUCCESS, message, True)
         return result
     
+    def add_experience_cards(self, player, ncards):
+        deck = self._careersGame.experience_cards     # ExperienceCardDeck
+        for i in range(ncards):
+            card = deck.draw()
+            player.my_experience_cards.append(card)
+            
+    def add_opportunity_cards(self, player, ncards):
+        deck = self._careersGame.opportunities        # OpportunityCardDeck
+        for i in range(ncards):
+            card = deck.draw()
+            player.my_opportunity_cards.append(card)        
+        
     def pass_payday(self, player, board_location:BoardLocation):
         """Performs any actions associated with landing on or passing the Payday square.
             Count laps (which may or may not be used) and dole out appropriate salary.

@@ -14,7 +14,7 @@ class GameState(CareersObject):
     """
 
 
-    def __init__(self, total_points):
+    def __init__(self, total_points, game_type='points'):
         """Create and initialize a Careers GameState
             The GameState encapsulates the following dynamic game state properties:
                 number_of_players
@@ -39,7 +39,7 @@ class GameState(CareersObject):
         self._game_start = datetime.now()
         self._game_complete = False
         self._seconds_remaining = 0
-        self._game_type = 'points'
+        self._game_type = game_type
     
     @property
     def number_of_players(self):

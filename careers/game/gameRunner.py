@@ -17,10 +17,10 @@ class GameRunner(object):
         """
         Constructor
         """
-        self._careersGame = CareersGame('Hi-Tech', total_points)
+        self._careersGame = None
         self.total_points = total_points
         self._trace = True          # traces the action by describing each step
-        self.game_engine = CareersGameEngine(self._careersGame)
+        self.game_engine = CareersGameEngine()
         self.game_engine.trace = self._trace
         
 
@@ -46,7 +46,7 @@ class GameRunner(object):
             The command and arguments passed to the game engine for execution
             Arguments:
                 cmd - the command string
-                aplayer - a Player reference
+                aplayer - a Player reference. If None, the engine executes the command as Administrator (admin) user.
             Returns:
                 result - result dictionary (result, message, done)
         """
@@ -58,7 +58,6 @@ class GameRunner(object):
     
     def run_game(self):
 
-        self.game_engine.start()
         game_over = False
         game_state = self.get_game_state()
         nplayers = game_state.number_of_players
@@ -87,8 +86,9 @@ class GameRunner(object):
 if __name__ == '__main__':
 
     total_points = 100
-    game_runner = GameRunner(total_points)  # creates a CareersGame and CareersGameEngine
+    game_runner = GameRunner(total_points)  # creates a CareersGameEngine
     
+    game_runner.execute_command(f'create {total_points}', None)     # creates a CareersGame
     #game_runner.add_player('Don', 'DWB', stars=40, hearts=10, cash=50)
     #game_runner.add_player('Brian','BDB', stars=20, hearts=40, cash=40)
     #
@@ -96,6 +96,7 @@ if __name__ == '__main__':
     #
     game_runner.execute_command("add player Don DWB 40 10 50", None)
     game_runner.execute_command("add player Brian BDB 20 40 40", None)
+    game_runner.execute_command("start", None)
     
     game_runner.run_game()
     

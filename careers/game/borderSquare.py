@@ -7,7 +7,7 @@ Created on Aug 12, 2022
 from game.gameSquare import GameSquare
 from game.player import Player
 from game.commandResult import CommandResult
-from game.gameUtils import GameUtils
+import json
 
 class BorderSquare(GameSquare):
     """Encapsulates a Careers game border (non-occupation) square.
@@ -41,6 +41,10 @@ class BorderSquare(GameSquare):
     @square_type.setter
     def square_type(self, value):
         self._square_type = value
+        
+    @property
+    def game_square_dict(self):
+        return self._game_square_dict
     
     def execute(self, player:Player) -> CommandResult:
         """Execute the actions associated with landing on this BorderSquare. Overrides GameSquare.execute().
@@ -63,10 +67,9 @@ class BorderSquare(GameSquare):
             #
             next_square_number = self._careersGame.find_next_border_square(self.number, 'travel_square')
             game_square = careersGame.game_board.get_square(next_square_number)
-            next_action = f'goto {next_square_number};roll'
-            #player.board_location.border_square_number = next_square_number
-            #player.board_location.border_square_name = game_square.name
-            result = CommandResult(CommandResult.SUCCESS, f'Advance to square {next_square_number}, {game_square.name}', False)
+            next_action = f'goto {next_square_number};roll'    # player.board_location set by 'goto' command
+
+            result = CommandResult(CommandResult.SUCCESS, f'Advance to square {next_square_number}, {game_square.name} and roll again', False)
             result.next_action = next_action
             #result.board_location = player.board_location
             return result
@@ -82,6 +85,18 @@ class BorderSquare(GameSquare):
             else:
                 result = CommandResult(CommandResult.SUCCESS, "", True)
             return result
+        elif self.square_type == 'action_square':
+            if self.name == 'BuyInsurance':         # nothing to do, buy_insurance is a separate command
+                return CommandResult(CommandResult.NEED_PLAYER_CHOICE, "", False)
+            else:
+                #
+                # return the JSON dumps of this square as landing here requires a choice by the player
+                # to buy hearts, stars, experience cards or to gamble
+                # The UI will send back the appropriate command if the player wants to execute the square
+                # this will include the choice amount.
+                #
+                message = self.to_JSON()
+                return CommandResult(CommandResult.NEED_PLAYER_CHOICE, message, False)
         else:
             pass
         
@@ -89,15 +104,7 @@ class BorderSquare(GameSquare):
         return result
         
     def to_JSON(self):
-        txt = f'''{{
-        "square_class" : "{self.square_class}",
-        "name":"{self.name}",
-        "number":"{self.number}",
-        "text":"{self.text}",
-        "type":"{self.square_type}",
-        "special_processing_txt" : {self._special_processing_dict} 
-        }}'''
-        return txt
+        return json.dumps(self.game_square_dict)
 
 
     

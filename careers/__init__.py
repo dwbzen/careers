@@ -17,7 +17,7 @@ del minPythonVersion
 del minPythonVersionStr
 
 __author__ = "Donald Bacon"
-__version__ = "0.0.4"
+__version__ = "0.0.6"
 
 
 # this defines what  is loaded when importing __all__
