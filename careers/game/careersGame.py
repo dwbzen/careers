@@ -15,23 +15,31 @@ from game.gameState import GameState
 from game.occupation import Occupation
 from game.gameBoard import GameBoard
 from game.borderSquare import BorderSquare
+from game.careersObject import CareersObject
+from threading import Lock
 
-class CareersGame(object):
+class CareersGame(CareersObject):
     """
     Represents a Careers Game instance.
         The CareersGame model class has instances of all the components used in game play:
         Opportunity and Experience card decks, the game board, parameters for a given edition, occupations, players, and the game state.
         
     """
-
-    def __init__(self, edition_name, total_points, game_id):
+    _lock = Lock()
+    
+    def __init__(self, edition_name,  master_id, total_points, game_id, game_type="points"):
         """CareersGame Constructor
             Arguments:
+                master_id - An ID that uniquely identifies the game's creator - a.k.a the game master
                 edition_name - the name of the edition to create. This must be a key in editions.json file.
-                total_points - total number of points in the success formula.
+                total_points - total number of points in the success formula or in a timed game, the number of minutes.
+                game_id - a Globally Unique Identifier for this game (guid). If not provided, one is generated from the current date/time.
             Raises:
                 ValueError if there is no such edition
+            Saved games are indexed by master_id. This is the primary search key used to search for saved games.
+            It's the responsibility of the front end GUI to provide this.
         """
+        self._master_id = master_id
         self._edition_name = edition_name
         self._env = Environment.get_environment()
         self._resource_folder = self._env.get_resource_folder()     # base resource folder
@@ -61,7 +69,7 @@ class CareersGame(object):
         # load the game board
         #
         self._game_board = self._create_game_board()   # GameBoard instance
-        self._game_type = 'points'  # 'points' or 'timed' (which is not yet supported)
+        self._game_type = game_type  # 'points' or 'timed' (which is not yet supported)
 
         #
         # create & initialize the GameState which includes a list of Players
@@ -70,13 +78,12 @@ class CareersGame(object):
         #
         # create a unique ID for this game, used for logging
         #
-        today = datetime.now()
         self._gameId = game_id
         #
         # if a gameId is not provided, create one
         #
         if game_id is None:
-            self._gameId = '{0:d}{1:02d}{2:02d}_{3:02d}{4:02d}_{5:04d}'.format(today.year, today.month, today.day,today.hour, today.minute, random.randint(1000,9999))
+            self._gameId = self._create_game_id()
         
     def _load_game_configuration(self):
         """Loads the game parameters and occupations JSON files for this edition.
@@ -96,7 +103,17 @@ class CareersGame(object):
         # load the individual occupation files
         self._occupations = self.load_occupations()     # dictionary of Occupation instances keyed by name
 
-        
+    def _create_game_id(self):
+        """Create a unique game id (guid) for this game.
+            This method acquires a lock to insure uniqueness in a multi-process/web environment.
+            Format is based on current date and time, for example 20220908-140952-973406-27191
+        """
+        CareersGame._lock.acquire()
+        today = datetime.now()
+        gid =  '{0:d}{1:02d}{2:02d}-{3:02d}{4:02d}{5:02d}-{6:06d}-{7:05d}'.format(today.year, today.month, today.day, today.hour, today.minute, today.second, today.microsecond, random.randint(10000,99999))
+        CareersGame._lock.release()
+        return gid
+    
     def _create_opportunity_deck(self):
         self._opportunities = OpportunityCardDeck(self._resource_folder, self._edition_name)
     
@@ -175,6 +192,14 @@ class CareersGame(object):
     @property
     def gameId(self):
         return self._gameId
+    
+    @property
+    def master_id(self):
+        return self._master_id
+    
+    @master_id.setter
+    def master_id(self, value):
+        self._master_id = value
     
     @property
     def game_type(self):
@@ -289,7 +314,13 @@ class CareersGame(object):
         if next_square_num is None:     # wrap-around the board
             next_square_num = squares[0].number
         return next_square_num
-
+    
+    def to_JSON(self):
+        """Use jsonpickle to serialize the game to JSON as a JSON-compatible dict.
+            A CareersGame serialized with jsonpickle can be turned back to python with unpickler.
+        """
+        return CareersObject.json_pickle(self)
+    
 if __name__ == '__main__':
     game = CareersGame('Hi-Tech')
     print(game.occupation_list)

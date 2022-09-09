@@ -22,6 +22,7 @@ class GameState(CareersObject):
                 current_player_number -  the current player number (whose turn it is)
                 current_player - a Player instance
                 winning_player - a Player instance, None until the game determines a winner
+                total_points - points needed to win if game_type is 'points', else it's the #minutes in a timed game
                 turns - total number of completed turns taken by all players
                 turn_number - the current turn number
                 game_start - the datetime when the game started (when this object was created)
@@ -38,8 +39,9 @@ class GameState(CareersObject):
         self._turn_number = 1
         self._game_start = datetime.now()
         self._game_complete = False
-        self._seconds_remaining = 0
+        
         self._game_type = game_type
+        self._seconds_remaining = 0 if game_type=='points' else total_points * 60
     
     @property
     def number_of_players(self):
@@ -89,9 +91,17 @@ class GameState(CareersObject):
     def turns(self):
         return self._turns
     
+    @turns.setter
+    def turns(self, value):
+        self._turns = value
+    
     @property
     def turn_number(self):
         return self._turn_number
+    
+    @turn_number.setter
+    def turn_number(self, value):
+        self._turn_number = value
     
     @property
     def seconds_remaining(self):
@@ -111,6 +121,10 @@ class GameState(CareersObject):
             
         self.current_player_number = npn    
         self.current_player = self.players[self.current_player_number]
+        if npn == 0:
+            self.turns += 1
+            self.turn_number += 1
+            
         return self.current_player_number
     
     def _get_next_player_number(self):

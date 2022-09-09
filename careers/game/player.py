@@ -11,6 +11,7 @@ from game.experienceCard import ExperienceCard
 
 from datetime import datetime
 import json
+import jsonpickle
 
 class Player(CareersObject):
     
@@ -319,7 +320,7 @@ class Player(CareersObject):
         self._salary_history.append(self.salary)
         
     def total_points(self):
-        return self.hapiness + self.fame + self.cash_points() - self.loan_points()
+        return self.happiness  + self.fame + self.cash_points() - self.loan_points() 
     
     def cash_points(self):
         """Cash points is the amount of cash/1000
@@ -373,14 +374,19 @@ class Player(CareersObject):
     def to_dict(self):
         pdict = {"name" : self.player_name, "number" : self.number, "initials" : self.player_initials}
         pdict['successFormula'] = self._success_formula.to_dict()
-        pdict['score'] = {"cash":self.cash, "fame":self.fame, "happiness":self.happiness, "is_insured":self.is_insured}
+        points = self.total_points()
+        pdict['score'] = {"cash":self.cash, "fame":self.fame, "happiness":self.happiness, "total_points":points, "is_insured":self.is_insured}
         pdict['loans'] = self.loans
         pdict['board_location'] = self.board_location.to_dict()
+        pdict['is_sick'] = self.is_sick
+        pdict['is_unemployed'] = self.is_unemployed
+        pdict['occupation_record'] = self.occupation_record
         
         return pdict
 
     def to_JSON(self):
-        return json.dumps(self.to_dict())
+        return json.dumps(self.to_dict(), indent=2)
+
     
 if __name__ == '__main__':
     player = Player(0, name='Don', initials='DWB')
@@ -390,12 +396,15 @@ if __name__ == '__main__':
     print(str(player))
     print(repr(player))
     
-    player.add_cash(1000)
+    player.add_cash(5000)
     player.add_hearts(3)
     player.add_stars(6)
     print("\n" + player.player_info(include_successFormula=False) )
     player.add_to_salary(2000)
-    print("\n" + player.player_info(include_successFormula=True) + "\n" )
+    print("\n" + player.player_info(include_successFormula=True)  )
     
+    print("\njson_pickle:")
+    print(player.json_pickle())
+    print("\nto_JSON:")
     print(player.to_JSON())
     

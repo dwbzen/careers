@@ -23,7 +23,7 @@ from game.gameSquare import GameSquare
 
 from datetime import datetime
 import random
-
+import joblib, jsonpickle
 
 
 class CareersGameEngine(object):
@@ -44,7 +44,8 @@ class CareersGameEngine(object):
         <done> :: "done" | "next"               ;done with my turn - next player's turn
         <end game> :: "end game"                ;saves the current game state then ends the game
         <saved games> :: "saved games"          ;list any saved games by date/time and gameID
-        <save> :: "save"                        ;saves the current game state to a file as JSON
+        <save> :: "save" <how>                  ;saves the current game state to a file in the specified format
+        <how> ::  "json" | "pkl"
         <load> :: "load" game-id                ;load a game and start play with the next player
         <query> :: "where" <who>                ;gets info on a player's current location on the board
         <who> :: "am I" | "is" <playerID>
@@ -58,7 +59,9 @@ class CareersGameEngine(object):
         <pay> :: "pay" amount                ;current player makes a payment associated with their current board location
         <transfer> :: "transfer" quantity ("cash" | "opportunity" | "experience) player_number
         <game_status> :: "game_status"
-        <create> :: "create" points [id]      ;create a new CareersGame with specified total points and optional gameId
+        <create> :: "create" <edition> <game_type> points  [id]      ;create a new CareersGame with specified total points or total time (in minutes) and optional gameId
+        <edition> :: "Hi-Tech"    ;supports multiple editions
+        <game_type> ::  'points' | 'timed'
         <start> :: "start"                    ;starts a newly created CareersGame
         <buy>  :: "buy"  ( "hearts" | "stars" | "experience" | "opportunity" ) quantity cash_amount  ;buy some number of items for the cash_amount provided
     """
@@ -76,7 +79,7 @@ class CareersGameEngine(object):
         self._trace = True          # traces the action by describing each step and logs to a file
         self._start_date_time = datetime.now()
         self._gameId = None
-        
+        self._master_id = None      # provided by the UI
         self._current_player = None
         self._admin_player = Player(number=-1, name='Administrator', initials='admin')
     
@@ -99,6 +102,10 @@ class CareersGameEngine(object):
     @property
     def gameId(self):
         return self._gameId
+    
+    @property
+    def master_id(self):
+        return self._master_id
     
     @property
     def trace(self):
@@ -144,7 +151,7 @@ class CareersGameEngine(object):
         commands = command.split(';')
         messages = ""
         for command in commands:
-            self.log(f'{player.player_initials}: {command} {args}')
+            self.log(f'{player.player_initials}: {command}')
             if command is None or len(command) == 0:
                 return CommandResult(CommandResult.SUCCESS, "", False)
             cmd_result = self._evaluate(command, args)
@@ -245,29 +252,20 @@ class CareersGameEngine(object):
     def roll(self, number_of_dice=2):
         """Roll 1 or 2 dice and advance that number of squares for current_player and execute the occupation or border square.
         """
-        done = False
         player = self.game_state.current_player
         ndice = number_of_dice
         game_square = self.get_player_game_square(player)       # could be BorderSquare or OccupationSquare
-        in_occupation = False
-        board_location = player.board_location
 
         if game_square.square_class == 'occupation':    # then I am on an occupation path so roll 1 die
             ndice = 1
-            in_occupation = True
         
         dice = random.choices(population=[1,2,3,4,5,6], k=ndice)
-        total = sum(dice)
+        num_spaces = sum(dice)
         
-        self.log(f' {player.player_initials}  rolled {total} {dice}')
-        #
-        # advance that number of spaces if permitted to do so
-        # 
-        if in_occupation:
-            next_square_number = board_location.occupation_square_number + total    # could be > size of the occupation, that's handled by goto()
-        else:
-            next_square_number = board_location.border_square_number + total        # could be > size of the board, that's also handled by goto()
-            
+        next_square_number = self._get_next_square_number(player, num_spaces)
+        
+        self.log(f' {player.player_initials}  rolled {num_spaces} {dice}')
+
         result = self.goto(next_square_number)
         return result
     
@@ -393,49 +391,36 @@ class CareersGameEngine(object):
                 
         return result
     
-    def enter(self, occupation_name, square_number=None):
+    def enter(self, occupation_name):
         """Enter the named occupation at the designated square number and execute the occupation square.
             This checks if the player meets the entry conditions
             and if not, return an error with the appropriate message.
             Upon entering, the player's BoardLocation  occupation_name is set to occupation_name,
             and border_square_number = current border_square_number.
             Arguments:
-                occupation_name - the name of the occupation to enter.
-                square_number - the square number to advance to upon entering or None
+                occupation_name - the name of the occupation to enter. Case-sensitive!
             Return:
                 CommandResult
-            If square_number is None, then a roll is executed.
-            
+                
+            The player must either roll or use an experience card to actually enter the Occupation.
         """
         player = self.game_state.current_player
         if occupation_name in self._careersGame.occupation_names:
             occupation_entrance_square = self._careersGame.get_occupation_entrance_squares()[occupation_name]    # BorderSquare instance
-            if self.can_enter(occupation_entrance_square,  occupation_name, player):
-                
+            #
+            # if player used an Opportunity to get here, remove that from their deck and set their opportunity_card to None
+            #
+            if player.opportunity_card is not None and player.opportunity_card.opportunity_type=='occupation' and player.opportunity_card == occupation_name:
+                player.used_opportunity()
+                    
+            if self.can_enter(occupation_name, player):        # this also checks the Opportunity card used (if any)
                 player.board_location.border_square_number = occupation_entrance_square.number
                 player.board_location.border_square_name=occupation_entrance_square.name
                 player.board_location.occupation_name=occupation_name
-                
-                if square_number is None:
-                    result = self.roll(1)
-                else:
-                    player.board_location.occupation_square_number=square_number
-                
-                #
-                # if player used an Opportunity to get here, remove that from their deck and set their opportunity_card to None
-                #
-                if player.opportunity_card is not None and player.opportunity_card.opportunity_type  == 'occupation' and player.opportunity_card == occupation_name:
-                    player.used_opportunity()
-                    
-                # execute the contents of the occupation square
-                board_location = player.board_location
-                result = self.execute_game_square(player, board_location)
-                
-                if result.return_code == CommandResult.ERROR:
-                    return result
-                else:   # successful occupation entry
-                    res = self.where("am","I")
-                    return CommandResult(result.return_code, f'{result.message}\n{res.message}', True)
+                player.board_location.occupation_square_number = -1     # still need to roll or use a card
+
+                result = self.where("am","I")
+                return CommandResult(result.return_code, f'{result.message}', True)
             else:
                 return CommandResult(CommandResult.ERROR, "Sorry, you don't meet the occupations entry conditions.", False)
         else:
@@ -452,10 +437,14 @@ class CareersGameEngine(object):
         """
         cp = self.game_state.current_player
         cp.board_location.reset_prior()            # this player's prior board position no longer relevant
-        npn = self.game_state.set_next_player()    # sets current_player and returns the next player number (npn)
+        npn = self.game_state.set_next_player()    # sets current_player and returns the next player number (npn) and increments turns
         player = self.game_state.current_player
         player.opportunity_card = None
         player.experience_card = None
+        #
+        # save the Game on change of turns
+        #
+        self.save_game(how='pkl')
         result = CommandResult(CommandResult.SUCCESS,  f"{cp.player_initials} Turn is complete, {player.player_initials}'s ({npn}) turn " , True)
         return result
     
@@ -465,7 +454,7 @@ class CareersGameEngine(object):
         return self.done()
     
     def end(self, save=None):
-        """Ends the game and exits.
+        """Ends the game, saves the current state if specified, and exits.
         """
         self.log("Ending game: " + self.gameId)
         if save is not None and save.lower()=='save':    # save the game state first
@@ -482,10 +471,13 @@ class CareersGameEngine(object):
         result = CommandResult(CommandResult.SUCCESS, "'quit' command not yet implemented", False)
         return result
     
-    def save(self):
-        """Save the current game state
+    def save(self, how="pkl"):
+        """Save the current game state.
+            Arguments: how - save format: 'json' or 'pkl' (the default).
+            save('pkl') uses joblib.dump() to save the CareersGame instance to binary pickel format.
+            This can be reconstituted with joblib.load()
         """
-        return self.save_game()
+        return self.save_game(how)
     
     def where(self, t1:str="am", t2:str="I"):
         """where am I or where is <player>
@@ -606,7 +598,7 @@ class CareersGameEngine(object):
         return result    
 
     def saved(self):
-        """List the saved games, if any
+        """List the games saved by this master_id, if any
         
         """
         result = CommandResult(CommandResult.SUCCESS, "'saved' command not yet implemented", False)
@@ -652,7 +644,8 @@ class CareersGameEngine(object):
             self._careersGame.add_player(player)        # adds to GameState
             
             message = f'Player "{name}" "{initials} number: {player.number}" added'
-        else:    # adds a degree in the current (or named) player's degree programs
+        else:    
+            # adds a degree in the current (or named) player's degree programs
             # name is the name of the degree program
             player = self.game_state.current_player if initials is None else self.get_player(initials)
             result = self.add_degree(player, name)
@@ -668,14 +661,23 @@ class CareersGameEngine(object):
         
         return CommandResult(CommandResult.SUCCESS, message, True)
     
-    def create(self, points, game_id=None):
-        self._edition = 'Hi-Tech'
-        self._careersGame = CareersGame(self._edition, points, game_id)
+    def create(self, edition, master_id, game_type, points, game_id=None):
+        """Create a new CareersGame.
+        
+        """
+        assert master_id is not None and len(master_id) >= 5
+        self._edition = edition    # 'Hi-Tech'
+        self._master_id = master_id
+        self._careersGame = CareersGame(self._edition, master_id, points, game_id, game_type=game_type)
         self._game_state = self._careersGame.game_state
         self._gameId = self._careersGame.gameId
-        self._logfile_name = "careersLog_" + self._careersGame.edition_name
-        self._logfile_path = "/data/log"    # TODO put in Environment   
-        self.fp = open(self.logfile_path + "/" + self.logfile_name + "_" + self.gameId + ".log", "w")   # log file open channel
+        self._logfile_filename = "careers_" + self._careersGame.edition_name
+        self._logfile_folder = "/data/log"    # TODO put in Environment
+        self._gamefile_folder = "/data/games"
+        self._logfile_path = self._logfile_folder + "/" + self._logfile_filename + "_" + self._gameId + ".log"
+        self._game_filename_base = f'{self._gamefile_folder}/{self.master_id}_{self.gameId}_game'
+        
+        self.fp = open(self._logfile_path, "w")   # log file open channel
         
         message = f'Created game {self._gameId}'
         self.log(message)
@@ -730,21 +732,37 @@ class CareersGameEngine(object):
             return CommandResult(CommandResult.ERROR, f'Cannot add {qty} {what}', False)
         return CommandResult(CommandResult.SUCCESS, f'{qty} {what} added', True)
         
-    def save_game(self):
-        jstr = f'{{\n  "game_id" : "{self.gameId}",\n'
-        jstr += f'  "gameState" : '
-        jstr += self.game_state.to_JSON()
-        jstr += "}\n"
+    def save_game(self, how='json'):
+        """Save the complete serialized game state so it can be restarted at a later time.
+            Arguments:
+                how - serialization format to use: 'json', 'jsonpickle' or 'pkl' (pickle)
+            NOTE that the game state is automatically saved in pkl format after each player's turn.
+            NOTE saving in JSON format saves only the GameState; pkl and jsonpickle persist CareersGame
+        """
+        extension = 'pkl' if how=='pkl' else 'json'
+        filename = f'{self._game_filename_base}.{extension}'      # folder/filename
+        if how == 'json':
+            jstr = f'{{\n  "game_id" : "{self.gameId}",\n'
+            jstr += f'  "gameState" : '
+            jstr += self.game_state.to_JSON()
+            jstr += "}\n"
+
+            with open(filename, "w") as fp:
+                fp.write(jstr)
+            fp.close()
+        elif how == 'jsonpickle':
+            jstr = self._careersGame.json_pickle()
+            with open(filename, "w") as fp:
+                fp.write(jstr)
+            fp.close()
+        else:
+            result = joblib.dump(self._careersGame, filename)   # returns a list, as in  ['/data/games/ZenAlien2013_20220909-124721-555368-33134.pkl']
+            filename = f'{result}'
         
-        self.log(jstr)
-        filename = self._logfile_path + "/" + self.gameId + "_saved.json"
-        with open(filename, "w") as fp:
-            fp.write(jstr)
-        fp.close()
         self.log(f'game saved to {filename}')
         return CommandResult(CommandResult.SUCCESS, filename, True)
 
-    def can_enter(self, occupation_entrance_square:BorderSquare, occupation_name, player:Player):
+    def can_enter(self, occupation_name, player:Player):
         """Determine if this player can enter the named Occupation
             This checks if the player meets the entry conditions, namely:
                 * it's college and they have the tuition amount in cash
@@ -782,13 +800,17 @@ class CareersGameEngine(object):
             if player.opportunity_card.expenses_paid:
                 return True
         
-        
         return has_fee
     
         
     def execute_card(self, player:Player, experienceCard:ExperienceCard=None, opportunityCard:OpportunityCard=None, spaces=0) -> CommandResult:
         """Execute the actions associated with this Experience card or Opportunity card
             Experience execution needs to handle the three types of wild cards.
+            Arguments:
+                player - the Player executing this card
+                experienceCard - an ExperienceCard if playing an experience card, else None
+                opportunityCard - an OpportunityCard if using an opportunity, else None
+                spaces - if using an experience wild card, this is the #spaces to move
             Returns: CommandResult
         """
         if experienceCard is not None:
@@ -842,6 +864,29 @@ class CareersGameEngine(object):
             result.done_flag = action_result.done_flag
         return result
     
+    def _get_next_square_number(self, player, num_spaces):
+        """Gets the next square number given the number of spaces to advance.
+            Arguments:
+                player - the Player
+                num_spaces - the number of spaces to advance. Must be >0 to go anywhere, but this doesn't check.
+            Returns: the next square number, depending on whether the player is currently on a BorderSquare or OccupationSquare
+            NOTE that the square number returned could be out of bounds for the occupation or along the border.
+            This is handled by goto() which does the actual placement.
+        """
+        board_location = player.board_location
+        game_square = self.get_player_game_square(player)       # could be BorderSquare or OccupationSquare
+
+        #
+        # advance that number of spaces if permitted to do so. 
+        # If the player is on the occupation entrance square, the occupation_square_number will be -1
+        # Squares are numbered starting with 0
+        # 
+        if game_square.square_class == 'occupation':
+            next_square_number = board_location.occupation_square_number + num_spaces    # could be > size of the occupation, that's handled by goto()
+        else:
+            next_square_number = board_location.border_square_number + num_spaces        # could be > size of the board, that's also handled by goto()
+            
+        return next_square_number
     
     def exit_occupation(self, player, board_location:BoardLocation):
         """Applies exiting an occupation rules when a player exits an occupation path.
@@ -892,7 +937,7 @@ class CareersGameEngine(object):
         deck = self._careersGame.opportunities        # OpportunityCardDeck
         for i in range(ncards):
             card = deck.draw()
-            player.my_opportunity_cards.append(card)        
+            player.my_opportunity_cards.append(card)
         
     def pass_payday(self, player, board_location:BoardLocation):
         """Performs any actions associated with landing on or passing the Payday square.
