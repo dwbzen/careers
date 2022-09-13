@@ -1,16 +1,13 @@
-from telnetlib import GA
-from flask import Flask, Response
-from flask_restful import reqparse, abort, Api, Resource
-from server.game import Game
+import uvicorn
+from fastapi import FastAPI, Depends
+from server.gameManager import CareersGameManager
 
-app = Flask(__name__)
-api = Api(app)
+manager = CareersGameManager()    
+app = FastAPI()
 
-# @app.route('/')
-# def default():
-#     return Response(status=200)
+@app.get("/", status_code=200)
+def get(game: CareersGameManager=Depends(manager)):
+    return {}
 
-api.add_resource(Game, '/game')
-
-if __name__ == '__main__':
-    app.run(debug=True, port=5000, host='0.0.0.0')
+if __name__ == "__main__":
+    uvicorn.run("app:app", port=9000, reload=True)
