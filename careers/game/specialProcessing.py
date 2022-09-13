@@ -4,9 +4,12 @@ Created on Aug 12, 2022
 @author: don_bacon
 '''
 
+from game.careersObject import CareersObject
+import json
+from typing import Dict, List, Union
 
-class SpecialProcessing(object):
-    """Encapsulates the "specialProcessing" section of a border square or occupation square, or an Opportunity card directive.
+class SpecialProcessing(CareersObject):
+    """Encapsulates the "specialProcessing" section of a border square or occupation square.
         This is only a model class. The actual processing is done by CareersGameEngine.
     """
     
@@ -19,8 +22,10 @@ class SpecialProcessing(object):
     common_types = ["travelBorder", "cashLoss", "extraTurn"]
     
     all_types = border_types + occupation_types + common_types
+    
+    SPECIAL_PROCESSING = Dict[str, Union[str, List[int], int, float, Dict[str, int]]]
 
-    def __init__(self, special_processing_dict:str, square_type:str):
+    def __init__(self, special_processing_dict:SPECIAL_PROCESSING, square_type:str):
         """Constructor
             Arguments:
                 special_processing_dict - the JSON specialProcessing section of a border or occupation square as a dictionary
@@ -47,17 +52,18 @@ class SpecialProcessing(object):
         else:
             self._amount_dict = amt    # how a money amount is calculated
         
-        self._dice = special_processing_dict.get('dice', 0)   # number of dice used to calculate some amount
+        self._dice = special_processing_dict.get('dice', 0)                 # number of dice used to calculate some amount
         self._penalty = special_processing_dict.get('penalty', 0)           # a loss quantity (hearts or stars)
-        self._limit = special_processing_dict.get('limit', None)          # a limiting factor, usually "salary" (in 1000s)
+        self._limit = special_processing_dict.get('limit', None)            # a limiting factor, usually "salary" (in 1000s)
         
         # square number to advance to, relative to the overall game layout or occupation
         self._next_square = special_processing_dict.get('next_square', None)    
 
         self._destination = special_processing_dict.get('destinationOccupation', None)  # the name of a destination occupation
-        self._percent = special_processing_dict.get('percent', 0)       # a percent amount of salary or cash depending on type
-        self._must_roll = special_processing_dict.get('must_roll', [])  # a list of numbers that must be rolled in order to leave this square
+        self._percent = special_processing_dict.get('percent', 0.0)                     # a percent amount of salary or cash depending on type
+        self._must_roll = special_processing_dict.get('must_roll', [])                  # a list of numbers that must be rolled in order to leave this square
         self._require_doubles = special_processing_dict.get('require_doubles', 0)==1
+        self._hearts = special_processing_dict.get('hearts', [])                        # used for holiday type, a 2-element list
     
     @property
     def square_type(self):
@@ -111,5 +117,12 @@ class SpecialProcessing(object):
     def require_doubles(self):
         return self._require_doubles
     
+    @property
+    def hearts(self) -> list:
+        return self._hearts
+    
     def __str__(self):
-        return self._special_processing_dict
+        return str(self._special_processing_dict)
+    
+    def to_JSON(self):
+        return json.dump(self._special_processing_dict, indent=2)

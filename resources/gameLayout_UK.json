@@ -40,7 +40,8 @@
 				"type" : "corner_square",
 				"background_image" : "corner_square.png",
 				"image" : "startHereAndArrow.jpg",
-				"text" : "Collect Salary as you pass PAYDAY\n Collect DOUBLE if you land here",
+				"text" : "PAYDAY"
+				"action_text" : "Collect Salary as you pass PAYDAY\n Collect DOUBLE if you land here",
 				"specialProcessing" : {
 						"type" : "payday",
 						"amount" : "$Salary"
@@ -134,6 +135,11 @@
 				"name" : "Hospital",
 				"type" : "corner_square",
 				"background_image" : "corner_square.png"
+				"text" : "HOSPITAL",
+				"action_text" : "In the Hospital. Loose one turn as you wait for a doctor.",
+				"specialProcessing" : { 
+					"type" : "hospital"
+				}
 			},
 			{
 				"number" : 10,
@@ -243,6 +249,13 @@
 				"name" : "Unemployment",
 				"type" : "corner_square",
 				"background_image" : "corner_square.png"
+				"text" : "UNEMPLOYMENT",
+				"action_text" : "You were LAID OFF and must throw 7, 11, or doubles to move on.\nOR pay 1 year's Salary for additional training.",
+				"specialProcessing" : {
+					"type" : "unemployment",
+					"must_roll" : [7, 11, 2, 4, 6, 8, 10, 12],
+					"require_doubles" : 1
+				}
 			},
 			{
 				"number" : 22,
@@ -320,9 +333,16 @@
 			},
 			{
 				"number" : 30,
-				"name" : "SpringBreak",
+				"name" : "Holiday",
 				"type" : "corner_square",
 				"background_image" : "corner_square.png"
+				"text" : "Holiday",
+				"action_text" : "You are on Holiday! Collect 6 Hearts for landing here and 3 each time you stay with a roll of 7 or less",
+				"specialProcessing" : {
+					"type": "holiday",
+					"must_roll" : [8, 9, 10, 11, 12],
+					"hearts" : [3, 6]
+				}
 			},
 			{
 				"number" : 31,

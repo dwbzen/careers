@@ -20,10 +20,12 @@ from game.successFormula import SuccessFormula
 from game.borderSquare import BorderSquare
 from game.occupationSquare import OccupationSquare
 from game.gameSquare import GameSquare
+from game.gameEngineCommands import GameEngineCommands
+from game.gameUtils import GameUtils
 
 from datetime import datetime
 import random
-import joblib, jsonpickle
+from typing import Optional, List
 
 
 class CareersGameEngine(object):
@@ -66,9 +68,6 @@ class CareersGameEngine(object):
         <buy>  :: "buy"  ( "hearts" | "stars" | "experience" | "opportunity" ) quantity cash_amount  ;buy some number of items for the cash_amount provided
     """
     
-    COMMANDS = ['roll', 'use', 'goto', 'enter', 'status', 'done', 'next', 'end', 'quit', 'save', 'where',
-                'retire', 'bump', 'bankrupt', 'list', 'saved', 'load',  'who', 'add', 'use_insurance', 
-                'pay', 'transfer', 'game_status', 'create', 'start', 'buy']
     
     def __init__(self):
         '''
@@ -82,6 +81,7 @@ class CareersGameEngine(object):
         self._master_id = None      # provided by the UI
         self._current_player = None
         self._admin_player = Player(number=-1, name='Administrator', initials='admin')
+        self._gameEngineCommands = None     # no CareersGame yet
     
     @property
     def fp(self):
@@ -123,21 +123,20 @@ class CareersGameEngine(object):
     def careersGame(self):
         return self._careersGame
     
-    def get_datetime(self) -> str:
-        now = datetime.today()
-        return '{0:d}{1:02d}{2:02d}_{3:02d}{4:02d}'.format(now.year, now.month, now.day, now.hour, now.minute)
-    
     def log(self, message):
-        msg = self.get_datetime() + f'  {message}\n'
+        """Write message to the log file.
+            TODO - refactor to use python loging
+        """
+        msg = GameUtils.get_datetime() + f'  {message}\n'
         if self.fp is not None:     # may be logging isn't initialized yet or logging option is False
             self.fp.write(msg)
         if self.trace:
             print(msg)
 
-    def execute_command(self, command:str, aplayer:Player, args:list=[]):
-        """Executes a command for a given Player
+    def execute_command(self, command:str, aplayer:Player, args:list=[]) -> CommandResult:
+        """Executes command(s) for a given Player
             Arguments:
-                command - the command name, for example "roll"
+                command - the command name, for example "roll". Multiple commands are separated by a semicolon.
                 args - a possibly empty list of additional string arguments
                 player - a Player reference. If none, admin_player is used.
             Returns: a CommandResult object. The player's current board_location is always returned in the CommandResult
@@ -171,7 +170,7 @@ class CareersGameEngine(object):
                 args - an optional list of additional arguments
             Returns - a CommandResult
         """
-        command_result = self._parse_command_string(commandTxt, args)
+        command_result = GameEngineCommands.parse_command_string(commandTxt, args)
         if command_result.return_code != CommandResult.SUCCESS:     # must be an error
             return command_result
         
@@ -181,8 +180,8 @@ class CareersGameEngine(object):
         try:
             command_result = eval(command)
         except Exception as ex:
-            command_result = CommandResult(CommandResult.ERROR,  f'"{command}" : Invalid command format or syntax',  False, exception=ex)
-            raise ex
+            command_result = CommandResult(CommandResult.ERROR,  f'"{command}" : Invalid command format or syntax\n{str(ex)}',  False, exception=ex)
+            #raise ex
         return command_result
         
     def _parse_command_string(self, txt, addl_args=[]) -> CommandResult:
@@ -227,9 +226,9 @@ class CareersGameEngine(object):
         
         return game_square
     
-    def get_player(self, pid, pnumber=None):
+    def get_player(self, pid, pnumber=None) -> Optional[Player] :
         """Gets a Player by initials, name, or number
-        
+            Returns: Player instance or None if no player with the given ID exists.
         """
         player = None
         if pnumber is not None:
@@ -249,7 +248,7 @@ class CareersGameEngine(object):
     # Each command corresponds to a specific web server endpoint
     # 
     #############################################################################
-    def roll(self, number_of_dice=2):
+    def roll(self, number_of_dice=2) ->CommandResult:
         """Roll 1 or 2 dice and advance that number of squares for current_player and execute the occupation or border square.
         """
         player = self.game_state.current_player
@@ -262,14 +261,23 @@ class CareersGameEngine(object):
         dice = random.choices(population=[1,2,3,4,5,6], k=ndice)
         num_spaces = sum(dice)
         
-        next_square_number = self._get_next_square_number(player, num_spaces)
+        #
+        # check if the player is Unemployed and if so, if the roll allows them to move
+        #
+        canmove, result = self._gameEngineCommands.can_player_move(player)
         
-        self.log(f' {player.player_initials}  rolled {num_spaces} {dice}')
-
-        result = self.goto(next_square_number)
+        if canmove:
+            next_square_number = self._get_next_square_number(player, num_spaces)
+            
+            self.log(f' {player.player_initials}  rolled {num_spaces} {dice}')
+    
+            #
+            # place the player on the next_square_number
+            #
+            result = self.goto(next_square_number)
         return result
     
-    def use(self, what, card_number, spaces=0):
+    def use(self, what, card_number, spaces=0) -> CommandResult:
         """Use an Experience or Opportunity card in place of rolling the die.
             Experience and Opportunity cards are identified (through the UI) by number, which uniquely
             identifies the card function. i.e. Cards having the same "number" are identical
@@ -278,7 +286,7 @@ class CareersGameEngine(object):
             Arguments:
                 what - "opportunity", "experience"
                 card_number - the unique number for this card. Corresponds to card.number
-                spaces - required for Experience wild cards. 
+                spaces - required for Experience wild cards.
         """
         player = self.game_state.current_player
 
@@ -288,25 +296,28 @@ class CareersGameEngine(object):
         #
         if what.lower() == 'opportunity':
             cards = player.get_opportunity_cards()   # dict with number as the key
-            thecard = cards.get(card_number, None)
-            if thecard is None:    # no such card
+            thecard_dict = cards.get(card_number, None)
+            if thecard_dict is None:    # no such card
                 result = CommandResult(CommandResult.ERROR, f"No {what} card exists with number {card_number} ", False)
             else:
+                thecard = thecard_dict['card']
                 player.opportunity_card = thecard
-                result = self.execute_card(player, opportunityCard=thecard)
+                result = self._execute_opportunity_card(player, opportunityCard=thecard)
         elif what.lower() == 'experience':
             cards = player.get_experience_cards()   # dict with number as the key
-            thecard = cards.get(card_number, None)
+            thecard_dict = cards.get(card_number, None)
             if thecard is None:    # no such card
                 result = CommandResult(CommandResult.ERROR, f"No {what} card exists with number {card_number} ", False)
             else:
+                thecard = thecard_dict['card']
                 player.experience_card = thecard
-                result = self.execute_card(player, experienceCard=thecard, spaces=spaces)
+                result = self._execute_experience_card(player, experienceCard=thecard, spaces=spaces)
         else:
             result = CommandResult(CommandResult.ERROR, f"use can't use a '{what}' ", False)
+            
         return result
     
-    def use_insurance(self):
+    def use_insurance(self) -> CommandResult:
         """Use insurance, if you have it, to avoid paying a penalty or loosing hearts/stars/salary
             Returns: CommandMessage with return_code == SUCCESSFUL if okay, == ERROR if no insurance
                 or not applicable in this case.
@@ -318,80 +329,20 @@ class CareersGameEngine(object):
             result = CommandResult(CommandResult.ERROR, "You don't have insurance!", False)
         return result
         
-    def goto(self, square_number):
-        """Immediately place the current player on the designated BorderSquare OR OccupationSquare and execute that square.
+    def goto(self, square_number:int) -> CommandResult:
+        """Immediately place the designated player on the designated BorderSquare OR OccupationSquare and execute that square.
             If the current player is in an occupation, this places the player on square_number of that Occupation.
             Otherwise, the square_number refers to a BorderSquare.
             NOTE that the border square number could be out of range. i.e. > game size. 
             If so, the square number adjusted and then the pass_payday() action is executed.
+            
             NOTE that when in an Occupation the designated square_number could be out of range. i.e. > the occupation exit_square_number.
             If so, the player is advanced to the next BorderSquare and the exit occupation logic is executed.
             
         """
-        player = self.game_state.current_player
-        game_square = self.get_player_game_square(player)
-        board_location = player.board_location
-        result = None
-        if game_square.square_class == 'occupation':        # If player is currently in or completing an Occupation
-            
-            occupation_name =  player.board_location.occupation_name
-            occupation = self._careersGame.occupations[occupation_name]
-            if square_number >= occupation.size:
-                
-                exit_result =  self.exit_occupation(player, board_location)
-                
-                #
-                # go to next border square and update board_location after the occupation exit
-                #
-                board_location.border_square_number = square_number - occupation.size + occupation.exit_square_number - 1
-                board_location.occupation_name = None
-                game_square =  self._careersGame.get_border_square(board_location.border_square_number)
-                board_location.border_square_name = game_square.name                
-                
-                result = self.execute_game_square(player, board_location)
-                result.message = exit_result.message + "\n" + result.message
-                return result
-            else:    # next square is in this occupation
-                board_location.occupation_square_number = square_number
-                return self.execute_game_square(player, board_location)
-                
-        else:   # goto designated border square
-            if square_number >= 0 and square_number < self._careersGame.game_board.game_layout_dimensions['size'] and square_number > board_location.border_square_number :
-                player = self.game_state.current_player
-                border_square = self._careersGame.get_border_square(square_number)
-                board_location.border_square_number = square_number
-                board_location.border_square_name = border_square.name
-                board_location.occupation_name = None
-                #
-                # execute this game square
-                # unless it's a travel_square and we just game from a travel_square
-                # otherwise we'd get into an endless travel loop
-                #
-                if border_square.square_type == 'travel_square' and self.was_prior_travel(player):
-                    result = CommandResult(CommandResult.SUCCESS, "", True)
-                else:
-                    result = self.execute_game_square(player, board_location)
-                return result
-            else:    # player passed or landed on Payday
-                square_number = square_number - self._careersGame.game_board.game_board_size - 1
-                border_square = self._careersGame.get_border_square(square_number)
-                board_location.border_square_number = square_number
-                board_location.border_square_name = border_square.name
-                payday_result = self.pass_payday(player, board_location)
-                #
-                # again, check travel arrangements
-                #
-                if border_square.square_type == 'travel_square' and self.was_prior_travel(player):
-                    result = CommandResult(CommandResult.SUCCESS, "", True)
-                else:
-                    result = self.execute_game_square(player, board_location)
-            
-                result.message = payday_result.message + "\n" + result.message
-                return result
-                
-        return result
+        return self._goto(square_number, self.game_state.current_player)
     
-    def enter(self, occupation_name):
+    def enter(self, occupation_name:str) -> CommandResult:
         """Enter the named occupation at the designated square number and execute the occupation square.
             This checks if the player meets the entry conditions
             and if not, return an error with the appropriate message.
@@ -426,13 +377,13 @@ class CareersGameEngine(object):
         else:
             return CommandResult(CommandResult.ERROR, "No such occupation", False)
     
-    def status(self, initials=None):
+    def status(self, initials:str=None) -> CommandResult:
         player = self.game_state.current_player if initials is None else self.get_player(initials)
         message = player.player_info(include_successFormula=True)
         result = CommandResult(CommandResult.SUCCESS,  message, False)
         return result       
     
-    def done(self):
+    def done(self) -> CommandResult:
         """End my turn and go to the next player
         """
         cp = self.game_state.current_player
@@ -444,16 +395,16 @@ class CareersGameEngine(object):
         #
         # save the Game on change of turns
         #
-        self.save_game(how='pkl')
+        self._gameEngineCommands.save_game(self._game_filename_base, self.gameId, how='pkl')
         result = CommandResult(CommandResult.SUCCESS,  f"{cp.player_initials} Turn is complete, {player.player_initials}'s ({npn}) turn " , True)
         return result
     
-    def next(self):
+    def next(self) -> CommandResult:
         """Synonym for done - go to the next player
         """
         return self.done()
     
-    def end(self, save=None):
+    def end(self, save:str=None) -> CommandResult:
         """Ends the game, saves the current state if specified, and exits.
         """
         self.log("Ending game: " + self.gameId)
@@ -465,21 +416,21 @@ class CareersGameEngine(object):
 
         return result
     
-    def quit(self, initials):
+    def quit(self, initials:str) -> CommandResult:
         """A single player, identified by initials, leaves the game.
         """
         result = CommandResult(CommandResult.SUCCESS, "'quit' command not yet implemented", False)
         return result
     
-    def save(self, how="pkl"):
+    def save(self, how="pkl") -> CommandResult:
         """Save the current game state.
             Arguments: how - save format: 'json' or 'pkl' (the default).
             save('pkl') uses joblib.dump() to save the CareersGame instance to binary pickel format.
             This can be reconstituted with joblib.load()
         """
-        return self.save_game(how)
+        return self._gameEngineCommands.save_game(self._game_filename_base, self.gameId, how=how)
     
-    def where(self, t1:str="am", t2:str="I"):
+    def where(self, t1:str="am", t2:str="I") -> CommandResult:
         """where am I or where is <player>
         """
         player = None 
@@ -508,24 +459,39 @@ class CareersGameEngine(object):
         
         return CommandResult(result, message, False)
     
-    def retire(self):
+    def retire(self) -> CommandResult:
         """Retire this player to the retirement corner square (Spring Break, Holiday)
         
         """
         result = CommandResult(CommandResult.SUCCESS, "'retire' command not yet implemented", False)
         return result
     
-    def bump(self, who=None):
+    def bump(self, who) -> CommandResult:
         """The current player bumps another player occupying the same board square to Unemployment
             Note that it is possible to land on a square occupied by more than one player,
             for example if a player chooses NOT to bump that square will have 2 players.
-            In that case the initials of the player to be bumped must be provided.
+            In any case the initials of the player to be bumped must be provided.
+            Only a single player may be bumped even if there are more than one on the square.
         
         """
-        result = CommandResult(CommandResult.SUCCESS, "'bump' command not yet implemented", False)
+        player = self.game_state.current_player
+        bumped_player = None
+        for p in player.can_bump:
+            if p.player_initials == who:
+                bumped_player = p
+        
+        if bumped_player is None:
+            result = CommandResult(CommandResult.ERROR, f'Player {who} cannot be Bumped')
+        else:
+            #
+            # find the Unemployment square and place the bumped_player there
+            # and also set the is_unemployed flag
+            #
+            border_square = self._careersGame.find_border_square("Unemployment")
+            result = border_square.execute(bumped_player)
         return result
     
-    def bankrupt(self):
+    def bankrupt(self) -> CommandResult:
         """The current player declares bankruptcy.
             A bankrupt player looses all cash, experience and opportunity cards and essentially
             restarts the game with configured starting cash and salary, and positioned at the "Payday" square (border square 0).
@@ -535,7 +501,7 @@ class CareersGameEngine(object):
         result = CommandResult(CommandResult.SUCCESS, "'bankrupt' command not yet implemented", False)
         return result
     
-    def pay(self, amount_str, initials=None):
+    def pay(self, amount_str, initials=None) -> CommandResult:
         """The current player, or the player whose initials are provided, makes a payment associated with their current board position.
             If the paying player has sufficient cash to make the payment that amount is subtracted
             from their cash on hand and CommandResult.SUCCESS with done_flag = True is returned 
@@ -559,7 +525,7 @@ class CareersGameEngine(object):
             message = f'{player.player_initials} has insufficient funds to cover {amount} and must either borrow cash from another player or declare bankruptcy'
             return CommandResult(CommandResult.ERROR, message, False)
         
-    def transfer(self, quantity, what, from_player_number):
+    def transfer(self, quantity:int, what:str, from_player_number:int) -> CommandResult:
         """Transfers cash, opportunities or experience cards from one player to the current player
             Arguments:
                 from_player_number - the player number transferring
@@ -569,7 +535,7 @@ class CareersGameEngine(object):
         CommandResult(CommandResult.SUCCESS, "transfer command not implemented", True)
         
     
-    def list(self, what='all') ->str:
+    def list(self, what='all') ->CommandResult:
         """List the Experience or Opportunity cards held by the current player
             Arguments: what - 'experience', 'opportunity', or 'all'
             Returns: CommandResult.message is the stringified list of str(card).
@@ -577,41 +543,24 @@ class CareersGameEngine(object):
                 For Experience cards this is the number of spaces (if type is fixed), otherwise the type.
             
         """
-        message = ""
         player = self.game_state.current_player
-        listall = (what.lower() == 'all')
+        return GameEngineCommands.list(player, what)    
 
-        if what.lower().startswith('opportun') or listall:
-            if len(player.my_opportunity_cards) == 0:
-                message += "No Opportunity cards\n"
-            else:
-                for card in player.my_opportunity_cards:
-                    message += str(card) + "\n"
-        if what.lower().startswith('exp') or listall:
-            if len(player.my_experience_cards) == 0:
-                message += "No Experience cards"
-            else:
-                for card in player.my_experience_cards:
-                    message += str(card) + "\n"
-            
-        result = CommandResult(CommandResult.SUCCESS, message, False)
-        return result    
-
-    def saved(self):
+    def saved(self) -> CommandResult:
         """List the games saved by this master_id, if any
         
         """
         result = CommandResult(CommandResult.SUCCESS, "'saved' command not yet implemented", False)
         return result    
 
-    def load(self, gameid):
+    def load(self, gameid:str) -> CommandResult:
         """Load a previously saved game, identified by the game Id
         
         """
         result = CommandResult(CommandResult.SUCCESS, "'load' command not yet implemented", False)
         return result    
 
-    def who(self, t1:str="am", t2:str="I"):
+    def who(self, t1:str="am", t2:str="I") -> CommandResult:
         """Who am I or who is <player>
             Returns: A CommandResult where message is the player's info: name, initials, number, SSN (kidding)
                 If there is no player with initials t2, return_code is ERROR.
@@ -631,7 +580,7 @@ class CareersGameEngine(object):
             
         return CommandResult(result, message, True)
     
-    def add(self, what, name, initials=None, stars=0, hearts=0, cash=0):
+    def add(self, what, name, initials=None, stars=0, hearts=0, cash=0) -> CommandResult:
         """Add a new player to the Game OR add a degree to the current player or the player whose initials are provided.
     
         """
@@ -654,21 +603,25 @@ class CareersGameEngine(object):
         self.log(message)
         return CommandResult(CommandResult.SUCCESS, message, False)
     
-    def game_status(self):
+    def game_status(self) -> CommandResult:
         """Get information about the current game in progress and return in JSON format
         """
         message =  self.game_state.to_JSON()
         
         return CommandResult(CommandResult.SUCCESS, message, True)
     
-    def create(self, edition, master_id, game_type, points, game_id=None):
+    def create(self, edition, master_id, game_type, points, game_id=None) -> CommandResult:
         """Create a new CareersGame.
         
         """
         assert master_id is not None and len(master_id) >= 5
         self._edition = edition    # 'Hi-Tech'
         self._master_id = master_id
+        #
+        # Create the CareersGame instance and the GameEngineCommands
+        #
         self._careersGame = CareersGame(self._edition, master_id, points, game_id, game_type=game_type)
+        
         self._game_state = self._careersGame.game_state
         self._gameId = self._careersGame.gameId
         self._logfile_filename = "careers_" + self._careersGame.edition_name
@@ -678,15 +631,17 @@ class CareersGameEngine(object):
         self._game_filename_base = f'{self._gamefile_folder}/{self.master_id}_{self.gameId}_game'
         
         self.fp = open(self._logfile_path, "w")   # log file open channel
-        
-        message = f'Created game {self._gameId}'
+        self._gameEngineCommands = GameEngineCommands(self._careersGame, self.fp)
+        self._gameEngineCommands.trace = self.trace
+
+        message = f'Created game {self._gameId} for {self._master_id}'
         self.log(message)
         return CommandResult(CommandResult.SUCCESS, message, True)
     
-    def start(self):
+    def start(self) -> CommandResult:
         return self._start()
     
-    def buy(self, what, qty_str, amount_str):
+    def buy(self, what, qty_str, amount_str) -> CommandResult:
         """Buy a number of items for the current player
             Arguments:
                 what - "hearts" | "stars" | "experience" | "opportunity"
@@ -704,14 +659,14 @@ class CareersGameEngine(object):
     #
     #####################################
         
-    def _start(self):
+    def _start(self) -> CommandResult:
         message = f'Starting game {self.gameId}'
 
         self.log(message)
         self.game_state.set_next_player()    # sets the player number to 0 and the curent_player Player reference
         return CommandResult(CommandResult.SUCCESS, message, True)
     
-    def _buy(self, what, qty_str, amount_str):
+    def _buy(self, what, qty_str, amount_str) -> CommandResult:
         """Implements the buy command
         """
         player = self.game_state.current_player
@@ -731,36 +686,6 @@ class CareersGameEngine(object):
         else:
             return CommandResult(CommandResult.ERROR, f'Cannot add {qty} {what}', False)
         return CommandResult(CommandResult.SUCCESS, f'{qty} {what} added', True)
-        
-    def save_game(self, how='json'):
-        """Save the complete serialized game state so it can be restarted at a later time.
-            Arguments:
-                how - serialization format to use: 'json', 'jsonpickle' or 'pkl' (pickle)
-            NOTE that the game state is automatically saved in pkl format after each player's turn.
-            NOTE saving in JSON format saves only the GameState; pkl and jsonpickle persist CareersGame
-        """
-        extension = 'pkl' if how=='pkl' else 'json'
-        filename = f'{self._game_filename_base}.{extension}'      # folder/filename
-        if how == 'json':
-            jstr = f'{{\n  "game_id" : "{self.gameId}",\n'
-            jstr += f'  "gameState" : '
-            jstr += self.game_state.to_JSON()
-            jstr += "}\n"
-
-            with open(filename, "w") as fp:
-                fp.write(jstr)
-            fp.close()
-        elif how == 'jsonpickle':
-            jstr = self._careersGame.json_pickle()
-            with open(filename, "w") as fp:
-                fp.write(jstr)
-            fp.close()
-        else:
-            result = joblib.dump(self._careersGame, filename)   # returns a list, as in  ['/data/games/ZenAlien2013_20220909-124721-555368-33134.pkl']
-            filename = f'{result}'
-        
-        self.log(f'game saved to {filename}')
-        return CommandResult(CommandResult.SUCCESS, filename, True)
 
     def can_enter(self, occupation_name, player:Player):
         """Determine if this player can enter the named Occupation
@@ -801,35 +726,28 @@ class CareersGameEngine(object):
                 return True
         
         return has_fee
+
     
-        
-    def execute_card(self, player:Player, experienceCard:ExperienceCard=None, opportunityCard:OpportunityCard=None, spaces=0) -> CommandResult:
-        """Execute the actions associated with this Experience card or Opportunity card
-            Experience execution needs to handle the three types of wild cards.
-            Arguments:
-                player - the Player executing this card
-                experienceCard - an ExperienceCard if playing an experience card, else None
-                opportunityCard - an OpportunityCard if using an opportunity, else None
-                spaces - if using an experience wild card, this is the #spaces to move
-            Returns: CommandResult
-        """
-        if experienceCard is not None:
+    def _execute_opportunity_card(self,  player:Player, opportunityCard:OpportunityCard=None) -> CommandResult:
+            player.opportunity_card = opportunityCard
+            message = f'{player.player_initials} Playing: {opportunityCard.text}'
+            #
+            # Now execute this Opportunity card
+            #
+            self.log(message)
+            result = CommandResult(CommandResult.SUCCESS, message, False)   #  TODO
+            return result                   
+    
+    def _execute_experience_card(self,  player:Player, experienceCard:ExperienceCard, spaces=0) -> CommandResult:
             player.experience_card = experienceCard
             nspaces = experienceCard.spaces
             if experienceCard.spaces == 0 and experienceCard.type != 'fixed':    # must be a wild card
                 nspaces = spaces
 
-            message = f'{player.initials} Moving: {nspaces} spaces'
+            message = f'{player.player_initials} Moving: {nspaces} spaces'
             self.log(message)
-        elif opportunityCard is not None:
-            player.opportunity_card = opportunityCard
-            message = f'{player.initials} Playing: {opportunityCard.text}'
-            #
-            # Now execute this Opportunity card
-            #
-            self.log(message)
-        result = CommandResult(CommandResult.SUCCESS, message, False)   #  TODO
-        return result
+            result = CommandResult(CommandResult.SUCCESS, message, False)   #  TODO
+            return result        
     
     def execute_game_square(self, player:Player, board_location:BoardLocation) -> CommandResult:
         """Executes the actions associated with a given BoardLocation and Player
@@ -843,13 +761,13 @@ class CareersGameEngine(object):
         
         return result
         
-    def _execute_occupation_square(self, player:Player, game_square:OccupationSquare, board_location:BoardLocation):
+    def _execute_occupation_square(self, player:Player, game_square:OccupationSquare, board_location:BoardLocation) -> CommandResult:
         message = f'execute_occupation_square {board_location.occupation_name}  {board_location.occupation_square_number} for {player.player_initials}'
         self.log(message)
         
         return CommandResult(CommandResult.SUCCESS, message, False)
     
-    def _execute_border_square(self, player:Player, game_square:BorderSquare, board_location:BoardLocation):
+    def _execute_border_square(self, player:Player, game_square:BorderSquare, board_location:BoardLocation) -> CommandResult:
         message = f'{player.player_initials} landed on {game_square.name}  ({board_location.border_square_number})'
         self.log(message)
         result = game_square.execute(player)
@@ -864,7 +782,7 @@ class CareersGameEngine(object):
             result.done_flag = action_result.done_flag
         return result
     
-    def _get_next_square_number(self, player, num_spaces):
+    def _get_next_square_number(self, player:Player, num_spaces:int) -> int:
         """Gets the next square number given the number of spaces to advance.
             Arguments:
                 player - the Player
@@ -888,7 +806,92 @@ class CareersGameEngine(object):
             
         return next_square_number
     
-    def exit_occupation(self, player, board_location:BoardLocation):
+
+    def _goto(self, square_number:int, player:Player) -> CommandResult:
+        """Immediately place the designated player on the designated BorderSquare OR OccupationSquare and execute that square.
+            If the current player is in an occupation, this places the player on square_number of that Occupation.
+            Otherwise, the square_number refers to a BorderSquare.
+            NOTE that the border square number could be out of range. i.e. > game size. 
+            If so, the square number adjusted and then the pass_payday() action is executed.
+            
+            NOTE that when in an Occupation the designated square_number could be out of range. i.e. > the occupation exit_square_number.
+            If so, the player is advanced to the next BorderSquare and the exit occupation logic is executed.
+            
+        """
+        game_square = self.get_player_game_square(player)   # where player currently is on the board
+        board_location = player.board_location
+        result = None
+        if game_square.square_class == 'occupation':        # If player is currently in or completing an Occupation
+            
+            occupation_name =  player.board_location.occupation_name
+            occupation = self._careersGame.occupations[occupation_name]
+            if square_number >= occupation.size:
+                
+                exit_result =  self.exit_occupation(player, board_location)
+                
+                #
+                # go to next border square and update board_location after the occupation exit
+                #
+                board_location.border_square_number = square_number - occupation.size + occupation.exit_square_number - 1
+                board_location.occupation_name = None
+                game_square =  self._careersGame.get_border_square(board_location.border_square_number)
+                board_location.border_square_name = game_square.name                
+                
+                result = self.execute_game_square(player, board_location)
+                result.message = exit_result.message + "\n" + result.message
+                #return result
+            else:    # next square is in this occupation
+                board_location.occupation_square_number = square_number
+                return self.execute_game_square(player, board_location)
+                
+        else:   # goto designated border square
+            if square_number >= 0 and \
+               square_number < self._careersGame.game_board.game_layout_dimensions['size'] and \
+               square_number > board_location.border_square_number :
+                player = self.game_state.current_player
+                border_square = self._careersGame.get_border_square(square_number)
+                board_location.border_square_number = square_number
+                board_location.border_square_name = border_square.name
+                board_location.occupation_name = None
+                #
+                # execute this game square
+                # unless it's a travel_square and we just game from a travel_square
+                # otherwise we'd get into an endless travel loop
+                #
+                if border_square.square_type == 'travel_square' and self.was_prior_travel(player):
+                    result = CommandResult(CommandResult.SUCCESS, "", True)
+                else:
+                    result = self.execute_game_square(player, board_location)
+                #return result
+            else:    # player passed or landed on Payday
+                if square_number >  board_location.border_square_number :
+                    square_number = square_number - self._careersGame.game_board.game_board_size
+                border_square = self._careersGame.get_border_square(square_number)
+                board_location.border_square_number = square_number
+                board_location.border_square_name = border_square.name
+                payday_result = self.pass_payday(player)
+                #
+                # again, check travel arrangements
+                #
+                if border_square.square_type == 'travel_square' and self.was_prior_travel(player):
+                    result = CommandResult(CommandResult.SUCCESS, "", True)
+                else:
+                    result = self.execute_game_square(player, board_location)
+            
+                result.message = payday_result.message + "\n" + result.message
+                #return result
+        #
+        # if another player is on that square AND the square is NOT Unemployment, they can be bumped
+        #
+        other_players = self.who_occupies_my_square(player)
+        if player.current_border_square_name() != "Unemployment":
+            if len(other_players) > 0:
+                initials = [p.player_initials for p in other_players]
+                result.message = result.message + f'\n{player.player_initials} can bump {initials}'
+        player.can_bump = other_players   # could be an empty list
+        return result
+
+    def exit_occupation(self, player, board_location:BoardLocation) -> CommandResult:
         """Applies exiting an occupation rules when a player exits an occupation path.
             Exiting can be done by rolling out, using an Experience, or using an Opportunity to go somewhere else.
             The occupation could be College ("occupationClass" : "college") or a regular Occupation ("occupationClass" : "occupation")
@@ -927,37 +930,33 @@ class CareersGameEngine(object):
         result = CommandResult(CommandResult.SUCCESS, message, True)
         return result
     
-    def add_experience_cards(self, player, ncards):
+    def add_experience_cards(self, player:Player, ncards:int):
         deck = self._careersGame.experience_cards     # ExperienceCardDeck
         for i in range(ncards):
             card = deck.draw()
-            player.my_experience_cards.append(card)
+            player.add_experience_card(card)
             
-    def add_opportunity_cards(self, player, ncards):
+    def add_opportunity_cards(self, player:Player, ncards:int):
         deck = self._careersGame.opportunities        # OpportunityCardDeck
         for i in range(ncards):
             card = deck.draw()
-            player.my_opportunity_cards.append(card)
+            player.add_opportunity_card(card)
         
-    def pass_payday(self, player, board_location:BoardLocation):
+    def pass_payday(self, player:Player) -> CommandResult:
         """Performs any actions associated with landing on or passing the Payday square.
             Count laps (which may or may not be used) and dole out appropriate salary.
             Arguments:
                 player - current Player reference
-                board_location - the player's current BoardLocation
             The player's board location reflects the new position which will have a border_square_number >= 0.
         """
-        salary = player.salary
-        if board_location.border_square_number == 0:
-            salary += salary
-        player.cash += salary
-        player.laps += 1
-        message =  f'{player.player_initials} Passes Payday, Collects {salary} salary'
-        self.log(message)
-        return CommandResult(CommandResult.SUCCESS, message, False)
+        game_square = self._careersGame.get_border_square(0)    # Payday is always square 0
+        result = game_square.execute(player)
+        self.log(result.message)
+        return result
     
-    def was_prior_travel(self, player):
+    def was_prior_travel(self, player) -> bool:
         """Returns True if the player's prior border position was a travel square, False otherwise
+            This is needed in order to avoid endless travel hops.
         """
         result = False
         ps = player.board_location.prior_border_square_number
@@ -965,7 +964,7 @@ class CareersGameEngine(object):
             result = True
         return result
         
-    def add_degree(self, player, degreeProgram):
+    def add_degree(self, player, degreeProgram) -> CommandResult:
         """Adds a degree to the player and adjusts the salary as needed.
             The maximum number of degrees a player can have in any degree program is "maxDegrees".
             Player's Salary is not adjusted if their number of degrees exceeds that.
@@ -1003,5 +1002,25 @@ class CareersGameEngine(object):
         
         return CommandResult(CommandResult.SUCCESS, message, True)
         
-        
+    def who_occupies_my_square(self, player) -> List[Player]:
+        """If the game square currently occupied by player is also occupied by another player(s), return those players.
+            The player landing on an occupied square may bump that player to Unemployment.
+            Arguments: 
+                player - the Player landing on the designated square
+            Returns: a list of Player on the square occupied by player, or an empty list if none.
+        """
+        plist = []
+        occupation_name = player.current_occupation_name()      # could be None
+        for ap in self._game_state.players:
+            if player.number == ap.number:
+                continue    # it's me!
+            if occupation_name is None:     # player is on a border square
+                if player.current_border_square_number() == ap.current_border_square_number():
+                    plist.append(ap)
+            else:   # player is in an occupation
+                if ap.current_occupation_name() == occupation_name and ap.current_occupation_square_number() == ap.current_occupation_square_number():
+                    plist.append(ap)
+                
+        return plist
+    
         

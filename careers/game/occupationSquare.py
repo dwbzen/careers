@@ -28,8 +28,8 @@ class OccupationSquare(GameSquare):
         self._hearts = occupation_square_dict["hearts"]
         self._experience = occupation_square_dict["experience"]         # the number of Experience cards to collect on this square
         self._opportunities = occupation_square_dict["opportunities"]   # the number of Opportunity cards to collect on this square
-        if "action_text" in occupation_square_dict:
-            self.action_text = occupation_square_dict['action_text']
+        
+        self.action_text = occupation_square_dict.get('action_text', None)
         self._bonus = occupation_square_dict.get('bonus',0)
         
         

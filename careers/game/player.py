@@ -11,7 +11,6 @@ from game.experienceCard import ExperienceCard
 
 from datetime import datetime
 import json
-import jsonpickle
 
 class Player(CareersObject):
     
@@ -38,6 +37,7 @@ class Player(CareersObject):
         self._is_insured = False
         self._is_unemployed = False         # True when player lands on (or is sent to) Unemployment
         self._is_sick = False               # True when player lands on Hospital
+        self._on_holiday = False            # True when the player lands on Holiday/Spring Break
         self._lose_turn = False             # If True the player loses their next turn. This is automatically reset when the turn is skipped.
         
         # dict where key is occupation name, value is the number of completed trips
@@ -50,6 +50,7 @@ class Player(CareersObject):
         self._opportunity_card = None   # the OpportunityCard instance of the card currently in play, or None otherwise
         self._experience_card = None    # the ExperienceCard instance of the card currently in play, or None otherwise
         self._laps = 0                  # the number of times player has passed or landed on Payday
+        self._can_bump = []             # the players I can currently Bump
         
     @property
     def player_name(self):
@@ -166,9 +167,14 @@ class Player(CareersObject):
     
     @opportunity_card.setter
     def opportunity_card(self, value:OpportunityCard):
-        """Sets the OpportunityCard currently in play
+        """Sets the OpportunityCard currently in play. After use, set to None.
         """
         self._opportunity_card = value
+        
+    def add_opportunity_card(self, thecard:OpportunityCard):
+        """Add a single OpportunityCard to my deck
+        """
+        self._my_opportunity_cards.append(thecard)
     
     @property
     def my_experience_cards(self):
@@ -185,6 +191,11 @@ class Player(CareersObject):
         """Sets the ExperienceCard currently in play
         """
         self._experience_card = value
+        
+    def add_experience_card(self, thecard:ExperienceCard):
+        """Add a single ExperienceCard to my deck
+        """
+        self._my_experience_cards.append(thecard)
     
     @property
     def is_unemployed(self):
@@ -201,6 +212,14 @@ class Player(CareersObject):
     @is_sick.setter
     def is_sick(self, value):
         self._is_sick = value
+        
+    @property
+    def on_holiday(self):
+        return self._on_holiday
+    
+    @on_holiday.setter
+    def on_holiday(self, value):
+        self._on_holiday = value
         
     @property
     def lose_turn(self):
@@ -221,6 +240,14 @@ class Player(CareersObject):
     @property
     def loans(self):
         return self._loans
+    
+    @property
+    def can_bump(self):
+        return self._can_bump       #a list of Player
+    
+    @can_bump.setter
+    def can_bump(self, other_players):
+        self._can_bump = other_players    #a list of Player
     
     def get_total_loans(self):
         total = 0
@@ -247,7 +274,7 @@ class Player(CareersObject):
                 cd = cards_dict[key]
                 cd["quantity"] = cd["quantity"] + 1
             else:
-                cards_dict[key] = {"quantity" : 1, "text" : card.text, "card" : cd}
+                cards_dict[key] = {"quantity" : 1, "text" : card.text, "card" : card}
         return cards_dict
     
     def get_experience_cards(self):
@@ -265,9 +292,9 @@ class Player(CareersObject):
             else:
                 spaces = card.spaces
                 if spaces > 0:
-                    cards_dict[key] = {"quantity" : 1, "spaces" : str(spaces), "card" : cd}
+                    cards_dict[key] = {"quantity" : 1, "spaces" : str(spaces), "card" : card}
                 else:
-                    cards_dict[key] = {"quantity" : 1, "spaces" : card.type, "card" : cd}
+                    cards_dict[key] = {"quantity" : 1, "spaces" : card.type, "card" : card}
         return cards_dict
     
     def used_opportunity(self):
@@ -336,21 +363,30 @@ class Player(CareersObject):
         """
         return  self.total_points() >= self.success_formula.total_points()
 
-    def save(self):
+    def save(self, gameId=None):
         """Persist this player's state to a JSON file.
-        File name is "player_" + player_initials + yyyy-mm-dd_hh:mm + _state.json"
+        File name is "player_" + player_initials + yyyy-mm-dd_hhmmss + _state.json"
         
         TODO finish this
         """
         today = datetime.now()
-        fdate = '{0:d}-{1:02d}-{2:02d}_{3:02d}:{4:02d}:{5:02d}'.format(today.year,today.month, today.day, today.hour, today.minute, today.second)
-        filename = "player_" + self._player_initials + fdate +" _state.json"
+        fdate = '{0:d}-{1:02d}-{2:02d}_{3:02d}{4:02d}{5:02d}'.format(today.year,today.month, today.day, today.hour, today.minute, today.second)
+        if gameId is None:
+            filename = f'player_{self._player_initials}_{fdate}_state.json '
+        else:
+            filename = f'{gameId}_player_{self._player_initials}_{fdate}_state.json'
         #
+        # save in jsonpickle format
+        #
+        jtxt = self.json_pickle()
+        
         return filename
     
     def player_info(self, include_successFormula=False):
         v = self.get_total_loans()
-        fstring = f'salary:{self.salary}, Cash: {self.cash},  Fame: {self.fame},  Happiness: {self.happiness}, Is insured: {self.is_insured}'
+        fstring = f'''salary:{self.salary}, Cash: {self.cash},  Fame: {self.fame}, Happiness: {self.happiness}, 
+Insured: {self.is_insured}, Unemployed: {self.is_unemployed}, Sick: {self.is_sick}'''
+        
         if include_successFormula:
             fstring = f'{fstring}\nSuccess Formula: {self.success_formula}'
         if v > 0:

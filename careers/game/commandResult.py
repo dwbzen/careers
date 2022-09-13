@@ -81,6 +81,9 @@ class CommandResult(CareersObject):
     def board_location(self, value):
         self._board_location = value
         
+    def is_successful(self):
+        return True if self.return_code == CommandResult.SUCCESS else False
+        
     def to_JSON(self):
         jstr = f'{{\n  "return_code" : "{self.return_code}",\n  "done_flag" : "{self.done_flag}",\n  "message" : "{self.message}",\n'
         if self.next_action is not None:

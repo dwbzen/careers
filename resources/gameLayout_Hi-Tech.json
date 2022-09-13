@@ -41,7 +41,8 @@
 				"type" : "corner_square",
 				"background_image" : "corner_square.png",
 				"image" : "startHereAndArrow.jpg",
-				"text" : "Collect Salary as you pass PAYDAY\n Collect DOUBLE if you land here",
+				"text" : "PAYDAY",
+				"action_text" : "Collect Salary as you pass PAYDAY\n Collect DOUBLE if you land here",
 				"specialProcessing" : {
 					"type" : "payday",
 					"amount" : "salary"
@@ -143,7 +144,7 @@
 				"type" : "corner_square",
 				"background_image" : "corner_square.png",
 				"text" : "HOSPITAL",
-				"action_text" : "You are LAID UP until you throw 5 or less\nor pay the Pharmacist/Paymaster 1/2 your salary\nfor experimental drugs.",
+				"action_text" : "You are LAID UP until you throw 5 or less\nor pay the Pharmacist/Paymaster 1/2 your salary for experimental drugs.",
 				"specialProcessing" : { 
 					"type" : "hospital",
 					"must_roll" : [2, 3, 4, 5],
@@ -381,8 +382,13 @@
 				"name" : "SpringBreak",
 				"type" : "corner_square",
 				"background_image" : "corner_square.png",
-				"text" : "TODO",
-				"specialProcessing" : { }
+				"text" : "Spring Break",
+				"action_text" : "You are on Spring Break! \nCollect 6 Hearts for landing here and 3 each time you stay with a roll of 7 or less",
+				"specialProcessing" : {
+					"type": "holiday",
+					"must_roll" : [8, 9, 10, 11, 12],
+					"hearts" : [3, 6]
+				}
 			},
 			{
 				"number" : 31,

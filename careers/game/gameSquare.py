@@ -8,11 +8,14 @@ from game.specialProcessing import SpecialProcessing
 from game.careersObject import CareersObject
 from game.player import Player
 from game.commandResult import CommandResult
+from typing import Dict, Union
 
 class GameSquare(CareersObject):
     """Represents a square a player can land on. This can be a Border or Occupation.
     
     """
+    
+    GAME_SQUARE = Dict[str, Union[int, str, SpecialProcessing.SPECIAL_PROCESSING ]]
 
     def __init__(self, square_class:str, name=None, number=-1, text=None, special_processing_dict=None, action_text=None, game=None):
         """Create a GameSquare
@@ -25,8 +28,8 @@ class GameSquare(CareersObject):
         self._action_text = action_text
         self._special_processing_dict = special_processing_dict
         self._game_square_dict = None       # populated by concrete class
-        if special_processing_dict is not None and len(special_processing_dict) > 0:
-            self._special_processing = SpecialProcessing(special_processing_dict, square_class)
+    
+        self._special_processing = SpecialProcessing(special_processing_dict, square_class) if special_processing_dict is not None and len(special_processing_dict) > 0 else None
         self._careersGame = None
         #
         # avoids circular import
@@ -39,7 +42,6 @@ class GameSquare(CareersObject):
     @property
     def square_class(self):
         """Border or Occupation
-        
         """
         return self._square_class
     
@@ -81,10 +83,21 @@ class GameSquare(CareersObject):
     def action_text(self, value):
         self._action_text = value
         
+    @property
+    def special_processing(self):
+        return self._special_processing
+    
     def execute(self, player:Player) -> CommandResult:
         """Execute actions associated with this Occupation or Border square
             Override in derived class. Base implementation returns None.
         
+        """
+        return None
+    
+    def execute_special_processing(self, player):
+        """Invokes the specialProcessing section of this game square for a player.
+            This method is called as exit processing for a square, whereas execute() is called when a player lands on a square.
+            Override in derived class. Base implementation returns None.
         """
         return None
         

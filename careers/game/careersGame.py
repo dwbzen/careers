@@ -9,6 +9,8 @@ from game.player import Player
 import json, random
 from datetime import datetime
 from pathlib import Path
+from typing import Dict, Optional, Union, List
+
 from game.opportunityCardDeck import OpportunityCardDeck
 from game.experienceCardDeck import ExperienceCardDeck
 from game.gameState import GameState
@@ -103,7 +105,7 @@ class CareersGame(CareersObject):
         # load the individual occupation files
         self._occupations = self.load_occupations()     # dictionary of Occupation instances keyed by name
 
-    def _create_game_id(self):
+    def _create_game_id(self) ->str :
         """Create a unique game id (guid) for this game.
             This method acquires a lock to insure uniqueness in a multi-process/web environment.
             Format is based on current date and time, for example 20220908-140952-973406-27191
@@ -120,12 +122,12 @@ class CareersGame(CareersObject):
     def _create_experience_deck(self):
         self._experience_cards = ExperienceCardDeck(self._resource_folder, self._edition_name)
         
-    def _create_game_board(self):
+    def _create_game_board(self) -> GameBoard:
         game_layout_filename = self._resource_folder + "/gameLayout_" + self._edition_name + ".json"
         game_board = GameBoard(game_layout_filename, game=self)
         return game_board
 
-    def load_occupations(self) -> dict:
+    def load_occupations(self) -> Dict[str, Occupation]:
         """Loads individual occupation JSON files for this edition.
             Arguments: occupation_list - a list of occupation names
             Returns: a dict with the occupation name as the key and contents
@@ -134,7 +136,7 @@ class CareersGame(CareersObject):
             Note: the filename is the occupation name + "_" + the edition_name + ".json"
                 The file path is the resource_folder set in the Environment
         """
-        occupations = dict()
+        occupations:Dict[str, Occupation] = {}
         for name in self._occupation_names:
             filepath = self._resource_folder + "/" + name + "_" + self._edition_name + ".json"
             p = Path(filepath)
@@ -149,7 +151,7 @@ class CareersGame(CareersObject):
         return occupations
 
     
-    def _load_college_degrees(self):
+    def _load_college_degrees(self) -> Dict[str, Union[List[int] ,List[str], int]]:
         fp = open(self._resource_folder + "/collegeDegrees_" + self._edition_name + ".json", "r")
         degrees = json.loads(fp.read())
         return degrees
@@ -166,18 +168,18 @@ class CareersGame(CareersObject):
     def game_board(self) -> GameBoard:
         return self._game_board
     
-    def get_border_square(self, num) -> BorderSquare:
+    def get_border_square(self, num:int) -> BorderSquare:
         """Convenience method to get a BorderSquare instance from the GameBoard
         """
         return self._game_board.get_square(num)
     
-    def get_game_layout_dimensions(self):
-        """size (number of squares), sides (4-element list of #squares/side)
+    def get_game_layout_dimensions(self) -> dict:
+        """size: (number of squares), sides: (4-element list of #squares/side)
         """
         return self.game_board.game_layout_dimensions
     
 
-    def get_game_board_size(self):
+    def get_game_board_size(self) -> int:
         return self.game_board.game_board_size
     
     
@@ -242,7 +244,7 @@ class CareersGame(CareersObject):
     def add_player(self, aplayer:Player):
         self.game_state.add_player(aplayer)
     
-    def complete_player_move(self):
+    def complete_player_move(self) -> Optional[Player]:
         """Completes the move of the current player and determines if there's a winner and returns winning_player.
             If so winning_player is set. Otherise, current_player and current_player_number advanced to the next player.
             Returns: winning_player (Player instance) or None
@@ -256,7 +258,7 @@ class CareersGame(CareersObject):
         return winner
             
     
-    def is_game_complete(self):
+    def is_game_complete(self) -> bool:
         """Iterates over the players to see who, if anyone, has won.
             Returns: True if there's a winner, else False.
                     sets self.winning_player to the Player who won.
@@ -315,7 +317,15 @@ class CareersGame(CareersObject):
             next_square_num = squares[0].number
         return next_square_num
     
-    def to_JSON(self):
+    def find_border_square(self, name:str) -> Optional[BorderSquare]:
+        bs = None
+        for square in self.game_board.border_squares:
+            if square.name == name:
+                bs = square
+                break
+        return bs
+    
+    def to_JSON(self) -> str:
         """Use jsonpickle to serialize the game to JSON as a JSON-compatible dict.
             A CareersGame serialized with jsonpickle can be turned back to python with unpickler.
         """

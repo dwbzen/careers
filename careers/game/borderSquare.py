@@ -18,6 +18,7 @@ class BorderSquare(GameSquare):
 
     types_list = ["corner_square", "opportunity_square", "danger_square", "travel_square", "occupation_entrance_square", "action_square"]
 
+
     def __init__(self, border_square_dict, game=None):
         """Create a BorderSquare instance.
             Arguments:
@@ -30,9 +31,7 @@ class BorderSquare(GameSquare):
         
         self._game_square_dict = border_square_dict
         self._square_type = border_square_dict['type']
-        if "action_text" in border_square_dict:
-            self.action_text = border_square_dict['action_text']
-        
+        self.action_text = border_square_dict.get('action_text', None)
         
     @property
     def square_type(self):
@@ -97,11 +96,57 @@ class BorderSquare(GameSquare):
                 #
                 message = self.to_JSON()
                 return CommandResult(CommandResult.NEED_PLAYER_CHOICE, message, False)
+        elif self.square_type == 'corner_square':
+                # check special processing type because corner square names are edition-dependent, specialProcessing type is independent of the edition
+    
+                sp_type = self.special_processing.processing_type
+                if sp_type == "unemployment":
+                    player.is_unemployed = True
+                    self.update_board_location(player)
+                    result = CommandResult(CommandResult.SUCCESS, f'Player {player.player_initials}: {self.action_text}', True)
+                elif sp_type == "hospital":
+                    player.is_sick = True
+                    self.update_board_location(player)
+                    result = CommandResult(CommandResult.SUCCESS, f'Player {player.player_initials}: {self.action_text}', True)                  
+                elif sp_type == "payday":
+                    salary = player.salary
+                    # if I am on Payday I get double salary
+                    # don't update the player's board_location 
+                    how = "passed" 
+                    if player.board_location.border_square_number == 0: 
+                        salary += salary
+                        how = "landed on"
+                    player.cash += salary
+                    player.laps += 1
+                    result = CommandResult(CommandResult.SUCCESS, f'Player {player.player_initials} {how} {self.name}\n{self.action_text}', True)
+                elif sp_type == "holiday":    # a.k.a. Spring Break, Holiday
+                    # the number of hearts you get is configured in the specialProcessing section 
+                    nhearts = self.special_processing.hearts[0] if player.on_holiday else self.special_processing.hearts[1]
+                    player.on_holiday = True
+                    player.add_hearts(nhearts)
+                    self.update_board_location(player)
+                    result = CommandResult(CommandResult.SUCCESS, f'Player {player.player_initials} {self.action_text}\n collect {nhearts} hearts', True)
+                    
+                return result
         else:
             pass
         
-        result = CommandResult(CommandResult.SUCCESS, f'execute not yet implemented for {self.square_type} {self.name} ', False)   #  TODO
+        result = CommandResult(CommandResult.SUCCESS, f'{self.square_type} {self.name} execute not yet implemented', False)   #  TODO
         return result
+    
+    def execute_special_processing(self, player:Player):
+        """Invokes the specialProcessing section of this border square for a player.
+            This method is called as exit processing for a square, whereas execute() is called when a player lands on a border square.
+            
+            TODO - finish this, for now return SUCCESS
+        """
+        result = CommandResult(CommandResult.SUCCESS, f'{self.square_type} {self.name} execute_special_processing not yet implemented', False)
+        return result
+    
+    def update_board_location(self, player:Player):
+        player.board_location.border_square_number = self.number
+        player.board_location.border_square_name = self.name
+        player.board_location.occupation_name = None     
         
     def to_JSON(self):
         return json.dumps(self.game_square_dict)
