@@ -16,10 +16,10 @@ class SpecialProcessing(CareersObject):
     border_types = ["payday", "opportunity", "payTax", "enterOccupation", "enterCollege", "buyHearts", "buyStars", "buyExperience",\
                     "hospital", "unemployment", "buyInsurance", "gamble" ]
 
-    occupation_types = ["loseNextTurn", "shortcut", "cashLossOrUnemployment", "goto",\
+    occupation_types = ["shortcut", "cashLossOrUnemployment", "goto",\
                          "salaryIncrease", "salaryCut", "bonus", "favors", "backstab", "fameLoss", "hapinessLoss"]
     
-    common_types = ["travelBorder", "cashLoss", "extraTurn"]
+    common_types = ["travelBorder", "cashLoss", "extraTurn", "loseNextTurn"]
     
     all_types = border_types + occupation_types + common_types
     
@@ -44,7 +44,7 @@ class SpecialProcessing(CareersObject):
         self._amount = 0            # a discrete money amount which may be salary or cash depending on type
         self._amount_dict = None
         self._amount_str = ""
-        amt = special_processing_dict.get('amount', 0)    # 'amount' is optional
+        amt = special_processing_dict.get('amount', 0)    # 'amount' can be a number or a string
         if isinstance(amt, int) or isinstance(amt, float):
             self._amount = amt
         elif isinstance(amt, str):
@@ -53,6 +53,7 @@ class SpecialProcessing(CareersObject):
             self._amount_dict = amt    # how a money amount is calculated
         
         self._dice = special_processing_dict.get('dice', 0)                 # number of dice used to calculate some amount
+        self._of = special_processing_dict.get('dice', 'cash')              # cash (cash-on-hand) or salary
         self._penalty = special_processing_dict.get('penalty', 0)           # a loss quantity (hearts or stars)
         self._limit = special_processing_dict.get('limit', None)            # a limiting factor, usually "salary" (in 1000s)
         
@@ -64,6 +65,7 @@ class SpecialProcessing(CareersObject):
         self._must_roll = special_processing_dict.get('must_roll', [])                  # a list of numbers that must be rolled in order to leave this square
         self._require_doubles = special_processing_dict.get('require_doubles', 0)==1
         self._hearts = special_processing_dict.get('hearts', [])                        # used for holiday type, a 2-element list
+        self._tax_table = special_processing_dict.get('taxTable', None)    # format is upper limit : % amount, for example { 3000 : 0.2 } if you make <= 3000/yr, take 20% as tax
     
     @property
     def square_type(self):
@@ -120,6 +122,14 @@ class SpecialProcessing(CareersObject):
     @property
     def hearts(self) -> list:
         return self._hearts
+    
+    @property
+    def of(self):
+        return self._of
+    
+    @property
+    def tax_table(self):
+        return self._tax_table
     
     def __str__(self):
         return str(self._special_processing_dict)

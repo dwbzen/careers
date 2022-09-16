@@ -15,7 +15,7 @@ requirements = [
 
 setup(
     name="careers",
-    version="0.0.6",
+    version="0.0.7",
     author="Donald Bacon",
     author_email="dwbzen@gmail.com",
     description="Careers Game game engine and server",
@@ -44,7 +44,7 @@ setup(
 	    "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
     ],
-    python_requires='>=3.8',
+    python_requires='>=3.9',
     keywords="careers game",
     maintainer='Donald Bacon',
     maintainer_email='dwbzen@gmail.com'

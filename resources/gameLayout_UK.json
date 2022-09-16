@@ -43,8 +43,8 @@
 				"text" : "PAYDAY"
 				"action_text" : "Collect Salary as you pass PAYDAY\n Collect DOUBLE if you land here",
 				"specialProcessing" : {
-						"type" : "payday",
-						"amount" : "$Salary"
+					"type" : "payday",
+					"amount" : "salary"
 				}
 			},
 			{
@@ -54,7 +54,7 @@
 				"background_image" : "opportunity.png",
 				"text" : "OPPORTUNITY KNOCKS",
 				"specialProcessing" : {
-						"type" : "opportunity"
+					"type" : "opportunity"
 				}
 			},
 			{
@@ -63,9 +63,12 @@
 				"type" : "danger_square",
 				"background_image" : "danger_border_square.png",
 				"text" : "INCOME TAX DUE",
+				"action_text" : "If salary is: £3,000 or less pay 20%\n £3,001 to £10,000 pay 40%\n £10,001 to £20,000 pay 60%\n £20,001 or more pay 90%\n of 1 years salary",
 				"specialProcessing" : {
-						"type" : "incomeTax",
-						"amount" : "$Salary"
+					"type" : "payTax",
+					"amount" : "taxTable",
+					"of" : "salary",
+					"taxTable" : { "3000" : 0.2, "10000" : 0.4, "20000" : 0.6, "10000000" : 0.9}
 				}
 			},
 			{
@@ -75,21 +78,22 @@
 				"background_image" : "1200px-British_Rail_-_Flame_Red_logo.svg.png",
 				"text" : "",
 				"specialProcessing" : {
-						"type" : "railTravel",
-						"destinationSquare" : 13
+					"type" : "travelBorder",
+					"next_square" : 13
 				}
 			}
 
 			{
 				"number" : 4,
-				"name" : "FMC",
+				"name" : "AGRIVI",
 				"type" : "occupation_entrance_square",
 				"background_image" : "occupation_entrance_square.png",
-				"image" : "fmc-logo small.jpg",
-				"text" : "",
+				"image" : "agrivi.png",
+				"text" : "AGRIVI",
+				"action_text" : "Must have: £1000 recruiting fee; or IT degree; or AGRIVI experience",
 				"specialProcessing" : {
-						"type" : "enterOccupation",
-						"destinationOccupation" : "FMC"
+					"type" : "enterOccupation",
+					"destinationOccupation" : "FMC"
 				}
 			},
 			{
@@ -99,14 +103,21 @@
 				"background_image" : "opportunity.png",
 				"text" : "OPPORTUNITY KNOCKS",
 				"specialProcessing" : {
-						"type" : "opportunity"
+					"type" : "opportunity"
 				}
 			},
 			{
 				"number" : 6,
 				"name" : "TechConvention",
 				"type" : "action_square",
-				"background_image" : "light blue action square.png"
+				"background_image" : "light blue action square.png",
+				"text" : "May spend up to 1 year's annual salary for the latest gaming system.\nScore 1 Heart for each £1000 spend,\nor lose 1 for 'just looking'",
+				"specialProcessing" : {
+					"type" : "buyHearts",
+					"amount" : 1000,
+					"limit" : "salary",
+					"penalty" : 1
+				}
 			},
 			{
 				"number" : 7,
@@ -114,10 +125,11 @@
 				"background_image" : "occupation_entrance_square.png",
 				"image" : "Oxford logo.png",
 				"type" : "occupation_entrance_square",
-				"text" : "",
+				"text" : "Oxford",
+				"action_text" : "Must have £1000 for tuition.\nAvailable degrees: Engineering, IT, Sports Medicine, Law, History, Anthropology,Sales&Marketing, Journalism, Pharmacology",
 				"specialProcessing" : {
-						"type" : "enterCollege",
-						"destinationOccupation" : "Oxford"
+					"type" : "enterCollege",
+					"destinationOccupation" : "Oxford"
 				}
 			},
 			{
@@ -127,7 +139,7 @@
 				"background_image" : "opportunity.png",
 				"text" : "OPPORTUNITY KNOCKS",
 				"specialProcessing" : {
-						"type" : "opportunity"
+					"type" : "opportunity"
 				}
 			},
 			{
@@ -136,9 +148,9 @@
 				"type" : "corner_square",
 				"background_image" : "corner_square.png"
 				"text" : "HOSPITAL",
-				"action_text" : "In the Hospital. Loose one turn as you wait for a doctor.",
+				"action_text" : "You are LAID UP and in the Hospital. Loose one turn while you wait to see a doctor.",
 				"specialProcessing" : { 
-					"type" : "hospital"
+					"type" : "loseNextTurn"
 				}
 			},
 			{
@@ -148,7 +160,7 @@
 				"background_image" : "opportunity.png",
 				"text" : "OPPORTUNITY KNOCKS",
 				"specialProcessing" : {
-						"type" : "opportunity"
+					"type" : "opportunity"
 				}
 			},
 			{
@@ -158,8 +170,9 @@
 				"background_image" : "danger_border_square.png",
 				"text" : "**DONATE NOW**",
 				"specialProcessing" : {
-						"type" : "singleDieRoll",
-						"amount" : 1000
+					"type" : "cashLoss",
+					"dice" : 0,
+					"amount" : 1000
 				}
 			},
 			{
@@ -169,20 +182,21 @@
 				"background_image" : "Underground logo.jpg",
 				"text" : "",
 				"specialProcessing" : {
-						"type" : "railTravel",
-						"destinationSquare" : 23
+					"type" : "travelBorder",
+					"next_square" : 23
 				}
 			},
 			{
 				"number" : 13,
-				"name" : "Amazon",
+				"name" : "Harrods",
 				"type" : "occupation_entrance_square",
 				"background_image" : "occupation_entrance_square.png",
-				"image" : "amazon logo.jpg",
-				"text" : "",
+				"image" : "Harrods.jpg",
+				"text" : "Harrods",
+				"action_text" : "Must have: £1000 for Retail Sales training; or Sales & Marketing degree; or Harrods experience",
 				"specialProcessing" : {
-						"type" : "enterOccupation",
-						"destinationOccupation" : "Amazon"
+					"type" : "enterOccupation",
+					"destinationOccupation" : "Amazon"
 				}
 			},
 			{
@@ -192,19 +206,20 @@
 				"background_image" : "opportunity.png",
 				"text" : "OPPORTUNITY KNOCKS",
 				"specialProcessing" : {
-						"type" : "opportunity"
+					"type" : "opportunity"
 				}
 			},
 			{
 				"number" : 15,
-				"name" : "ESPN",
+				"name" : "Arsenal",
 				"type" : "occupation_entrance_square",
 				"background_image" : "occupation_entrance_square.png",
 				"image" : "ESPN logo.jpg",
-				"text" : "",
+				"text" : "Arsenal",
+				"action_text" : "",
 				"specialProcessing" : {
-						"type" : "enterOccupation",
-						"destinationOccupation" : "ESPN"
+					"type" : "enterOccupation",
+					"destinationOccupation" : "ESPN"
 				}
 			},
 			{
@@ -214,19 +229,31 @@
 				"background_image" : "opportunity.png",
 				"text" : "OPPORTUNITY KNOCKS",
 				"specialProcessing" : {
-						"type" : "opportunity"
+					"type" : "opportunity"
 				}
 			},
 			{
 				"number" : 17,
 				"name" : "CarPayment",
 				"background_image" : "danger_border_square.png",
-				"text" : "**CAR PAYMENT DUE**"
+				"text" : "CAR PAYMENT DUE",
+				"action_text" : "Pay ¼ your annual salary for car payment & maintenance",
+				"specialProcessing" : {
+					"type" : "cashLoss",
+					"percent" : 0.25,
+					"of" : "salary"
+				}
 			},
 			{
 				"number" : 18,
-				"name" : "Disney",
-				"type" : "occupation_entrance_square"
+				"name" : "Stonehenge",
+				"type" : "occupation_entrance_square",
+				"text" : "Stonehenge",
+				"action_text" : "",
+				"specialProcessing" : {
+					"type" : "enterOccupation",
+					"destinationOccupation" : "Stonehenge"
+				}
 			},
 			{
 				"number" : 19,
@@ -235,14 +262,22 @@
 				"background_image" : "opportunity.png",
 				"text" : "OPPORTUNITY KNOCKS",
 				"specialProcessing" : {
-						"type" : "opportunity"
+					"type" : "opportunity"
 				}
 			},
 			{
 				"number" : 20,
 				"name" : "BuyExperience",
 				"type" : "action_square",
-				"background_image" : "light blue action square.png"
+				"background_image" : "light blue action square.png",
+				"text" : "EXPERIENCE",
+				"action_text" : "Who says you can't buy experience? Buy up to 3 EXPERIENCE cards or lose 1 card for being curious.",
+				"specialProcessing" : { 
+					"type" : "buyExperience",
+					"amount" : { "1" : 2000, "2" : 4000, "3" : 6000},
+					"limit" : "",
+					"penalty" : 1
+				}
 			},
 			{
 				"number" : 21,
@@ -264,15 +299,21 @@
 				"background_image" : "1200px-British_Rail_-_Flame_Red_logo.svg.png",
 				"text" : "",
 				"specialProcessing" : {
-						"type" : "railTravel",
-						"destinationSquare" : 36
+					"type" : "travelBorder",
+					"next_square" : 36
 				}
 			}, 
 			{
 				"number" : 23,
 				"name" : "PayRent",
 				"background_image" : "danger_border_square.png",
-				"text" : "**PAY RENT HERE**"
+				"text" : "PAY RENT HERE",
+				"action_text" : "Pay ½ your annual salary for this years rent.",
+				"specialProcessing" : {
+					"type" : "cashLoss",
+					"percent" : 0.5,
+					"of" : "cash"
+				}
 			},
 			{
 				"number" : 24,
@@ -280,10 +321,11 @@
 				"type" : "occupation_entrance_square",
 				"background_image" : "occupation_entrance_square.png",
 				"image" : "Lister and Bacon.jpg",
-				"text" : "",
+				"text" : "Lister and Bacon Chambers",
+				"action_text" : "",
 				"specialProcessing" : {
-						"type" : "enterOccupation",
-						"destinationOccupation" : "ListerAndBacon"
+					"type" : "enterOccupation",
+					"destinationOccupation" : "ListerAndBacon"
 				}
 			},
 			{
@@ -293,7 +335,7 @@
 				"background_image" : "opportunity.png",
 				"text" : "OPPORTUNITY KNOCKS",
 				"specialProcessing" : {
-						"type" : "opportunity"
+					"type" : "opportunity"
 				}
 			},
 			{
@@ -301,18 +343,26 @@
 				"name" : "ShoppingSpree",
 				"type" : "IncomeTax",
 				"background_image" : "danger_border_square.png",
-				"text" : "**ONLINE SHOPPING SPREE**"
+				"text" : "ONLINE SHOPPING SPREE",
+				"action_text" : "Go wild on Black Friday! Throw 1 die to find out how wild. Pay number thrown times 10% of your cash-on-hand.",
+				"specialProcessing" : {
+					"type" : "cashLoss",
+					"dice" : 1,
+					"percent" : 0.1,
+					"of" : "cash"
+				}
 			},
 			{
 				"number" : 27,
-				"name" : "Facebook",
+				"name" : "BBC News",
 				"type" : "occupation_entrance_square",
 				"background_image" : "occupation_entrance_square.png",
 				"image" : "facebook logo.jpg",
-				"text" : "",
+				"text" : "BBC News",
+				"action_text" : "",
 				"specialProcessing" : {
-						"type" : "enterOccupation",
-						"destinationOccupation" : "Facebook"
+					"type" : "enterOccupation",
+					"destinationOccupation" : "Facebook"
 				}
 			},
 			{
@@ -329,7 +379,12 @@
 				"number" : 29,
 				"name" : "BuyInsurance",
 				"type" : "action_square",
-				"background_image" : "light blue action square.png"
+				"background_image" : "light blue action square.png",
+				"text" : "Insurance Store",
+				"action_text" : "May purchase insurance to protect your cash,\nHappiness and Fame from catastrophic loss.\nCost of coverage is £5,000.",
+				"specialProcessing" : { 
+					"type" : "buyInsurance"
+				}
 			},
 			{
 				"number" : 30,
@@ -351,26 +406,33 @@
 				"background_image" : "opportunity.png",
 				"text" : "OPPORTUNITY KNOCKS",
 				"specialProcessing" : {
-						"type" : "opportunity"
+					"type" : "opportunity"
 				}
 			},
 			{
 				"number" : 32,
-				"name" : "GambleInVegas",
+				"name" : "HippodromeCasino",
 				"type" : "action_square",
 				"background_image" : "light blue action square.png",
-				"image" : "Las Vegas.jpg"
+				"image" : "hippodrome casino london.png",
+				"text" : "The Hippodrome Casino London",
+				"action_text" : "Roll 2 dice to start gambling.\n6 or less - lose £1000 x roll of 1 die\n7 - Jackpot! Collect £10,000\n8 or more - collect £1000 x roll of 1 die",
+				"specialProcessing" : {
+					"type" : "gamble",
+					"dice" : 2
+				}
 			},
 			{
 				"number" : 33,
-				"name" : "Google",
+				"name" : "TowerOfLondon",
 				"type" : "occupation_entrance_square",
 				"background_image" : "occupation_entrance_square.png",
-				"image" : "google logo.jpg",
-				"text" : "",
+				"image" : "64008.png",
+				"text" : "Tower of London",
+				"action_text" : "",
 				"specialProcessing" : {
-						"type" : "enterOccupation",
-						"destinationOccupation" : "Google"
+					"type" : "enterOccupation",
+					"destinationOccupation" : "Google"
 				}
 			},
 			{
@@ -380,7 +442,7 @@
 				"background_image" : "opportunity.png",
 				"text" : "OPPORTUNITY KNOCKS",
 				"specialProcessing" : {
-						"type" : "opportunity"
+					"type" : "opportunity"
 				}
 			},
 			{
@@ -390,8 +452,8 @@
 				"background_image" : "Underground logo.jpg",
 				"text" : "",
 				"specialProcessing" : {
-						"type" : "railTravel",
-						"destinationSquare" : 4
+					"type" : "travelBorder",
+					"next_square" : 4
 				}
 			},
 			{
@@ -400,10 +462,11 @@
 				"type" : "occupation_entrance_square",
 				"background_image" : "occupation_entrance_square.png",
 				"image" : "pfizer logo.jpg",
-				"text" : "",
+				"text" : "Pfizer UK",
+				"action_text" : "",
 				"specialProcessing" : {
-						"type" : "enterOccupation",
-						"destinationOccupation" : "Pfizer"
+					"type" : "enterOccupation",
+					"destinationOccupation" : "Pfizer"
 				}
 			},
 			{
@@ -421,10 +484,13 @@
 				"name" : "DivorceCourt",
 				"background_image" : "danger_border_square.png",
 				"image" : "divorce icon.jpg",
-				"text" : "**DIVORCE COURT**",
+				"text" : "DIVORCE COURT",
+				"action_text" : "You and your partner split amicably. Throw 2 die to see how amicable. Pay numbers thrown times 10% of your annual salary.",
 				"specialProcessing" : {
-						"type" : "diceRoll",
-						"amount" : "$Salary"
+					"type" : "cashLoss",
+					"dice" : 2,
+					"percent" : 0.1,
+					"of" : "salary"
 				}
 			},
 			{
@@ -432,18 +498,25 @@
 				"name" : "VintageCars",
 				"type" : "action_square",
 				"background_image" : "light blue action square.png",
-				"text" : "**VINTAGE CARS**"
+				"text" : "VINTAGE CARS",
+				"specialProcessing" : {
+					"type" : "buyHearts",
+					"amount" : {"4" : 2000, "8" : 8000, "12" : 16000},
+					"limit" : "",
+					"penalty" : 0
+				}
 			},
 			{
 				"number" : 40,
-				"name" : "SpaceX",
+				"name" : "RollsRoyce",
 				"type" : "occupation_entrance_square",
 				"background_image" : "occupation_entrance_square.png",
 				"image" : "SpaceX logo.jpg",
-				"text" : "",
+				"text" : "Rolls-Royce",
+				"action_text" : "",
 				"specialProcessing" : {
-						"type" : "enterOccupation",
-						"destinationOccupation" : "SpaceX"
+					"type" : "enterOccupation",
+					"destinationOccupation" : "RollsRoyce"
 				}
 			},
 			{
@@ -451,7 +524,14 @@
 				"name" : "WebPresence",
 				"type" : "action_square",
 				"background_image" : "light blue action square.png",
-				"text" : "**WEB PRESENCE**"
+				"text" : "WEB PRESENCE",
+				"action_text" : "May hire consultant to build web site. Score Fame points as follows:",
+				"specialProcessing" : {
+					"type" : "buyStars",
+					"amount" : {"4" : 4000, "10" : 8000, "16" : 12000, "22" : 16000},
+					"limit" : "",
+					"penalty" : 0
+				}
 			}
 	]
 }

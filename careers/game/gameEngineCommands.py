@@ -8,14 +8,18 @@ from game.careersGame import CareersGame
 from game.commandResult import CommandResult
 from game.player import Player
 from game.gameUtils import GameUtils
+from game.opportunityCard import OpportunityCard
+
 import joblib
+import random, json
+from build.lib.careers.game import opportunityCard
 
 class GameEngineCommands(object):
     """Implementations of CareersGameEngine commands.
     
     """
     COMMANDS = ['add', 'bankrupt', 'bump', 'buy', 'create', 'done', 'end', 'enter', 
-                'game_status', 'goto', 'list', 'load', 'next', 'pay', 'quit', 'retire', 
+                'game_status', 'goto', 'list', 'load', 'next', 'pay', 'perform', 'quit', 'retire', 
                 'roll', 'save', 'saved', 'start', 'status', 'transfer', 'use', 'use_insurance', 
                 'where', 'who']
     
@@ -127,6 +131,61 @@ class GameEngineCommands(object):
             
         result = CommandResult(CommandResult.SUCCESS, message, False)
         return result   
+
+    @staticmethod
+    def perform(player:Player, what:str, how:str) -> CommandResult:
+        """Perform some pre-defined action.
+            Arguments:
+                player - Player instance, typically the current player
+                what - what to perform
+                how - how to perform it
+            Returns:
+                A CommandResult. 
+                The message has the result of the operation in JSON format and is dependent on 'what'
+                For what == "roll", how = #dice, result message is 
+            The 'how' argument is particular to the 'what' being performed.
+        """
+        if what.startswith("roll"):
+            # the how has the number of dice (as a string), Player is not used
+            ndice = int(how)
+            dice = random.choices(population=[1,2,3,4,5,6], k=ndice)
+            num_spaces = sum(dice)
+            result_dict = {"player" : player.player_initials,  "spaces" : num_spaces, "dice" : dice }
+            message = json.dumps(result_dict)
+            result = CommandResult(CommandResult.SUCCESS, message, False)
+        else:
+            result = CommandResult(CommandResult.ERROR, f'No such operation: {what}', False)
+        
+        return result
+        
+    def execute_opportunity_card(self,  player:Player, opportunityCard:OpportunityCard) -> CommandResult:
+            player.opportunity_card = opportunityCard
+            message = f'{player.player_initials} Playing  {opportunityCard.opportunity_type}: {opportunityCard.text}'
+            self.log(message)
+            #
+            # Now execute this Opportunity card
+            #
+            board_location = player.board_location
+            opportunity_type = opportunityCard.opportunity_type   # one of 7 types, see OpportunityCardDeck.opportunity_types
+            if opportunity_type == 'occupation':
+                pass
+            elif opportunity_type == 'occupation_choice':
+                pass
+            elif opportunity_type == 'border_square':
+                pass
+            elif opportunity_type == 'border_square_choice':
+                pass
+            elif opportunity_type == 'action':
+                pass
+            elif opportunity_type == 'travel':
+                pass
+            elif opportunity_type == 'opportunity':
+                pass
+            else:
+                return CommandResult(CommandResult.ERROR, f'Invalid opportunity type: {message}', False)
+            
+            result = CommandResult(CommandResult.SUCCESS, message, False)   #  TODO
+            return result
     
     def save_game(self, gamefile_base_name:str, game_id:str, how='json') -> CommandResult:
         """Save the complete serialized game state so it can be restarted at a later time.

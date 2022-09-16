@@ -67,7 +67,9 @@
 				"action_text" : "If salary is: $3,000 or less pay 20%\n $3,001 to $10,000 pay 40%\n $10,001 to $20,000 pay 60%\n $20,001 or more pay 90%\n of 1 years salary",
 				"specialProcessing" : {
 					"type" : "payTax",
-					"amount" : "%salary"
+					"amount" : "taxTable",
+					"of" : "salary",
+					"taxTable" : { "3000" : 0.2, "10000" : 0.4, "20000" : 0.6, "10000000" : 0.9}
 				}
 			},
 			{
@@ -87,7 +89,8 @@
 				"type" : "occupation_entrance_square",
 				"background_image" : "occupation_entrance_square.png",
 				"image" : "fmc-logo small.jpg",
-				"text" : "",
+				"text" : "FMC",
+				"action_text" : "Must have:\n$1000 recruiting fee; or Agronomy degree; or FMC experience",
 				"specialProcessing" : {
 					"type" : "enterOccupation",
 					"destinationOccupation" : "FMC"
@@ -122,7 +125,8 @@
 				"background_image" : "occupation_entrance_square.png",
 				"image" : "UF logo.jpg",
 				"type" : "occupation_entrance_square",
-				"text" : "",
+				"text" : "University of Florida",
+				"action_text" : "Must have $500 tuition. Degrees available:\n Aerospace, Agronomy, Business Admin,\n Computer Science, Hospitality, Journalism, Law,\n Marketing, and Pharmacy",
 				"specialProcessing" : {
 					"type" : "enterCollege",
 					"destinationOccupation" : "UF"
@@ -167,9 +171,10 @@
 				"type" : "danger_square",
 				"background_image" : "danger_border_square.png",
 				"text" : "**DONATE NOW**",
+				"action_text" : "The Class of 2014 is having a fund drive and call on you to donate your fair share. Throw 1 die to find out how fair. Pay the number thrown time $1,000.",
 				"specialProcessing" : {
 					"type" : "cashLoss",
-					"dice" : 0,
+					"dice" : 1,
 					"amount" : 1000
 				}
 			},
@@ -190,7 +195,8 @@
 				"type" : "occupation_entrance_square",
 				"background_image" : "occupation_entrance_square.png",
 				"image" : "amazon logo.jpg",
-				"text" : "",
+				"text" : "Amazon",
+				"action_text" : "Must have $1000 for AWS training; or Computer Science Degree; or Amazon experience",
 				"specialProcessing" : {
 					"type" : "enterOccupation",
 					"destinationOccupation" : "Amazon"
@@ -212,7 +218,8 @@
 				"type" : "occupation_entrance_square",
 				"background_image" : "occupation_entrance_square.png",
 				"image" : "ESPN logo.jpg",
-				"text" : "",
+				"text" : "ESPN",
+				"action_text" : "Must have: $500 for sports training; or Journalism degree; or ESPN experience",
 				"specialProcessing" : {
 					"type" : "enterOccupation",
 					"destinationOccupation" : "ESPN"
@@ -234,9 +241,11 @@
 				"type" : "danger_square",
 				"background_image" : "danger_border_square.png",
 				"text" : "CAR PAYMENT DUE",
+				"action_text" : "Pay ¼ your annual salary for car payment & maintenance",
 				"specialProcessing" : {
 					"type" : "cashLoss",
-					"percent" : "25% Salary"
+					"percent" : 0.25,
+					"of" : "salary"
 				}
 			},
 			{
@@ -245,7 +254,8 @@
 				"type" : "occupation_entrance_square",
 				"background_image" : "occupation_entrance_square.png",
 				"image" : "Disney logo.jpg",
-				"text" : "",
+				"text" : "Disney",
+				"action_text" : "Must have: $500 for Magic coach; or a Hospitality degree; or Magic Kingdom experience",
 				"specialProcessing" : {
 					"type" : "enterOccupation",
 					"destinationOccupation" : "Disney"
@@ -270,7 +280,7 @@
 				"action_text" : "Who says you can't buy experience? Buy up to 3 EXPERIENCE cards or lose 1 card for being curious.",
 				"specialProcessing" : { 
 					"type" : "buyExperience",
-					"amount" : { "1" : 2000, "2" : "4000", "3" : 6000},
+					"amount" : { "1" : 2000, "2" : 4000, "3" : 6000},
 					"limit" : "",
 					"penalty" : 1
 				}
@@ -295,8 +305,8 @@
 				"background_image" : "amtrak.png",
 				"text" : "",
 				"specialProcessing" : {
-						"type" : "travelBorder",
-						"next_square" : 36
+					"type" : "travelBorder",
+					"next_square" : 36
 				}
 			}, 
 			{
@@ -305,9 +315,11 @@
 				"type" : "danger_square",
 				"background_image" : "danger_border_square.png",
 				"text" : "PAY RENT HERE",
+				"action_text" : "Pay ½ your annual salary for this years rent.",
 				"specialProcessing" : {
-						"type" : "cashLoss",
-						"amount" : "50% salary"
+					"type" : "cashLoss",
+					"percent" : 0.5,
+					"of" : "cash"
 				}
 			},
 			{
@@ -316,10 +328,11 @@
 				"type" : "occupation_entrance_square",
 				"background_image" : "occupation_entrance_square.png",
 				"image" : "Lister and Bacon.jpg",
-				"text" : "",
+				"text" : "Lister and Bacon, LLC",
+				"action_text" : "Must have: $8,000 for bar exam; or Law Board Certification; or Law Firm experience",
 				"specialProcessing" : {
-						"type" : "enterOccupation",
-						"destinationOccupation" : "ListerAndBacon"
+					"type" : "enterOccupation",
+					"destinationOccupation" : "ListerAndBacon"
 				}
 			},
 			{
@@ -329,7 +342,7 @@
 				"background_image" : "opportunity.png",
 				"text" : "OPPORTUNITY KNOCKS",
 				"specialProcessing" : {
-						"type" : "opportunity"
+					"type" : "opportunity"
 				}
 			},
 			{
@@ -338,10 +351,12 @@
 				"type" : "danger_square",
 				"background_image" : "danger_border_square.png",
 				"text" : "ONLINE SHOPPING SPREE",
+				"action_text" : "Go wild on Black Friday! Throw 1 die to find out how wild. Pay number thrown times 10% of your cash-on-hand.",
 				"specialProcessing" : {
-						"type" : "cashLoss",
-						"dice" : 1,
-						"percent" : 0.1
+					"type" : "cashLoss",
+					"dice" : 1,
+					"percent" : 0.1,
+					"of" : "cash"
 				}
 			},
 			{
@@ -350,10 +365,11 @@
 				"type" : "occupation_entrance_square",
 				"background_image" : "occupation_entrance_square.png",
 				"image" : "facebook logo.jpg",
-				"text" : "",
+				"text" : "Facebook",
+				"action_text" : "Must have: $2000 for new laptop; or a Business Admin. degree; or Facebook  experience",
 				"specialProcessing" : {
-						"type" : "enterOccupation",
-						"destinationOccupation" : "Facebook"
+					"type" : "enterOccupation",
+					"destinationOccupation" : "Facebook"
 				}
 			},
 			{
@@ -363,7 +379,7 @@
 				"background_image" : "opportunity.png",
 				"text" : "OPPORTUNITY KNOCKS",
 				"specialProcessing" : {
-						"type" : "opportunity"
+					"type" : "opportunity"
 				}
 			},
 			{
@@ -383,7 +399,7 @@
 				"type" : "corner_square",
 				"background_image" : "corner_square.png",
 				"text" : "Spring Break",
-				"action_text" : "You are on Spring Break! \nCollect 6 Hearts for landing here and 3 each time you stay with a roll of 7 or less",
+				"action_text" : "You are on Spring Break! Collect 6 Hearts for landing here and 3 each time you stay with a roll of 7 or less",
 				"specialProcessing" : {
 					"type": "holiday",
 					"must_roll" : [8, 9, 10, 11, 12],
@@ -397,7 +413,7 @@
 				"background_image" : "opportunity.png",
 				"text" : "OPPORTUNITY KNOCKS",
 				"specialProcessing" : {
-						"type" : "opportunity"
+					"type" : "opportunity"
 				}
 			},
 			{
@@ -419,10 +435,11 @@
 				"type" : "occupation_entrance_square",
 				"background_image" : "occupation_entrance_square.png",
 				"image" : "google logo.jpg",
-				"text" : "",
+				"text" : "Google",
+				"action_text" : "Must have: $4000 for Cloud training; or a Marketing degree; or Google experience.",
 				"specialProcessing" : {
-						"type" : "enterOccupation",
-						"destinationOccupation" : "Google"
+					"type" : "enterOccupation",
+					"destinationOccupation" : "Google"
 				}
 			},
 			{
@@ -432,7 +449,7 @@
 				"background_image" : "opportunity.png",
 				"text" : "OPPORTUNITY KNOCKS",
 				"specialProcessing" : {
-						"type" : "opportunity"
+					"type" : "opportunity"
 				}
 			},
 			{
@@ -442,8 +459,8 @@
 				"background_image" : "amtrak.png",
 				"text" : "",
 				"specialProcessing" : {
-						"type" : "travelBorder",
-						"next_square" : 4
+					"type" : "travelBorder",
+					"next_square" : 4
 				}
 			},
 			{
@@ -452,10 +469,11 @@
 				"type" : "occupation_entrance_square",
 				"background_image" : "occupation_entrance_square.png",
 				"image" : "pfizer logo.jpg",
-				"text" : "",
+				"text" : "Pfizer",
+				"action_text" : "Must have: $10,000 for special training; or Pharmacy Board Certification; or Pfizer experience",
 				"specialProcessing" : {
-						"type" : "enterOccupation",
-						"destinationOccupation" : "Pfizer"
+					"type" : "enterOccupation",
+					"destinationOccupation" : "Pfizer"
 				}
 			},
 			{
@@ -465,7 +483,7 @@
 				"background_image" : "opportunity.png",
 				"text" : "OPPORTUNITY KNOCKS",
 				"specialProcessing" : {
-						"type" : "opportunity"
+					"type" : "opportunity"
 				}
 			},
 			{
@@ -475,10 +493,12 @@
 				"background_image" : "danger_border_square.png",
 				"image" : "divorce icon.jpg",
 				"text" : "DIVORCE COURT",
+				"action_text" : "You and your partner split amicably. Throw 2 die to see how amicable. Pay numbers thrown times 10% of your annual salary.",
 				"specialProcessing" : {
-						"type" : "cashLoss",
-						"dice" : 2,
-						"percent" : 0.1
+					"type" : "cashLoss",
+					"dice" : 2,
+					"percent" : 0.1,
+					"of" : "salary"
 				}
 			},
 			{
@@ -487,9 +507,10 @@
 				"type" : "action_square",
 				"background_image" : "light blue action square.png",
 				"text" : "VINTAGE CARS",
+				"action_text" : "Vintage cars for sale. Score Happiness points as follows:",
 				"specialProcessing" : {
 					"type" : "buyHearts",
-					"amount" : {"4" : 2000, "8" : 8000, "12" : "16000"},
+					"amount" : {"4" : 2000, "8" : 8000, "12" : 16000},
 					"limit" : "",
 					"penalty" : 0
 				}
@@ -500,10 +521,11 @@
 				"type" : "occupation_entrance_square",
 				"background_image" : "occupation_entrance_square.png",
 				"image" : "SpaceX logo.jpg",
-				"text" : "",
+				"text" : "SpaceX",
+				"action_text" : "Must have: $5000 recruiting fee; or Aerospace Engineering Degree; or SpaceX experience",
 				"specialProcessing" : {
-						"type" : "enterOccupation",
-						"destinationOccupation" : "SpaceX"
+					"type" : "enterOccupation",
+					"destinationOccupation" : "SpaceX"
 				}
 			},
 			{
@@ -515,7 +537,7 @@
 				"action_text" : "May hire consultant to build web site. Score Fame points as follows:",
 				"specialProcessing" : {
 					"type" : "buyStars",
-					"amount" : {"4" : 4000, "10" : 8000, "16" : "12000", "22" : 16000},
+					"amount" : {"4" : 4000, "10" : 8000, "16" : 12000, "22" : 16000},
 					"limit" : "",
 					"penalty" : 0
 				}

@@ -85,8 +85,15 @@ class BorderSquare(GameSquare):
                 result = CommandResult(CommandResult.SUCCESS, "", True)
             return result
         elif self.square_type == 'action_square':
-            if self.name == 'BuyInsurance':         # nothing to do, buy_insurance is a separate command
-                return CommandResult(CommandResult.NEED_PLAYER_CHOICE, "", False)
+            sp_type = self.special_processing.processing_type       # independent of the name of the Square
+            if sp_type == 'buyHearts':    # Tech Convention
+                return CommandResult(CommandResult.NEED_PLAYER_CHOICE, "", False)   # player needs to execute a 'buy hearts'
+            elif sp_type == 'buyExperience':
+                return CommandResult(CommandResult.NEED_PLAYER_CHOICE, "", False)   # player needs to execute a 'buy experience' 
+            elif sp_type == 'buyInsurance':        
+                return CommandResult(CommandResult.NEED_PLAYER_CHOICE, "", False)   # nothing to do, buy_insurance is a separate command
+            elif sp_type == 'gamble':               # Roll 2 dice to gamble
+                return CommandResult(CommandResult.NEED_PLAYER_CHOICE, "", False)   # player needs to indicate they intend to Gamble, then roll
             else:
                 #
                 # return the JSON dumps of this square as landing here requires a choice by the player

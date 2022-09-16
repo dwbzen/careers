@@ -33,9 +33,10 @@ class CareersGameEngine(object):
     Valid commands + arguments:
         command :: <roll> | <use> | <retire> | <bump> | <bankrupt> | <list> | <status> | <quit> | <done> | <end game> |
                    <saved games> | <save> | <load> | <query> | <enter> | <goto> | <add> | <use insurance> | <add degree> |
-                   <pay> | <transfer> | <game_status> | <create> | <start> | <buy>
-        <use> :: "use"  <card-type>
-        <card_type> :: "opportunity" | "experience" 
+                   <pay> | <transfer> | <game_status> | <create> | <start> | <buy> | <perform>
+        <use> :: "use"  <what> <card_number>
+            <what> :: "opportunity" | "experience" | "roll"
+            <card_number> :: <integer> | '[' <integer list> ']'
         <roll> :: "roll"                        ;roll 1 or 2 dice depending on where the player is on the board
         <retire> :: "retire"                    ;immediate go to retirement square (Spring Break, Holiday)
         <bump> :: "bump" player_initials        ;bump another player, who must be on the same square as the bumper
@@ -47,25 +48,27 @@ class CareersGameEngine(object):
         <end game> :: "end game"                ;saves the current game state then ends the game
         <saved games> :: "saved games"          ;list any saved games by date/time and gameID
         <save> :: "save" <how>                  ;saves the current game state to a file in the specified format
-        <how> ::  "json" | "pkl"
+            <how> ::  "json" | "pkl"
         <load> :: "load" game-id                ;load a game and start play with the next player
         <query> :: "where" <who>                ;gets info on a player's current location on the board
-        <who> :: "am I" | "is" <playerID>
+            <who> :: "am I" | "is" <playerID>
         <playerID> :: player_name | player_initials
         <enter> :: "enter" <occupation_name> [<square_number>]                 ;enter occupation at occupation square square_number
         <goto> :: "goto" <square_number>                                       ;go to border square square_number
         <add> :: "add player" player_name player_initials cash stars hearts    ;adds a new player to the game
         <use insurance> :: "use_insurance"
         <add degree> :: "add degree" <degree program>
-        <degree program> :: See collegeDegrees-<edition name>.json "degreePrograms"
+            <degree program> :: See collegeDegrees-<edition name>.json "degreePrograms"
         <pay> :: "pay" amount                ;current player makes a payment associated with their current board location
         <transfer> :: "transfer" quantity ("cash" | "opportunity" | "experience) player_number
         <game_status> :: "game_status"
         <create> :: "create" <edition> <game_type> points  [id]      ;create a new CareersGame with specified total points or total time (in minutes) and optional gameId
-        <edition> :: "Hi-Tech"    ;supports multiple editions
-        <game_type> ::  'points' | 'timed'
+            <edition> :: "Hi-Tech"    ;supports multiple editions
+            <game_type> ::  'points' | 'timed'
         <start> :: "start"                    ;starts a newly created CareersGame
         <buy>  :: "buy"  ( "hearts" | "stars" | "experience" | "opportunity" ) quantity cash_amount  ;buy some number of items for the cash_amount provided
+        <perform> :: "perform roll <ndice>"      ; roll the dice and return the result without moving
+            <ndice> :: 0 | 1 | 2
     """
     
     
@@ -176,44 +179,13 @@ class CareersGameEngine(object):
         
         command = "self." + command_result.message
         command_result = None
-        print("execute " + command)
+        self.log("_evaluate: " + command)
         try:
             command_result = eval(command)
         except Exception as ex:
             command_result = CommandResult(CommandResult.ERROR,  f'"{command}" : Invalid command format or syntax\n{str(ex)}',  False, exception=ex)
             #raise ex
         return command_result
-        
-    def _parse_command_string(self, txt, addl_args=[]) -> CommandResult:
-        """Parses a command string into a string that can be evaluated with eval()
-            Returns: if return_code == 0, a CommandResult with commandResult.message as the string to eval()
-                else if return_code == 1, commandResult.message has the error message
-        """
-        command_args = txt.split()
-            
-        command = command_args[0]
-        if not command in CareersGameEngine.COMMANDS:
-            return CommandResult(1,  f'Invalid command: {command}',  False)
-        if len(command_args) > 1:
-            args = command_args[1:]
-            command = command + "("
-            for arg in args:
-                if arg.isdigit():
-                    command = command + arg + ","
-                else:
-                    command = command + f'"{arg}",'
-        
-            command = command[:-1]    # remove the trailing comma
-        else:
-            command = command + "("
-            
-        if addl_args is not None and len(addl_args) > 0:
-            for arg in addl_args:
-                command = command + f'"{arg}",'
-            command = command[:-1]
-        command += ")"
-        
-        return CommandResult(0, command, False)
     
     def get_player_game_square(self, player:Player) -> GameSquare:
         board_location = player.board_location
@@ -250,6 +222,8 @@ class CareersGameEngine(object):
     #############################################################################
     def roll(self, number_of_dice=2) ->CommandResult:
         """Roll 1 or 2 dice and advance that number of squares for current_player and execute the occupation or border square.
+            A specific roll of no spaces can be forced by specifying number_of_dice=0.
+            This will cause the player to stay where they are and will execute the current square again.
         """
         player = self.game_state.current_player
         ndice = number_of_dice
@@ -259,8 +233,11 @@ class CareersGameEngine(object):
             ndice = 1
         
         dice = random.choices(population=[1,2,3,4,5,6], k=ndice)
-        num_spaces = sum(dice)
+        return self._roll(player, dice)
         
+        
+    def _roll(self, player, dice:List[int]) -> CommandResult:
+        num_spaces = sum(dice)
         #
         # check if the player is Unemployed and if so, if the roll allows them to move
         #
@@ -284,9 +261,10 @@ class CareersGameEngine(object):
             with respect to the end result. There are generally more than 1 card of a given number
             in the deck and this is identified by the ordinal "ncard".
             Arguments:
-                what - "opportunity", "experience"
-                card_number - the unique number for this card. Corresponds to card.number
-                spaces - required for Experience wild cards.
+                what - "opportunity", "experience", "roll"
+                card_number - the unique number for this card. Corresponds to card.number OR
+                    if what == 'roll', the dice roll as a list. For example, "[3, 4]"
+                spaces - required for Experience wild cards, the number of spaces to move. Can be + or -
         """
         player = self.game_state.current_player
 
@@ -312,8 +290,14 @@ class CareersGameEngine(object):
                 thecard = thecard_dict['card']
                 player.experience_card = thecard
                 result = self._execute_experience_card(player, experienceCard=thecard, spaces=spaces)
+        elif what.lower() == "roll":        # use a pre-existing dice roll.
+            # card_number is a string having the dice roll
+            self.log(f'use roll {card_number}')
+            diestr = card_number.lstrip(' [').rstrip('] ').split(",")
+            die = [int(s) for s in diestr]
+            result = self._roll(player, die)
         else:
-            result = CommandResult(CommandResult.ERROR, f"use can't use a '{what}' ", False)
+            result = CommandResult(CommandResult.ERROR, f"use can't use a '{what}' here ", False)
             
         return result
     
@@ -544,7 +528,11 @@ class CareersGameEngine(object):
             
         """
         player = self.game_state.current_player
-        return GameEngineCommands.list(player, what)    
+        return GameEngineCommands.list(player, what)
+    
+    def perform(self, what:str, how:str) -> CommandResult:
+        player = self.game_state.current_player
+        return GameEngineCommands.perform(player, what, how)
 
     def saved(self) -> CommandResult:
         """List the games saved by this master_id, if any
@@ -730,12 +718,7 @@ class CareersGameEngine(object):
     
     def _execute_opportunity_card(self,  player:Player, opportunityCard:OpportunityCard=None) -> CommandResult:
             player.opportunity_card = opportunityCard
-            message = f'{player.player_initials} Playing: {opportunityCard.text}'
-            #
-            # Now execute this Opportunity card
-            #
-            self.log(message)
-            result = CommandResult(CommandResult.SUCCESS, message, False)   #  TODO
+            result = self._gameEngineCommands.execute_opportunity_card(player, opportunityCard)
             return result                   
     
     def _execute_experience_card(self,  player:Player, experienceCard:ExperienceCard, spaces=0) -> CommandResult:
@@ -844,10 +827,11 @@ class CareersGameEngine(object):
                 board_location.occupation_square_number = square_number
                 return self.execute_game_square(player, board_location)
                 
-        else:   # goto designated border square
+        else:   # goto designated border square. Possible that square_number == the player's current position
+                # in that case the player stays on that space. For example, on Holiday and they choose to stay put.
             if square_number >= 0 and \
                square_number < self._careersGame.game_board.game_layout_dimensions['size'] and \
-               square_number > board_location.border_square_number :
+               square_number >= board_location.border_square_number :
                 player = self.game_state.current_player
                 border_square = self._careersGame.get_border_square(square_number)
                 board_location.border_square_number = square_number
