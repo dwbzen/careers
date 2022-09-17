@@ -21,5 +21,6 @@ class CareersGameManager(object):
     
         if game is None:
             self.games[installationId] = list()
-            self.games[installationId].append(CareersGameEngine())
+
+        self.games[installationId].append(CareersGameEngine())
         return self.games[installationId][len(self.games[installationId]) -1]

@@ -12,8 +12,8 @@ app = FastAPI()
 def get(game: CareersGameManager=Depends(manager)):
     return {}
 
-@app.post('/game/{points}', status_code=201)
-def createGame(points: int, installationId: str, gameInstance: CareersGameEngine=Depends(manager)):
+@app.post('/game/{installationId}/{points}', status_code=201)
+def createGame(installationId: str, points: int, gameInstance: CareersGameEngine=Depends(manager)):
     """Creates a new game and returns the game id"""
     return gameInstance.create("Hi-Tech", 'points', installationId, points)
 
