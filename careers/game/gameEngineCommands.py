@@ -9,10 +9,9 @@ from game.commandResult import CommandResult
 from game.player import Player
 from game.gameUtils import GameUtils
 from game.opportunityCard import OpportunityCard
-
+from typing import Tuple
 import joblib
 import random, json
-from build.lib.careers.game import opportunityCard
 
 class GameEngineCommands(object):
     """Implementations of CareersGameEngine commands.
@@ -46,7 +45,7 @@ class GameEngineCommands(object):
     def trace(self, value):
         self._trace = value
         
-    def can_player_move(self, player:Player) -> tuple[bool,CommandResult] :
+    def can_player_move(self, player:Player) -> Tuple[bool,CommandResult] :
         """Determine if a Player can move from the Hospital or Unemployment
             Returns: a 2-element tupple consisting of a boolean (the player can move or not)
             and a CommandResult.

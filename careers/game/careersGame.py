@@ -4,12 +4,12 @@ Created on Aug 6, 2022
 @author: don_bacon
 '''
 
-from careers.environment import Environment
+from game.environment import Environment
 from game.player import Player
 import json, random
 from datetime import datetime
 from pathlib import Path
-from typing import Dict, Optional, Union, List
+from typing import Dict, Union, List
 
 from game.opportunityCardDeck import OpportunityCardDeck
 from game.experienceCardDeck import ExperienceCardDeck
@@ -29,19 +29,19 @@ class CareersGame(CareersObject):
     """
     _lock = Lock()
     
-    def __init__(self, edition_name,  master_id, total_points, game_id, game_type="points"):
+    def __init__(self, edition_name,  installationId, total_points, game_id, game_type="points"):
         """CareersGame Constructor
             Arguments:
-                master_id - An ID that uniquely identifies the game's creator - a.k.a the game master
+                installationId - An ID that uniquely identifies the game's creator - a.k.a the game master
                 edition_name - the name of the edition to create. This must be a key in editions.json file.
                 total_points - total number of points in the success formula or in a timed game, the number of minutes.
                 game_id - a Globally Unique Identifier for this game (guid). If not provided, one is generated from the current date/time.
             Raises:
                 ValueError if there is no such edition
-            Saved games are indexed by master_id. This is the primary search key used to search for saved games.
+            Saved games are indexed by installationId. This is the primary search key used to search for saved games.
             It's the responsibility of the front end GUI to provide this.
         """
-        self._master_id = master_id
+        self._installationId = installationId
         self._edition_name = edition_name
         self._env = Environment.get_environment()
         self._resource_folder = self._env.get_resource_folder()     # base resource folder
@@ -108,11 +108,12 @@ class CareersGame(CareersObject):
     def _create_game_id(self) ->str :
         """Create a unique game id (guid) for this game.
             This method acquires a lock to insure uniqueness in a multi-process/web environment.
-            Format is based on current date and time, for example 20220908-140952-973406-27191
+            Format is based on current date and time and installationId for example ZenAlien2013_20220908-140952-973406-27191
         """
         CareersGame._lock.acquire()
         today = datetime.now()
-        gid =  '{0:d}{1:02d}{2:02d}-{3:02d}{4:02d}{5:02d}-{6:06d}-{7:05d}'.format(today.year, today.month, today.day, today.hour, today.minute, today.second, today.microsecond, random.randint(10000,99999))
+        gid = self.installationId +  '_{0:d}{1:02d}{2:02d}-{3:02d}{4:02d}{5:02d}-{6:06d}-{7:05d}'\
+            .format(today.year, today.month, today.day, today.hour, today.minute, today.second, today.microsecond, random.randint(10000,99999))
         CareersGame._lock.release()
         return gid
     
@@ -196,12 +197,12 @@ class CareersGame(CareersObject):
         return self._gameId
     
     @property
-    def master_id(self):
-        return self._master_id
+    def installationId(self):
+        return self._installationId
     
-    @master_id.setter
-    def master_id(self, value):
-        self._master_id = value
+    @installationId.setter
+    def installationId(self, value):
+        self._installationId = value
     
     @property
     def game_type(self):
@@ -244,7 +245,7 @@ class CareersGame(CareersObject):
     def add_player(self, aplayer:Player):
         self.game_state.add_player(aplayer)
     
-    def complete_player_move(self) -> Optional[Player]:
+    def complete_player_move(self) -> Union[Player, None]:
         """Completes the move of the current player and determines if there's a winner and returns winning_player.
             If so winning_player is set. Otherise, current_player and current_player_number advanced to the next player.
             Returns: winning_player (Player instance) or None
@@ -317,7 +318,7 @@ class CareersGame(CareersObject):
             next_square_num = squares[0].number
         return next_square_num
     
-    def find_border_square(self, name:str) -> Optional[BorderSquare]:
+    def find_border_square(self, name:str) -> Union[BorderSquare, None]:
         bs = None
         for square in self.game_board.border_squares:
             if square.name == name:

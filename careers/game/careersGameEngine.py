@@ -25,7 +25,7 @@ from game.gameUtils import GameUtils
 
 from datetime import datetime
 import random
-from typing import Optional, List
+from typing import Union, List
 
 
 class CareersGameEngine(object):
@@ -81,7 +81,7 @@ class CareersGameEngine(object):
         self._trace = True          # traces the action by describing each step and logs to a file
         self._start_date_time = datetime.now()
         self._gameId = None
-        self._master_id = None      # provided by the UI
+        self._installationId = None      # provided by the UI
         self._current_player = None
         self._admin_player = Player(number=-1, name='Administrator', initials='admin')
         self._gameEngineCommands = None     # no CareersGame yet
@@ -107,8 +107,8 @@ class CareersGameEngine(object):
         return self._gameId
     
     @property
-    def master_id(self):
-        return self._master_id
+    def installationId(self):
+        return self._installationId
     
     @property
     def trace(self):
@@ -198,7 +198,7 @@ class CareersGameEngine(object):
         
         return game_square
     
-    def get_player(self, pid, pnumber=None) -> Optional[Player] :
+    def get_player(self, pid, pnumber=None) -> Union[Player, None] :
         """Gets a Player by initials, name, or number
             Returns: Player instance or None if no player with the given ID exists.
         """
@@ -393,7 +393,7 @@ class CareersGameEngine(object):
         """
         self.log("Ending game: " + self.gameId)
         if save is not None and save.lower()=='save':    # save the game state first
-            sg_result = self.save_game()
+            sg_result = self.save()
             result = CommandResult(CommandResult.TERMINATE, f'Game is complete and saved to file: {sg_result.message}', True)
         else:
             result = CommandResult(CommandResult.TERMINATE, "Game is complete" , True)
@@ -535,7 +535,7 @@ class CareersGameEngine(object):
         return GameEngineCommands.perform(player, what, how)
 
     def saved(self) -> CommandResult:
-        """List the games saved by this master_id, if any
+        """List the games saved by this installationId, if any
         
         """
         result = CommandResult(CommandResult.SUCCESS, "'saved' command not yet implemented", False)
@@ -598,31 +598,40 @@ class CareersGameEngine(object):
         
         return CommandResult(CommandResult.SUCCESS, message, True)
     
-    def create(self, edition, master_id, game_type, points, game_id=None) -> CommandResult:
+    def create(self, edition, installationId, game_type, points, game_id=None) -> CommandResult:
         """Create a new CareersGame.
-        
+            Arguments:
+                edition - 'Hi-Tech' or 'UK' are the only editions currently supported
+                installationId - uniquely identifies the game's creator. It must have a length >= 5.
+                game_type - 'points' or 'timed'
+                game_id - if not None, the gameId to use to identify this game.
+            Returns: 
+                CommandResult
+                    message - JSON gameId, installationId if successful, else an error message: "error":<details>
+                    return_code - SUCCESS or ERROR
+            If a game_id is not provided, one is created based on the installationId and current date/time. For example, "ZenAlien2013_20220918-135325-650634-47816"
         """
-        assert master_id is not None and len(master_id) >= 5
+        assert installationId is not None and len(installationId) >= 5
         self._edition = edition    # 'Hi-Tech'
-        self._master_id = master_id
+        self._installationId = installationId
         #
         # Create the CareersGame instance and the GameEngineCommands
         #
-        self._careersGame = CareersGame(self._edition, master_id, points, game_id, game_type=game_type)
+        self._careersGame = CareersGame(self._edition, installationId, points, game_id, game_type=game_type)
         
         self._game_state = self._careersGame.game_state
-        self._gameId = self._careersGame.gameId
-        self._logfile_filename = "careers_" + self._careersGame.edition_name
+        self._gameId = self._careersGame.gameId         # the gameId includes the installationId
+        self._logfile_filename = f'{self.gameId}_{self._careersGame.edition_name}'
         self._logfile_folder = "/data/log"    # TODO put in Environment
         self._gamefile_folder = "/data/games"
-        self._logfile_path = self._logfile_folder + "/" + self._logfile_filename + "_" + self._gameId + ".log"
-        self._game_filename_base = f'{self._gamefile_folder}/{self.master_id}_{self.gameId}_game'
+        self._logfile_path = self._logfile_folder + "/" + self._logfile_filename + ".log"
+        self._game_filename_base = f'{self._gamefile_folder}/{self.gameId}_game'
         
         self.fp = open(self._logfile_path, "w")   # log file open channel
         self._gameEngineCommands = GameEngineCommands(self._careersGame, self.fp)
         self._gameEngineCommands.trace = self.trace
 
-        message = f'Created game {self._gameId} for {self._master_id}'
+        message = f'{{"gameId":"{self._gameId}", "installationId":"{self._installationId}"}}'
         self.log(message)
         return CommandResult(CommandResult.SUCCESS, message, True)
     

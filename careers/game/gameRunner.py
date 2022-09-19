@@ -98,9 +98,9 @@ if __name__ == '__main__':
     total_points = 100
     edition = 'Hi-Tech'
     game_type = 'points'            # or 'timed'
-    master_id = 'ZenAlien2013'      # uniquely identifies 'me' as the game creator
-    game_runner = GameRunner(edition, master_id, game_type, total_points)  # creates a CareersGameEngine
-    game_runner.execute_command(f'create {edition} {master_id} {game_type} {total_points}', None)     # creates a CareersGame for points
+    installationId = 'ZenAlien2013'      # uniquely identifies 'me' as the game creator
+    game_runner = GameRunner(edition, installationId, game_type, total_points)  # creates a CareersGameEngine
+    game_runner.execute_command(f'create {edition} {installationId} {game_type} {total_points}', None)     # creates a CareersGame for points
     #
     # add 2 players
     #

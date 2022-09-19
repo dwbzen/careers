@@ -4,7 +4,7 @@
 
 from typing import Any
 
-from careers.game.careersGameEngine import CareersGameEngine
+from game.careersGameEngine import CareersGameEngine
 
 class CareersGameManager(object):
 

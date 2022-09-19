@@ -1,8 +1,8 @@
 import uvicorn
 from fastapi import FastAPI, Depends
 
-from careers.server.gameManager import CareersGameManager
-from careers.game.careersGameEngine import CareersGameEngine
+from server.gameManager import CareersGameManager
+from game.careersGameEngine import CareersGameEngine
 
 gameEngine = CareersGameEngine()
 manager = CareersGameManager()    
@@ -15,7 +15,7 @@ def get(game: CareersGameManager=Depends(manager)):
 @app.post('/game/{installationId}/{points}', status_code=201)
 def createGame(installationId: str, points: int, gameInstance: CareersGameEngine=Depends(manager)):
     """Creates a new game and returns the game id"""
-    return gameInstance.create("Hi-Tech", 'points', installationId, points)
+    return gameInstance.create("Hi-Tech", installationId, 'points', points)
 
 if __name__ == "__main__":
     uvicorn.run("app:app", port=9000, reload=True)

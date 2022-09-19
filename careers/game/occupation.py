@@ -3,7 +3,7 @@ Created on Aug 20, 2022
 
 @author: don_bacon
 '''
-from careers.game.occupationSquare import OccupationSquare
+from game.occupationSquare import OccupationSquare
 
 class Occupation(object):
     """Encapsulates a Careers Occupation.
