@@ -1,6 +1,7 @@
 
 from threading import Lock
 import sys
+import os
 
 class Environment(object):
     _environ = None
@@ -11,7 +12,8 @@ class Environment(object):
         
         """
         self.name = package_name
-        self.resource_base = '/Compile/careers/resources'
+        script_path = os.path.dirname(os.path.abspath(__package__))
+        self.resource_base = os.path.join(script_path, 'careers', 'resources')
         self.package_name = package_name
         self.resources = {}
         self.resources['game'] = self.resource_base + '/game'
