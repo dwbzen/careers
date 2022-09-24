@@ -10,13 +10,12 @@ class Environment(object):
         """Initialize the running Environment by setting global environment variables
         
         """
-        script_path = os.path.dirname(os.path.abspath(__package__))
-        self.resource_base = os.path.join(script_path, 'careers', 'resources')
+        script_path = os.path.dirname(os.path.abspath(__file__))
+        self.resource_base = os.path.join(script_path, '../../resources')
+        self.package_base = os.path.join(script_path, '../..')
         self.name = package_name
         self.package_name = package_name
         self.resources = {}
-        self.resources['game'] = self.resource_base + '/game'
-        self.resources['server'] = self.resource_base + '/server'
         self.items = {}
         
     def __repr__(self):
