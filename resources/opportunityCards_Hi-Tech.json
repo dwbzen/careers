@@ -40,7 +40,7 @@
 			"destination" : "FMC",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
-			"text" : "OPPORTUNITY to join FMC\nMeet Normal Requirements\nMay save or sell.",
+			"text" : "OPPORTUNITY to join FMC\nMeet Normal Requirements",
 			"quantity" : 3
 		},
 		{
@@ -49,7 +49,7 @@
 			"destination" : "Amazon",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
-			"text" : "OPPORTUNITY to join Amazon\nMeet Normal Requirements\nMay save or sell.",
+			"text" : "OPPORTUNITY to join Amazon\nMeet Normal Requirements",
 			"quantity" : 3
 		},
 		{
@@ -58,7 +58,7 @@
 			"destination" : "Pfizer",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
-			"text" : "OPPORTUNITY to join Pfizer\nMeet Normal Requirements\nMay save or sell.",
+			"text" : "OPPORTUNITY to join Pfizer\nMeet Normal Requirements",
 			"quantity" : 3
 		},
 		{
@@ -67,7 +67,7 @@
 			"destination" : "SpaceX",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
-			"text" : "OPPORTUNITY to join SpaceX\nMeet Normal Requirements\nMay save or sell.",
+			"text" : "OPPORTUNITY to join SpaceX\nMeet Normal Requirements",
 			"quantity" : 2
 		},
 		{
@@ -76,7 +76,7 @@
 			"destination" : "SpaceX",
 			"expenses_paid" : 1,
 			"double_happiness" : 0,
-			"text" : "SPECIAL OPPORTUNITY to join SpaceX because of your technical brilliance.\nAll expenses paid and no prior experience required.\nMay save or sell.",
+			"text" : "SPECIAL OPPORTUNITY to join SpaceX because of your technical brilliance.\nAll expenses paid and no prior experience required.",
 			"quantity" : 1
 		},
 		{
@@ -85,7 +85,7 @@
 			"destination" : "Disney",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
-			"text" : "OPPORTUNITY to join Disney\nMeet Normal Requirements\nMay save or sell.",
+			"text" : "OPPORTUNITY to join Disney\nMeet Normal Requirements",
 			"quantity" : 2
 		},
 		{
@@ -94,7 +94,7 @@
 			"destination" : "Disney",
 			"expenses_paid" : 0,
 			"double_happiness" : 1,
-			"text" : "SPECIAL OPPORTUNITY to join Disney because of your Magic touch.\nDOUBLE all Happiness earned\nMeet Normal Requirements\nMay save or sell.",
+			"text" : "SPECIAL OPPORTUNITY to join Disney because of your Magic touch.\nDOUBLE all Happiness earned\nMeet Normal Requirements",
 			"quantity" : 2
 		},
 		{
@@ -103,7 +103,7 @@
 			"destination" : "Google",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
-			"text" : "OPPORTUNITY to join Google\nMeet Normal Requirements\nMay save or sell.",
+			"text" : "OPPORTUNITY to join Google\nMeet Normal Requirements",
 			"quantity" : 2
 		},
 		{
@@ -112,7 +112,7 @@
 			"destination" : "Google",
 			"expenses_paid" : 1,
 			"double_happiness" : 0,
-			"text" : "SPECIAL OPPORTUNITY to join Google because of your technical brilliance. \nAll expenses paid and no prior experience required.\nMay save or sell.",
+			"text" : "SPECIAL OPPORTUNITY to join Google because of your technical brilliance. \nAll expenses paid and no prior experience required.",
 			"quantity" :1
 		},
 		{
@@ -121,7 +121,7 @@
 			"destination" : "Facebook",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
-			"text" : "OPPORTUNITY to join Facebook\nMeet Normal Requirements\nMay save or sell.",
+			"text" : "OPPORTUNITY to join Facebook\nMeet Normal Requirements",
 			"quantity" : 2
 		},
 		{
@@ -130,7 +130,7 @@
 			"destination" : "Facebook",
 			"expenses_paid" : 1,
 			"double_happiness" : 0,
-			"text" : "SPECIAL OPPORTUNITY to join Facebook  because of your problem solving skills.\nAll expenses paid and no prior experience required.\nMay save or sell.",
+			"text" : "SPECIAL OPPORTUNITY to join Facebook  because of your problem solving skills.\nAll expenses paid and no prior experience required.",
 			"quantity" : 1
 		},
 		{
@@ -139,7 +139,7 @@
 			"destination" : "ESPN",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
-			"text" : "OPPORTUNITY to join ESPN\nMeet Normal Requirements\nMay save or sell.",
+			"text" : "OPPORTUNITY to join ESPN\nMeet Normal Requirements",
 			"quantity" : 2
 		},
 		{
@@ -148,7 +148,7 @@
 			"destination" : "ESPN",
 			"expenses_paid" : 1,
 			"double_happiness" : 0,
-			"text" : "SPECIAL OPPORTUNITY to join ESPN  because of your sports knowledge.\nAll expenses paid and no prior experience required.\nMay save or sell.",
+			"text" : "SPECIAL OPPORTUNITY to join ESPN  because of your sports knowledge.\nAll expenses paid and no prior experience required.",
 			"quantity" : 1
 		},
 		{
@@ -157,7 +157,7 @@
 			"destination" : "UF",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
-			"text" : "OPPORTUNITY to enter the University of Florida\nMeet Normal Requirements\nMay save or sell.",
+			"text" : "OPPORTUNITY to enter the University of Florida\nMeet Normal Requirements",
 			"quantity" : 3
 		},
 		{
@@ -166,7 +166,7 @@
 			"destination" : "UF",
 			"expenses_paid" : 1,
 			"double_happiness" : 0,
-			"text" : "SPECIAL OPPORTUNITY to enter College on Scholarship, all expenses paid.\nMay save or sell.",
+			"text" : "SPECIAL OPPORTUNITY to enter College on Scholarship, all expenses paid.",
 			"quantity" : 2
 		},
 		{
@@ -175,7 +175,7 @@
 			"destination" : "ListerAndBacon",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
-			"text" : "OPPORTUNITY to join Lister & Bacon\nMeet Normal Requirements\nMay save or sell.",
+			"text" : "OPPORTUNITY to join Lister & Bacon\nMeet Normal Requirements",
 			"quantity" : 3
 		},
 		{
@@ -184,7 +184,7 @@
 			"destination" : "",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
-			"text" : "GOLDEN  OPPORTUNITY to join the Company of your choice\nMeet Normal Requirements\nMay save or sell.",
+			"text" : "GOLDEN  OPPORTUNITY to join the Company of your choice\nMeet Normal Requirements",
 			"quantity" : 2
 		},
 		{
@@ -193,7 +193,7 @@
 			"destination" : "",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
-			"text" : "GOLDEN  OPPORTUNITY to advance to ANY border square\n*meet normal requirements for Occupation or College entrance*\nMay save or sell.",
+			"text" : "GOLDEN  OPPORTUNITY to advance to ANY border square\n*meet normal requirements for Occupation or College entrance*",
 			"quantity" : 2
 		},
 		{
@@ -202,7 +202,7 @@
 			"destination" : "BuyInsurance",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
-			"text" : "OPPORTUNITY to buy Insurance\nAdvance to the Insurance Store and pay $5,000 premium\nMay save or sell.",
+			"text" : "OPPORTUNITY to buy Insurance\nAdvance to the Insurance Store and pay $5,000 premium",
 			"quantity" : 4
 		},
 		{
@@ -211,7 +211,7 @@
 			"destination" : "SpringBreak",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
-			"text" : "OPPORTUNITY to go on Spring Break!\nMay save or sell.",
+			"text" : "OPPORTUNITY to go on Spring Break!",
 			"quantity" : 4
 		},
 		{
@@ -220,7 +220,7 @@
 			"destination" : "Payday",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
-			"text" : "SPECIAL OPPORTUNITY to collect needed cash!\nAdvance to PAYDAY and collect DOUBLE your annual salary.\nMay save or sell.",
+			"text" : "SPECIAL OPPORTUNITY to collect needed cash!\nAdvance to PAYDAY and collect DOUBLE your annual salary.",
 			"quantity" : 3
 		},
 		{
@@ -229,7 +229,7 @@
 			"destination" : "GambleInVegas",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
-			"text" : "OPPORTUNITY to Gamble in Las Vegas\nMay save or sell.",
+			"text" : "OPPORTUNITY to Gamble in Las Vegas",
 			"quantity" : 3
 		},
 		{
@@ -238,7 +238,7 @@
 			"destination" : "BuyExperience",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
-			"text" : "SPECIAL OPPORTUNITY to buy needed padding! Advance to EXPERIENCE square and buy at least 1 and up to 3 EXPERIENCE cards.\nMay save or sell.",
+			"text" : "SPECIAL OPPORTUNITY to buy needed padding! Advance to EXPERIENCE square and buy at least 1 and up to 3 EXPERIENCE cards.",
 			"quantity" : 2
 		},
 		{
@@ -247,7 +247,7 @@
 			"destination" : "Amtrak",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
-			"text" : "TRAVEL OPPORTUNITY Advance to the nearest Amtrak Station and roll again.\nMay save or sell.",
+			"text" : "TRAVEL OPPORTUNITY Advance to the nearest Amtrak Station and roll again.",
 			"quantity" : 4
 		},
 		{
@@ -256,7 +256,7 @@
 			"destination" : "Opportunity",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
-			"text" : "OPPORTUNITY KNOCKS\nAdvance to the nearest OPPORTUNITY square and roll again\nMay save or sell.",
+			"text" : "OPPORTUNITY KNOCKS\nAdvance to the nearest OPPORTUNITY square and roll again",
 			"quantity" : 3
 		},
 		{
@@ -266,7 +266,7 @@
 			"destination" : "",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
-			"text" : "SPECIAL OPPORTUNITY to gain EXPERIENCE!\nCollect one randomly selected EXPERIENCE card from each player.\nMay save or sell.",
+			"text" : "SPECIAL OPPORTUNITY to gain EXPERIENCE!\nCollect one randomly selected EXPERIENCE card from each player.",
 			"quantity" : 2
 		},
 		{
@@ -276,7 +276,7 @@
 			"destination" : "",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
-			"text" : "Get out of Unemployment free\nPlay this card to immediately leave Unemployment.\nMay save or sell.",
+			"text" : "Get out of Unemployment free\nPlay this card to immediately leave Unemployment.",
 			"quantity" : 4
 		},
 		{
@@ -286,9 +286,8 @@
 			"destination" : "",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
-			"text" : "SPECIAL OPPORTUNITY to Get an Extra Turn\nPlay at the start of your turn\nMay save or sell.",
+			"text" : "SPECIAL OPPORTUNITY to Get an Extra Turn\nPlay at the start of your turn",
 			"quantity" : 6
 		}
 	]
 }
- 

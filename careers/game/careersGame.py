@@ -74,18 +74,21 @@ class CareersGame(CareersObject):
         self._game_type = game_type  # 'points' or 'timed' (which is not yet supported)
 
         #
-        # create & initialize the GameState which includes a list of Players
-        #
-        self._game_state = GameState(total_points, self._game_type)
-        #
-        # create a unique ID for this game, used for logging
-        #
-        self._gameId = game_id
-        #
         # if a gameId is not provided, create one
         #
         if game_id is None:
+            # create a unique ID for this game, used for logging    
             self._gameId = self._create_game_id()
+        else:
+            self._gameId = game_id
+            
+        #
+        # create & initialize the GameState which includes a list of Players
+        #
+        self._game_state = GameState(self._gameId, total_points, self._game_type)
+
+        
+
         
     def _load_game_configuration(self):
         """Loads the game parameters and occupations JSON files for this edition.

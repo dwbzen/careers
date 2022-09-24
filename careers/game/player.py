@@ -39,6 +39,8 @@ class Player(CareersObject):
         self._is_sick = False               # True when player lands on Hospital
         self._on_holiday = False            # True when the player lands on Holiday/Spring Break
         self._lose_turn = False             # If True the player loses their next turn. This is automatically reset when the turn is skipped.
+        self._can_roll = False              # If True the player can roll or play an Experience card
+        self._can_use_opportunity = True    # If True the play may use an Opportunity Card
         
         # dict where key is occupation name, value is the number of completed trips
         # when completed trips >= 3, the can_retire flag is automatically set
@@ -248,6 +250,22 @@ class Player(CareersObject):
     @can_bump.setter
     def can_bump(self, other_players):
         self._can_bump = other_players    #a list of Player
+        
+    @property
+    def can_roll(self):
+        return self._can_roll
+    
+    @can_roll.setter
+    def can_roll(self, value):
+        self._can_roll = value
+        
+    @property
+    def can_use_opportunity(self):
+        return self._can_use_opportunity
+    
+    @can_use_opportunity.setter
+    def can_use_opportunity(self, value):
+        self._can_use_opportunity = value
     
     def get_total_loans(self):
         total = 0
@@ -416,6 +434,8 @@ Insured: {self.is_insured}, Unemployed: {self.is_unemployed}, Sick: {self.is_sic
         pdict['board_location'] = self.board_location.to_dict()
         pdict['is_sick'] = self.is_sick
         pdict['is_unemployed'] = self.is_unemployed
+        pdict['can_roll'] = self.can_roll
+        pdict['can_use_opportunity'] = self.can_use_opportunity
         pdict['occupation_record'] = self.occupation_record
         
         return pdict
