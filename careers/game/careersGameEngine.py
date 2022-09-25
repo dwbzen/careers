@@ -22,6 +22,7 @@ from game.occupationSquare import OccupationSquare
 from game.gameSquare import GameSquare
 from game.gameEngineCommands import GameEngineCommands
 from game.gameUtils import GameUtils
+from game.environment import Environment
 
 from datetime import datetime
 import random
@@ -640,8 +641,11 @@ class CareersGameEngine(object):
         self._game_state = self._careersGame.game_state
         self._gameId = self._careersGame.gameId         # the gameId includes the installationId
         self._logfile_filename = f'{self.gameId}_{self._careersGame.edition_name}'
-        self._logfile_folder = "/data/log"    # TODO put in Environment
-        self._gamefile_folder = "/data/games"
+        
+        dataRoot = Environment.get_environment().package_base
+
+        self._logfile_folder = dataRoot + '/log'   # TODO put in Environment
+        self._gamefile_folder = dataRoot + '/games'
         self._logfile_path = self._logfile_folder + "/" + self._logfile_filename + ".log"
         self._game_filename_base = f'{self._gamefile_folder}/{self.gameId}_game'
         
