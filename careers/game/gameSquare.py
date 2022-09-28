@@ -10,6 +10,7 @@ from game.player import Player
 from game.commandResult import CommandResult
 from typing import Dict, Union
 
+
 class GameSquare(CareersObject):
     """Represents a square a player can land on. This can be a Border or Occupation.
     
@@ -86,6 +87,10 @@ class GameSquare(CareersObject):
     @property
     def special_processing(self):
         return self._special_processing
+    
+    @property
+    def careersGame(self):
+        return self._careersGame
     
     def execute(self, player:Player) -> CommandResult:
         """Execute actions associated with this Occupation or Border square

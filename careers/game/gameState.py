@@ -168,7 +168,7 @@ class GameState(CareersObject):
         gs["total_points"] = self.total_points
         gs["seconds_remaining"] = self.seconds_remaining
         if self.winning_player is not None:
-            gs["winning_player"] = self.winning_player.initials
+            gs["winning_player"] = self.winning_player.player_initials
         gs["game_complete"] = self.game_complete
         #gs["players"] 
 

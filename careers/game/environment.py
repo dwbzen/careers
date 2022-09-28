@@ -8,7 +8,7 @@ class Environment(object):
     
     def __init__(self, package_name=None):
         """Initialize the running Environment by setting global environment variables
-        
+        Note - need to manually create a log folder and games folder under package_base. TODO - automate that
         """
         script_path = os.path.dirname(os.path.abspath(__file__))
         self.resource_base = os.path.join(script_path, '../../resources')

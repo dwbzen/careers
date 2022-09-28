@@ -185,7 +185,7 @@ class CareersGameEngine(object):
             command_result = eval(command)
         except Exception as ex:
             command_result = CommandResult(CommandResult.ERROR,  f'"{command}" : Invalid command format or syntax\n{str(ex)}',  False, exception=ex)
-            #raise ex
+            raise ex
         return command_result
     
     def get_player_game_square(self, player:Player) -> GameSquare:
@@ -392,7 +392,8 @@ class CareersGameEngine(object):
         player = self.game_state.current_player
         player.opportunity_card = None
         player.experience_card = None
-        cp.can_roll = False
+        if cp.number != player.number:    # could be only 1 player if doing a solo game
+            cp.can_roll = False
         #
         # save the Game on change of turns
         #
@@ -783,8 +784,8 @@ class CareersGameEngine(object):
     def _execute_occupation_square(self, player:Player, game_square:OccupationSquare, board_location:BoardLocation) -> CommandResult:
         message = f'execute_occupation_square {board_location.occupation_name}  {board_location.occupation_square_number} for {player.player_initials}'
         self.log(message)
-        
-        return CommandResult(CommandResult.SUCCESS, message, False)
+        result = game_square.execute(player)
+        return result
     
     def _execute_border_square(self, player:Player, game_square:BorderSquare, board_location:BoardLocation) -> CommandResult:
         message = f'{player.player_initials} landed on {game_square.name}  ({board_location.border_square_number})'
@@ -945,7 +946,7 @@ class CareersGameEngine(object):
 
         self.add_experience_cards(player, nexperience)
         
-        message = f'{player.initials} Leaving {board_location.occupation_name}, collects {nexperience} Experience cards'
+        message = f'{player.player_initials} Leaving {board_location.occupation_name}, collects {nexperience} Experience cards'
         self.log(message)
         result = CommandResult(CommandResult.SUCCESS, message, True)
         return result
@@ -1049,6 +1050,6 @@ class CareersGameEngine(object):
             in which case they are inside the Occupation.
             Or they are at the entrance square of an Occupation they are entering.
         """
-        return game_square.square_class == 'occupation' or \
+        return game_square.square_class == 'Occupation' or \
             (player.board_location.occupation_name is not None and player.board_location.occupation_name==game_square.name)
     

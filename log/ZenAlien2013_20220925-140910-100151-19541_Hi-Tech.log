@@ -1,0 +1,18 @@
+20220925_140910  {"gameId":"ZenAlien2013_20220925-140910-100151-19541", "installationId":"ZenAlien2013"}
+20220925_140910    admin results: 0 {"gameId":"ZenAlien2013_20220925-140910-100151-19541", "installationId":"ZenAlien2013"}
+Border square#: 0  "Payday"
+20220925_140910  admin: add player Don DWB 40 10 50
+20220925_140910  _evaluate: self.add("player","Don","DWB",40,10,50)
+20220925_140910  Player "Don" "DWB number: 0" added
+20220925_140910    admin results: 0 Player "Don" "DWB number: 0" added
+Border square#: 0  "Payday"
+20220925_140910  admin: add player Brian BDB 20 40 40
+20220925_140910  _evaluate: self.add("player","Brian","BDB",20,40,40)
+20220925_140910  Player "Brian" "BDB number: 1" added
+20220925_140910    admin results: 0 Player "Brian" "BDB number: 1" added
+Border square#: 0  "Payday"
+20220925_140910  admin: start
+20220925_140910  _evaluate: self.start()
+20220925_140910  Starting game ZenAlien2013_20220925-140910-100151-19541
+20220925_140910    admin results: 0 Starting game ZenAlien2013_20220925-140910-100151-19541
+Border square#: 0  "Payday"

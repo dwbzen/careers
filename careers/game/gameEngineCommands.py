@@ -125,6 +125,7 @@ class GameEngineCommands(object):
             else:
                 n = 1
                 for card in player.my_experience_cards:
+                    num = card.number
                     message += f'{n}.  {num}: {str(card)}\n'
                     n+= 1
             

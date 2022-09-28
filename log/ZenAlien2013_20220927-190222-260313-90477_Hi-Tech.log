@@ -1,0 +1,169 @@
+20220927_190222  {"gameId":"ZenAlien2013_20220927-190222-260313-90477", "installationId":"ZenAlien2013"}
+20220927_190222    admin results: 0 {"gameId":"ZenAlien2013_20220927-190222-260313-90477", "installationId":"ZenAlien2013"}
+Border square#: 0  "Payday"
+20220927_190222  admin: add player Don DWB 40 10 50
+20220927_190222  _evaluate: self.add("player","Don","DWB",40,10,50)
+20220927_190222  Player "Don" "DWB number: 0" added
+20220927_190222    admin results: 0 Player "Don" "DWB number: 0" added
+Border square#: 0  "Payday"
+20220927_190222  admin: start
+20220927_190222  _evaluate: self.start()
+20220927_190222  Starting game ZenAlien2013_20220927-190222-260313-90477
+20220927_190222    admin results: 0 Starting game ZenAlien2013_20220927-190222-260313-90477
+Border square#: 0  "Payday"
+20220927_190225  DWB: toll
+20220927_190225    DWB results: 1 Invalid command: toll
+Border square#: 0  "Payday"
+20220927_190226  DWB: roll
+20220927_190226  _evaluate: self.roll()
+20220927_190226   DWB  rolled 9 [6, 3]
+20220927_190226  DWB landed on Hospital  (9)
+20220927_190226    DWB results: 0 DWB landed on Hospital  (9)
+Player DWB: You are LAID UP until you throw 5 or less
+or pay the Pharmacist/Paymaster 1/2 your salary for experimental drugs.
+Border square#: 9  "Hospital"
+20220927_190230  DWB: roll
+20220927_190230  _evaluate: self.roll()
+20220927_190230   DWB  rolled 12 [6, 6]
+20220927_190230  DWB landed on Unemployment  (21)
+20220927_190230    DWB results: 0 DWB landed on Unemployment  (21)
+Player DWB: You were LAID OFF and must throw 7, 11, or doubles to move on.
+OR pay 1 year's Salary for additional training.
+Border square#: 21  "Unemployment"
+20220927_190233  DWB: roll
+20220927_190233  _evaluate: self.roll()
+20220927_190233   DWB  rolled 6 [2, 4]
+20220927_190233  DWB landed on Facebook  (27)
+20220927_190233    DWB results: 0 DWB landed on Facebook  (27)
+
+Border square#: 27  "Facebook"
+20220927_190237  DWB: roll
+20220927_190237  _evaluate: self.roll()
+20220927_190237   DWB  rolled 11 [5, 6]
+20220927_190237  DWB landed on DivorceCourt  (38)
+20220927_190237    DWB results: 0 DWB landed on DivorceCourt  (38)
+danger_square DivorceCourt execute not yet implemented
+Border square#: 38  "DivorceCourt"
+20220927_190240  DWB: roll
+20220927_190240  _evaluate: self.roll()
+20220927_190240   DWB  rolled 12 [6, 6]
+20220927_190240  Player DWB passed Payday
+Collect Salary as you pass PAYDAY
+ Collect DOUBLE if you land here
+20220927_190240  DWB landed on Opportunity  (8)
+20220927_190240    DWB results: 0 Player DWB passed Payday
+Collect Salary as you pass PAYDAY
+ Collect DOUBLE if you land here
+DWB landed on Opportunity  (8)
+Added Opportunity: OPPORTUNITY to join Google
+Meet Normal Requirements
+Border square#: 8  "Opportunity"
+20220927_190243  DWB: roll
+20220927_190243  _evaluate: self.roll()
+20220927_190243   DWB  rolled 8 [3, 5]
+20220927_190243  DWB landed on Opportunity  (16)
+20220927_190243    DWB results: 0 DWB landed on Opportunity  (16)
+Added Opportunity: OPPORTUNITY to join FMC
+Meet Normal Requirements
+Border square#: 16  "Opportunity"
+20220927_190246  DWB: roll
+20220927_190246  _evaluate: self.roll()
+20220927_190246   DWB  rolled 10 [5, 5]
+20220927_190246  DWB landed on ShoppingSpree  (26)
+20220927_190246    DWB results: 0 DWB landed on ShoppingSpree  (26)
+danger_square ShoppingSpree execute not yet implemented
+Border square#: 26  "ShoppingSpree"
+20220927_190248  DWB: roll
+20220927_190248  _evaluate: self.roll()
+20220927_190248   DWB  rolled 7 [5, 2]
+20220927_190248  DWB landed on Google  (33)
+20220927_190248    DWB results: 0 DWB landed on Google  (33)
+
+Border square#: 33  "Google"
+20220927_190250  DWB: roll
+20220927_190250  _evaluate: self.roll()
+20220927_190250   DWB  rolled 11 [5, 6]
+20220927_190250  Player DWB passed Payday
+Collect Salary as you pass PAYDAY
+ Collect DOUBLE if you land here
+20220927_190250  DWB landed on IncomeTax  (2)
+20220927_190250    DWB results: 0 Player DWB passed Payday
+Collect Salary as you pass PAYDAY
+ Collect DOUBLE if you land here
+DWB landed on IncomeTax  (2)
+danger_square IncomeTax execute not yet implemented
+Border square#: 2  "IncomeTax"
+20220927_190254  DWB: status
+20220927_190254  _evaluate: self.status()
+20220927_190254    DWB results: 0 salary:2000, Cash: 6000,  Fame: 0, Happiness: 0, 
+Insured: False, Unemployed: True, Sick: True
+Success Formula: Money: $50,000  Fame: 40  Happiness: 10
+Border square#: 2  "IncomeTax"
+20220927_190302  DWB: list opportunity
+20220927_190302  _evaluate: self.list("opportunity")
+20220927_190302    DWB results: 0 1.  7: OPPORTUNITY to join Google
+Meet Normal Requirements
+2.  0: OPPORTUNITY to join FMC
+Meet Normal Requirements
+
+Border square#: 2  "IncomeTax"
+20220927_190316  DWB: use opportunity 0
+20220927_190316  _evaluate: self.use("opportunity",0)
+20220927_190316  DWB Playing  occupation: OPPORTUNITY to join FMC
+Meet Normal Requirements
+20220927_190316    DWB results: 0 DWB Playing  occupation: OPPORTUNITY to join FMC
+Meet Normal Requirements
+Border square#: 2  "IncomeTax"
+20220927_190323  DWB: enter FMC
+20220927_190323  _evaluate: self.enter("FMC")
+20220927_190323    DWB results: 0 You are on square# 4: FMC
+Must have:
+$1000 recruiting fee; or Agronomy degree; or FMC experience
+Border square#: 4  "FMC"	Occupation: FMC   square#: -1
+20220927_190326  DWB: roll
+20220927_190326  _evaluate: self.roll()
+20220927_190326   DWB  rolled 1 [1]
+20220927_190326  execute_occupation_square FMC  0 for DWB
+20220927_190326    DWB results: 0 Partner with Research Biologist
+ Hearts: 2
+Border square#: 4  "FMC"	Occupation: FMC   square#: 0
+20220927_190329  DWB: roll
+20220927_190329  _evaluate: self.roll()
+20220927_190329   DWB  rolled 5 [5]
+20220927_190329  execute_occupation_square FMC  5 for DWB
+20220927_190329    DWB results: 0 You have a bad feeling about this...
+CALL IN FAVORS
+ Stars: 4
+Border square#: 4  "FMC"	Occupation: FMC   square#: 5
+20220927_190336  DWB: roll
+20220927_190336  _evaluate: self.roll()
+20220927_190336   DWB  rolled 6 [6]
+20220927_190336  execute_occupation_square FMC  11 for DWB
+20220927_190336    DWB results: 0 Promoted to biological SME
+Salary up $2000
+ Stars: 2
+ Hearts: 4
+Border square#: 4  "FMC"	Occupation: FMC   square#: 11
+20220927_190344  DWB: roll
+20220927_190344  _evaluate: self.roll()
+20220927_190344   DWB  rolled 6 [6]
+20220927_190344  DWB Leaving FMC, collects 0 Experience cards
+20220927_190344  DWB landed on Hospital  (9)
+20220927_190344    DWB results: 0 DWB Leaving FMC, collects 0 Experience cards
+DWB landed on Hospital  (9)
+Player DWB: You are LAID UP until you throw 5 or less
+or pay the Pharmacist/Paymaster 1/2 your salary for experimental drugs.
+Border square#: 9  "Hospital"
+20220927_190359  DWB: roll
+20220927_190359  _evaluate: self.roll()
+20220927_190359   DWB  rolled 2 [1, 1]
+20220927_190359  DWB landed on DonateNow  (11)
+20220927_190359    DWB results: 0 DWB landed on DonateNow  (11)
+danger_square DonateNow execute not yet implemented
+Border square#: 11  "DonateNow"
+20220927_190414  DWB: end
+20220927_190414  _evaluate: self.end()
+20220927_190414  Ending game: ZenAlien2013_20220927-190222-260313-90477
+20220927_190414    DWB results: 2 Game is complete
+Border square#: 11  "DonateNow"
+20220927_190414  Ending game: ZenAlien2013_20220927-190222-260313-90477

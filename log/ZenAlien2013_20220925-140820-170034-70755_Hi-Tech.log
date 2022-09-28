@@ -1,0 +1,50 @@
+20220925_140820  {"gameId":"ZenAlien2013_20220925-140820-170034-70755", "installationId":"ZenAlien2013"}
+20220925_140820    admin results: 0 {"gameId":"ZenAlien2013_20220925-140820-170034-70755", "installationId":"ZenAlien2013"}
+Border square#: 0  "Payday"
+20220925_140820  admin: add player Don DWB 40 10 50
+20220925_140820  _evaluate: self.add("player","Don","DWB",40,10,50)
+20220925_140820  Player "Don" "DWB number: 0" added
+20220925_140820    admin results: 0 Player "Don" "DWB number: 0" added
+Border square#: 0  "Payday"
+20220925_140820  admin: start
+20220925_140820  _evaluate: self.start()
+20220925_140820  Starting game ZenAlien2013_20220925-140820-170034-70755
+20220925_140820    admin results: 0 Starting game ZenAlien2013_20220925-140820-170034-70755
+Border square#: 0  "Payday"
+20220925_140822  DWB: roll
+20220925_140822  _evaluate: self.roll()
+20220925_140822   DWB  rolled 10 [5, 5]
+20220925_140822  DWB landed on Opportunity  (10)
+20220925_140822    DWB results: 0 DWB landed on Opportunity  (10)
+Added Opportunity: SPECIAL OPPORTUNITY to join Disney because of your Magic touch.
+DOUBLE all Happiness earned
+Meet Normal Requirements
+Border square#: 10  "Opportunity"
+20220925_140833  DWB: next
+20220925_140833  _evaluate: self.next()
+20220925_140833  game saved to ['C:\\Compile\\careers\\careers\\game\\../../games/ZenAlien2013_20220925-140820-170034-70755_game.pkl']
+20220925_140833    DWB results: 0 DWB Turn is complete, DWB's (0) turn 
+Border square#: 10  "Opportunity"
+20220925_140837  DWB: roll
+20220925_140837  _evaluate: self.roll()
+20220925_140837    DWB results: 1 Not your turn to roll!
+Border square#: 10  "Opportunity"
+20220925_140844  DWB: next
+20220925_140844  _evaluate: self.next()
+20220925_140844  game saved to ['C:\\Compile\\careers\\careers\\game\\../../games/ZenAlien2013_20220925-140820-170034-70755_game.pkl']
+20220925_140844    DWB results: 0 DWB Turn is complete, DWB's (0) turn 
+Border square#: 10  "Opportunity"
+20220925_140845  DWB: roll
+20220925_140845  _evaluate: self.roll()
+20220925_140845    DWB results: 1 Not your turn to roll!
+Border square#: 10  "Opportunity"
+20220925_140847  DWB: roll
+20220925_140847  _evaluate: self.roll()
+20220925_140847    DWB results: 1 Not your turn to roll!
+Border square#: 10  "Opportunity"
+20220925_140850  DWB: end
+20220925_140850  _evaluate: self.end()
+20220925_140850  Ending game: ZenAlien2013_20220925-140820-170034-70755
+20220925_140850    DWB results: 2 Game is complete
+Border square#: 10  "Opportunity"
+20220925_140850  Ending game: ZenAlien2013_20220925-140820-170034-70755

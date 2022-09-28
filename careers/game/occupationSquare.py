@@ -6,6 +6,8 @@ Created on Aug 14, 2022
 from game.gameSquare import GameSquare
 from game.player import Player
 from game.commandResult import CommandResult
+from game.gameUtils import GameUtils
+import json
 
 class OccupationSquare(GameSquare):
     '''
@@ -24,6 +26,7 @@ class OccupationSquare(GameSquare):
                          text=occupation_square_dict['text'], special_processing_dict=occupation_square_dict['specialProcessing'], game=game)
         
         self._game_square_dict = occupation_square_dict
+        self._game_square_dict["square_class"] = "Occupation"
         self._stars = occupation_square_dict["stars"]
         self._hearts = occupation_square_dict["hearts"]
         self._experience = occupation_square_dict["experience"]         # the number of Experience cards to collect on this square
@@ -49,27 +52,87 @@ class OccupationSquare(GameSquare):
     def opportunities(self):
         return self._opportunities
     
+    @property
+    def game_square_dict(self):
+        return self._game_square_dict
+    
     def execute(self, player:Player) -> CommandResult:
         """Executes the actions associated with this occupation square for a given Player
             Returns: CommandResult
         """
-        result = CommandResult(0, "TODO", False)   #  TODO
+        done_flag = True
+        message = f'{self.text}'
+        next_action = None
+        if len(self.action_text) > 0:
+            message += f'\n{self.action_text}'
+        if self.stars > 0:
+            message += f'\n Stars: {str(self.stars)}'
+            player.add_stars(self.stars)
+        if self.hearts > 0:
+            message += f'\n Hearts: {str(self.hearts)}'
+            player.add_hearts(self.hearts)
+        if self.opportunities > 0:
+            for i in range(self.opportunities):
+                thecard = self.careersGame.opportunities.draw()
+                player.add_opportunity_card(thecard)
+        if self.experience > 0:
+            for i in range(self.experience):
+                thecard = self.careersGame.experience_cards.draw()
+                player.add_experience_card(thecard)
+        if self.special_processing is not None:
+            next_action, done_flag = self.execute_special_processing(message, player)
+            
+        result = CommandResult(0, message, done_flag, next_action=next_action)   #  TODO
         return result
     
+    def execute_special_processing(self, message, player:Player):
+        sptype = self.special_processing.processing_type
+        dice = self.special_processing.dice
+        amount = self.special_processing.amount
+        next_action = None
+        done_flag = True
+        if sptype == 'bonus':
+            if dice > 0:
+                n = GameUtils.roll(dice)
+                amount = amount * n
+                message += f'\n You rolled a {n}, collect {amount}'
+            player.add_cash(amount)
+        elif sptype == 'salaryIncrease':
+            if dice > 0:
+                n = GameUtils.roll(dice)
+                amount = amount * n
+                message += f'\n You rolled a {n}, salary increase {amount}'
+            player.add_to_salary(amount)
+        elif sptype == 'cashLoss':      # could cause the player into bankruptcy
+            pass    # TODO
+        elif sptype == 'favors':
+            pass    # TODO
+        elif sptype == "loseNextTurn":
+            pass    # TODO
+        elif sptype == "shortcut":
+            pass    # TODO
+        elif sptype == "cashLossOrUnemployment":
+            pass    # TODO - player needs to indicate whether to take the l
+        elif sptype == 'travelBorder':
+            pass    # TODO
+        elif sptype == 'loseNextTurn':
+            pass    # TODO
+        elif sptype == 'extraTurn':
+            pass    # TODO
+        elif sptype == 'salaryCut':
+            pass    # TODO
+        elif sptype == 'backstab':
+            pass    # TODO
+        elif sptype == 'goto':
+            pass    # TODO
+        elif sptype == 'fameLoss':
+            pass    # TODO
+        elif sptype == 'hapinessLoss':
+            pass    # TODO
+        return next_action, done_flag
     
     def to_JSON(self):
-        txt = f'''{{
-        "square_class" : "{self.square_class}",
-        "name":{self.name},
-        "number":"{self.number}",
-        "text":"{self.text}",
-        "stars":"{self.stars}",
-        "hearts":"{self.hearts}",
-        "experience":"{self.experience}",
-        "opportunities":"{self.opportunities}",
-        "action_text":"{self.action_text}",
-        "special_processing_txt" : {self._special_processing_dict} 
-        }}'''
+        txt = json.dumps(self.game_square_dict)
         return txt
         
     

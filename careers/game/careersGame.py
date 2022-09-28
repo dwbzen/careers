@@ -148,7 +148,7 @@ class CareersGame(CareersObject):
                 fp = open(filepath, "r")
                 occupation_dict = json.loads(fp.read())
                 # create an Occupation object for this occupation
-                occupation = Occupation(occupation_dict)
+                occupation = Occupation(occupation_dict, game=self)
                 occupations[name] = occupation
             else:
                 occupations[name] = None

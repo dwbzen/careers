@@ -30,6 +30,7 @@ class BorderSquare(GameSquare):
                          text=border_square_dict['text'], special_processing_dict=border_square_dict['specialProcessing'], game=game)
         
         self._game_square_dict = border_square_dict
+        self._game_square_dict["square_class"] = "Border"
         self._square_type = border_square_dict['type']
         self.action_text = border_square_dict.get('action_text', None)
         
@@ -78,7 +79,7 @@ class BorderSquare(GameSquare):
             # can enter if landed here using an Opportunity, else turn is over
             #
             if player.opportunity_card is not None:
-                if player.opportunity_card.opportunity_type  == 'occupation' and player.opportunity_card.name == self.name:
+                if player.opportunity_card.opportunity_type  == 'occupation' and player.opportunity_card.destination == self.name:
                     next_action = f'enter {self.name}'
                     result = CommandResult(CommandResult.SUCCESS, f'Entering {self.name}', False, next_action=next_action)
             else:

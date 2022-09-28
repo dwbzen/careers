@@ -25,8 +25,16 @@ class Occupation(object):
         self._entry_text = self._configuration['text']
         self._fullName = self._configuration['fullName']
         self._degreeRequirements = self._configuration.get('degreeRequirements', None)
-        self._occupationSquares = self._create_occupation_squares(occupation_dict["occupationSquares"], game)
         self._double_happiness = False      # this is temporarily set by a "double_happiness" Opportunity card
+        self._careersGame = None
+        #
+        # avoids circular import
+        #
+        if game is not None:
+            from game.careersGame import CareersGame
+            assert isinstance(game,CareersGame)
+            self._careersGame = game
+        self._occupationSquares = self._create_occupation_squares(occupation_dict["occupationSquares"], self._careersGame)
         
     
     def _create_occupation_squares(self, occupationSquares:list, game) -> list:
