@@ -27,7 +27,7 @@ from game.environment import Environment
 from datetime import datetime
 import random
 from typing import Union, List
-
+import sys, os
 
 class CareersGameEngine(object):
     """CareersGameEngine executes the action(s) associated with each player's turn.
@@ -645,11 +645,17 @@ class CareersGameEngine(object):
         
         dataRoot = Environment.get_environment().package_base
 
-        self._logfile_folder = dataRoot + '/log'   # TODO put in Environment
-        self._gamefile_folder = dataRoot + '/games'
-        self._logfile_path = self._logfile_folder + "/" + self._logfile_filename + ".log"
-        self._game_filename_base = f'{self._gamefile_folder}/{self.gameId}_game'
+        self._logfile_folder = os.path.join(dataRoot, 'log')   # TODO put in Environment
+        self._gamefile_folder = os.path.join(dataRoot, 'games')
+        self._logfile_path = os.path.join(self._logfile_folder, self._logfile_filename + ".log")
+        self._game_filename_base = os.path.join(f'{self._gamefile_folder}', f'{self.gameId}_game')
         
+        if(not os.path.exists(self._logfile_folder)):
+            os.mkdir(self._logfile_folder)
+        
+        if(not os.path.exists(self._gamefile_folder)):
+            os.mkdir(self._gamefile_folder)
+
         self.fp = open(self._logfile_path, "w")   # log file open channel
         self._gameEngineCommands = GameEngineCommands(self._careersGame, self.fp)
         self._gameEngineCommands.trace = self.trace
