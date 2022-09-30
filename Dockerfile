@@ -21,6 +21,7 @@ RUN useradd appuser && chown -R appuser /app
 
 WORKDIR /app
 RUN python -m pip install -e .
+RUN echo 'DB_URL=mongodb://root:rootpassword@localhost' > .env
 
 USER root
 

@@ -2,3 +2,5 @@ uvicorn
 jsonpickle
 joblib
 fastapi
+pymongo
+python-dotenv
