@@ -1,3 +1,6 @@
 venv
 .idea
 __pycache__
+log
+games
+careers.egg-info
