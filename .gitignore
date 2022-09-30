@@ -4,3 +4,5 @@ __pycache__
 log
 games
 careers.egg-info
+.vs
+.vscode
