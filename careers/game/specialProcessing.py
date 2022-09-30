@@ -44,7 +44,7 @@ class SpecialProcessing(CareersObject):
         self._amount = 0            # a discrete money amount which may be salary or cash depending on type
         self._amount_dict = None
         self._amount_str = ""
-        amt = special_processing_dict.get('amount', 0)    # 'amount' can be a number or a string
+        amt = special_processing_dict.get('amount', 0)    # 'amount' can be a number or a string or a dictionary
         if isinstance(amt, int) or isinstance(amt, float):
             self._amount = amt
         elif isinstance(amt, str):

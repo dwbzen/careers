@@ -8,6 +8,7 @@ from game.player import Player
 from game.commandResult import CommandResult
 from game.gameUtils import GameUtils
 import json
+from music21.features.jSymbolic import AmountOfArpeggiationFeature
 
 class OccupationSquare(GameSquare):
     '''
@@ -89,6 +90,7 @@ class OccupationSquare(GameSquare):
         sptype = self.special_processing.processing_type
         dice = self.special_processing.dice
         amount = self.special_processing.amount
+        percent = self.special_processing.percent
         next_action = None
         done_flag = True
         if sptype == 'bonus':
@@ -107,8 +109,6 @@ class OccupationSquare(GameSquare):
             pass    # TODO
         elif sptype == 'favors':
             pass    # TODO
-        elif sptype == "loseNextTurn":
-            pass    # TODO
         elif sptype == "shortcut":
             pass    # TODO
         elif sptype == "cashLossOrUnemployment":
@@ -116,11 +116,22 @@ class OccupationSquare(GameSquare):
         elif sptype == 'travelBorder':
             pass    # TODO
         elif sptype == 'loseNextTurn':
-            pass    # TODO
+            player.lose_turn = True
         elif sptype == 'extraTurn':
-            pass    # TODO
+            player.extra_turn = player.extra_turn + 1
         elif sptype == 'salaryCut':
-            pass    # TODO
+            #
+            # if cut is by percent (like half) round up to the nearest $1000
+            # So if your $3000 salary is cut in half, it becomes $2000, not $1500
+            #
+            if amount > 0:
+                player.add_to_salary(-amount)
+                message += f'Salary cut by {amount}. Your new salary is {player.salary}'
+            elif percent > 0:
+                cutAmount = player.salary * percent
+                cutAmount = 1000 * int(cutAmount / 1000)
+                player.add_to_salary(-cutAmount)
+                message += f'Salary cut by {cutAmount}. Your new salary is {player.salary}'
         elif sptype == 'backstab':
             pass    # TODO
         elif sptype == 'goto':

@@ -120,21 +120,29 @@ class GameState(CareersObject):
         """Returns the player number of the next player. And sets the value of current_player.
             If the next player has lose_turn == True, the current_player is set to the next player
             after that player and their lose_turn flag is reset to False.
+            If the current_player has extra_turn flag set, the next player IS the current_player
+            and the extra_turn flag is reset.
         
         """
-        npn = self._get_next_player_number()
-        if self.players[npn].lose_turn:
-            self.current_player_number = npn
-            self.players[npn].lose_turn = False
+        if self.current_player.extra_turn > 0:
+            #
+            # the current player doesn't change
+            #
+            self.current_player.extra_turn = self.current_player.extra_turn - 1
+        else:
             npn = self._get_next_player_number()
-            
-        self.current_player_number = npn
-        self.current_player = self.players[self.current_player_number]
-        self.current_player.can_roll = True
-        if npn == 0:
-            self.turns += 1
-            self.turn_number += 1
-            
+            if self.players[npn].lose_turn:
+                self.current_player_number = npn
+                self.players[npn].lose_turn = False
+                npn = self._get_next_player_number()
+                
+            self.current_player_number = npn
+            self.current_player = self.players[self.current_player_number]
+            self.current_player.can_roll = True
+            if npn == 0:
+                self.turns += 1
+                self.turn_number += 1
+
         return self.current_player_number
     
     def _get_next_player_number(self):

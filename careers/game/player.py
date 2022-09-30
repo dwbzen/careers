@@ -39,6 +39,7 @@ class Player(CareersObject):
         self._is_sick = False               # True when player lands on Hospital
         self._on_holiday = False            # True when the player lands on Holiday/Spring Break
         self._lose_turn = False             # If True the player loses their next turn. This is automatically reset when the turn is skipped.
+        self._extra_turn = 0                # If >0 the player gets that number of additional turns. This is automatically decremented after that turn is taken.
         self._can_roll = False              # If True the player can roll or play an Experience card
         self._can_use_opportunity = True    # If True the play may use an Opportunity Card
         
@@ -230,6 +231,14 @@ class Player(CareersObject):
     @lose_turn.setter
     def lose_turn(self, value):
         self._lose_turn = value
+     
+    @property   
+    def extra_turn(self):
+        return self._extra_turn
+    
+    @extra_turn.setter
+    def extra_turn(self, value):
+        self._extra_turn = value
         
     @property
     def laps(self):
@@ -352,9 +361,18 @@ class Player(CareersObject):
             
         
     def add_hearts(self, nhearts):
+        """Adds the number of Hearts indicated. Could be negative if losing hearts.
+            If so, the resulting number will never be < 0.
+        """
+        if nhearts < 0:    # subract this amount but don't go below 0
+            if self.happiness + nhearts < 0:
+                nhearts = -self.happiness
         self._happiness.append(self.happiness + nhearts)
     
     def add_stars(self, nstars):
+        if nstars < 0:    # subract this amount but don't go below 0
+            if self.fame + nstars < 0:
+                nstars = -self.fame
         self._fame.append(self.fame + nstars)
         
     def add_cash(self, money):  # could be a negative amount
