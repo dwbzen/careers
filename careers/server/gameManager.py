@@ -13,6 +13,7 @@ from datetime import date, datetime
 import dotenv
 from pydantic import BaseModel, Field
 from pymongo import MongoClient
+import pymongo
 from game.careersGameEngine import CareersGameEngine
 
 class CareersGameManager(object):
@@ -22,6 +23,7 @@ class CareersGameManager(object):
         self.config = dotenv.dotenv_values(".env")
         self.mongo_client = MongoClient(self.config["DB_URL"])
         self.database = self.mongo_client["careers"]
+        self.database["games"].create_index('players')
 
     def create(self, edition: str, installationId: str, points: int):
         """
