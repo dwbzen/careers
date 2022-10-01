@@ -37,7 +37,7 @@ class CareersGameManager(object):
 
         return gameId
 
-    async def getGames(self, installationId: str) -> Any:
+    def getGames(self, installationId: str) -> Any:
         """
             Gets all of the games this user participates in
         """
@@ -62,4 +62,5 @@ class Game(BaseModel):
     createdBy: str = Field(...)
     createdDate: datetime = Field(...)
     points: int = Field(...)
+    edition: str = Field(default="Hi-Tech")
     players: List[str] = Field()
