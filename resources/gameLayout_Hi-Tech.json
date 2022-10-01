@@ -294,7 +294,7 @@
 				"action_text" : "You were LAID OFF and must throw 7, 11, or doubles to move on.\nOR pay 1 year's Salary for additional training.",
 				"specialProcessing" : {
 					"type" : "unemployment",
-					"must_roll" : [7, 11, 2, 4, 6, 8, 10, 12],
+					"must_roll" : [7, 11],
 					"require_doubles" : 1
 				}
 			},

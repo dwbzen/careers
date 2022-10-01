@@ -27,7 +27,7 @@ from game.environment import Environment
 from datetime import datetime
 import random
 from typing import Union, List
-import sys, os
+import os
 
 class CareersGameEngine(object):
     """CareersGameEngine executes the action(s) associated with each player's turn.
@@ -129,7 +129,7 @@ class CareersGameEngine(object):
     
     def log(self, message):
         """Write message to the log file.
-            TODO - refactor to use python loging
+            TODO - refactor to use python logging
         """
         msg = GameUtils.get_datetime() + f'  {message}\n'
         if self.fp is not None:     # may be logging isn't initialized yet or logging option is False
@@ -242,15 +242,14 @@ class CareersGameEngine(object):
         
     def _roll(self, player, dice:List[int]) -> CommandResult:
         num_spaces = sum(dice)
+        self.log(f' {player.player_initials}  rolled {num_spaces} {dice}')
         #
         # check if the player is Unemployed and if so, if the roll allows them to move
         #
-        canmove, result = self._gameEngineCommands.can_player_move(player)
-        
+        canmove, result = self._gameEngineCommands.can_player_move(player, dice)
+        self.log(result.message)
         if canmove:
             next_square_number = self._get_next_square_number(player, num_spaces)
-            
-            self.log(f' {player.player_initials}  rolled {num_spaces} {dice}')
     
             #
             # place the player on the next_square_number
@@ -631,9 +630,11 @@ class CareersGameEngine(object):
                     return_code - SUCCESS or ERROR
             If a game_id is not provided, one is created based on the installationId and current date/time. For example, "ZenAlien2013_20220918-135325-650634-47816"
         """
+        
         assert installationId is not None and len(installationId) >= 5
         self._edition = edition    # 'Hi-Tech'
         self._installationId = installationId
+    
         #
         # Create the CareersGame instance and the GameEngineCommands
         #

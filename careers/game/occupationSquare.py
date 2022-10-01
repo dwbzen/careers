@@ -8,7 +8,6 @@ from game.player import Player
 from game.commandResult import CommandResult
 from game.gameUtils import GameUtils
 import json
-from music21.features.jSymbolic import AmountOfArpeggiationFeature
 
 class OccupationSquare(GameSquare):
     '''

@@ -124,7 +124,7 @@ class GameState(CareersObject):
             and the extra_turn flag is reset.
         
         """
-        if self.current_player.extra_turn > 0:
+        if  self.current_player is not None and self.current_player.extra_turn > 0:
             #
             # the current player doesn't change
             #

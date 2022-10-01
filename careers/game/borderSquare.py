@@ -7,6 +7,7 @@ Created on Aug 12, 2022
 from game.gameSquare import GameSquare
 from game.player import Player
 from game.commandResult import CommandResult
+from typing import Any, List
 import json
 
 class BorderSquare(GameSquare):
@@ -142,13 +143,31 @@ class BorderSquare(GameSquare):
         result = CommandResult(CommandResult.SUCCESS, f'{self.square_type} {self.name} execute not yet implemented', False)   #  TODO
         return result
     
-    def execute_special_processing(self, player:Player):
+    def execute_special_processing(self, player:Player, dice:List[int]=None):
         """Invokes the specialProcessing section of this border square for a player.
-            This method is called as exit processing for a square, whereas execute() is called when a player lands on a border square.
+            Arguments:
+                player - the current Player (who landed on this border square)
+                dice - optional, the player's dice roll
+            Returns: CommandResult
+            
+            This method is called as exit processing for a square or as needed, whereas execute() is called when a player lands on a border square.
             
             TODO - finish this, for now return SUCCESS
         """
-        result = CommandResult(CommandResult.SUCCESS, f'{self.square_type} {self.name} execute_special_processing not yet implemented', False)
+        sp_type = self.special_processing.processing_type
+        if sp_type == 'unemployment' or sp_type == 'hospital':
+            #
+            # check the roll against "must_roll" and "require_doubles"
+            #
+            num_spaces = sum(dice)
+            can_roll =  num_spaces in self.special_processing.must_roll or (self.special_processing.require_doubles and dice[0] == dice[1])
+            if can_roll:
+                result = CommandResult(CommandResult.SUCCESS, f'Player can leave {self.name}', True)
+            else:
+                result = CommandResult(CommandResult.EXECUTE_NEXT, f'Player must remain in {self.name}', True, next_action="next")
+        else:
+            result = CommandResult(CommandResult.SUCCESS, f'{self.square_type} {self.name} execute_special_processing not yet implemented', False)
+        
         return result
     
     def update_board_location(self, player:Player):

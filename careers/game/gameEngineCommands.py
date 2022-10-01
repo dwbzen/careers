@@ -9,7 +9,8 @@ from game.commandResult import CommandResult
 from game.player import Player
 from game.gameUtils import GameUtils
 from game.opportunityCard import OpportunityCard
-from typing import Tuple
+
+from typing import Tuple, List
 import joblib
 import random, json
 
@@ -45,8 +46,11 @@ class GameEngineCommands(object):
     def trace(self, value):
         self._trace = value
         
-    def can_player_move(self, player:Player) -> Tuple[bool,CommandResult] :
+    def can_player_move(self, player:Player, dice:List[int]) -> Tuple[bool,CommandResult] :
         """Determine if a Player can move from the Hospital or Unemployment
+            Arguments:
+                player - the current Player
+                dice - the player's roll as a List[int], for example [6,5] (I rolled an 11!)
             Returns: a 2-element tupple consisting of a boolean (the player can move or not)
             and a CommandResult.
         """
@@ -58,9 +62,9 @@ class GameEngineCommands(object):
             # let the square determine if the player can move or not
             # as that's encoded in the specialProcessing
             #
-            result = game_square.execute_special_processing(player)
+            result = game_square.execute_special_processing(player, dice)
         else:
-            result = CommandResult(CommandResult.SUCCESS, "", True)
+            result = CommandResult(CommandResult.SUCCESS, f'Player may move {dice}', True)
             
         can_move = result.is_successful()
         return can_move, result
@@ -216,7 +220,6 @@ class GameEngineCommands(object):
         
         self.log(f'game saved to {filename}')
         return CommandResult(CommandResult.SUCCESS, filename, True)
-
 
     def log(self, message):
         """Write message to the log file.
