@@ -2,8 +2,10 @@
     Probably managed unique GameEngine instances (one per game).
 """
 
+from array import array
+from multiprocessing.dummy import Array
 from fastapi.encoders import jsonable_encoder
-from typing import Any
+from typing import Any, List, Optional
 import uuid
 import json
 from datetime import date, datetime
@@ -11,6 +13,7 @@ from datetime import date, datetime
 import dotenv
 from pydantic import BaseModel, Field
 from pymongo import MongoClient
+import pymongo
 from game.careersGameEngine import CareersGameEngine
 
 class CareersGameManager(object):
@@ -20,6 +23,7 @@ class CareersGameManager(object):
         self.config = dotenv.dotenv_values(".env")
         self.mongo_client = MongoClient(self.config["DB_URL"])
         self.database = self.mongo_client["careers"]
+        self.database["games"].create_index('players')
 
     def create(self, edition: str, installationId: str, points: int):
         """
@@ -28,12 +32,18 @@ class CareersGameManager(object):
         """
         gameEngine = CareersGameEngine()
         gameId = json.loads(gameEngine.create(edition, installationId, 'points', points).message)['gameId']
-        game = Game(_id=gameId, createdBy=installationId, points=points, createdDate=datetime.now())
+        game = Game(_id=gameId, createdBy=installationId, points=points, players=[installationId], createdDate=datetime.now())
 
         self.database["games"].insert_one(jsonable_encoder(game))
         self.games[gameId] = gameEngine
 
         return gameId
+
+    def getGames(self, installationId: str) -> Any:
+        """
+            Gets all of the games this user participates in
+        """
+        return list(self.database["games"].find({"players": installationId}))
 
     def __call__(self, gameId: str = None) -> CareersGameEngine:
         """Create a new game engine for the user and return the instance"""
@@ -54,3 +64,5 @@ class Game(BaseModel):
     createdBy: str = Field(...)
     createdDate: datetime = Field(...)
     points: int = Field(...)
+    edition: str = Field(default="Hi-Tech")
+    players: List[str] = Field()
