@@ -66,6 +66,7 @@ class SpecialProcessing(CareersObject):
         self._require_doubles = special_processing_dict.get('require_doubles', 0)==1
         self._hearts = special_processing_dict.get('hearts', [])                        # used for holiday type, a 2-element list
         self._tax_table = special_processing_dict.get('taxTable', None)    # format is upper limit : % amount, for example { 3000 : 0.2 } if you make <= 3000/yr, take 20% as tax
+        self._pending_action = special_processing_dict.get('pending_action', None) 
     
     @property
     def square_type(self):
@@ -122,6 +123,14 @@ class SpecialProcessing(CareersObject):
     @property
     def hearts(self) -> list:
         return self._hearts
+    
+    @property
+    def pending_action(self):
+        return self._pending_action
+    
+    @pending_action.setter
+    def pending_action(self, value):
+        self._pending_action = value
     
     @property
     def of(self):

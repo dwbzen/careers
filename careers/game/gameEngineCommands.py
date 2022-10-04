@@ -64,13 +64,13 @@ class GameEngineCommands(object):
             #
             result = game_square.execute_special_processing(player, dice)
         else:
-            result = CommandResult(CommandResult.SUCCESS, f'Player may move {dice}', True)
+            result = CommandResult(CommandResult.SUCCESS, f'Player may move {dice} spaces', True)
             
         can_move = result.is_successful()
         return can_move, result
 
     @staticmethod
-    def parse_command_string(txt, addl_args=[]) -> CommandResult:
+    def parse_command_string(txt:str, addl_args=[]) -> CommandResult:
         """Parses a command string into a string that can be evaluated with eval()
             Returns: if return_code == 0, a CommandResult with commandResult.message as the string to eval()
                 else if return_code == 1, commandResult.message has the error message
@@ -79,7 +79,7 @@ class GameEngineCommands(object):
             
         command = command_args[0]
         if not command in GameEngineCommands.COMMANDS:
-            return CommandResult(CommandResult.ERROR,  f'Invalid command: {command}',  False)
+            return CommandResult(CommandResult.ERROR,  f'Invalid command: "{command}"',  False)
         if len(command_args) > 1:
             args = command_args[1:]
             command = command + "("
@@ -154,7 +154,7 @@ class GameEngineCommands(object):
             ndice = int(how)
             dice = random.choices(population=[1,2,3,4,5,6], k=ndice)
             num_spaces = sum(dice)
-            result_dict = {"player" : player.player_initials,  "spaces" : num_spaces, "dice" : dice }
+            result_dict = {"player" : player.player_initials,  "roll" : num_spaces, "dice" : dice }
             message = json.dumps(result_dict)
             result = CommandResult(CommandResult.SUCCESS, message, False)
         else:

@@ -43,6 +43,7 @@ class CareersGameEngine(object):
         <bump> :: "bump" player_initials        ;bump another player, who must be on the same square as the bumper
         <bankrupt> :: "bankrupt"                ;declare bankruptcy
         <list> :: "list"  <card_type> | "occupations"           ;list my opportunities or experience cards, or occupations completed
+            <card_type> :: "opportunity" | "experience"
         <status> :: "status"                    ;display my cash, #hearts, #stars, salary, total points, and success formula
         <quit> :: "quit" player_initials        ;current player leaves the game, must include initials
         <done> :: "done" | "next"               ;done with my turn - next player's turn
@@ -67,7 +68,7 @@ class CareersGameEngine(object):
             <edition> :: "Hi-Tech"    ;supports multiple editions
             <game_type> ::  'points' | 'timed'
         <start> :: "start"                    ;starts a newly created CareersGame
-        <buy>  :: "buy"  ( "hearts" | "stars" | "experience" | "opportunity" ) quantity cash_amount  ;buy some number of items for the cash_amount provided
+        <buy>  :: "buy"  ( "hearts" | "stars" | "experience" | "insurance" | "opportunity" ) quantity cash_amount  ;buy some number of items for the cash_amount provided
         <perform> :: "perform roll <ndice>"      ; roll the dice and return the result without moving
             <ndice> :: 0 | 1 | 2
     """
@@ -189,14 +190,7 @@ class CareersGameEngine(object):
         return command_result
     
     def get_player_game_square(self, player:Player) -> GameSquare:
-        board_location = player.board_location
-        game_square = None
-        if board_location.occupation_name is not None and board_location.occupation_square_number >= 0:    # get the Occupation square
-            occupation = self._careersGame.occupations[board_location.occupation_name]    # Occupation instance
-            game_square = occupation.occupationSquares[board_location.occupation_square_number]
-        else:       # get the border square
-            game_square = self._careersGame.get_border_square(board_location.border_square_number)
-        
+        game_square = self._careersGame.get_game_square(player.board_location)
         return game_square
     
     def get_player(self, pid, pnumber=None) -> Union[Player, None] :
@@ -386,7 +380,19 @@ class CareersGameEngine(object):
         """End my turn and go to the next player
         """
         cp = self.game_state.current_player
+        game_square = self._careersGame.get_game_square(cp.board_location)
+        #
+        # is there a penalty associated with this game square?
+        #
+        if cp.pending_action is not None and game_square.special_processing is not None \
+           and cp.pending_action==game_square.special_processing.processing_type:
+            if game_square.special_processing.penalty > 0:
+                if cp.pending_action=="buyHearts" and cp.happiness > 0:
+                    cp.add_hearts(-game_square.special_processing.penalty)
+            cp.pending_action = None
+            
         cp.board_location.reset_prior()            # this player's prior board position no longer relevant
+        cp.pending_action = None
         npn = self.game_state.set_next_player()    # sets current_player and returns the next player number (npn) and increments turns
         player = self.game_state.current_player
         player.opportunity_card = None
@@ -467,7 +473,7 @@ class CareersGameEngine(object):
         result = CommandResult(CommandResult.SUCCESS, "'retire' command not yet implemented", False)
         return result
     
-    def bump(self, who) -> CommandResult:
+    def bump(self, who:str) -> CommandResult:
         """The current player bumps another player occupying the same board square to Unemployment
             Note that it is possible to land on a square occupied by more than one player,
             for example if a player chooses NOT to bump that square will have 2 players.
@@ -502,7 +508,7 @@ class CareersGameEngine(object):
         result = CommandResult(CommandResult.SUCCESS, "'bankrupt' command not yet implemented", False)
         return result
     
-    def pay(self, amount_str, initials=None) -> CommandResult:
+    def pay(self, amount_str:str, initials=None) -> CommandResult:
         """The current player, or the player whose initials are provided, makes a payment associated with their current board position.
             If the paying player has sufficient cash to make the payment that amount is subtracted
             from their cash on hand and CommandResult.SUCCESS with done_flag = True is returned 
@@ -526,14 +532,16 @@ class CareersGameEngine(object):
             message = f'{player.player_initials} has insufficient funds to cover {amount} and must either borrow cash from another player or declare bankruptcy'
             return CommandResult(CommandResult.ERROR, message, False)
         
-    def transfer(self, quantity:int, what:str, from_player_number:int) -> CommandResult:
+    def transfer(self, quantity_str:str, what:str, from_player:str) -> CommandResult:
         """Transfers cash, opportunities or experience cards from one player to the current player
             Arguments:
                 from_player_number - the player number transferring
                 what - "cash", "opportunity", "experience"
                 quantity - the amount of cash or number of experience/opportunity cards being transferred
         """
-        CommandResult(CommandResult.SUCCESS, "transfer command not implemented", True)
+        qty = int(quantity_str)
+        from_player_number = int(from_player)
+        CommandResult(CommandResult.SUCCESS, f'transfer {qty} {what} from player# {from_player_number}  not implemented', True)
         
     
     def list(self, what='all') ->CommandResult:
@@ -668,17 +676,22 @@ class CareersGameEngine(object):
     def start(self) -> CommandResult:
         return self._start()
     
-    def buy(self, what, qty_str, amount_str) -> CommandResult:
-        """Buy a number of items for the current player
+    def buy(self, what:str, qty_str:str, amount_str:str) -> CommandResult:
+        """Buy a number of items for the current player.
+            The buy command is associated with one of the action_squares, specifically the game square's specialProcessing processingType.
+            
             Arguments:
-                what - "hearts" | "stars" | "experience" | "opportunity"
+                what - "hearts" | "stars" | "experience" | "insurance" | "opportunity"
                 qty - how many to buy (adds to the player's score or card deck)
                 amount - cash amount cost
             Returns:
-                CommandResult.SUCCESS if the player can cover the cost, otherwise CommandResult.ERROR with an appropriate error message
+                CommandResult.SUCCESS if the player can cover the cost, AND the action is appropriate for the player's current board location.
+                otherwise CommandResult.ERROR with an appropriate error message.
+                
             Okay to have a negative quantity and zero amount. For example, to lose 1 heart send: "buy hearts -1 0"
         """
-        return self._buy(what, qty_str, amount_str)
+        player = self.game_state.current_player
+        return self._buy(player, what, qty_str, amount_str)
     
     #####################################
     #
@@ -693,25 +706,53 @@ class CareersGameEngine(object):
         self.game_state.set_next_player()    # sets the player number to 0 and the curent_player Player reference
         return CommandResult(CommandResult.SUCCESS, message, True)
     
-    def _buy(self, what, qty_str, amount_str) -> CommandResult:
+    def _buy(self, player:Player, what:str, qty_str:str="1", amount_str:str="0") -> CommandResult:
         """Implements the buy command
+            Arguments:
+                player - the current or affected player reference
+                what - "hearts" | "stars" | "experience" | "insurance" | "opportunity"
+                qty - how many to buy (adds to the player's score or card deck)
+                amount - cash amount cost
         """
-        player = self.game_state.current_player
         amount = int(amount_str)
         qty = int(qty_str)
+
         if player.cash < amount:
             return CommandResult(CommandResult.ERROR, f'Insufficient funds {player.cash} for amount {amount}', True)
-        player.add_cash(amount)
-        if what.lower().startswith('heart'):
+        #
+        # the player must have the appropriate pending_action in order to be valid
+        # and it must match the current location's special processing type
+        #
+        game_square = self.get_player_game_square(player)
+        special_processing = game_square.special_processing  # could be None or empty
+        sptype = special_processing.processing_type if special_processing is not None else ""
+        
+        if player.pending_action is None or player.pending_action != sptype:
+            return CommandResult(CommandResult.ERROR, f'Cannot buy {qty} {what} here', False)
+        
+        player.add_cash(-amount)
+        if what.lower().startswith('heart'):    # buy Hearts (Happiness)
             player.add_hearts(qty)
-        elif what.lower().startswith('star'):
+            player.pending_action = None
+        elif what.lower().startswith('star'):   # buy Stars (Fame)
             player.add_stars(qty)
-        elif what.lower().startswith('exp'):
+            player.pending_action = None
+        elif what.lower().startswith('exp'):    # buy Experience card(s)
             self.add_experience_cards(player, qty)
-        elif what.lower().startswith('opp'):
+        elif what.lower().startswith('opp'):    # buy Opportunity card(s)
             self.add_opportunity_cards(player, qty)
+            player.pending_action = None
+        elif what.lower().startswith('ins'):    # buy insurance, okay to buy more than 1 policy
+            total_amount = qty * amount
+            if player.cash < total_amount:
+                return CommandResult(CommandResult.ERROR, f'Insufficient funds {player.cash} for insurance amount {amount}', True)
+            player.is_insured = True
+            player.pending_action = None
+        elif what.lower() == 'gamble':    # player needs to roll 2 dice in order to gamble - that's a separate command
+            return CommandResult(CommandResult.SUCCESS, "", False)
         else:
-            return CommandResult(CommandResult.ERROR, f'Cannot add {qty} {what}', False)
+            return CommandResult(CommandResult.ERROR, f'Cannot buy {qty} {what} here', False)
+        
         return CommandResult(CommandResult.SUCCESS, f'{qty} {what} added', True)
 
     def can_enter(self, occupation, player:Player):
@@ -919,7 +960,7 @@ class CareersGameEngine(object):
         player.can_bump = other_players   # could be an empty list
         return result
 
-    def exit_occupation(self, player, board_location:BoardLocation) -> CommandResult:
+    def exit_occupation(self, player:Player, board_location:BoardLocation) -> CommandResult:
         """Applies exiting an occupation rules when a player exits an occupation path.
             Exiting can be done by rolling out, using an Experience, or using an Opportunity to go somewhere else.
             The occupation could be College ("occupationClass" : "college") or a regular Occupation ("occupationClass" : "occupation")
@@ -945,15 +986,22 @@ class CareersGameEngine(object):
         # No experience given for completing College
         # 
         game_square = self._careersGame.get_border_square(board_location.border_square_number)
-        if game_square.square_class == 'occupation_entrance_square':
+        sptype = game_square.special_processing.processing_type
+        if sptype == 'enterOccupation':
             if trips <= 3:  # at most 3 experience cards can be given
                 nexperience = trips
             else:
                 nexperience = 3
 
-        self.add_experience_cards(player, nexperience)
+            self.add_experience_cards(player, nexperience)
+            message = f'{player.player_initials} Leaving {board_location.occupation_name}, collects {nexperience} Experience cards'
+        else:    
+            # special_processing.processing_type == "enterCollege"
+            # player must choose a degree program
+            # salary increase is dependent on the # of degrees earned in that degree program
+            player.pending_action = game_square.special_processing.pending_action
+            message = f'{player.player_initials} Leaving {board_location.occupation_name}, pending_action: {player.pending_action}'
         
-        message = f'{player.player_initials} Leaving {board_location.occupation_name}, collects {nexperience} Experience cards'
         self.log(message)
         result = CommandResult(CommandResult.SUCCESS, message, True)
         return result

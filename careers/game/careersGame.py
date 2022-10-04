@@ -17,8 +17,11 @@ from game.gameState import GameState
 from game.occupation import Occupation
 from game.gameBoard import GameBoard
 from game.borderSquare import BorderSquare
+from game.occupationSquare import OccupationSquare
+from game.gameSquare import GameSquare
 from game.careersObject import CareersObject
 from threading import Lock
+from game.boardLocation import BoardLocation
 
 class CareersGame(CareersObject):
     """
@@ -176,6 +179,23 @@ class CareersGame(CareersObject):
         """Convenience method to get a BorderSquare instance from the GameBoard
         """
         return self._game_board.get_square(num)
+    
+    def get_occupation_square(self, name:str, num:int) -> OccupationSquare:
+        occupation = self.occupations[name]
+        gameSquare = occupation.occupationSquares[num]
+        return gameSquare
+    
+    def get_game_square(self, board_location:BoardLocation) ->GameSquare:
+        """Gets the GameSquare instance for a given BoardLocation
+            Returns: a GameSquare instance - BorderSquare or OccupationSquare depending on the BoardLocation
+        """
+        game_square = None
+        if board_location.occupation_name is not None and board_location.occupation_square_number >= 0:     # location is an OccupationSquare
+            game_square = self.get_occupation_square(board_location.occupation_name, board_location.occupation_square_number)
+        else:
+            game_square = self.get_border_square(board_location.border_square_number)
+        return game_square
+        
     
     def get_game_layout_dimensions(self) -> dict:
         """size: (number of squares), sides: (4-element list of #squares/side)

@@ -54,6 +54,9 @@ class Player(CareersObject):
         self._experience_card = None    # the ExperienceCard instance of the card currently in play, or None otherwise
         self._laps = 0                  # the number of times player has passed or landed on Payday
         self._can_bump = []             # the players I can currently Bump
+        # if a player has landed on an action_square, there is a pending action  which is the square's specialProcessing processing_type
+        # there are currently 4: buyHearts, buyExperience, buyInsurance, and gamble
+        self._pending_action = None
         
     @property
     def player_name(self):
@@ -276,6 +279,14 @@ class Player(CareersObject):
     def can_use_opportunity(self, value):
         self._can_use_opportunity = value
     
+    @property
+    def pending_action(self) -> str:
+        return self._pending_action
+    
+    @pending_action.setter
+    def pending_action(self, value:str):
+        self._pending_action = value
+    
     def get_total_loans(self):
         total = 0
         for v in self._loans.values():
@@ -420,8 +431,9 @@ class Player(CareersObject):
     
     def player_info(self, include_successFormula=False):
         v = self.get_total_loans()
+        pending = self.pending_action if self.pending_action is not None else "None"
         fstring = f'''salary:{self.salary}, Cash: {self.cash},  Fame: {self.fame}, Happiness: {self.happiness}, 
-Insured: {self.is_insured}, Unemployed: {self.is_unemployed}, Sick: {self.is_sick}'''
+Insured: {self.is_insured}, Unemployed: {self.is_unemployed}, Sick: {self.is_sick}, Pending action: {pending}'''
         
         if include_successFormula:
             fstring = f'{fstring}\nSuccess Formula: {self.success_formula}'
