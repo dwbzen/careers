@@ -5,6 +5,7 @@ Created on Aug 12, 2022
 '''
 
 from game.careersObject import CareersObject
+from game.gameUtils import GameUtils
 import json
 from typing import Dict, List, Union
 
@@ -139,6 +140,59 @@ class SpecialProcessing(CareersObject):
     @property
     def tax_table(self):
         return self._tax_table
+    
+    def compute_cash_loss(self, player_cash:int, player_salary:int) -> int:
+        """Compute the cash loss for this specialProcessing given cash and salary amounts.
+             Cash loss can be a fixed amount or a percentage of a player's salary or cash on hand
+            It's possible the loss causes the player to have negative cash in which case they
+            will not be able to move without resolving by either borrowing the money from 
+            another player or declaring bankruptcy
+        """
+        cash_loss = 0
+        if self.processing_type == 'payTax':
+            # compute tax amount from tax table as a % of salary
+            for k in self.tax_table.keys():
+                amt = int(k)
+                if player_salary <= amt:
+                    cash_loss = int(self.tax_table[k] * player_salary)    # truncate the amount
+        elif self.processing_type.startswith('cashLoss'):       # cashLoss or cashLossOrUnemployment
+            #
+            cash_loss = self._compute_amount(player_cash) if self.of=='cash' else self._compute_amount(player_salary)
+            pass
+        else:   # future expansion
+            pass
+        
+        return cash_loss
+    
+    def compute_point_loss(self, of_what:str, fame_points:int, happiness_points:int):
+        """Computes the loss of fame or happiness points
+            Arguments:
+                what - 'happiness' or 'fame'
+                famePoints - player's fame points (Stars)
+                happinessPoints - 
+        """
+        point_loss = self._compute_amount(fame_points) if of_what=='fame' else self._compute_amount(happiness_points)
+        
+        return point_loss
+    
+    def _compute_amount(self, original_amount:int) -> int:
+        theAmount = 0
+        if self.amount != 0:
+            if self.dice > 0:
+                roll = GameUtils.roll(self.dice)
+                theAmount = sum(roll) * self.amount
+            else:
+                theAmount = self.amount
+        elif self.percent != 0.0:
+            if self.dice > 0:
+                roll = GameUtils.roll(self.dice)
+                theAmount = int(sum(roll) * self.percent * original_amount)
+            else:
+                theAmount = int(self.percent * original_amount)
+            if self.of == 'salary':     # round up to nearest thousand $ (or pounds)
+                theAmount = 1000 * int(theAmount / 1000)
+        
+        return theAmount
     
     def __str__(self):
         return str(self._special_processing_dict)

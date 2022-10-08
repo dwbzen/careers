@@ -72,6 +72,7 @@
 			"number" : 4,
 			"background_image" : "danger_occupation_square.png",
 			"text" : "Vaccine has weird side-effects",
+			"type" : "danger_square",
 			"stars" : 0,
 			"hearts" : 0,
 			"experience" : 0,
@@ -112,6 +113,7 @@
 			"number" : 7,
 			"background_image" : "occupation_square.png",
 			"text" : "You have a bad feeling about this...",
+			"type" : "action_square",
 			"stars" : 4,
 			"hearts" : 0,
 			"experience" : 0,
@@ -125,15 +127,17 @@
 			"number" : 8,
 			"background_image" : "danger_occupation_square.png",
 			"text" : "Caught up in ethics scandal",
+			"type" : "danger_square",
 			"stars" : 0,
 			"hearts" : 0,
 			"experience" : 0,
 			"opportunities" : 0,
 			"action_text" : "Lose ALL your Happiness",
 			"specialProcessing" : {
-				"type" : "hapinessLoss",
+				"type" : "happinessLoss",
 				"amount" : 0,
-				"percent" : 1.0
+				"percent" : 1.0,
+				"of" : "happiness"
 			}
 		},
 		{
@@ -152,6 +156,7 @@
 			"number" : 10,
 			"background_image" : "occupation_square.png",
 			"text" : "May backstab a colleague",
+			"type" : "action_square",
 			"stars" : 0,
 			"hearts" : -4,
 			"bonus" : 0,
@@ -207,6 +212,7 @@
 			"number" : 14,
 			"background_image" : "occupation_square.png",
 			"text" : "Story about you on CNN",
+			"type" : "travel_square",
 			"stars" : 4,
 			"hearts" : 4,
 			"bonus" : 0,

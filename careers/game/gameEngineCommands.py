@@ -47,7 +47,9 @@ class GameEngineCommands(object):
         self._trace = value
         
     def can_player_move(self, player:Player, dice:List[int]) -> Tuple[bool,CommandResult] :
-        """Determine if a Player can move from the Hospital or Unemployment
+        """Determine if a Player can move.
+            A player cannot move if bankrupt (cash < 0) and can move from the Hospital or Unemployment
+            only if the rolled dice meet the requirements for that game square.
             Arguments:
                 player - the current Player
                 dice - the player's roll as a List[int], for example [6,5] (I rolled an 11!)
@@ -63,6 +65,8 @@ class GameEngineCommands(object):
             # as that's encoded in the specialProcessing
             #
             result = game_square.execute_special_processing(player, dice)
+        elif player.cash < 0:       # Can't move if bankrupt
+            result = CommandResult(CommandResult.NEED_PLAYER_CHOICE, f'You are bankrupt: {player.cash}, and must either borrow/trade for needed funds or declare Bankruptcy', False)
         else:
             result = CommandResult(CommandResult.SUCCESS, f'Player may move {dice} spaces', True)
             

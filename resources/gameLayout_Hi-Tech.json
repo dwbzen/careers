@@ -69,7 +69,7 @@
 					"type" : "payTax",
 					"amount" : "taxTable",
 					"of" : "salary",
-					"taxTable" : { "3000" : 0.2, "10000" : 0.4, "20000" : 0.6, "10000000" : 0.9}
+					"taxTable" : { "3000" : 0.2, "10000" : 0.4, "20000" : 0.6, "100000000" : 0.9}
 				}
 			},
 			{
@@ -178,7 +178,8 @@
 				"specialProcessing" : {
 					"type" : "cashLoss",
 					"dice" : 1,
-					"amount" : 1000
+					"amount" : 1000,
+					"of" : "cash"
 				}
 			},
 			{

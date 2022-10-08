@@ -34,15 +34,7 @@ class BorderSquare(GameSquare):
         self._game_square_dict["square_class"] = "Border"
         self._square_type = border_square_dict['type']
         self.action_text = border_square_dict.get('action_text', None)
-        
-    @property
-    def square_type(self):
-        return self._square_type
-    
-    @square_type.setter
-    def square_type(self, value):
-        self._square_type = value
-        
+
     @property
     def game_square_dict(self):
         return self._game_square_dict
@@ -88,7 +80,7 @@ class BorderSquare(GameSquare):
             return result
         elif self.square_type == 'action_square':
             sp_type = self.special_processing.processing_type       # independent of the name of the Square
-            player.pending_action = sp_type
+            player.pending_action = sp_type                         # Set the pending_action 
             message = f'{self.text}\n{self.action_text}'
             if sp_type == 'buyHearts':    # Tech Convention
                 return CommandResult(CommandResult.NEED_PLAYER_CHOICE, message, False)   # player needs to execute a 'buy hearts'
@@ -139,10 +131,13 @@ class BorderSquare(GameSquare):
                     result = CommandResult(CommandResult.SUCCESS, f'Player {player.player_initials} {self.action_text}\n collect {nhearts} hearts', True)
                     
                 return result
+        elif self.square_type == 'danger_square':   # IncomeTax, DonateNow, CarPayment, PayRent, ShoppingSpree, DivorceCourt
+            sp_type = self.special_processing.processing_type    # special processing type independent of the square name
+            payment = self.special_processing.compute_cash_loss(player.salary, player.cash)
+            player.add_cash(-payment)       # this will set the bankrupt pending_action if cash is < 0 as a result
+            result =  CommandResult(CommandResult.SUCCESS, f'{self.action_text}\n Player {player.player_initials}  pays {payment}, remaining cash: {player.cash}', player.cash < 0)
         else:
-            pass
-        
-        result = CommandResult(CommandResult.SUCCESS, f'{self.square_type} {self.name} execute not yet implemented', False)   #  TODO
+            result = CommandResult(CommandResult.SUCCESS, f'{self.square_type} {self.name} execute not yet implemented', False)   #  TODO
         return result
     
     def execute_special_processing(self, player:Player, dice:List[int]=None):
@@ -166,7 +161,7 @@ class BorderSquare(GameSquare):
             if can_roll:
                 result = CommandResult(CommandResult.SUCCESS, f'Player can leave {self.name}', True)
             else:
-                result = CommandResult(CommandResult.EXECUTE_NEXT, f'Player must remain in {self.name}', True, next_action="next")
+                result = CommandResult(CommandResult.EXECUTE_NEXT, f'Player rolled {dice} and must remain in {self.name}', True, next_action="next")
         else:
             result = CommandResult(CommandResult.SUCCESS, f'{self.square_type} {self.name} execute_special_processing not yet implemented', False)
         

@@ -81,6 +81,7 @@
 			"number" : 5,
 			"background_image" : "danger_occupation_square.png",
 			"text" : "Hit by running back on the sideline",
+			"type" : "danger_square",
 			"stars" : 0,
 			"hearts" : 0,
 			"experience" : 0,
@@ -95,6 +96,7 @@
 			"number" : 6,
 			"background_image" : "occupation_square.png",
 			"text" : "Need some opportunities quick!",
+			"type" : "action_square",
 			"stars" : 4,
 			"hearts" : 0,
 			"experience" : 0,
@@ -133,6 +135,7 @@
 			"number" : 9,
 			"background_image" : "danger_occupation_square.png",
 			"text" : "Betting scandal",
+			"type" : "danger_square",
 			"stars" : 0,
 			"hearts" : 0,
 			"experience" : 0,
@@ -141,7 +144,8 @@
 			"specialProcessing" : {
 				"type" : "cashLoss",
 				"amount" : 0,
-				"percent" : 0.5
+				"percent" : 0.5,
+				"of" : "cash"
 			}
 		},
 		{

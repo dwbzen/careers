@@ -83,6 +83,7 @@
 			"number" : 5,
 			"background_image" : "occupation_square.png",
 			"text" : "You have a bad feeling about this...",
+			"type" : "action_square",
 			"stars" : 4,
 			"hearts" : 0,
 			"experience" : 0,
@@ -143,6 +144,7 @@
 			"number" : 10,
 			"background_image" : "danger_occupation_square.png",
 			"text" : "Sued for breaking ND agreement",
+			"type" : "danger_square",
 			"stars" : 0,
 			"hearts" : 0,
 			"experience" : 0,
@@ -151,13 +153,15 @@
 			"specialProcessing" : {
 				"type" : "cashLoss",
 				"amount" : 0,
-				"percent" : 0.5
+				"percent" : 0.5,
+				"of" : "cash"
 			}
 		},
 		{
 			"number" : 11,
 			"background_image" : "occupation_square.png",
 			"text" : "Promoted to biological SME",
+			"type" : "action_square",
 			"stars" : 2,
 			"hearts" : 4,
 			"experience" : 0,

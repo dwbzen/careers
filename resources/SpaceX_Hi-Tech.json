@@ -44,6 +44,7 @@
 			"number" : 2,
 			"background_image" : "danger_occupation_square.png",
 			"text" : "Dragon docking fails",
+			"type" : "danger_square",
 			"stars" : 0,
 			"hearts" : 0,
 			"experience" : 0,
@@ -52,13 +53,15 @@
 			"specialProcessing" : {
 				"type" : "fameLoss",
 				"amount" : 0,
-				"percent" : 1.0
+				"percent" : 1.0,
+				"of" : "fame"
 			}
 		},
 		{
 			"number" : 3,
 			"background_image" : "danger_occupation_square.png",
 			"text" : "Falcon 9 explodes on the launch pad",
+			"type" : "danger_square",
 			"stars" : 0,
 			"hearts" : 0,
 			"experience" : 0,
@@ -67,7 +70,8 @@
 			"specialProcessing" : {
 				"type" : "cashLoss",
 				"amount" : 0,
-				"percent" : 1.0
+				"percent" : 1.0,
+				"of" : "cash"
 			}
 		},
 		{
@@ -150,6 +154,7 @@
 			"number" : 10,
 			"background_image" : "danger_occupation_square.png",
 			"text" : "Exhausted from conference keynote address",
+			"type" : "danger_square",
 			"stars" : 10,
 			"hearts" : 0,
 			"experience" : 0,

@@ -193,13 +193,16 @@ class CareersGameEngine(object):
         game_square = self._careersGame.get_game_square(player.board_location)
         return game_square
     
-    def get_player(self, pid, pnumber=None) -> Union[Player, None] :
+    def get_player(self, pid:str) -> Union[Player, None] :
         """Gets a Player by initials, name, or number
+            Arguments:
+                pid - string that represents a player number, name or initials
             Returns: Player instance or None if no player with the given ID exists.
+            Note that name/initials are NOT case sensitive.
         """
         player = None
-        if pnumber is not None:
-            player = self.game_state.players[pnumber]
+        if pid.isdigit():
+            player = self.game_state.players[int(pid)]
         else:   # lookup the player by name or initials
             players = self.game_state.players
             lc_pid = pid.lower()
@@ -381,9 +384,9 @@ class CareersGameEngine(object):
         """
         cp = self.game_state.current_player
         game_square = self._careersGame.get_game_square(cp.board_location)
-        #
-        # is there a penalty associated with this game square?
-        #
+        ###################################################################################
+        # is there a pending action for this player? This might include a pending penalty.
+        ###################################################################################
         if cp.pending_action is not None and game_square.special_processing is not None \
            and cp.pending_action==game_square.special_processing.processing_type:
             if game_square.special_processing.penalty > 0:
@@ -393,6 +396,7 @@ class CareersGameEngine(object):
             
         cp.board_location.reset_prior()            # this player's prior board position no longer relevant
         cp.pending_action = None
+        
         npn = self.game_state.set_next_player()    # sets current_player and returns the next player number (npn) and increments turns
         player = self.game_state.current_player
         player.opportunity_card = None
@@ -505,7 +509,9 @@ class CareersGameEngine(object):
             The player does retain occupation experience however including any and all college degrees.
         
         """
-        result = CommandResult(CommandResult.SUCCESS, "'bankrupt' command not yet implemented", False)
+        player = self.game_state.current_player
+        player.bankrupt_me()
+        result = CommandResult(CommandResult.SUCCESS, f'{player.player_initials} has declared bankruptcy', False)
         return result
     
     def pay(self, amount_str:str, initials=None) -> CommandResult:
@@ -525,23 +531,34 @@ class CareersGameEngine(object):
         amount = int(amount_str)
         player = self.game_state.current_player if initials is None else self.get_player(initials)
         if player.cash >= amount:
-            player.cash = player.cash - amount
+            player.add_cash(-amount)
             message = f'{player.player_initials} paid {amount}'
             return CommandResult(CommandResult.SUCCESS, message, True)
         else:
             message = f'{player.player_initials} has insufficient funds to cover {amount} and must either borrow cash from another player or declare bankruptcy'
             return CommandResult(CommandResult.ERROR, message, False)
         
-    def transfer(self, quantity_str:str, what:str, from_player:str) -> CommandResult:
+    def transfer(self, quantity_str:str, what:str, from_player_id:str) -> CommandResult:
         """Transfers cash, opportunities or experience cards from one player to the current player
+            For example: "transfer 500 cash BDB" transfers 500 in cash from player RBD to me.
             Arguments:
-                from_player_number - the player number transferring
+                from_player_number - the from player_initials, number or name
                 what - "cash", "opportunity", "experience"
                 quantity - the amount of cash or number of experience/opportunity cards being transferred
         """
         qty = int(quantity_str)
-        from_player_number = int(from_player)
-        CommandResult(CommandResult.SUCCESS, f'transfer {qty} {what} from player# {from_player_number}  not implemented', True)
+        from_player = self.get_player(from_player_id)
+        player = self.game_state.current_player
+        if what == 'cash':
+            if from_player.cash <= qty:
+                result = CommandResult(CommandResult.ERROR, f"{from_player.player_initials} doesn't have {qty} to transfer")
+            else:
+                from_player.add_cash(-qty)
+                player.add_cash(qty)
+                result = CommandResult(CommandResult.SUCCESS, f'transfer {qty} {what} from {from_player.player_initials} complete', True)
+        else:
+            result = CommandResult(CommandResult.SUCCESS, f'transfer {qty} {what} from player# {from_player.player_initials}  not implemented yet, but soon!', True)
+        return result
         
     
     def list(self, what='all') ->CommandResult:
@@ -601,8 +618,8 @@ class CareersGameEngine(object):
             sf = SuccessFormula(stars=stars, hearts=hearts, cash=cash)
             player = Player(name=name, initials=initials)
             player.success_formula = sf
-            player.salary = self._careersGame.game_parameters['starting_salary']
-            player.cash = self._careersGame.game_parameters['starting_cash']
+            player.set_starting_parameters(cash=self.careersGame.game_parameters['starting_salary'], salary=self._careersGame.game_parameters['starting_cash'])
+            
             self._careersGame.add_player(player)        # adds to GameState
             if player.number == 0:      # the first player can roll
                 player.can_roll = True
@@ -713,16 +730,15 @@ class CareersGameEngine(object):
                 what - "hearts" | "stars" | "experience" | "insurance" | "opportunity"
                 qty - how many to buy (adds to the player's score or card deck)
                 amount - cash amount cost
+             The player must have the appropriate pending_action in order to be valid
+            and it must match the current location's special processing type
         """
         amount = int(amount_str)
         qty = int(qty_str)
 
         if player.cash < amount:
             return CommandResult(CommandResult.ERROR, f'Insufficient funds {player.cash} for amount {amount}', True)
-        #
-        # the player must have the appropriate pending_action in order to be valid
-        # and it must match the current location's special processing type
-        #
+    
         game_square = self.get_player_game_square(player)
         special_processing = game_square.special_processing  # could be None or empty
         sptype = special_processing.processing_type if special_processing is not None else ""

@@ -13,6 +13,8 @@ class OccupationSquare(GameSquare):
     '''
     classdocs
     '''
+    
+    types_list = ["danger_square", "shortcut_square", "action_square", "regular", "travel_square"]
 
 
     def __init__(self, occupation_square_dict, game=None):
@@ -31,7 +33,7 @@ class OccupationSquare(GameSquare):
         self._hearts = occupation_square_dict["hearts"]
         self._experience = occupation_square_dict["experience"]         # the number of Experience cards to collect on this square
         self._opportunities = occupation_square_dict["opportunities"]   # the number of Opportunity cards to collect on this square
-        
+        self._square_type = occupation_square_dict.get('type', 'regular')    # square type is optional for OccupationSquare
         self.action_text = occupation_square_dict.get('action_text', None)
         self._bonus = occupation_square_dict.get('bonus',0)
         
@@ -111,7 +113,8 @@ class OccupationSquare(GameSquare):
         elif sptype == "shortcut":
             pass    # TODO
         elif sptype == "cashLossOrUnemployment":
-            pass    # TODO - player needs to indicate whether to take the l
+            player.pending_action = sptype    # player needs to choose to pay or go to Unemployment
+            player.pending_amount = amount
         elif sptype == 'travelBorder':
             pass    # TODO
         elif sptype == 'loseNextTurn':
@@ -132,13 +135,13 @@ class OccupationSquare(GameSquare):
                 player.add_to_salary(-cutAmount)
                 message += f'Salary cut by {cutAmount}. Your new salary is {player.salary}'
         elif sptype == 'backstab':
-            pass    # TODO
+            ...    # TODO
         elif sptype == 'goto':
-            pass    # TODO
+            ...    # TODO
         elif sptype == 'fameLoss':
-            pass    # TODO
+            ...    # TODO
         elif sptype == 'hapinessLoss':
-            pass    # TODO
+            ...    # TODO
         return next_action, done_flag
     
     def to_JSON(self):

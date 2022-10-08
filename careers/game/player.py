@@ -18,21 +18,30 @@ class Player(CareersObject):
         self._player_name = name
         self._player_initials = initials            # unique initials - no player can have the same initials
         self._salary_history = [salary]             # list of salaries the player has attained
-        self._salary = salary                       # my current salary
-        self._cash = cash                           # cash on hand
+        self.set_starting_parameters(cash, salary)
         self._success_formula = None         # my SuccessFormula
-        self._happiness = [0]                # record of happiness (hearts) earned. Cumulative amounts, total is happiness[-1]
-        self._fame = [0]                     # record of fame (stars) earned. Cumulative amounts, total is fame[-1]
         
         self._number = number               # my player number, values 0 to #players-1
-        self._my_experience_cards = []      # list of ExperienceCards this player holds
-        self._my_opportunity_cards = []     # list of OpportunityCards this player holds
-        
+        self._laps = 0                      # the number of times player has passed or landed on Payday
         # dict where key is the degree program and the values the number of degrees attained
         # when number of degrees in any program >= 4, the can_retire flag is automatically set
         self._my_degrees = dict()
-        # always start on Payday corner square
-        self._board_location = BoardLocation(border_square_number=0, border_square_name="Payday", occupation_name=None, occupation_square_number=0 )
+        
+        self._initialize()    # initialize starting parameters
+        
+        # dict where key is occupation name, value is the number of completed trips
+        # when completed trips >= 3, the can_retire flag is automatically set
+        self._occupation_record = dict()
+        
+        # player loan obligations are indexed by player_number: loans[player_number] = <loan amount>
+        self._loans = {}
+        
+        
+    def _initialize(self):
+        """Sets the starting values for all properties reset under bankruptcy rules.
+        """
+        
+        self._set_starting_board_location() # always start on Payday corner square
         self._can_retire = False
         self._is_insured = False
         self._is_unemployed = False         # True when player lands on (or is sent to) Unemployment
@@ -42,22 +51,22 @@ class Player(CareersObject):
         self._extra_turn = 0                # If >0 the player gets that number of additional turns. This is automatically decremented after that turn is taken.
         self._can_roll = False              # If True the player can roll or play an Experience card
         self._can_use_opportunity = True    # If True the play may use an Opportunity Card
+        self._opportunity_card = None       # the OpportunityCard instance of the card currently in play, or None otherwise
+        self._experience_card = None        # the ExperienceCard instance of the card currently in play, or None otherwise
+
+        self._can_bump = []                 # the players I can currently Bump
         
-        # dict where key is occupation name, value is the number of completed trips
-        # when completed trips >= 3, the can_retire flag is automatically set
-        self._occupation_record = dict()
-        
-        # player loan obligations are indexed by player_number: loans[player_number] = <loan amount>
-        self._loans = {}
-        
-        self._opportunity_card = None   # the OpportunityCard instance of the card currently in play, or None otherwise
-        self._experience_card = None    # the ExperienceCard instance of the card currently in play, or None otherwise
-        self._laps = 0                  # the number of times player has passed or landed on Payday
-        self._can_bump = []             # the players I can currently Bump
         # if a player has landed on an action_square, there is a pending action  which is the square's specialProcessing processing_type
         # there are currently 4: buyHearts, buyExperience, buyInsurance, and gamble
+        # Also 'bankrupt' is a pending action that is set if the cash < 0
+        #
         self._pending_action = None
-        
+        self._pending_amount = 0
+        self._my_experience_cards = []       # list of ExperienceCards this player holds
+        self._my_opportunity_cards = []      # list of OpportunityCards this player holds
+        self._happiness = [0]                # record of happiness (hearts) earned. Cumulative amounts, total is happiness[-1]
+        self._fame = [0]                     # record of fame (stars) earned. Cumulative amounts, total is fame[-1]        
+    
     @property
     def player_name(self):
         """Get the player's name."""
@@ -91,6 +100,8 @@ class Player(CareersObject):
     @cash.setter
     def cash(self, value):
         self._cash = value
+        if value < 0:
+            self.pending_action = 'bankrupt'
     
     @property
     def success_formula(self):
@@ -287,6 +298,20 @@ class Player(CareersObject):
     def pending_action(self, value:str):
         self._pending_action = value
     
+    @property  
+    def pending_amount(self):
+        return self._pending_amount
+    
+    @pending_amount.setter
+    def pending_amount(self, value):
+        self._pending_amount = value
+        
+    def set_starting_parameters(self, cash:int, salary:int):
+        self._starting_cash = cash
+        self._starting_salary = salary
+        self.cash = cash
+        self.salary = salary
+    
     def get_total_loans(self):
         total = 0
         for v in self._loans.values():
@@ -386,8 +411,14 @@ class Player(CareersObject):
                 nstars = -self.fame
         self._fame.append(self.fame + nstars)
         
-    def add_cash(self, money):  # could be a negative amount
+    def add_cash(self, money):
+        """Adds cash to the players cash-on-hand.
+            This can be negative if losing cash.
+            If the cash falls below 0, the 'bankrupt' pending_action is set.
+        """
         self.cash = self.cash + money
+        if self._cash < 0:
+            self.pending_action = 'bankrupt'
     
     def add_to_salary(self, money): #  again, could be negative amount
         self.salary = self.salary + money
@@ -414,7 +445,6 @@ class Player(CareersObject):
         """Persist this player's state to a JSON file.
         File name is "player_" + player_initials + yyyy-mm-dd_hhmmss + _state.json"
         
-        TODO finish this
         """
         today = datetime.now()
         fdate = '{0:d}-{1:02d}-{2:02d}_{3:02d}{4:02d}{5:02d}'.format(today.year,today.month, today.day, today.hour, today.minute, today.second)
@@ -425,16 +455,37 @@ class Player(CareersObject):
         #
         # save in jsonpickle format
         #
-        jtxt = self.json_pickle()
-        
+        jstr = self.json_pickle()
+        with open(filename, "w") as fp:
+            fp.write(jstr)
+        fp.close()        
         return filename
+    
+    def bankrupt_me(self):
+        """Force this Player into bankruptcy.
+            A bankrupt player looses all Fame and Happiness points and all cash except the starting amount (typically $2000).
+            Also the player turns in all Experience and Opportunity cards
+            and his/her/they board position set to Payday (square 0).
+            The player does however retain work history and any degrees earned. Retirement privileges, if any, are revoked.
+            A player can earn retirement privileges back by fulfilling the criteria a second time, presumably with
+            different/new occupations and/or degree program.
+            A player may declare bankruptcy at any time.
+            If the player's cash-on-hand is < 0 at the start of their turn, the player
+            is forced into bankruptcy automatically.
+            
+        """
+        self.cash = self._starting_cash
+        self.salary = self._starting_salary
+        self._salary_history = [self.salary]
+        self._initialize()
     
     def player_info(self, include_successFormula=False):
         v = self.get_total_loans()
         pending = self.pending_action if self.pending_action is not None else "None"
         fstring = f'''salary:{self.salary}, Cash: {self.cash},  Fame: {self.fame}, Happiness: {self.happiness}, 
 Insured: {self.is_insured}, Unemployed: {self.is_unemployed}, Sick: {self.is_sick}, Pending action: {pending}'''
-        
+        if self.cash < 0:
+            fstring = f'{fstring}\nALERT: You have negative cash amount and must declare bankruptcy OR borrow the needed funds from another player!!'
         if include_successFormula:
             fstring = f'{fstring}\nSuccess Formula: {self.success_formula}'
         if v > 0:
@@ -447,6 +498,9 @@ Insured: {self.is_insured}, Unemployed: {self.is_unemployed}, Sick: {self.is_sic
         
         """
         return  self.current_board_location
+    
+    def _set_starting_board_location(self):
+        self._board_location = BoardLocation(border_square_number=0, border_square_name="Payday", occupation_name=None, occupation_square_number=0 )
     
     def info(self):
         return  f' "name" : "{self.player_name}",  "number" : "{self.number}",  "initials" : "{self.player_initials}"'

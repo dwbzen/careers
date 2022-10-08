@@ -32,6 +32,7 @@
 			"number" : 1,
 			"background_image" : "occupation_square.png",
 			"text" : "Project emergency",
+			"type" : "action_square",
 			"stars" : 0,
 			"hearts" : 2,
 			"bonus" : 0,
@@ -46,6 +47,7 @@
 			"number" : 2,
 			"background_image" : "danger_occupation_square.png",
 			"text" : "Your laptop is stolen",
+			"type" : "danger_square",
 			"stars" : 0,
 			"hearts" : 0,
 			"experience" : 0,
@@ -53,7 +55,8 @@
 			"action_text" : "Pay $2000 OR go on Unemployment",
 			"specialProcessing" : {
 				"type" : "cashLossOrUnemployment",
-				"amount" : 5000
+				"amount" : 5000,
+				"of" : "cash"
 			}
 		},
 		{
@@ -122,6 +125,7 @@
 			"number" : 8,
 			"background_image" : "danger_occupation_square.png",
 			"text" : "Hurt in company soccer match",
+			"type" : "danger_square",
 			"stars" : 0,
 			"hearts" : 0,
 			"experience" : 0,
@@ -136,6 +140,7 @@
 			"number" : 9,
 			"background_image" : "occupation_square.png",
 			"text" : "May backstab a colleague",
+			"type" : "action_square",
 			"stars" : 0,
 			"hearts" : -4,
 			"bonus" : 0,

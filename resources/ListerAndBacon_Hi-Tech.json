@@ -20,6 +20,7 @@
 			"number" : 0,
 			"background_image" : "danger_occupation_square.png",
 			"text" : "Fail Bar exam",
+			"type" : "danger_square",
 			"stars" : 0,
 			"hearts" : 0,
 			"experience" : 0,
@@ -104,6 +105,7 @@
 			"number" : 7,
 			"background_image" : "occupation_square.png",
 			"text" : "May backstab a Partner",
+			"type" : "action_square",
 			"stars" : 0,
 			"hearts" : -4,
 			"bonus" : 0,
@@ -143,6 +145,7 @@
 			"number" : 10,
 			"background_image" : "danger_occupation_square.png",
 			"text" : "Plead no contest to tax evasion",
+			"type" : "danger_square",
 			"stars" : 0,
 			"hearts" : 0,
 			"experience" : 0,
@@ -151,7 +154,8 @@
 			"specialProcessing" : {
 				"type" : "fameLoss",
 				"amount" : 0,
-				"percent" : 0.5
+				"percent" : 0.5,
+				"of" : "fame"
 			}
 		},
 		{
