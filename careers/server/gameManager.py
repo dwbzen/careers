@@ -3,11 +3,14 @@
 """
 
 from array import array
+import imp
 from multiprocessing.dummy import Array
 from fastapi.encoders import jsonable_encoder
 from typing import Any, List, Optional
 import uuid
 import json
+import random
+import string
 from datetime import date, datetime
 
 import dotenv
@@ -32,18 +35,29 @@ class CareersGameManager(object):
         """
         gameEngine = CareersGameEngine()
         gameId = json.loads(gameEngine.create(edition, installationId, 'points', points).message)['gameId']
-        game = Game(_id=gameId, createdBy=installationId, points=points, players=[installationId], createdDate=datetime.now())
+        game = Game(_id=gameId, createdBy=installationId, points=points, 
+            players=[installationId], createdDate=datetime.now(), joinCode=''.join(random.choices(string.ascii_letters, k=5)))
 
         self.database["games"].insert_one(jsonable_encoder(game))
         self.games[gameId] = gameEngine
 
-        return gameId
+        gameEngine.execute_command(f'create {edition} {installationId} points {points}', None)
+        return game
+
+    def getGameByJoinCode(self, joinCode: str):
+        """
+            Returns a game by join code
+        """
+        return self.database["games"].find_one({"joinCode": joinCode})
 
     def getGames(self, installationId: str) -> Any:
         """
             Gets all of the games this user participates in
         """
         return list(self.database["games"].find({"players": installationId}))
+
+    def joinGame(self, gameId: str, playerName: str, playerInitials: str):
+        self.database["games"].update_one({"_id": gameId}, {'$push': {'players': playerInitials}})
 
     def __call__(self, gameId: str = None) -> CareersGameEngine:
         """Create a new game engine for the user and return the instance"""
@@ -53,7 +67,6 @@ class CareersGameManager(object):
         if(gameId in self.games):
             return self.games[gameId]
         else: 
-            dbGame = self.database["games"].find_one({"_id": gameId})
             # Create a new GameEngine from this game id
             self.games[gameId] = CareersGameEngine()
             self.games[gameId].load(gameId)
@@ -66,3 +79,5 @@ class Game(BaseModel):
     points: int = Field(...)
     edition: str = Field(default="Hi-Tech")
     players: List[str] = Field()
+    joinCode: str = Field(...)
+    inProgress: bool = Field(default=False)
