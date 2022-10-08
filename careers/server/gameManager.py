@@ -41,7 +41,6 @@ class CareersGameManager(object):
         self.database["games"].insert_one(jsonable_encoder(game))
         self.games[gameId] = gameEngine
 
-        gameEngine.execute_command(f'create {edition} {installationId} points {points}', None)
         return game
 
     def getGameByJoinCode(self, joinCode: str):
