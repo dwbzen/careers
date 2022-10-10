@@ -6,23 +6,57 @@ Created on Aug 12, 2022
 
 from game.careersObject import CareersObject
 from game.gameUtils import GameUtils
+from game.player import Player
 import json
 from typing import Dict, List, Union
+from enum import Enum
+
+class SpecialProcessingType(Enum):
+    # border squares
+    BUY_HEARTS = "buy_hearts"
+    BUY_EXPERIENCE = "buy_experience"
+    BUY_INSURANCE = "buy_insurance"
+    BUY_STARS = "buy_stars"
+    ENTER_COLLEGE = "enter_college"
+    ENTER_OCCUPATION = "enter_occupation"
+    GAMBLE = "gamble"
+    HOLIDAY = "holiday"
+    HOSPITAL = "hospital"
+    PAYDAY = "payday"
+    OPPORTUNITY = "opportunity"
+    PAY_TAX = "pay_tax"
+    UNEMPLOYMENT = "unemployment"
+    # occupation squares
+    SHORTCUT = "shortcut"
+    CASH_LOSS_OR_UNEMPLOYMENT = "cash_loss_or_unemployment"
+    GOTO = "goto"
+    SALARY_INCREASE = "salary_increase"
+    SALARY_CUT = "salary_cut"
+    BONUS = "bonus"
+    FAVORS = "favors"
+    BACKSTAB = "backstab"
+    FAME_LOSS = "fame_loss"
+    HAPPINESS_LOSS = "happiness_loss"
+    # common to both
+    TRAVEL_BORDER = "travel_border"
+    CASH_LOSS = "cash_loss"
+    EXTRA_TURN = "extra_turn"
+    LOSE_NEXT_TURN = "lose_next_turn"
 
 class SpecialProcessing(CareersObject):
     """Encapsulates the "specialProcessing" section of a border square or occupation square.
         This is only a model class. The actual processing is done by CareersGameEngine.
     """
-    
-    border_types = ["payday", "opportunity", "payTax", "enterOccupation", "enterCollege", "buyHearts", "buyStars", "buyExperience",\
-                    "hospital", "unemployment", "buyInsurance", "gamble" ]
 
-    occupation_types = ["shortcut", "cashLossOrUnemployment", "goto",\
-                         "salaryIncrease", "salaryCut", "bonus", "favors", "backstab", "fameLoss", "hapinessLoss"]
+    all_types = list(SpecialProcessingType)
+        
+    border_types = all_types[:12]
+
+    occupation_types = all_types[12:22]
     
-    common_types = ["travelBorder", "cashLoss", "extraTurn", "loseNextTurn"]
+    common_types = all_types[22:]
     
-    all_types = border_types + occupation_types + common_types
+
     
     SPECIAL_PROCESSING = Dict[str, Union[str, List[int], int, float, Dict[str, int]]]
 
@@ -37,7 +71,7 @@ class SpecialProcessing(CareersObject):
         # mandatory elements
         #
         self._square_type = square_type     # "occupation" or "border"
-        self._processing_type = special_processing_dict["type"]     # must be one of the above types
+        self._processing_type = SpecialProcessingType[special_processing_dict["type"].upper()]    # must be one of the above types
         #
         # optional elements which are type-dependent
         # an 'amount' can be a numeric type (int or float), a string or a dictionary
@@ -74,7 +108,7 @@ class SpecialProcessing(CareersObject):
         return self._square_type
     
     @property
-    def processing_type(self):
+    def processing_type(self) -> SpecialProcessingType:
         return self._processing_type
     
     @property
@@ -141,7 +175,7 @@ class SpecialProcessing(CareersObject):
     def tax_table(self):
         return self._tax_table
     
-    def compute_cash_loss(self, player_cash:int, player_salary:int) -> int:
+    def compute_cash_loss(self, player:Player) -> int:
         """Compute the cash loss for this specialProcessing given cash and salary amounts.
              Cash loss can be a fixed amount or a percentage of a player's salary or cash on hand
             It's possible the loss causes the player to have negative cash in which case they
@@ -149,16 +183,20 @@ class SpecialProcessing(CareersObject):
             another player or declaring bankruptcy
         """
         cash_loss = 0
-        if self.processing_type == 'payTax':
+        player_salary = player.salary
+        player_cash = player.cash
+        if self.processing_type is SpecialProcessingType.PAY_TAX:
             # compute tax amount from tax table as a % of salary
             for k in self.tax_table.keys():
                 amt = int(k)
                 if player_salary <= amt:
                     cash_loss = int(self.tax_table[k] * player_salary)    # truncate the amount
-        elif self.processing_type.startswith('cashLoss'):       # cashLoss or cashLossOrUnemployment
+        elif self.processing_type is SpecialProcessingType.CASH_LOSS.value:
             #
             cash_loss = self._compute_amount(player_cash) if self.of=='cash' else self._compute_amount(player_salary)
-            pass
+        elif  self.processing_type is SpecialProcessingType.CASH_LOSS_OR_UNEMPLOYMENT.value:
+            cash_loss = self._compute_amount(player_cash) if self.of=='cash' else self._compute_amount(player_salary)
+            player.pending_amount = cash_loss
         else:   # future expansion
             pass
         

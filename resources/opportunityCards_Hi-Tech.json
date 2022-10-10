@@ -1,7 +1,10 @@
 {
 	"Help" : "Hi-Tech Edition Opportunity cards",
-	"type_list" : [
+	"types_list" : [
 		"occupation", "occupation_choice", "border_square", "border_square_choice", "action", "travel", "opportunity"
+	],
+	"action_types" : [
+		"collect_experience", "extra_turn", "leave_unemployment"
 	],
 	"types" : [
 		{

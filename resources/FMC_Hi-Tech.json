@@ -151,7 +151,7 @@
 			"opportunities" : 0,
 			"action_text" : "Lose 1/2 your cash",
 			"specialProcessing" : {
-				"type" : "cashLoss",
+				"type" : "cash_loss",
 				"amount" : 0,
 				"percent" : 0.5,
 				"of" : "cash"
@@ -168,7 +168,7 @@
 			"opportunities" : 0,
 			"action_text" : "Salary up $2000",
 			"specialProcessing" : {
-				"type" : "salaryIncrease",
+				"type" : "salary_increase",
 				"amount" : 2000
 			}
 		}

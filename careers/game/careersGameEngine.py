@@ -13,20 +13,21 @@
 from game.careersGame import CareersGame
 from game.commandResult import CommandResult
 from game.player import  Player
-from game.opportunityCard import OpportunityCard
+from game.opportunityCard import OpportunityCard, OpportunityType, OpportunityActionType
 from game.experienceCard import ExperienceCard
 from game.boardLocation import BoardLocation
 from game.successFormula import SuccessFormula
-from game.borderSquare import BorderSquare
+from game.borderSquare import BorderSquare, BorderSquareType
 from game.occupationSquare import OccupationSquare
-from game.gameSquare import GameSquare
+from game.gameSquare import GameSquare, GameSquareClass
 from game.gameEngineCommands import GameEngineCommands
 from game.gameUtils import GameUtils
 from game.environment import Environment
+from game.specialProcessing import SpecialProcessingType
 
 from datetime import datetime
 import random
-from typing import Union, List
+from typing import Union, List, Any
 import os
 
 class CareersGameEngine(object):
@@ -284,10 +285,12 @@ class CareersGameEngine(object):
                 # cannot use 2 Opportunities in the same turn except if
                 # the first is extra_turn, leave_unemployment
                 #
-                if thecard.opportunity_type == 'action' and ( thecard.action_type == 'leave_unemployment' or thecard.action_type == 'extra_turn'):
+                if thecard.opportunity_type is OpportunityType.ACTION and \
+                 ( thecard.action_type is OpportunityActionType.LEAVE_UNEMPLOYMENT or thecard.action_type is OpportunityActionType.EXTRA_TURN):
                     player.can_use_opportunity = True
                 else:
                     player.can_use_opportunity = False
+                    
                 result = self._execute_opportunity_card(player, opportunityCard=thecard)
         elif what.lower() == 'experience' and player.can_roll:
             cards = player.get_experience_cards()   # dict with number as the key
@@ -321,10 +324,10 @@ class CareersGameEngine(object):
             result = CommandResult(CommandResult.ERROR, "You don't have insurance!", False)
         return result
         
-    def goto(self, square_number:int) -> CommandResult:
+    def goto(self, square_ref:Any) -> CommandResult:
         """Immediately place the designated player on the designated BorderSquare OR OccupationSquare and execute that square.
             If the current player is in an occupation, this places the player on square_number of that Occupation.
-            Otherwise, the square_number refers to a BorderSquare.
+            Otherwise, the square_ref refers to a BorderSquare name or number.
             NOTE that the border square number could be out of range. i.e. > game size. 
             If so, the square number adjusted and then the pass_payday() action is executed.
             
@@ -332,6 +335,10 @@ class CareersGameEngine(object):
             If so, the player is advanced to the next BorderSquare and the exit occupation logic is executed.
             
         """
+        square_number = square_ref
+        if isinstance(square_ref, str):
+            bs = self._careersGame.find_border_square(square_ref)
+            square_number = bs.number
         return self._goto(square_number, self.game_state.current_player)
     
     def enter(self, occupation_name:str) -> CommandResult:
@@ -355,10 +362,10 @@ class CareersGameEngine(object):
             # if player used an Opportunity to get here, remove that from their deck and set their opportunity_card to None
             # also the player can immediately roll in to the Occupation
             #
-            if player.opportunity_card is not None and player.opportunity_card.opportunity_type=='occupation' and player.opportunity_card == occupation_name:
+            if player.opportunity_card is not None and player.opportunity_card.opportunity_type is OpportunityType.OCCUPATION and player.opportunity_card == occupation_name:
                 player.used_opportunity()
                     
-            entry_ok, entry_fee = self.can_enter(occupation, player)        # this also checks the Opportunity card used (if any)
+            entry_ok, entry_fee = self._gameEngineCommands.can_enter(occupation, player)        # this also checks the Opportunity card used (if any)
             if entry_ok:
                 player.cash = player.cash - entry_fee
                 player.board_location.border_square_number = occupation_entrance_square.number
@@ -390,7 +397,7 @@ class CareersGameEngine(object):
         if cp.pending_action is not None and game_square.special_processing is not None \
            and cp.pending_action==game_square.special_processing.processing_type:
             if game_square.special_processing.penalty > 0:
-                if cp.pending_action=="buyHearts" and cp.happiness > 0:
+                if cp.pending_action==SpecialProcessingType.BUY_HEARTS and cp.happiness > 0:
                     cp.add_hearts(-game_square.special_processing.penalty)
             cp.pending_action = None
             
@@ -458,7 +465,7 @@ class CareersGameEngine(object):
             current_board_location = player.board_location
             game_square = self.get_player_game_square(player)
             message += str(game_square.number)
-            if game_square.square_class == 'Occupation':
+            if game_square.square_class is GameSquareClass.OCCUPATION:
                 message += " of " + current_board_location.occupation_name + ": '" +  game_square.text + "' " 
             else:    # a border square
                 message += ": " + game_square.name
@@ -771,55 +778,17 @@ class CareersGameEngine(object):
         
         return CommandResult(CommandResult.SUCCESS, f'{qty} {what} added', True)
 
-    def can_enter(self, occupation, player:Player):
-        """Determine if this player can enter the named Occupation
-            This checks if the player meets the entry conditions, namely:
-                * it's college and they have the tuition amount in cash
-                * they've previously completed this occupation and can therefore enter for free
-                * or they have a qualifying degree and can therefore enter for free
-                * or they have executed an "All expenses paid" Opportunity card
-                * or they have sufficient cash to cover the entry fee 
-            Arguments:
-                occupation - an Occupation instance
-                player - a Player instance
-            Returns: tupple -
-                [0] bool True if can enter, False otherwise
-                [2] entry amount owed, if any. Could be 0
-        """
-
-        entry_fee = occupation.entryFee
-        has_fee = player.cash >= entry_fee
-        occupationClass = occupation.occupationClass
-        # anyone can go to college if they have the funds
-        if occupationClass == 'college' and has_fee:
-            return (True, entry_fee)    # always pay for college
-        
-        #
-        # check occupation record for prior trips through 
-        #
-        if occupation.name in player.occupation_record and player.occupation_record[occupation.name] > 0:
-            return (True, 0)
-        #
-        # check degree requirements
-        #
-        degreeRequirements = occupation.degreeRequirements
-        degreeName = degreeRequirements['degreeName']
-        numberRequired = degreeRequirements['numberRequired']
-        if degreeName in player.my_degrees and player.my_degrees[degreeName] >= numberRequired:
-            return (True, 0)        # can enter for free
-        #
-        # is the player using a  "All expenses paid" Opportunity card ?
-        #
-        if player.opportunity_card is not None:
-            if player.opportunity_card.expenses_paid:
-                return (True, 0)
-        
-        return has_fee, entry_fee
 
     
     def _execute_opportunity_card(self,  player:Player, opportunityCard:OpportunityCard=None) -> CommandResult:
-            player.opportunity_card = opportunityCard
+            
             result = self._gameEngineCommands.execute_opportunity_card(player, opportunityCard)
+            if result.is_successful():
+                player.opportunity_card = opportunityCard
+            #
+            # If there is a next_action, then execute it
+            #
+            self._execute_next_action(player, result)
             return result                   
     
     def _execute_experience_card(self,  player:Player, experienceCard:ExperienceCard, spaces=0) -> CommandResult:
@@ -842,13 +811,18 @@ class CareersGameEngine(object):
             result = self._execute_occupation_square(player, game_square, board_location)
         else:
             result = self._execute_border_square(player, game_square, board_location)
-        
+            
+        #
+        # if there is a next action to perform then do it
+        #
+        self._execute_next_action(player, result)
         return result
         
     def _execute_occupation_square(self, player:Player, game_square:OccupationSquare, board_location:BoardLocation) -> CommandResult:
         message = f'execute_occupation_square {board_location.occupation_name}  {board_location.occupation_square_number} for {player.player_initials}'
         self.log(message)
         result = game_square.execute(player)
+        
         return result
     
     def _execute_border_square(self, player:Player, game_square:BorderSquare, board_location:BoardLocation) -> CommandResult:
@@ -856,16 +830,20 @@ class CareersGameEngine(object):
         self.log(message)
         result = game_square.execute(player)
         result.message = message + "\n" + result.message
-        #
-        # if there is a next action to perform then do it
-        #
-        if result.next_action is not None:
-            action_result = self.execute_command(result.next_action, player)
-            result.message = result.message + "\n" + action_result.message
-            result.return_code = action_result.return_code
-            result.done_flag = action_result.done_flag
+
         return result
     
+    def _execute_next_action(self, player:Player, current_result:CommandResult) -> CommandResult:
+        """If current_result has a next action to perform then execute it with execute_command.
+        """
+        next_action = current_result.next_action
+        if next_action is not None:
+            action_result = self.execute_command(next_action, player)
+            current_result.message = current_result.message + "\n" + action_result.message
+            current_result.return_code = action_result.return_code
+            current_result.done_flag = action_result.done_flag
+        return current_result
+
     def _get_next_square_number(self, player:Player, num_spaces:int) -> int:
         """Gets the next square number given the number of spaces to advance.
             Arguments:
@@ -943,7 +921,7 @@ class CareersGameEngine(object):
                 # unless it's a travel_square and we just game from a travel_square
                 # otherwise we'd get into an endless travel loop
                 #
-                if border_square.square_type == 'travel_square' and self.was_prior_travel(player):
+                if border_square.square_type is BorderSquareType.TRAVEL_SQUARE and self.was_prior_travel(player):
                     result = CommandResult(CommandResult.SUCCESS, "", True)
                 else:
                     result = self.execute_game_square(player, board_location)
@@ -958,13 +936,16 @@ class CareersGameEngine(object):
                 #
                 # again, check travel arrangements
                 #
-                if border_square.square_type == 'travel_square' and self.was_prior_travel(player):
+                if border_square.square_type is BorderSquareType.TRAVEL_SQUARE and self.was_prior_travel(player):
                     result = CommandResult(CommandResult.SUCCESS, "", True)
-                else:
+                elif square_number > 0:
                     result = self.execute_game_square(player, board_location)
             
-                result.message = payday_result.message + "\n" + result.message
-                #return result
+                if result is None:
+                    result = payday_result
+                else:
+                    result.message = f'{payday_result.message}\n{result.message}'
+                return result
         #
         # if another player is on that square AND the square is NOT Unemployment, they can be bumped
         #
@@ -1003,7 +984,7 @@ class CareersGameEngine(object):
         # 
         game_square = self._careersGame.get_border_square(board_location.border_square_number)
         sptype = game_square.special_processing.processing_type
-        if sptype == 'enterOccupation':
+        if sptype == SpecialProcessingType.ENTER_OCCUPATION:
             if trips <= 3:  # at most 3 experience cards can be given
                 nexperience = trips
             else:
@@ -1012,7 +993,7 @@ class CareersGameEngine(object):
             self.add_experience_cards(player, nexperience)
             message = f'{player.player_initials} Leaving {board_location.occupation_name}, collects {nexperience} Experience cards'
         else:    
-            # special_processing.processing_type == "enterCollege"
+            # special_processing.processing_type == SpecialProcessingType.ENTER_COLLEGE
             # player must choose a degree program
             # salary increase is dependent on the # of degrees earned in that degree program
             player.pending_action = game_square.special_processing.pending_action
@@ -1052,7 +1033,7 @@ class CareersGameEngine(object):
         """
         result = False
         ps = player.board_location.prior_border_square_number
-        if ps is not None and self._careersGame.game_board.border_squares[ps].square_type == 'travel_square':
+        if ps is not None and self._careersGame.game_board.border_squares[ps].square_type is BorderSquareType.TRAVEL_SQUARE:
             result = True
         return result
         
@@ -1121,6 +1102,6 @@ class CareersGameEngine(object):
             in which case they are inside the Occupation.
             Or they are at the entrance square of an Occupation they are entering.
         """
-        return game_square.square_class == 'Occupation' or \
+        return game_square.square_class is GameSquareClass.OCCUPATION or \
             (player.board_location.occupation_name is not None and player.board_location.occupation_name==game_square.name)
     

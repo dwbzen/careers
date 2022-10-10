@@ -5,6 +5,7 @@ Created on Aug 21, 2022
 '''
 from game.careersObject import CareersObject
 from game.boardLocation import BoardLocation
+from typing import List
 import json
 
 class CommandResult(CareersObject):
@@ -17,7 +18,7 @@ class CommandResult(CareersObject):
     EXECUTE_NEXT = 3    # successful, and execute the next_action for the current player
     NEED_PLAYER_CHOICE = 4  # successful, but need player choice as to what to do next
 
-    def __init__(self, return_code:int, message:str, done_flag:bool, next_action:str=None, board_location:BoardLocation=None, exception:Exception=None):
+    def __init__(self, return_code:int, message:str, done_flag:bool, next_action:str=None, board_location:BoardLocation=None, exception:Exception=None, choices:List[str]=None):
         """Constructor, baby.
             Arguments:
                 return_code - integer return code:
@@ -44,6 +45,7 @@ class CommandResult(CareersObject):
         self._exception = exception
         self._next_action = next_action
         self._board_location = board_location
+        self._choices = choices
     
     @property
     def return_code(self):
@@ -108,6 +110,14 @@ class CommandResult(CareersObject):
         d = dict(self.json_message)
         d[key] = text
         self._json_message = json.dumps(d)
+        
+    @property
+    def choices(self) -> List[str]:
+        return self._choices
+    
+    @choices.setter
+    def choices(self, value:List[str]):
+        self._choices = value
         
     def is_successful(self):
         return True if self.return_code == CommandResult.SUCCESS else False

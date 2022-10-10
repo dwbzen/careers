@@ -8,7 +8,8 @@ from game.careersGame import CareersGame
 from game.commandResult import CommandResult
 from game.player import Player
 from game.gameUtils import GameUtils
-from game.opportunityCard import OpportunityCard
+from game.opportunityCard import OpportunityCard, OpportunityType
+from game.occupation import Occupation
 
 from typing import Tuple, List
 import joblib
@@ -72,6 +73,51 @@ class GameEngineCommands(object):
             
         can_move = result.is_successful()
         return can_move, result
+
+    def can_enter(self, occupation:Occupation, player:Player):
+        """Determine if this player can enter the named Occupation
+            This checks if the player meets the entry conditions, namely:
+                * it's college and they have the tuition amount in cash
+                * they've previously completed this occupation and can therefore enter for free
+                * or they have a qualifying degree and can therefore enter for free
+                * or they have executed an "All expenses paid" Opportunity card
+                * or they have sufficient cash to cover the entry fee 
+            Arguments:
+                occupation - an Occupation instance
+                player - a Player instance
+            Returns: tupple -
+                [0] bool True if can enter, False otherwise
+                [2] entry amount owed, if any. Could be 0
+        """
+
+        entry_fee = occupation.entryFee
+        has_fee = player.cash >= entry_fee
+        occupationClass = occupation.occupationClass
+        # anyone can go to college if they have the funds
+        if occupationClass == 'college' and has_fee:
+            return (True, entry_fee)    # always pay for college
+        
+        #
+        # check occupation record for prior trips through 
+        #
+        if occupation.name in player.occupation_record and player.occupation_record[occupation.name] > 0:
+            return (True, 0)
+        #
+        # check degree requirements
+        #
+        degreeRequirements = occupation.degreeRequirements
+        degreeName = degreeRequirements['degreeName']
+        numberRequired = degreeRequirements['numberRequired']
+        if degreeName in player.my_degrees and player.my_degrees[degreeName] >= numberRequired:
+            return (True, 0)        # can enter for free
+        #
+        # is the player using a  "All expenses paid" Opportunity card ?
+        #
+        if player.opportunity_card is not None:
+            if player.opportunity_card.expenses_paid:
+                return (True, 0)
+        
+        return has_fee, entry_fee
 
     @staticmethod
     def parse_command_string(txt:str, addl_args=[]) -> CommandResult:
@@ -173,24 +219,32 @@ class GameEngineCommands(object):
             #
             # Now execute this Opportunity card
             #
-            board_location = player.board_location
-            opportunity_type = opportunityCard.opportunity_type   # one of 7 types, see OpportunityCardDeck.opportunity_types
-            if opportunity_type == 'occupation':
+            #board_location = player.board_location
+            opportunity_type = opportunityCard.opportunity_type   # one of 7 types: OpportunityType enum
+            
+            if opportunity_type is OpportunityType.OCCUPATION:
+                occupation = self.careersGame.get_occupation(opportunityCard.destination)
+                if self.can_enter(occupation, player):    # okay to enter, so make it so
+                    next_square_number = occupation.entry_square_number
+                    next_action = f'goto {next_square_number};roll' 
+                    return CommandResult(CommandResult.EXECUTE_NEXT, f'Advance to  {occupation.name}', False, next_action=next_action)
+                else:
+                    return CommandResult(CommandResult.ERROR, f'Cannot use {opportunity_type} to enter {occupation.name}', False)
+            
+            elif opportunity_type is OpportunityType.OCCUPATION_CHOICE:
                 pass
-            elif opportunity_type == 'occupation_choice':
+            elif opportunity_type is OpportunityType.BORDER_SQUARE:
                 pass
-            elif opportunity_type == 'border_square':
+            elif opportunity_type is OpportunityType.BORDER_SQUARE_CHOICE:
                 pass
-            elif opportunity_type == 'border_square_choice':
+            elif opportunity_type is OpportunityType.ACTION:
                 pass
-            elif opportunity_type == 'action':
+            elif opportunity_type is OpportunityType.TRAVEL:
                 pass
-            elif opportunity_type == 'travel':
-                pass
-            elif opportunity_type == 'opportunity':
+            elif opportunity_type is OpportunityType.OPPORTUNITY:
                 pass
             else:
-                return CommandResult(CommandResult.ERROR, f'Invalid opportunity type: {message}', False)
+                return CommandResult(CommandResult.ERROR, f'Opportunity type: {opportunity_type} not yet implemented', False)
             
             result = CommandResult(CommandResult.SUCCESS, message, False)   #  TODO
             return result

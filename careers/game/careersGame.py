@@ -9,14 +9,14 @@ from game.player import Player
 import json, random
 from datetime import datetime
 from pathlib import Path
-from typing import Dict, Union, List
+from typing import Dict, Union, List, Tuple
 
 from game.opportunityCardDeck import OpportunityCardDeck
 from game.experienceCardDeck import ExperienceCardDeck
 from game.gameState import GameState
 from game.occupation import Occupation
 from game.gameBoard import GameBoard
-from game.borderSquare import BorderSquare
+from game.borderSquare import BorderSquare, BorderSquareType
 from game.occupationSquare import OccupationSquare
 from game.gameSquare import GameSquare
 from game.careersObject import CareersObject
@@ -175,6 +175,9 @@ class CareersGame(CareersObject):
     def game_board(self) -> GameBoard:
         return self._game_board
     
+    def get_occupation(self, name) -> Occupation:
+        return self.occupations.get(name, None)
+        
     def get_border_square(self, num:int) -> BorderSquare:
         """Convenience method to get a BorderSquare instance from the GameBoard
         """
@@ -310,7 +313,7 @@ class CareersGame(CareersObject):
         """
         pass
     
-    def find_next_border_square(self, current_square_number, atype:str, name:str=None) -> int:
+    def find_next_border_square(self, current_square_number, atype:BorderSquareType, name:str=None) -> int:
         """Find the next border square of a given type and optional name
             Arguments:
                 current_square_number - square number on the game board
@@ -323,28 +326,30 @@ class CareersGame(CareersObject):
         """
         squares = []
         next_square_num = None
-        if atype=='travel_square':
+        if atype is BorderSquareType.TRAVEL_SQUARE:
             squares = self.game_board.travel_squares
-        elif atype=='opportunity_square':
+        elif atype is BorderSquareType.OPPORTUNITY_SQUARE:
             squares=self.game_board.opportunity_squares
-        elif atype=='occupation_entrance_square':
+        elif atype is BorderSquareType.OCCUPATION_ENTRANCE_SQUARE:
             squares = self.game_board.occupation_entrance_squares
-        elif atype=='corner_square':
+        elif atype is BorderSquareType.CORNER_SQUARE:
             squares = self.game_board.corner_squares
         
         for square in squares:      # square is a BorderSquare instance, they are in square# order
-            if square.square_type == atype and (name is None or square.name==name):
+            if square.square_type is atype and (name is None or square.name==name):
                 if square.number > current_square_number:
                     next_square_num = square.number
                     break
         if next_square_num is None:     # wrap-around the board
-            next_square_num = squares[0].number
+            square = squares[0]
+            next_square_num = square.number
+            
         return next_square_num
     
     def find_border_square(self, name:str) -> Union[BorderSquare, None]:
         bs = None
         for square in self.game_board.border_squares:
-            if square.name == name:
+            if square.name.lower() == name.lower():
                 bs = square
                 break
         return bs

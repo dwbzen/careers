@@ -57,7 +57,7 @@ class Player(CareersObject):
         self._can_bump = []                 # the players I can currently Bump
         
         # if a player has landed on an action_square, there is a pending action  which is the square's specialProcessing processing_type
-        # there are currently 4: buyHearts, buyExperience, buyInsurance, and gamble
+        # there are currently 5: buy_hearts, buy_experience, buy_insurance, gamble, and cash_loss_or_unemployment
         # Also 'bankrupt' is a pending action that is set if the cash < 0
         #
         self._pending_action = None

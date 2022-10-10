@@ -5,7 +5,7 @@ Created on Aug 9, 2022
 '''
 
 from game.cardDeck import CardDeck
-from game.opportunityCard import OpportunityCard
+from game.opportunityCard import OpportunityCard,OpportunityType
 
 class OpportunityCardDeck(CardDeck):
     """The deck of Opportunity Cards used in game play.
@@ -17,7 +17,7 @@ class OpportunityCardDeck(CardDeck):
         Constructor
         '''
         super().__init__(resource_path, "opportunityCards", edition_name)    # loads the card deck
-        self._opportunity_types = ["occupation", "occupation_choice", "border_square", "border_square_choice", "action", "travel", "opportunity" ]
+        self._opportunity_types = list(OpportunityType)  # ["occupation", "occupation_choice", "border_square", "border_square_choice", "action", "travel", "opportunity" ]
 
         
     def save_card(self, card_spec:dict, qty):
@@ -36,8 +36,8 @@ class OpportunityCardDeck(CardDeck):
         double_happiness = card_spec.get('double_happiness', 0) == 1
 
         for ncard in range(1, qty+1):
-            opportunity_card = OpportunityCard(ctype, number, ncard, destination, card_spec['text'], expenses_paid, double_happiness)
-            opportunity_card.action_type = card_spec.get("action_type", None)
+            action_type = card_spec.get("action_type", None)
+            opportunity_card = OpportunityCard(ctype, number, ncard, destination, card_spec['text'], expenses_paid, double_happiness, action_type)
             self._deck.append(opportunity_card)
 
     @property

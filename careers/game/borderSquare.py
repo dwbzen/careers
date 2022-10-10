@@ -4,11 +4,24 @@ Created on Aug 12, 2022
 @author: don_bacon
 '''
 
-from game.gameSquare import GameSquare
+from game.gameSquare import GameSquare, GameSquareClass
 from game.player import Player
 from game.commandResult import CommandResult
-from typing import Any, List
+from game.specialProcessing import SpecialProcessingType
+from game.opportunityCard import OpportunityType
+
+from typing import  List
+from enum import Enum
 import json
+
+class BorderSquareType(Enum):
+    CORNER_SQUARE = 'corner_square'
+    OPPORTUNITY_SQUARE = 'opportunity_square'
+    DANGER_SQUARE = 'danger_square'
+    TRAVEL_SQUARE = 'travel_square'
+    OCCUPATION_ENTRANCE_SQUARE = 'occupation_entrance_square'
+    ACTION_SQUARE = 'action_square'
+    
 
 class BorderSquare(GameSquare):
     """Encapsulates a Careers game border (non-occupation) square.
@@ -17,7 +30,7 @@ class BorderSquare(GameSquare):
     The border square "type" is enumerated in the gameLayout JSON as "types_list
     """
 
-    types_list = ["corner_square", "opportunity_square", "danger_square", "travel_square", "occupation_entrance_square", "action_square"]
+    types_list = list(BorderSquareType)
 
 
     def __init__(self, border_square_dict, game=None):
@@ -31,8 +44,8 @@ class BorderSquare(GameSquare):
                          text=border_square_dict['text'], special_processing_dict=border_square_dict['specialProcessing'], game=game)
         
         self._game_square_dict = border_square_dict
-        self._game_square_dict["square_class"] = "Border"
-        self._square_type = border_square_dict['type']
+        self._game_square_dict["square_class"] = GameSquareClass.BORDER
+        self._square_type = BorderSquareType[border_square_dict['type'].upper()]
         self.action_text = border_square_dict.get('action_text', None)
 
     @property
@@ -53,12 +66,12 @@ class BorderSquare(GameSquare):
             player.my_opportunity_cards.append(card)
             return CommandResult(CommandResult.SUCCESS, f'Added Opportunity: {str(card)}', True)
         
-        elif self.square_type == 'travel_square':
+        elif self.square_type is BorderSquareType.TRAVEL_SQUARE:
             #
             # advance to the next travel_square and roll again
             # 
             #
-            next_square_number = self._careersGame.find_next_border_square(self.number, 'travel_square')
+            next_square_number = self._careersGame.find_next_border_square(self.number, BorderSquareType.TRAVEL_SQUARE)
             game_square = careersGame.game_board.get_square(next_square_number)
             next_action = f'goto {next_square_number};roll'    # player.board_location set by 'goto' command
 
@@ -67,28 +80,28 @@ class BorderSquare(GameSquare):
             #result.board_location = player.board_location
             return result
         
-        elif self.square_type == 'occupation_entrance_square':
+        elif self.square_type is BorderSquareType.OCCUPATION_ENTRANCE_SQUARE:
             #
             # can enter if landed here using an Opportunity, else turn is over
             #
             if player.opportunity_card is not None:
-                if player.opportunity_card.opportunity_type  == 'occupation' and player.opportunity_card.destination == self.name:
+                if player.opportunity_card.opportunity_type  is OpportunityType.OCCUPATION and player.opportunity_card.destination == self.name:
                     next_action = f'enter {self.name}'
                     result = CommandResult(CommandResult.SUCCESS, f'Entering {self.name}', False, next_action=next_action)
             else:
                 result = CommandResult(CommandResult.SUCCESS, "", True)
             return result
-        elif self.square_type == 'action_square':
+        elif self.square_type is BorderSquareType.ACTION_SQUARE:
             sp_type = self.special_processing.processing_type       # independent of the name of the Square
             player.pending_action = sp_type                         # Set the pending_action 
             message = f'{self.text}\n{self.action_text}'
-            if sp_type == 'buyHearts':    # Tech Convention
+            if sp_type is SpecialProcessingType.BUY_HEARTS:    # Tech Convention
                 return CommandResult(CommandResult.NEED_PLAYER_CHOICE, message, False)   # player needs to execute a 'buy hearts'
-            elif sp_type == 'buyExperience':
+            elif sp_type is SpecialProcessingType.BUY_EXPERIENCE:
                 return CommandResult(CommandResult.NEED_PLAYER_CHOICE, message, False)   # player needs to execute a 'buy experience' 
-            elif sp_type == 'buyInsurance':
+            elif sp_type is SpecialProcessingType.BUY_INSURANCE:
                 return CommandResult(CommandResult.NEED_PLAYER_CHOICE, message, False)   # player needs to buy insurance
-            elif sp_type == 'gamble':               # Roll 2 dice to gamble
+            elif sp_type is SpecialProcessingType.GAMBLE:               # Roll 2 dice to gamble
                 return CommandResult(CommandResult.NEED_PLAYER_CHOICE, message, False)   # player needs to indicate they intend to Gamble, then roll
             else:
                 #
@@ -99,19 +112,20 @@ class BorderSquare(GameSquare):
                 #
                 message = self.to_JSON()
                 return CommandResult(CommandResult.NEED_PLAYER_CHOICE, message, False)
-        elif self.square_type == 'corner_square':
+        elif self.square_type is BorderSquareType.CORNER_SQUARE:
                 # check special processing type because corner square names are edition-dependent, specialProcessing type is independent of the edition
     
                 sp_type = self.special_processing.processing_type
-                if sp_type == "unemployment":
+
+                if sp_type is SpecialProcessingType.UNEMPLOYMENT:
                     player.is_unemployed = True
                     self.update_board_location(player)
                     result = CommandResult(CommandResult.SUCCESS, f'Player {player.player_initials}: {self.action_text}', True)
-                elif sp_type == "hospital":
+                elif sp_type is SpecialProcessingType.HOSPITAL:
                     player.is_sick = True
                     self.update_board_location(player)
                     result = CommandResult(CommandResult.SUCCESS, f'Player {player.player_initials}: {self.action_text}', True)                  
-                elif sp_type == "payday":
+                elif sp_type is SpecialProcessingType.PAYDAY:
                     salary = player.salary
                     # if I am on Payday I get double salary
                     # don't update the player's board_location 
@@ -122,7 +136,7 @@ class BorderSquare(GameSquare):
                     player.cash += salary
                     player.laps += 1
                     result = CommandResult(CommandResult.SUCCESS, f'Player {player.player_initials} {how} {self.name}\n{self.action_text}', True)
-                elif sp_type == "holiday":    # a.k.a. Spring Break, Holiday
+                elif sp_type is SpecialProcessingType.HOLIDAY:    # a.k.a. Spring Break, Holiday
                     # the number of hearts you get is configured in the specialProcessing section 
                     nhearts = self.special_processing.hearts[0] if player.on_holiday else self.special_processing.hearts[1]
                     player.on_holiday = True
@@ -131,9 +145,9 @@ class BorderSquare(GameSquare):
                     result = CommandResult(CommandResult.SUCCESS, f'Player {player.player_initials} {self.action_text}\n collect {nhearts} hearts', True)
                     
                 return result
-        elif self.square_type == 'danger_square':   # IncomeTax, DonateNow, CarPayment, PayRent, ShoppingSpree, DivorceCourt
+        elif self.square_type is BorderSquareType.DANGER_SQUARE:   # IncomeTax, DonateNow, CarPayment, PayRent, ShoppingSpree, DivorceCourt
             sp_type = self.special_processing.processing_type    # special processing type independent of the square name
-            payment = self.special_processing.compute_cash_loss(player.salary, player.cash)
+            payment = self.special_processing.compute_cash_loss(player)
             player.add_cash(-payment)       # this will set the bankrupt pending_action if cash is < 0 as a result
             result =  CommandResult(CommandResult.SUCCESS, f'{self.action_text}\n Player {player.player_initials}  pays {payment}, remaining cash: {player.cash}', player.cash < 0)
         else:
@@ -152,7 +166,7 @@ class BorderSquare(GameSquare):
             TODO - finish this, for now return SUCCESS
         """
         sp_type = self.special_processing.processing_type
-        if sp_type == 'unemployment' or sp_type == 'hospital':
+        if sp_type is SpecialProcessingType.UNEMPLOYMENT or sp_type is SpecialProcessingType.HOSPITAL:
             #
             # check the roll against "must_roll" and "require_doubles"
             #

@@ -25,7 +25,7 @@
 			"opportunities" : 0,
 			"action_text" : "Lose next turn",
 			"specialProcessing" :  {
-				"type" : "loseNextTurn"
+				"type" : "lose_next_turn"
 			}
 		},
 		{
@@ -93,7 +93,7 @@
 			"opportunities" : 0,
 			"action_text" : "Pay $5000 for tutoring OR go to Unemployment",
 			"specialProcessing" : {
-				"type" : "cashLossOrUnemployment",
+				"type" : "cash_loss_or_unemployment",
 				"amount" : 5000,
 				"of" : "cash"
 			}

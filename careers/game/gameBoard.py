@@ -5,7 +5,7 @@ Created on Aug 26, 2022
 '''
 
 import json
-from game.borderSquare import BorderSquare
+from game.borderSquare import BorderSquare, BorderSquareType
 
 
 class GameBoard(object):
@@ -33,7 +33,7 @@ class GameBoard(object):
         self._game_layout = self._game_board_dict['layout']
         self._game_layout_dimensions = self._game_board_dict['dimensions']
         self._game_board_size = self._game_layout_dimensions['size']
-        self._types = self._game_board_dict['type_list']        # a list of border square types
+        self._types = self._game_board_dict['types_list']        # a list of border square types
         
         self._border_squares = list()
         for border_square_dict in self._game_layout:
@@ -43,26 +43,26 @@ class GameBoard(object):
             #
             self._border_squares.append(border_square)
             
-            if border_square.square_type == "occupation_entrance_square":
+            if border_square.square_type is BorderSquareType.OCCUPATION_ENTRANCE_SQUARE:
                 self._occupation_entrance_squares[border_square.name] = border_square
                 
-            if border_square.square_type == "travel_square":
+            if border_square.square_type is BorderSquareType.TRAVEL_SQUARE:
                 self._travel_squares.append(border_square)
         
-            if border_square.square_type == "corner_square":
+            if border_square.square_type is BorderSquareType.CORNER_SQUARE:
                 self._corner_squares[border_square.name] = border_square
                 
-            if border_square.square_type == "opportunity_square":
+            if border_square.square_type is BorderSquareType.OPPORTUNITY_SQUARE:
                 self._opportunity_squares.append(border_square)
             
-            if border_square.square_type == "action_square":
+            if border_square.square_type is BorderSquareType.ACTION_SQUARE:
                 self._action_squares[border_square.name] = border_square
             
-            if border_square.square_type == "danger_square":
+            if border_square.square_type is BorderSquareType.DANGER_SQUARE:
                 self._danger_squares[border_square.name] = border_square
                 
             if 'special_processing' in border_square_dict:
-                pass
+                ...    # SpecialProcessing added as part of BorderSquare constructor
     
     @property
     def border_squares(self) ->list:    # list of BorderSquare

@@ -3,18 +3,28 @@ Created on Aug 14, 2022
 
 @author: don_bacon
 '''
-from game.gameSquare import GameSquare
+from game.gameSquare import GameSquare, GameSquareClass
 from game.player import Player
 from game.commandResult import CommandResult
 from game.gameUtils import GameUtils
+from game.specialProcessing import SpecialProcessingType
+from enum import Enum
 import json
+
+class OccupationSquareType(Enum):
+    DANGER_SQUARE = 'danger_square'
+    SHORTCUT_SQUARE = 'shortcut_square'
+    ACTION_SQUARE = 'action_square'
+    REGULAR_SQUARE = 'regular_square'
+    TRAVEL_SQUARE = 'travel_square'
+
 
 class OccupationSquare(GameSquare):
     '''
     classdocs
     '''
     
-    types_list = ["danger_square", "shortcut_square", "action_square", "regular", "travel_square"]
+    types_list = list(OccupationSquareType)
 
 
     def __init__(self, occupation_square_dict, game=None):
@@ -28,12 +38,12 @@ class OccupationSquare(GameSquare):
                          text=occupation_square_dict['text'], special_processing_dict=occupation_square_dict['specialProcessing'], game=game)
         
         self._game_square_dict = occupation_square_dict
-        self._game_square_dict["square_class"] = "Occupation"
+        self._game_square_dict["square_class"] =  GameSquareClass.OCCUPATION
         self._stars = occupation_square_dict["stars"]
         self._hearts = occupation_square_dict["hearts"]
         self._experience = occupation_square_dict["experience"]         # the number of Experience cards to collect on this square
         self._opportunities = occupation_square_dict["opportunities"]   # the number of Opportunity cards to collect on this square
-        self._square_type = occupation_square_dict.get('type', 'regular')    # square type is optional for OccupationSquare
+        self._square_type = OccupationSquareType[occupation_square_dict.get('type', 'regular_square').upper()]    # square type is optional for OccupationSquare
         self.action_text = occupation_square_dict.get('action_text', None)
         self._bonus = occupation_square_dict.get('bonus',0)
         
@@ -94,34 +104,44 @@ class OccupationSquare(GameSquare):
         percent = self.special_processing.percent
         next_action = None
         done_flag = True
-        if sptype == 'bonus':
+        if sptype is SpecialProcessingType.BONUS:
             if dice > 0:
                 n = GameUtils.roll(dice)
                 amount = amount * n
                 message += f'\n You rolled a {n}, collect {amount}'
             player.add_cash(amount)
-        elif sptype == 'salaryIncrease':
+        elif sptype is SpecialProcessingType.SALARY_INCREASE:
             if dice > 0:
                 n = GameUtils.roll(dice)
                 amount = amount * n
                 message += f'\n You rolled a {n}, salary increase {amount}'
             player.add_to_salary(amount)
-        elif sptype == 'cashLoss':      # could cause the player into bankruptcy
+        elif sptype is SpecialProcessingType.CASH_LOSS:      # could cause the player into bankruptcy
+            payment = self.special_processing.compute_cash_loss(player)
+            player.add_cash(-payment)       # this will set the bankrupt pending_action if cash is < 0 as a result
+        elif sptype is SpecialProcessingType.FAVORS:
             pass    # TODO
-        elif sptype == 'favors':
+        elif sptype is SpecialProcessingType.SHORTCUT:
             pass    # TODO
-        elif sptype == "shortcut":
+        elif sptype is SpecialProcessingType.CASH_LOSS_OR_UNEMPLOYMENT:
+            #
+            # if the player's cash is < the amount, put them in Unemployment
+            # otherwise player needs to choose to pay or go to Unemployment
+            #
+            if player.cash < amount:
+                message += f'\nInsufficient cash to cover amount: {amount}, you will be sent to Unemployment'
+                next_action = 'goto unemployment'
+            else:
+                player.pending_action = sptype
+                player.pending_amount = amount    # always a fixed amount
+                done_flag = False
+        elif sptype is SpecialProcessingType.TRAVEL_BORDER:
             pass    # TODO
-        elif sptype == "cashLossOrUnemployment":
-            player.pending_action = sptype    # player needs to choose to pay or go to Unemployment
-            player.pending_amount = amount
-        elif sptype == 'travelBorder':
-            pass    # TODO
-        elif sptype == 'loseNextTurn':
+        elif sptype is  SpecialProcessingType.LOSE_NEXT_TURN:
             player.lose_turn = True
-        elif sptype == 'extraTurn':
+        elif sptype is  SpecialProcessingType.EXTRA_TURN:
             player.extra_turn = player.extra_turn + 1
-        elif sptype == 'salaryCut':
+        elif sptype is SpecialProcessingType.SALARY_CUT:
             #
             # if cut is by percent (like half) round up to the nearest $1000
             # So if your $3000 salary is cut in half, it becomes $2000, not $1500
@@ -134,13 +154,13 @@ class OccupationSquare(GameSquare):
                 cutAmount = 1000 * int(cutAmount / 1000)
                 player.add_to_salary(-cutAmount)
                 message += f'Salary cut by {cutAmount}. Your new salary is {player.salary}'
-        elif sptype == 'backstab':
+        elif sptype is SpecialProcessingType.BACKSTAB:
             ...    # TODO
-        elif sptype == 'goto':
+        elif sptype is SpecialProcessingType.GOTO:
             ...    # TODO
-        elif sptype == 'fameLoss':
+        elif sptype is SpecialProcessingType.FAME_LOSS:
             ...    # TODO
-        elif sptype == 'hapinessLoss':
+        elif sptype is SpecialProcessingType.HAPPINESS_LOSS:
             ...    # TODO
         return next_action, done_flag
     

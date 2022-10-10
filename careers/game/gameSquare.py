@@ -8,8 +8,13 @@ from game.specialProcessing import SpecialProcessing
 from game.careersObject import CareersObject
 from game.player import Player
 from game.commandResult import CommandResult
+from enum import Enum
 from typing import Dict, Union
 
+
+class GameSquareClass(Enum):
+    BORDER = 'Border'
+    OCCUPATION = 'Occupation'
 
 class GameSquare(CareersObject):
     """Represents a square a player can land on. This can be a Border or Occupation.
@@ -22,7 +27,7 @@ class GameSquare(CareersObject):
         """Create a GameSquare
         
         """
-        self._square_class = square_class
+        self._square_class = GameSquareClass[square_class.upper()]
         self._name = name
         self._number = number
         self._text = text
@@ -50,14 +55,14 @@ class GameSquare(CareersObject):
         self._square_type = value
 
     @property
-    def square_class(self):
+    def square_class(self) -> GameSquareClass:
         """Border or Occupation
         """
         return self._square_class
     
     @square_class.setter
-    def square_class(self, value):
-        if value is not None and ( value == 'Border' or value == 'Occupation'):
+    def square_class(self, value:GameSquareClass):
+        if value is not None:
             self._square_class = value
         else: raise(ValueError("Invalid square class: " + value))
     

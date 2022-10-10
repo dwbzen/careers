@@ -21,7 +21,7 @@ class CardDeck(object):
         self._deck_name = deck_name         # "opportunityCards" or "experienceCards" for example
         self._edition_name = edition_name
         self._cards_content = self.load_cards(resource_path, deck_name, edition_name)
-        self._type_list = self._cards_content['type_list']
+        self._type_list = self._cards_content['types_list']
         self._help = self._cards_content['Help']
         self._card_types = self._cards_content['types']
         self._cards = self._cards_content['cards']

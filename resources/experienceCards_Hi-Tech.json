@@ -1,6 +1,6 @@
 {
 	"Help" : "Hi-Tech Edition Experience cards",
-	"type_list" : [
+	"types_list" : [
 		"fixed", "1-die wild", "2-dice wild", "triple wild"
 	],
 	"types" : [

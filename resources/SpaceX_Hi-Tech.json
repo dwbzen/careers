@@ -51,7 +51,7 @@
 			"opportunities" : 0,
 			"action_text" : "Lose ALL your Fame",
 			"specialProcessing" : {
-				"type" : "fameLoss",
+				"type" : "fame_loss",
 				"amount" : 0,
 				"percent" : 1.0,
 				"of" : "fame"
@@ -68,7 +68,7 @@
 			"opportunities" : 0,
 			"action_text" : "Lose ALL your Cash",
 			"specialProcessing" : {
-				"type" : "cashLoss",
+				"type" : "cash_loss",
 				"amount" : 0,
 				"percent" : 1.0,
 				"of" : "cash"
@@ -96,7 +96,7 @@
 			"opportunities" : 0,
 			"action_text" : "**Salary up** $2000",
 			"specialProcessing" : {
-				"type" : "salaryIncrease",
+				"type" : "salary_increase",
 				"amount" : 2000
 			}
 		},
@@ -161,7 +161,7 @@
 			"opportunities" : 0,
 			"action_text" : "But go to Hospital",
 			"specialProcessing" : {
-				"type" : "travelBorder",
+				"type" : "travel_border",
 				"next_square" : "Hospital"
 			}
 		},

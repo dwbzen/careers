@@ -26,7 +26,6 @@ __all__ = [
     'occupationSquare',
     'opportunityCard',
     'opportunityCardDeck',
-    'opportunityType',
     'player',
     'specialProcessing',
     'successFormula'
@@ -34,12 +33,12 @@ __all__ = [
 
 from .actionType import ActionType
 from .boardLocation import BoardLocation
-from .borderSquare import BorderSquare
-from .gameSquare import GameSquare
+from .borderSquare import BorderSquare, BorderSquareType
+from .gameSquare import GameSquare, GameSquareClass
 from .gameState import GameState
 from .gameBoard import GameBoard
 from .occupation import Occupation
-from .occupationSquare import OccupationSquare
+from .occupationSquare import OccupationSquare, OccupationSquareType
 from .careersObject import CareersObject
 from .cardDeck import CardDeck
 from .careersGame import CareersGame
@@ -48,12 +47,11 @@ from .gameRunner import GameRunner
 from .gameUtils import GameUtils
 from .player import Player
 from .successFormula import SuccessFormula
-from .opportunityType import OpportunityType
-from .opportunityCard import OpportunityCard
+from .opportunityCard import OpportunityCard, OpportunityType, OpportunityActionType
 from .opportunityCardDeck import OpportunityCardDeck
 from .experienceCard import ExperienceCard
 from .experienceCardType import ExperienceCardType
 from .experienceCardDeck import ExperienceCardDeck
-from .specialProcessing import SpecialProcessing
+from .specialProcessing import SpecialProcessing, SpecialProcessingType
 from .commandResult import CommandResult
 
