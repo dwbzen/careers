@@ -42,6 +42,14 @@ class SpecialProcessingType(Enum):
     CASH_LOSS = "cash_loss"
     EXTRA_TURN = "extra_turn"
     LOSE_NEXT_TURN = "lose_next_turn"
+    
+class PendingAction(Enum):
+    SELECT_DEGREE = "select_degree"
+    BUY_EXPERIENCE = "buy_experience"
+    BUY_HEARTS = "buy_hearts"
+    BUY_STARS = "buy_stars"
+    BUY_INSURANCE = "buy_insurance"
+    GAMBLE = "gamble"
 
 class SpecialProcessing(CareersObject):
     """Encapsulates the "specialProcessing" section of a border square or occupation square.
@@ -123,6 +131,17 @@ class SpecialProcessing(CareersObject):
     def amount_str(self):
         return self._amount_str
     
+    def get_amount(self) -> SPECIAL_PROCESSING:
+        '''Returns SPECIAL_PROCESSING amount
+        '''
+        if self.amount_dict is not None:
+            amount = self.amount_dict
+        elif len(self.amount_str) > 0:
+            amount = self.amount_str
+        else:
+            amount = self.amount
+        return amount
+    
     @property
     def destination(self):
         return self._destination
@@ -191,12 +210,13 @@ class SpecialProcessing(CareersObject):
                 amt = int(k)
                 if player_salary <= amt:
                     cash_loss = int(self.tax_table[k] * player_salary)    # truncate the amount
-        elif self.processing_type is SpecialProcessingType.CASH_LOSS.value:
-            #
+        elif self.processing_type is SpecialProcessingType.CASH_LOSS:
             cash_loss = self._compute_amount(player_cash) if self.of=='cash' else self._compute_amount(player_salary)
         elif  self.processing_type is SpecialProcessingType.CASH_LOSS_OR_UNEMPLOYMENT.value:
             cash_loss = self._compute_amount(player_cash) if self.of=='cash' else self._compute_amount(player_salary)
             player.pending_amount = cash_loss
+        elif self.processing_type is SpecialProcessingType.UNEMPLOYMENT or self.processing_type is SpecialProcessingType.HOSPITAL:
+            cash_loss =  self._compute_amount(player_cash) if self.of=='cash' else self._compute_amount(player_salary)
         else:   # future expansion
             pass
         

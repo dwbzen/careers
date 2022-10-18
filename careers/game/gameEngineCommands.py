@@ -21,7 +21,7 @@ class GameEngineCommands(object):
     """
     COMMANDS = ['add', 'bankrupt', 'bump', 'buy', 'create', 'done', 'end', 'enter', 
                 'game_status', 'goto', 'list', 'load', 'next', 'pay', 'perform', 'quit', 'retire', 
-                'roll', 'save', 'saved', 'start', 'status', 'transfer', 'use', 'use_insurance', 
+                'roll', 'resolve', 'save', 'saved', 'start', 'status', 'transfer', 'use', 'use_insurance', 
                 'where', 'who']
     
 
@@ -94,8 +94,11 @@ class GameEngineCommands(object):
         has_fee = player.cash >= entry_fee
         occupationClass = occupation.occupationClass
         # anyone can go to college if they have the funds
-        if occupationClass == 'college' and has_fee:
-            return (True, entry_fee)    # always pay for college
+        if occupationClass == 'college':
+            if has_fee:
+                return (True, entry_fee)    # always pay for college
+            else:    # Can't afford College
+                return (False, entry_fee)
         
         #
         # check occupation record for prior trips through 
@@ -160,29 +163,33 @@ class GameEngineCommands(object):
                 For Experience cards this is the number of spaces (if type is fixed), otherwise the type.
             
         """
-        message = ""
         listall = (what.lower() == 'all')
-
-        if what.lower().startswith('opportun') or listall:
-            if len(player.my_opportunity_cards) == 0:
-                message += "No Opportunity cards\n"
-            else:
-                n = 1
-                for card in player.my_opportunity_cards:
-                    num = card.number
-                    message += f'{n}.  {num}: {str(card)}\n'
-                    n += 1
+        list_dict = {}
+        if what.lower().startswith('opp') or listall:    # list opportunity cards
+            ncards = len(player.my_opportunity_cards)
+            list_dict['number_opportunity_cards'] = ncards
+            if ncards > 0:
+                list_dict['opportunity_cards'] = [cd.to_dict() for cd in player.my_opportunity_cards]
                     
-        if what.lower().startswith('exp') or listall:
-            if len(player.my_experience_cards) == 0:
-                message += "\nNo Experience cards"
-            else:
-                n = 1
-                for card in player.my_experience_cards:
-                    num = card.number
-                    message += f'{n}.  {num}: {str(card)}\n'
-                    n+= 1
+        if what.lower().startswith('exp') or listall:    # list experience cards
+            ncards = len(player.my_experience_cards)
+            list_dict['number_experience_cards'] = ncards
+            if ncards > 0:
+                list_dict['experience_cards'] = [cd.to_dict() for cd in player.my_experience_cards]
+                
+        if what.lower().startswith('degree') or listall:    # list degrees completed
+            ndegrees = len(player.my_degrees)
+            list_dict['number_of_degrees'] = ndegrees
+            if ndegrees > 0:
+                list_dict['degrees'] = player.my_degrees
+        
+        if what.lower().startswith('occ'): # list occupations completed
+            noccupations = len(player.occupation_record)
+            if noccupations > 0:
+                list_dict['occupations_completed'] = noccupations
+                list_dict['occupations'] = player.occupation_record
             
+        message = json.dumps(list_dict, indent=2)
         result = CommandResult(CommandResult.SUCCESS, message, False)
         return result   
 
@@ -191,13 +198,15 @@ class GameEngineCommands(object):
         """Perform some pre-defined action.
             Arguments:
                 player - Player instance, typically the current player
-                what - what to perform
-                how - how to perform it
+                what - what to perform, for example "roll"
+                how - how to perform it, for example: roll 2 (roll 2 die). The 'how' argument is particular to the 'what' being performed.
             Returns:
-                A CommandResult. 
-                The message has the result of the operation in JSON format and is dependent on 'what'
-                For what == "roll", how = #dice, result message is 
-            The 'how' argument is particular to the 'what' being performed.
+                A CommandResult. The message has the result of the operation in JSON format and is dependent on 'what'
+                For what == "roll", how = #dice, result message
+            If the player has an pending_action that is dependent on a dice roll, that will be automatically resolved
+            and the player's status updated accordingly.
+            Currently the pending_actions supported are buy_hearts, buy_experience, buy_insurance and gamble.
+            
         """
         if what.startswith("roll"):
             # the how has the number of dice (as a string), Player is not used

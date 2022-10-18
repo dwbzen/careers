@@ -92,12 +92,12 @@ class OccupationSquare(GameSquare):
                 thecard = self.careersGame.experience_cards.draw()
                 player.add_experience_card(thecard)
         if self.special_processing is not None:
-            next_action, done_flag = self.execute_special_processing(message, player)
+            return self.execute_special_processing(message, player)
             
         result = CommandResult(0, message, done_flag, next_action=next_action)   #  TODO
         return result
     
-    def execute_special_processing(self, message, player:Player):
+    def execute_special_processing(self, message, player:Player) ->CommandResult:
         sptype = self.special_processing.processing_type
         dice = self.special_processing.dice
         amount = self.special_processing.amount
@@ -113,8 +113,8 @@ class OccupationSquare(GameSquare):
         elif sptype is SpecialProcessingType.SALARY_INCREASE:
             if dice > 0:
                 n = GameUtils.roll(dice)
-                amount = amount * n
-                message += f'\n You rolled a {n}, salary increase {amount}'
+                amount = amount * sum(n)
+                message = f'{message}\n You rolled a {n}, salary increase {amount}'
             player.add_to_salary(amount)
         elif sptype is SpecialProcessingType.CASH_LOSS:      # could cause the player into bankruptcy
             payment = self.special_processing.compute_cash_loss(player)
@@ -131,6 +131,7 @@ class OccupationSquare(GameSquare):
             if player.cash < amount:
                 message += f'\nInsufficient cash to cover amount: {amount}, you will be sent to Unemployment'
                 next_action = 'goto unemployment'
+                player.pending_action = None
             else:
                 player.pending_action = sptype
                 player.pending_amount = amount    # always a fixed amount
@@ -162,7 +163,7 @@ class OccupationSquare(GameSquare):
             ...    # TODO
         elif sptype is SpecialProcessingType.HAPPINESS_LOSS:
             ...    # TODO
-        return next_action, done_flag
+        return CommandResult(CommandResult.SUCCESS, message, done_flag, next_action=next_action)
     
     def to_JSON(self):
         txt = json.dumps(self.game_square_dict)

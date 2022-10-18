@@ -10,9 +10,12 @@ from game.opportunityCard import OpportunityCard
 from game.experienceCard import ExperienceCard
 
 from datetime import datetime
+from typing import Dict, List, Union
 import json
 
 class Player(CareersObject):
+    
+    SPECIAL_PROCESSING = Dict[str, Union[str, List[int], int, float, Dict[str, int]]]
     
     def __init__(self, number=0, name="Player", salary=2000, cash=2000, initials="XXX"):
         self._player_name = name
@@ -31,10 +34,10 @@ class Player(CareersObject):
         
         # dict where key is occupation name, value is the number of completed trips
         # when completed trips >= 3, the can_retire flag is automatically set
-        self._occupation_record = dict()
+        self._occupation_record = {}   # Dict[str, int]:
         
         # player loan obligations are indexed by player_number: loans[player_number] = <loan amount>
-        self._loans = {}
+        self._loans = {}    # Dict[int, int]:
         
         
     def _initialize(self):
@@ -62,6 +65,8 @@ class Player(CareersObject):
         #
         self._pending_action = None
         self._pending_amount = 0
+        self._pending_game_square = None     # reference to the BorderSquare or OccupationSquare associated with this pending_action
+        self._pending_dice = 0               # the number of dice to use or 0 if N/A
         self._my_experience_cards = []       # list of ExperienceCards this player holds
         self._my_opportunity_cards = []      # list of OpportunityCards this player holds
         self._happiness = [0]                # record of happiness (hearts) earned. Cumulative amounts, total is happiness[-1]
@@ -124,7 +129,7 @@ class Player(CareersObject):
         return self._my_degrees
     
     @property
-    def occupation_record(self):
+    def occupation_record(self) -> Dict[str, int]:
         return self._occupation_record
     
     @property
@@ -152,11 +157,11 @@ class Player(CareersObject):
         return self._fame[-1]
     
     @property
-    def board_location(self):
+    def board_location(self) -> BoardLocation:
         return self._board_location
     
     @board_location.setter
-    def board_location(self, value):
+    def board_location(self, value:BoardLocation):
         self._board_location = value
 
 
@@ -263,7 +268,7 @@ class Player(CareersObject):
         self._laps = value
     
     @property
-    def loans(self):
+    def loans(self) -> Dict[int, int]:
         return self._loans
     
     @property
@@ -299,12 +304,34 @@ class Player(CareersObject):
         self._pending_action = value
     
     @property  
-    def pending_amount(self):
+    def pending_amount(self) -> SPECIAL_PROCESSING:
         return self._pending_amount
     
     @pending_amount.setter
-    def pending_amount(self, value):
+    def pending_amount(self, value:SPECIAL_PROCESSING):
         self._pending_amount = value
+        
+    @property
+    def pending_game_square(self):
+        return self._pending_game_square    # a GameSquare reference
+    
+    @pending_game_square.setter
+    def pending_game_square(self, value):
+        self._pending_game_square = value
+        
+    @property
+    def pending_dice(self):
+        return self._pending_dice
+    
+    @pending_dice.setter
+    def pending_dice(self, value:int):
+        self._pending_dice = value
+        
+    def set_pending(self, action, game_square=None, amount:SPECIAL_PROCESSING=None, dice:int=0):
+        self.pending_action = action
+        self.pending_game_square = game_square
+        self.pending_amount = amount
+        self.pending_dice = dice
         
     def set_starting_parameters(self, cash:int, salary:int):
         self._starting_cash = cash
@@ -481,9 +508,9 @@ class Player(CareersObject):
     
     def player_info(self, include_successFormula=False):
         v = self.get_total_loans()
-        pending = self.pending_action if self.pending_action is not None else "None"
+        pending_action = self.pending_action if self.pending_action is not None else "None"
         fstring = f'''salary:{self.salary}, Cash: {self.cash},  Fame: {self.fame}, Happiness: {self.happiness}, 
-Insured: {self.is_insured}, Unemployed: {self.is_unemployed}, Sick: {self.is_sick}, Pending action: {pending}'''
+Insured: {self.is_insured}, Unemployed: {self.is_unemployed}, Sick: {self.is_sick}, Pending action: {pending_action}, Pending amount: {self.pending_amount} '''
         if self.cash < 0:
             fstring = f'{fstring}\nALERT: You have negative cash amount and must declare bankruptcy OR borrow the needed funds from another player!!'
         if include_successFormula:

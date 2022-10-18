@@ -52,6 +52,6 @@ from .opportunityCardDeck import OpportunityCardDeck
 from .experienceCard import ExperienceCard
 from .experienceCardType import ExperienceCardType
 from .experienceCardDeck import ExperienceCardDeck
-from .specialProcessing import SpecialProcessing, SpecialProcessingType
+from .specialProcessing import SpecialProcessing, SpecialProcessingType, PendingAction
 from .commandResult import CommandResult
 

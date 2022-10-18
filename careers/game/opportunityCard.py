@@ -6,6 +6,7 @@ Created on Aug 9, 2022
 
 from game.careersObject import CareersObject
 from enum import Enum
+import json
 
 class OpportunityType(Enum):
     OCCUPATION              = 'occupation'
@@ -110,9 +111,15 @@ class OpportunityCard(CareersObject):
     def __str__(self):
         return self.text
     
+    def to_dict(self):
+        cd = {"type":"opportunity"}
+        cd["number"] = self.number
+        cd['text'] = self.text
+        if self.action_type is not None:
+            cd['action_type'] = self.action_type
+        return cd
+    
     def to_JSON(self):
-        jtxt = f'{{"number" : "{self.number}", '
-        jtxt += f'"text" : "{self.text}" }}'
-        return jtxt
+        return json.dumps(self.to_dict())
     
     

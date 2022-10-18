@@ -23,7 +23,7 @@ from game.gameSquare import GameSquare, GameSquareClass
 from game.gameEngineCommands import GameEngineCommands
 from game.gameUtils import GameUtils
 from game.environment import Environment
-from game.specialProcessing import SpecialProcessingType
+from game.specialProcessing import SpecialProcessingType, PendingAction
 
 from datetime import datetime
 import random
@@ -72,6 +72,7 @@ class CareersGameEngine(object):
         <buy>  :: "buy"  ( "hearts" | "stars" | "experience" | "insurance" | "opportunity" ) quantity cash_amount  ;buy some number of items for the cash_amount provided
         <perform> :: "perform roll <ndice>"      ; roll the dice and return the result without moving
             <ndice> :: 0 | 1 | 2
+        <resolve_pending> :: "resolve" choice [pending_amount]    ; resolve a pending action and amount. choice is the player's choice based on the game_square's "pending_action",
     """
     
     
@@ -335,11 +336,13 @@ class CareersGameEngine(object):
             If so, the player is advanced to the next BorderSquare and the exit occupation logic is executed.
             
         """
+        player = self.game_state.current_player
         square_number = square_ref
         if isinstance(square_ref, str):
             bs = self._careersGame.find_border_square(square_ref)
             square_number = bs.number
-        return self._goto(square_number, self.game_state.current_player)
+            player.board_location.occupation_name = None    # leaving the occupation (if in one) to go to a BorderSquare
+        return self._goto(square_number, player)
     
     def enter(self, occupation_name:str) -> CommandResult:
         """Enter the named occupation at the designated square number and execute the occupation square.
@@ -376,7 +379,7 @@ class CareersGameEngine(object):
                 result = self.where("am","I")
                 return CommandResult(result.return_code, f'{result.message}', True)
             else:
-                return CommandResult(CommandResult.ERROR, "Sorry, you don't meet the occupations entry conditions.", False)
+                return CommandResult(CommandResult.ERROR, f"Sorry, you don't meet the entry conditions for {occupation_name}, entry fee: {entry_fee}", False)
         else:
             return CommandResult(CommandResult.ERROR, "No such occupation", False)
     
@@ -509,14 +512,17 @@ class CareersGameEngine(object):
             result = border_square.execute(bumped_player)
         return result
     
-    def bankrupt(self) -> CommandResult:
+    def bankrupt(self, who="me") -> CommandResult:
         """The current player declares bankruptcy.
             A bankrupt player looses all cash, experience and opportunity cards and essentially
             restarts the game with configured starting cash and salary, and positioned at the "Payday" square (border square 0).
             The player does retain occupation experience however including any and all college degrees.
         
         """
-        player = self.game_state.current_player
+        if who == "me":
+            player = self.game_state.current_player
+        else:
+            player = self.get_player(who)
         player.bankrupt_me()
         result = CommandResult(CommandResult.SUCCESS, f'{player.player_initials} has declared bankruptcy', False)
         return result
@@ -537,12 +543,25 @@ class CareersGameEngine(object):
         """
         amount = int(amount_str)
         player = self.game_state.current_player if initials is None else self.get_player(initials)
+        game_square = self._careersGame.get_game_square(player.board_location)
         if player.cash >= amount:
-            player.add_cash(-amount)
-            message = f'{player.player_initials} paid {amount}'
+            if player.is_sick or player.is_unemployed:
+                amt_needed = game_square.special_processing.compute_cash_loss(player)
+                if amt_needed <= amount:
+                    player.add_cash(-amt_needed)
+                    if player.is_sick:
+                        player.is_sick = False
+                    else:
+                        player.is_unemployed = False
+                    message = f'{player.player_initials} paid {amt_needed} and may leave {game_square.name}'
+                else:
+                    message = f'{player.player_initials} paid {amount} but needs {amt_needed} and must stay in {game_square.name}'
+            else:
+                player.add_cash(-amount)
+                message = f'{player.player_initials} paid {amount}'
             return CommandResult(CommandResult.SUCCESS, message, True)
         else:
-            message = f'{player.player_initials} has insufficient funds to cover {amount} and must either borrow cash from another player or declare bankruptcy'
+            message = f'{player.player_initials} has insufficient funds to cover {amount} and must either borrow cash from another player or declare bankruptcy or remain in Hospital/Unemployment'
             return CommandResult(CommandResult.ERROR, message, False)
         
     def transfer(self, quantity_str:str, what:str, from_player_id:str) -> CommandResult:
@@ -716,6 +735,33 @@ class CareersGameEngine(object):
         """
         player = self.game_state.current_player
         return self._buy(player, what, qty_str, amount_str)
+    
+    def resolve(self, what:str, choice:str, amount:int=0):
+        """Resolve a player's pending_action.
+            Arguments:
+                what - the pending_action that needs resolution, for example "select_degree"
+                choice - the player's choice
+                amount - an amount/quantity to apply if any. This depends on the pending_action.
+                        For example "buy_hearts" requires the player to indicate how many to buy.
+            Returns: CommandResult
+           Note that only a BorderSquare may have a pending_action. Currently the pending actions are:
+               buy_hearts, buy_stars, buy_experience, buy_insurance - all require a quantity (amount)
+               gamble - requires an amount
+               select_degree - choice is a DegreeProgram
+               
+        """
+        message = f'{what}:{choice} {amount}'
+        player = self.game_state.current_player
+        # TODO - finish
+        if what == PendingAction.SELECT_DEGREE.value and player.pending_action == what:  # the degree program chosen is the 'choice'
+            self.add_degree(player, choice)
+            #
+            # reset pending_action if it's "select_degree"
+            #
+            player.pending_action = None
+        else:
+            message = f'Nothing to resolve for {what}'
+        return CommandResult(CommandResult.SUCCESS, message, True)
     
     #####################################
     #
@@ -959,11 +1005,20 @@ class CareersGameEngine(object):
 
     def exit_occupation(self, player:Player, board_location:BoardLocation) -> CommandResult:
         """Applies exiting an occupation rules when a player exits an occupation path.
+            Arguments:
+                player - the current player
+                board_location - BoardLocation
+            Returns:
+                CommandResult. If exiting college, choices is set to the list of degree programs to select from.
+                        pending_action is set to the border_square pending_action (if there is one).
+                        For college this is "select_degree"
+                        
             Exiting can be done by rolling out, using an Experience, or using an Opportunity to go somewhere else.
             The occupation could be College ("occupationClass" : "college") or a regular Occupation ("occupationClass" : "occupation")
             * if the player entered the Occupation via Opportunity card, that card is removed from the player's hand
             * if the player completed the Occupation, credit is applied to the player's occupation record and up to 3 Experience cards given
-            
+            * if the player has completed 3 trips through a regular Occupation, the player's can_retire flag is set to True
+
             Note that exit_occupation does NOT update the player's board position.  
             That is done by goto() which calls this method before updating the board position.
             So upon entry, border square location is the occupation entrance square for this occupation (or college).
@@ -972,13 +1027,18 @@ class CareersGameEngine(object):
         """
         nexperience = 0
         trips = 1
+        choices = None    # if exiting College, this is a list of degree programs to select from
         if board_location.occupation_name in player.occupation_record:
-            trips = player.occupation_record[board_location.occupation_name]   # number of trips not counting this one
-            player.occupation_record[board_location.occupation_name] = trips + 1
+            trips = player.occupation_record[board_location.occupation_name] + 1  # number of trips not counting this one
+            player.occupation_record[board_location.occupation_name] = trips
             
         else:
             player.occupation_record[board_location.occupation_name] = trips
-        
+        if trips >= 3:
+            #
+            # player can retire
+            #
+            player.can_retire = True
         #
         # No experience given for completing College
         # 
@@ -996,11 +1056,13 @@ class CareersGameEngine(object):
             # special_processing.processing_type == SpecialProcessingType.ENTER_COLLEGE
             # player must choose a degree program
             # salary increase is dependent on the # of degrees earned in that degree program
-            player.pending_action = game_square.special_processing.pending_action
+
+            player.set_pending(game_square.special_processing.pending_action, game_square)
+            choices = self._careersGame.college_degrees["degreePrograms"]
             message = f'{player.player_initials} Leaving {board_location.occupation_name}, pending_action: {player.pending_action}'
         
         self.log(message)
-        result = CommandResult(CommandResult.SUCCESS, message, True)
+        result = CommandResult(CommandResult.SUCCESS, message, True, choices=choices)
         return result
     
     def add_experience_cards(self, player:Player, ncards:int):
@@ -1037,14 +1099,16 @@ class CareersGameEngine(object):
             result = True
         return result
         
-    def add_degree(self, player, degreeProgram) -> CommandResult:
+    def add_degree(self, player, degree_program) -> CommandResult:
         """Adds a degree to the player and adjusts the salary as needed.
             The maximum number of degrees a player can have in any degree program is "maxDegrees".
             Player's Salary is not adjusted if their number of degrees exceeds that.
+            The player's pending_action is also reset if it's PendingAction.SELECT_DEGREE
         """
         game_degrees = self._careersGame.college_degrees
         degree_names = game_degrees['degreeNames']
-        if degreeProgram not in game_degrees['degreePrograms']:
+        degreeProgram = degree_program.title()   # case matters!
+        if degreeProgram not in game_degrees['degreePrograms']:   
             return CommandResult(CommandResult.ERROR, f"No such degree program: {degreeProgram}", False)
         
         max_allowed = game_degrees['maxDegrees']
@@ -1072,7 +1136,7 @@ class CareersGameEngine(object):
         if salary_inc > 0:
             currency = self._careersGame.game_parameters['currency']
             message += f' and a Salary increase of {salary_inc} {currency}'
-        
+
         return CommandResult(CommandResult.SUCCESS, message, True)
         
     def who_occupies_my_square(self, player) -> List[Player]:

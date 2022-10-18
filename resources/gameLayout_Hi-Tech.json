@@ -155,7 +155,9 @@
 				"specialProcessing" : { 
 					"type" : "hospital",
 					"must_roll" : [2, 3, 4, 5],
-					"require_doubles" : 0
+					"require_doubles" : 0,
+					"percent" : 0.5,
+					"of" : "salary"
 				}
 			},
 			{
@@ -281,7 +283,7 @@
 				"type" : "action_square",
 				"background_image" : "light blue action square.png",
 				"text" : "EXPERIENCE",
-				"action_text" : "Who says you can't buy experience? Buy up to 3 EXPERIENCE cards or lose 1 card for being curious.",
+				"action_text" : "Who says you can't buy experience? Buy up to 3 EXPERIENCE cards or lose 1 card for being curious.\nCost of Experience: 1 - $2,000; 2 - $4,000; 3 - $6,000",
 				"specialProcessing" : { 
 					"type" : "buy_experience",
 					"pending_action" : "buy_experience",
@@ -300,7 +302,9 @@
 				"specialProcessing" : {
 					"type" : "unemployment",
 					"must_roll" : [7, 11],
-					"require_doubles" : 1
+					"require_doubles" : 1,
+					"percent" : 1.0,
+					"of" : "salary"
 				}
 			},
 			{
@@ -515,7 +519,7 @@
 				"type" : "action_square",
 				"background_image" : "light blue action square.png",
 				"text" : "VINTAGE CARS",
-				"action_text" : "Vintage cars for sale. Score Happiness points as follows:",
+				"action_text" : "Vintage cars for sale. Score Happiness points as follows:\n4 Hearts - $2,000; 8 Hearts - $8,000; 12 Hearts - $16,000",
 				"specialProcessing" : {
 					"type" : "buy_hearts",
 					"pending_action" : "buy_hearts",
@@ -543,9 +547,10 @@
 				"type" : "action_square",
 				"background_image" : "light blue action square.png",
 				"text" : "WEB PRESENCE",
-				"action_text" : "May hire consultant to build web site. Score Fame points as follows:",
+				"action_text" : "May hire consultant to build web site. Score Fame points as follows:\n4 Stars - $4,000; 10 Stars - $8,000; 16 stars - $12,000; 22 Stars - $16,000 ",
 				"specialProcessing" : {
 					"type" : "buy_stars",
+					"pending_action" : "buy_stars",
 					"amount" : {"4" : 4000, "10" : 8000, "16" : 12000, "22" : 16000},
 					"limit" : "",
 					"penalty" : 0

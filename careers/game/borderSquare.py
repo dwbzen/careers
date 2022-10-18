@@ -14,7 +14,7 @@ from typing import  List
 from enum import Enum
 import json
 
-class BorderSquareType(Enum):
+class BorderSquareType(str, Enum):
     CORNER_SQUARE = 'corner_square'
     OPPORTUNITY_SQUARE = 'opportunity_square'
     DANGER_SQUARE = 'danger_square'
@@ -95,23 +95,25 @@ class BorderSquare(GameSquare):
             sp_type = self.special_processing.processing_type       # independent of the name of the Square
             player.pending_action = sp_type                         # Set the pending_action 
             message = f'{self.text}\n{self.action_text}'
-            if sp_type is SpecialProcessingType.BUY_HEARTS:    # Tech Convention
-                return CommandResult(CommandResult.NEED_PLAYER_CHOICE, message, False)   # player needs to execute a 'buy hearts'
+            if sp_type is SpecialProcessingType.BUY_HEARTS or sp_type is SpecialProcessingType.BUY_STARS:
+                player.set_pending(sp_type.value, game_square=self, amount=self.special_processing.get_amount())
+                return CommandResult(CommandResult.NEED_PLAYER_CHOICE, message, False)   # player needs to execute a 'buy hearts' or 'buy stars'
+            
             elif sp_type is SpecialProcessingType.BUY_EXPERIENCE:
+                player.set_pending(sp_type.value, game_square=self, amount=self.special_processing.get_amount())
                 return CommandResult(CommandResult.NEED_PLAYER_CHOICE, message, False)   # player needs to execute a 'buy experience' 
+            
             elif sp_type is SpecialProcessingType.BUY_INSURANCE:
+                player.set_pending(sp_type.value, game_square=self, amount=self.special_processing.get_amount())
                 return CommandResult(CommandResult.NEED_PLAYER_CHOICE, message, False)   # player needs to buy insurance
-            elif sp_type is SpecialProcessingType.GAMBLE:               # Roll 2 dice to gamble
+            
+            elif sp_type is SpecialProcessingType.GAMBLE: 
+                player.set_pending(sp_type.value, game_square=self, dice=self.special_processing.dice)              # Roll 2 dice to gamble
                 return CommandResult(CommandResult.NEED_PLAYER_CHOICE, message, False)   # player needs to indicate they intend to Gamble, then roll
             else:
-                #
-                # return the JSON dumps of this square as landing here requires a choice by the player
-                # to buy hearts, stars, experience cards or to gamble
-                # The UI will send back the appropriate command if the player wants to execute the square
-                # this will include the choice amount.
-                #
-                message = self.to_JSON()
-                return CommandResult(CommandResult.NEED_PLAYER_CHOICE, message, False)
+                # If you get this far, the sp_type is invalid or unsupported
+                message = f'Invalid SpecialProcessingType {sp_type} for {message}'
+                return CommandResult(CommandResult.ERROR, message, False)
         elif self.square_type is BorderSquareType.CORNER_SQUARE:
                 # check special processing type because corner square names are edition-dependent, specialProcessing type is independent of the edition
     
@@ -174,6 +176,7 @@ class BorderSquare(GameSquare):
             can_roll =  num_spaces in self.special_processing.must_roll or (self.special_processing.require_doubles and dice[0] == dice[1])
             if can_roll:
                 result = CommandResult(CommandResult.SUCCESS, f'Player can leave {self.name}', True)
+                player.pending_action = None
             else:
                 result = CommandResult(CommandResult.EXECUTE_NEXT, f'Player rolled {dice} and must remain in {self.name}', True, next_action="next")
         else:
