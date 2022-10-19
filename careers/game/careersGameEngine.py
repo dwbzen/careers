@@ -89,6 +89,7 @@ class CareersGameEngine(object):
         self._current_player = None
         self._admin_player = Player(number=-1, name='Administrator', initials='admin')
         self._gameEngineCommands = None     # no CareersGame yet
+        self.currency_symbol = None         # value set with create()
     
     @property
     def fp(self):
@@ -644,7 +645,7 @@ class CareersGameEngine(object):
             sf = SuccessFormula(stars=stars, hearts=hearts, cash=cash)
             player = Player(name=name, initials=initials)
             player.success_formula = sf
-            player.set_starting_parameters(cash=self.careersGame.game_parameters['starting_salary'], salary=self._careersGame.game_parameters['starting_cash'])
+            player.set_starting_parameters(cash=self.careersGame.game_parameters.get_param('starting_salary'), salary=self._careersGame.game_parameters.get_param('starting_cash') )
             
             self._careersGame.add_player(player)        # adds to GameState
             if player.number == 0:      # the first player can roll
@@ -711,6 +712,7 @@ class CareersGameEngine(object):
         self.fp = open(self._logfile_path, "w")   # log file open channel
         self._gameEngineCommands = GameEngineCommands(self._careersGame, self.fp)
         self._gameEngineCommands.trace = self.trace
+        self.currency_symbol = self._careersGame.game_parameters.get_param("currency_symbol")
 
         message = f'{{"gameId":"{self._gameId}", "installationId":"{self._installationId}"}}'
         self.log(message)
@@ -750,15 +752,25 @@ class CareersGameEngine(object):
                select_degree - choice is a DegreeProgram
                
         """
-        message = f'{what}:{choice} {amount}'
+        message = f'{what}:{choice}'
         player = self.game_state.current_player
         # TODO - finish
         if what == PendingAction.SELECT_DEGREE.value and player.pending_action == what:  # the degree program chosen is the 'choice'
-            self.add_degree(player, choice)
+            result = self.add_degree(player, choice)
+            message = f'{message}\n{result.message}'
             #
             # reset pending_action if it's "select_degree"
             #
             player.pending_action = None
+            
+        elif what == PendingAction.GAMBLE.value and player.pending_action == what:
+            #
+            # execute the special processing for the Gamble game square
+            #
+            result = player.pending_game_square.execute_special_processing(player)
+            player.pending_action = None
+            player.pending_game_square = None
+            return result
         else:
             message = f'Nothing to resolve for {what}'
         return CommandResult(CommandResult.SUCCESS, message, True)
@@ -790,7 +802,7 @@ class CareersGameEngine(object):
         qty = int(qty_str)
 
         if player.cash < amount:
-            return CommandResult(CommandResult.ERROR, f'Insufficient funds {player.cash} for amount {amount}', True)
+            return CommandResult(CommandResult.ERROR, f'Insufficient funds {self.currency_symbol}{player.cash} for amount {self.currency_symbol}{amount}', True)
     
         game_square = self.get_player_game_square(player)
         special_processing = game_square.special_processing  # could be None or empty
@@ -814,7 +826,7 @@ class CareersGameEngine(object):
         elif what.lower().startswith('ins'):    # buy insurance, okay to buy more than 1 policy
             total_amount = qty * amount
             if player.cash < total_amount:
-                return CommandResult(CommandResult.ERROR, f'Insufficient funds {player.cash} for insurance amount {amount}', True)
+                return CommandResult(CommandResult.ERROR, f'Insufficient funds {self.currency_symbol}{player.cash} for insurance amount {self.currency_symbol}{amount}', True)
             player.is_insured = True
             player.pending_action = None
         elif what.lower() == 'gamble':    # player needs to roll 2 dice in order to gamble - that's a separate command
@@ -1057,7 +1069,7 @@ class CareersGameEngine(object):
             # player must choose a degree program
             # salary increase is dependent on the # of degrees earned in that degree program
 
-            player.set_pending(game_square.special_processing.pending_action, game_square)
+            player.set_pending(game_square.special_processing.pending_action, game_square=game_square)
             choices = self._careersGame.college_degrees["degreePrograms"]
             message = f'{player.player_initials} Leaving {board_location.occupation_name}, pending_action: {player.pending_action}'
         
@@ -1134,8 +1146,8 @@ class CareersGameEngine(object):
         
         message = f'{player.player_initials} awarded {degree_names[ndegrees]} degree in {degreeProgram}'
         if salary_inc > 0:
-            currency = self._careersGame.game_parameters['currency']
-            message += f' and a Salary increase of {salary_inc} {currency}'
+            symbol = self._careersGame.game_parameters.get_param('currency_symbol')
+            message += f' and a Salary increase of {symbol}{salary_inc}'
 
         return CommandResult(CommandResult.SUCCESS, message, True)
         

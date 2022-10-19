@@ -18,6 +18,7 @@ __all__ = [
     'experienceCardDeck',
     'experienceCardType',
     'gameBoard',
+    'gameParameters',
     'gamePlayer',
     'gameSquare',
     'gameState',
@@ -43,6 +44,7 @@ from .careersObject import CareersObject
 from .cardDeck import CardDeck
 from .careersGame import CareersGame
 from .careersGameEngine import CareersGameEngine
+from .gameParameters import GameParameters
 from .gameRunner import GameRunner
 from .gameUtils import GameUtils
 from .player import Player

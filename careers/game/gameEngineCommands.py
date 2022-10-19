@@ -30,6 +30,7 @@ class GameEngineCommands(object):
         self._game_state = self._careersGame.game_state
         self.fp = logfile_pointer
         self._trace = True          # traces the action by describing each step and logs to a file
+        self.currency_symbol = self._careersGame.game_parameters.get_param("currency_symbol")
     
     @property 
     def careersGame(self) -> CareersGame:
@@ -67,7 +68,7 @@ class GameEngineCommands(object):
             #
             result = game_square.execute_special_processing(player, dice)
         elif player.cash < 0:       # Can't move if bankrupt
-            result = CommandResult(CommandResult.NEED_PLAYER_CHOICE, f'You are bankrupt: {player.cash}, and must either borrow/trade for needed funds or declare Bankruptcy', False)
+            result = CommandResult(CommandResult.NEED_PLAYER_CHOICE, f'You are bankrupt: {self.currency_symbol}{player.cash}, and must either borrow/trade for needed funds or declare Bankruptcy', False)
         else:
             result = CommandResult(CommandResult.SUCCESS, f'Player may move {dice} spaces', True)
             
@@ -150,7 +151,11 @@ class GameEngineCommands(object):
             for arg in addl_args:
                 command = command + f'"{arg}",'
             command = command[:-1]
-        command += ")"
+        if len(command_args) == 2 and command_args[0].lower().startswith("resolve"):
+            # add the choice argument for resolve command as 'none'
+            command += f',"none")'
+        else:
+            command += ")"
         
         return CommandResult(CommandResult.SUCCESS, command, False)
     

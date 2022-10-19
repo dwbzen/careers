@@ -10,6 +10,7 @@ from game.player import Player
 import json
 from typing import Dict, List, Union
 from enum import Enum
+from game.commandResult import CommandResult
 
 class SpecialProcessingType(Enum):
     # border squares
@@ -110,6 +111,7 @@ class SpecialProcessing(CareersObject):
         self._hearts = special_processing_dict.get('hearts', [])                        # used for holiday type, a 2-element list
         self._tax_table = special_processing_dict.get('taxTable', None)    # format is upper limit : % amount, for example { 3000 : 0.2 } if you make <= 3000/yr, take 20% as tax
         self._pending_action = special_processing_dict.get('pending_action', None) 
+        self._amount_dice = special_processing_dict.get('amount_dice', 0)  # the number of dice to use to determine an amount multiplier
     
     @property
     def square_type(self):
@@ -194,6 +196,31 @@ class SpecialProcessing(CareersObject):
     def tax_table(self):
         return self._tax_table
     
+    @property
+    def amount_dice(self) -> int:
+        return self._amount_dice
+    
+    @amount_dice.setter
+    def amount_dice(self, value:int):
+        self._amount_dice = value
+    
+    def gamble(self, player) -> CommandResult:
+        # amount computed from a roll of the dice
+        # and could be negative (cash loss) or positive (cash gain)
+        #
+        roll = sum(GameUtils.roll(self.amount_dice)) if self.amount_dice > 0 else 1
+        amt = self.amount_dict[str(roll)]
+        if isinstance(amt, str):   # fixed amount
+            cash_loss = int(amt)
+        else:
+            cash_loss = roll * amt
+        if cash_loss <= 0:
+            result = CommandResult(CommandResult.SUCCESS, f'{player.player_initials} rolls a {roll} on a gamble and loses {-cash_loss}', True)
+        else:
+            result = CommandResult(CommandResult.SUCCESS, f'{player.player_initials} rolls a {roll} on a gamble and wins {cash_loss}', True)
+        player.add_cash(cash_loss)
+        return result
+            
     def compute_cash_loss(self, player:Player) -> int:
         """Compute the cash loss for this specialProcessing given cash and salary amounts.
              Cash loss can be a fixed amount or a percentage of a player's salary or cash on hand
@@ -210,13 +237,17 @@ class SpecialProcessing(CareersObject):
                 amt = int(k)
                 if player_salary <= amt:
                     cash_loss = int(self.tax_table[k] * player_salary)    # truncate the amount
+                    
         elif self.processing_type is SpecialProcessingType.CASH_LOSS:
             cash_loss = self._compute_amount(player_cash) if self.of=='cash' else self._compute_amount(player_salary)
+            
         elif  self.processing_type is SpecialProcessingType.CASH_LOSS_OR_UNEMPLOYMENT.value:
             cash_loss = self._compute_amount(player_cash) if self.of=='cash' else self._compute_amount(player_salary)
             player.pending_amount = cash_loss
+            
         elif self.processing_type is SpecialProcessingType.UNEMPLOYMENT or self.processing_type is SpecialProcessingType.HOSPITAL:
             cash_loss =  self._compute_amount(player_cash) if self.of=='cash' else self._compute_amount(player_salary)
+        
         else:   # future expansion
             pass
         

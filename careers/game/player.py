@@ -8,7 +8,6 @@ from game.careersObject import CareersObject
 from game.boardLocation import BoardLocation
 from game.opportunityCard import OpportunityCard
 from game.experienceCard import ExperienceCard
-
 from datetime import datetime
 from typing import Dict, List, Union
 import json
@@ -559,6 +558,7 @@ if __name__ == '__main__':
     player = Player(0, name='Don', initials='DWB')
     sf = SuccessFormula(stars=40, hearts=10, cash=50)
     player.success_formula = sf
+
     
     print(str(player))
     print(repr(player))

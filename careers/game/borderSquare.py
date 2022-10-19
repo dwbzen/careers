@@ -91,6 +91,7 @@ class BorderSquare(GameSquare):
             else:
                 result = CommandResult(CommandResult.SUCCESS, "", True)
             return result
+        
         elif self.square_type is BorderSquareType.ACTION_SQUARE:
             sp_type = self.special_processing.processing_type       # independent of the name of the Square
             player.pending_action = sp_type                         # Set the pending_action 
@@ -179,6 +180,8 @@ class BorderSquare(GameSquare):
                 player.pending_action = None
             else:
                 result = CommandResult(CommandResult.EXECUTE_NEXT, f'Player rolled {dice} and must remain in {self.name}', True, next_action="next")
+        elif sp_type is SpecialProcessingType.GAMBLE:
+            result = self.special_processing.gamble(player)
         else:
             result = CommandResult(CommandResult.SUCCESS, f'{self.square_type} {self.name} execute_special_processing not yet implemented', False)
         

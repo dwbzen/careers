@@ -9,7 +9,7 @@ from game.player import Player
 import json, random
 from datetime import datetime
 from pathlib import Path
-from typing import Dict, Union, List, Tuple
+from typing import Dict, Union, List
 
 from game.opportunityCardDeck import OpportunityCardDeck
 from game.experienceCardDeck import ExperienceCardDeck
@@ -22,6 +22,7 @@ from game.gameSquare import GameSquare
 from game.careersObject import CareersObject
 from threading import Lock
 from game.boardLocation import BoardLocation
+from game.gameParameters import GameParameters
 
 class CareersGame(CareersObject):
     """
@@ -97,16 +98,14 @@ class CareersGame(CareersObject):
         """Loads the game parameters and occupations JSON files for this edition.
         
         """
-        fp = open(self._resource_folder + "/gameParameters_" + self._edition_name + ".json", "r")
-        jtxt = fp.read()
-        self._game_parameters = json.loads(jtxt)
-        fp.close()
+        with open(self._resource_folder + "/gameParameters_" + self._edition_name + ".json", "r") as fp:
+            jtxt = fp.read()
+            self._game_parameters = GameParameters(json.loads(jtxt))
 
-        fp = open(self._resource_folder + "/occupations_" + self._edition_name + ".json", "r")
-        jtxt = fp.read()
-        occupations_dict = json.loads(jtxt)
-        self._occupation_names = occupations_dict['occupations']
-        fp.close()
+        with open(self._resource_folder + "/occupations_" + self._edition_name + ".json", "r") as fp:
+            jtxt = fp.read()
+            occupations_dict = json.loads(jtxt)
+            self._occupation_names = occupations_dict['occupations']
         
         # load the individual occupation files
         self._occupations = self.load_occupations()     # dictionary of Occupation instances keyed by name
@@ -211,7 +210,7 @@ class CareersGame(CareersObject):
     
     
     @property
-    def game_parameters(self):
+    def game_parameters(self) -> GameParameters:
         return self._game_parameters
     
     @property

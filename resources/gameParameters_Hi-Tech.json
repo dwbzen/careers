@@ -2,7 +2,7 @@
 	"starting_salary" : 2000,
 	"starting_cash" : 2000,
 	"currency" : "dollars",
-	"currency_symbol" : "$",
+	"currency_symbol" : "\u0024",
 	"date_format" : "yyyy-mm-dd",
 	"starting_experience_cards" : 0,
 	"starting_opportunity_cards" : 0,
