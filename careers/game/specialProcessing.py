@@ -11,6 +11,8 @@ import json
 from typing import Dict, List, Union
 from enum import Enum
 from game.commandResult import CommandResult
+from game.gameParameters import GameParameters
+from game.gameConstants import PendingAction
 
 class SpecialProcessingType(Enum):
     # border squares
@@ -44,13 +46,6 @@ class SpecialProcessingType(Enum):
     EXTRA_TURN = "extra_turn"
     LOSE_NEXT_TURN = "lose_next_turn"
     
-class PendingAction(Enum):
-    SELECT_DEGREE = "select_degree"
-    BUY_EXPERIENCE = "buy_experience"
-    BUY_HEARTS = "buy_hearts"
-    BUY_STARS = "buy_stars"
-    BUY_INSURANCE = "buy_insurance"
-    GAMBLE = "gamble"
 
 class SpecialProcessing(CareersObject):
     """Encapsulates the "specialProcessing" section of a border square or occupation square.
@@ -97,7 +92,7 @@ class SpecialProcessing(CareersObject):
             self._amount_dict = amt    # how a money amount is calculated
         
         self._dice = special_processing_dict.get('dice', 0)                 # number of dice used to calculate some amount
-        self._of = special_processing_dict.get('dice', 'cash')              # cash (cash-on-hand) or salary
+        self._of = special_processing_dict.get('of', 'cash')              # cash (cash-on-hand) or salary
         self._penalty = special_processing_dict.get('penalty', 0)           # a loss quantity (hearts or stars)
         self._limit = special_processing_dict.get('limit', None)            # a limiting factor, usually "salary" (in 1000s)
         
@@ -110,8 +105,14 @@ class SpecialProcessing(CareersObject):
         self._require_doubles = special_processing_dict.get('require_doubles', 0)==1
         self._hearts = special_processing_dict.get('hearts', [])                        # used for holiday type, a 2-element list
         self._tax_table = special_processing_dict.get('taxTable', None)    # format is upper limit : % amount, for example { 3000 : 0.2 } if you make <= 3000/yr, take 20% as tax
-        self._pending_action = special_processing_dict.get('pending_action', None) 
+        pending_action = special_processing_dict.get('pending_action', None) 
+        if pending_action is not None:
+            self._pending_action = PendingAction[pending_action.upper()]
+        else:
+            self._pending_action = None
+        # self._pending_action = special_processing_dict.get('pending_action', None) 
         self._amount_dice = special_processing_dict.get('amount_dice', 0)  # the number of dice to use to determine an amount multiplier
+        self._game_parameters = None    # set by GameSquare
     
     @property
     def square_type(self):
@@ -181,11 +182,11 @@ class SpecialProcessing(CareersObject):
         return self._hearts
     
     @property
-    def pending_action(self):
+    def pending_action(self) ->PendingAction:
         return self._pending_action
     
     @pending_action.setter
-    def pending_action(self, value):
+    def pending_action(self, value:PendingAction):
         self._pending_action = value
     
     @property
@@ -203,6 +204,14 @@ class SpecialProcessing(CareersObject):
     @amount_dice.setter
     def amount_dice(self, value:int):
         self._amount_dice = value
+        
+    @property
+    def game_parameters(self) -> GameParameters:
+        return self._game_parameters
+    
+    @game_parameters.setter
+    def game_parameters(self, value:GameParameters):
+        self._game_parameters = value
     
     def gamble(self, player) -> CommandResult:
         # amount computed from a roll of the dice
@@ -210,15 +219,55 @@ class SpecialProcessing(CareersObject):
         #
         roll = sum(GameUtils.roll(self.amount_dice)) if self.amount_dice > 0 else 1
         amt = self.amount_dict[str(roll)]
+        symbol = self.game_parameters.get_param("currency_symbol")
         if isinstance(amt, str):   # fixed amount
             cash_loss = int(amt)
         else:
             cash_loss = roll * amt
         if cash_loss <= 0:
-            result = CommandResult(CommandResult.SUCCESS, f'{player.player_initials} rolls a {roll} on a gamble and loses {-cash_loss}', True)
+            result = CommandResult(CommandResult.SUCCESS, f'{player.player_initials} rolls a {roll} on a gamble and loses {symbol}{-cash_loss}', True)
         else:
-            result = CommandResult(CommandResult.SUCCESS, f'{player.player_initials} rolls a {roll} on a gamble and wins {cash_loss}', True)
+            result = CommandResult(CommandResult.SUCCESS, f'{player.player_initials} rolls a {roll} on a gamble and wins {symbol}{cash_loss}', True)
         player.add_cash(cash_loss)
+        return result
+    
+    def buy_points(self, player, **kwargs):
+        '''Process special processing type BUY_HEARTS or BUY_STARS for a given Player
+        '''
+        result = None
+        symbol = self.game_parameters.get_param("currency_symbol")
+        if 'choice' in kwargs:    #
+            choice = str(kwargs['choice'])
+            qty = int(choice)
+            if self.amount_dict is not None:    # table of valid quantity + cost
+                if choice in self.amount_dict:
+                    cost = self.amount_dict[choice]
+                    if cost <= player.cash:
+                        player.add_points(self.processing_type.value, qty)
+                        player.add_points('cash', -cost)
+                        result = CommandResult(CommandResult.SUCCESS, f'{player.player_initials} bought {choice} hearts/stars for {symbol}{cost}', True)
+                    else:
+                        result = result = CommandResult(CommandResult.ERROR, f'Insufficient cash to buy {qty} {self.processing_type.value} ', False)
+                    
+                else:    # invalid selection
+                    result = CommandResult(CommandResult.ERROR, f'{choice} is an invalid choice. Valid choices are {self.amount_dict}', False)
+            else:           # a fixed amount with a possible penalty if quantity is 0
+                cost = self.amount * qty
+                what = kwargs.get('what','')
+                if cost <= player.cash:
+                    if self.limit is not None and self.limit == 'salary' :
+                        if cost <= player.salary:
+                            if qty == 0 and self.penalty > 0:
+                                player.add_points(self.processing_type.value, -self.penalty)
+                                result = CommandResult(CommandResult.SUCCESS, f'You lose {self.penalty} {what} for "just looking"', True)
+                            else:
+                                player.add_points(self.processing_type.value, qty)
+                                player.add_points('cash', -cost)
+                                result = CommandResult(CommandResult.SUCCESS, f'You bought {qty} {what} for {symbol}{cost}', True)
+                        else:
+                            result = CommandResult(CommandResult.ERROR, f'You can only buy up to {int(player.salary/1000)} here. ', False)
+                else:
+                    result = CommandResult(CommandResult.ERROR, f'Insufficient cash to buy {qty} {self.processing_type.value} ', False)
         return result
             
     def compute_cash_loss(self, player:Player) -> int:

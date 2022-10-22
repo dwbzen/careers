@@ -40,3 +40,22 @@ This will run the app listening on port 9000.
 ## Running Mongodb
 Assuming the Docker plugin is installed, right click the `docker-compose.yml` file and choose `Compose Up`.
 Once it's running, you can connect to it locally using the Mongodb plugin (by connecting to `localhost`).
+
+# Game Board Layout
+The board layout and content is encapsulated in JSON files. The overall layout file is "gameLayout_\<edition\>.json" where \<edition\> is the edition name. Currently there are 2 editions: "Hi-Tech" and "UK" (the United Kingdom edition). The gameLayout file has entries for each of the game's 42 border (or dege) squares.
+
+Each occupation and college have their own JSON file named<br> "\<occupation_name\>_\<edition\>.json". Also each occupation has a corresponding entrance square in the gameLayout file.
+
+# Command Interface
+The backend web server and GameEngine communicate via text commands and responses. The front-end UI translates player actions (for example clicking on a roll dice image) to a web server endpoint which in turn calls the GameEngine.execute_command() method with the appropriate command. <p>
+
+execute_command takes the command string and Player instance as arguments. If Player is None, the GameEngine uses the built-in 'admin' as the player. The commands and arguments are described in the sections below.
+
+## Commands
+Here's a list of all commands:<p>
+COMMANDS = ['add', 'bankrupt', 'bump', 'buy', 'create', 'done', 'end', 'enter', 'game_status', 'goto', 'list', 'load', 'next', 'pay', 'perform', 'quit', 'retire', 'roll', 'resolve', 'save', 'saved', 'start', 'status', 'transfer', 'use', 'use_insurance', 
+'where', 'who']
+
+### roll
+Format: "roll" [1 | 2 ]<p>
+roll takes the number of dice to use as an optional argument. If unspecified, the player's current location determines the number of dice: 2 for border squares, 1 for occupation squares.

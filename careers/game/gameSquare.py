@@ -8,6 +8,8 @@ from game.specialProcessing import SpecialProcessing
 from game.careersObject import CareersObject
 from game.player import Player
 from game.commandResult import CommandResult
+from game.gameParameters import GameParameters
+
 from enum import Enum
 from typing import Dict, Union
 
@@ -37,14 +39,18 @@ class GameSquare(CareersObject):
         self._square_type = None            # populated by concrete class
         self._special_processing = SpecialProcessing(special_processing_dict, square_class) if special_processing_dict is not None and len(special_processing_dict) > 0 else None
         self._careersGame = None
+        self._game_parameters = None
         #
         # avoids circular import
         #
+        assert(game is not None)
         if game is not None:
             from game.careersGame import CareersGame
             assert isinstance(game,CareersGame)
             self._careersGame = game
-
+            self._game_parameters = game.game_parameters    # GameParameters instance
+            if self._special_processing is not None:        # not all game squares have SpecialProcessing
+                self._special_processing.game_parameters = self._game_parameters
         
     @property
     def square_type(self):
@@ -105,6 +111,10 @@ class GameSquare(CareersObject):
     @property
     def careersGame(self):
         return self._careersGame
+    
+    @property
+    def game_parameters(self) -> GameParameters:
+        return self._game_parameters
     
     def execute(self, player:Player) -> CommandResult:
         """Execute actions associated with this Occupation or Border square

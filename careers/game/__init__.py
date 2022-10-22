@@ -18,6 +18,7 @@ __all__ = [
     'experienceCardDeck',
     'experienceCardType',
     'gameBoard',
+    'gameConstants',
     'gameParameters',
     'gamePlayer',
     'gameSquare',
@@ -54,6 +55,7 @@ from .opportunityCardDeck import OpportunityCardDeck
 from .experienceCard import ExperienceCard
 from .experienceCardType import ExperienceCardType
 from .experienceCardDeck import ExperienceCardDeck
-from .specialProcessing import SpecialProcessing, SpecialProcessingType, PendingAction
+from .specialProcessing import SpecialProcessing, SpecialProcessingType
+from .gameConstants import  PendingAction
 from .commandResult import CommandResult
 

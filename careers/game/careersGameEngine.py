@@ -23,7 +23,8 @@ from game.gameSquare import GameSquare, GameSquareClass
 from game.gameEngineCommands import GameEngineCommands
 from game.gameUtils import GameUtils
 from game.environment import Environment
-from game.specialProcessing import SpecialProcessingType, PendingAction
+from game.specialProcessing import SpecialProcessingType
+from game.gameConstants import PendingAction
 
 from datetime import datetime
 import random
@@ -39,7 +40,7 @@ class CareersGameEngine(object):
         <use> :: "use"  <what> <card_number>
             <what> :: "opportunity" | "experience" | "roll"
             <card_number> :: <integer> | '[' <integer list> ']'
-        <roll> :: "roll"                        ;roll 1 or 2 dice depending on where the player is on the board
+        <roll> :: "roll"  [1|2]                 ;roll 1 or 2 dice depending on where the player is on the board
         <retire> :: "retire"                    ;immediate go to retirement square (Spring Break, Holiday)
         <bump> :: "bump" player_initials        ;bump another player, who must be on the same square as the bumper
         <bankrupt> :: "bankrupt"                ;declare bankruptcy
@@ -57,7 +58,7 @@ class CareersGameEngine(object):
             <who> :: "am I" | "is" <playerID>
         <playerID> :: player_name | player_initials
         <enter> :: "enter" <occupation_name> [<square_number>]                 ;enter occupation at occupation square square_number
-        <goto> :: "goto" <square_number>                                       ;go to border square square_number
+        <goto> :: "goto" <square_number> | <square_name>                                      ;go to border square square_number
         <add> :: "add player" player_name player_initials cash stars hearts    ;adds a new player to the game
         <use insurance> :: "use_insurance"
         <add degree> :: "add degree" <degree program>
@@ -236,25 +237,41 @@ class CareersGameEngine(object):
         if self.is_in_occupation(game_square, player):
             ndice = 1
         
-        dice = random.choices(population=[1,2,3,4,5,6], k=ndice)
+        dice = random.choices(population=[i for i in range(1,7)], k=ndice)
         return self._roll(player, dice)
         
         
     def _roll(self, player, dice:List[int]) -> CommandResult:
         num_spaces = sum(dice)
-        self.log(f' {player.player_initials}  rolled {num_spaces} {dice}')
+        next_square_number = self._get_next_square_number(player, num_spaces)
+        message = f' {player.player_initials}  rolled {num_spaces} {dice}'
+        self.log(message)
         #
-        # check if the player is Unemployed and if so, if the roll allows them to move
+        # check if player is on a holiday
+        # 
+        if player.on_holiday:
+            game_square = self.get_player_game_square(player)    # HOLIDAY square
+            must_roll = game_square.special_processing.must_roll
+            if num_spaces in must_roll:    # player may remain
+                player.pending_dice = dice # if they choose not to stay
+                result = CommandResult(CommandResult.NEED_PLAYER_CHOICE, f'{message} and may remain on {game_square.name}', False)
+            else:
+                player.clear_pending()
+                result = self.goto(next_square_number)
+            
         #
-        canmove, result = self._gameEngineCommands.can_player_move(player, dice)
-        self.log(result.message)
-        if canmove:
-            next_square_number = self._get_next_square_number(player, num_spaces)
-    
-            #
-            # place the player on the next_square_number
-            #
-            result = self.goto(next_square_number)
+        # check if the player is Unemployed or sick and if so, if the roll allows them to move
+        #
+        else:
+            canmove, result = self._gameEngineCommands.can_player_move(player, dice)
+            self.log(result.message)
+            if canmove:
+                #
+                # clear any pending action - use it or lose it!
+                # and place the player on the next_square_number
+                #
+                player.clear_pending()
+                result = self.goto(next_square_number)
         return result
     
     def use(self, what, card_number, spaces=0) -> CommandResult:
@@ -401,7 +418,7 @@ class CareersGameEngine(object):
         if cp.pending_action is not None and game_square.special_processing is not None \
            and cp.pending_action==game_square.special_processing.processing_type:
             if game_square.special_processing.penalty > 0:
-                if cp.pending_action==SpecialProcessingType.BUY_HEARTS and cp.happiness > 0:
+                if cp.pending_action is SpecialProcessingType.BUY_HEARTS and cp.happiness > 0:
                     cp.add_hearts(-game_square.special_processing.penalty)
             cp.pending_action = None
             
@@ -545,9 +562,9 @@ class CareersGameEngine(object):
         amount = int(amount_str)
         player = self.game_state.current_player if initials is None else self.get_player(initials)
         game_square = self._careersGame.get_game_square(player.board_location)
+        amt_needed = game_square.special_processing.compute_cash_loss(player)
         if player.cash >= amount:
             if player.is_sick or player.is_unemployed:
-                amt_needed = game_square.special_processing.compute_cash_loss(player)
                 if amt_needed <= amount:
                     player.add_cash(-amt_needed)
                     if player.is_sick:
@@ -645,7 +662,7 @@ class CareersGameEngine(object):
             sf = SuccessFormula(stars=stars, hearts=hearts, cash=cash)
             player = Player(name=name, initials=initials)
             player.success_formula = sf
-            player.set_starting_parameters(cash=self.careersGame.game_parameters.get_param('starting_salary'), salary=self._careersGame.game_parameters.get_param('starting_cash') )
+            player.set_starting_parameters(cash=self.careersGame.game_parameters.get_param('starting_cash'), salary=self._careersGame.game_parameters.get_param('starting_salary') )
             
             self._careersGame.add_player(player)        # adds to GameState
             if player.number == 0:      # the first player can roll
@@ -721,7 +738,7 @@ class CareersGameEngine(object):
     def start(self) -> CommandResult:
         return self._start()
     
-    def buy(self, what:str, qty_str:str, amount_str:str) -> CommandResult:
+    def buy(self, what:str, qty_str:Union[int,str], amount_str:Union[int,str]) -> CommandResult:
         """Buy a number of items for the current player.
             The buy command is associated with one of the action_squares, specifically the game square's specialProcessing processingType.
             
@@ -738,13 +755,13 @@ class CareersGameEngine(object):
         player = self.game_state.current_player
         return self._buy(player, what, qty_str, amount_str)
     
-    def resolve(self, what:str, choice:str, amount:int=0):
+    def resolve(self, what:str, choice:Union[int,str] ):
         """Resolve a player's pending_action.
             Arguments:
                 what - the pending_action that needs resolution, for example "select_degree"
-                choice - the player's choice
-                amount - an amount/quantity to apply if any. This depends on the pending_action.
-                        For example "buy_hearts" requires the player to indicate how many to buy.
+                choice - the player's choice, for example for what=="select_degree", choice is the degree name, like "Marketing"
+                        This can also be an amount/quantity to apply. For example: resolve buy_hearts 4 (buy 4 hearts).
+                
             Returns: CommandResult
            Note that only a BorderSquare may have a pending_action. Currently the pending actions are:
                buy_hearts, buy_stars, buy_experience, buy_insurance - all require a quantity (amount)
@@ -754,26 +771,63 @@ class CareersGameEngine(object):
         """
         message = f'{what}:{choice}'
         player = self.game_state.current_player
+        game_square = self.get_player_game_square(player)
         # TODO - finish
-        if what == PendingAction.SELECT_DEGREE.value and player.pending_action == what:  # the degree program chosen is the 'choice'
-            result = self.add_degree(player, choice)
-            message = f'{message}\n{result.message}'
-            #
-            # reset pending_action if it's "select_degree"
-            #
-            player.pending_action = None
-            
-        elif what == PendingAction.GAMBLE.value and player.pending_action == what:
-            #
-            # execute the special processing for the Gamble game square
-            #
-            result = player.pending_game_square.execute_special_processing(player)
-            player.pending_action = None
-            player.pending_game_square = None
-            return result
+        if player.pending_action.value == what:
+            if what == PendingAction.SELECT_DEGREE.value:  # the degree program chosen is the 'choice'
+                result = self.add_degree(player, choice)
+                result.message = f'{message}\n{result.message}'
+
+            elif what == PendingAction.GAMBLE.value:
+                #
+                # execute the special processing for the Gamble game square
+                #
+                result = player.pending_game_square.execute_special_processing(player)
+
+            elif what == PendingAction.BUY_HEARTS.value:
+                result = player.pending_game_square.execute_special_processing(player, choice=choice, what='hearts')
+                
+            elif what == PendingAction.BUY_EXPERIENCE.value:
+                amounts = player.pending_game_square.special_processing.amount_dict
+                ncards = str(choice)
+                if ncards in amounts:
+                    cost = amounts[ncards]
+                    if cost <= player.cash:
+                        player.add_cash(-cost)
+                        # draw that number of cards
+                        for i in range(1,choice+1):
+                            acard = self.careersGame.experience_cards.draw()
+                            player.add_experience_card(acard)
+                        result = CommandResult(CommandResult.SUCCESS, f'{ncards} Experience cards added for {self.currency_symbol}{cost}', True)
+                    else:
+                        result = CommandResult(CommandResult.ERROR, f"You can't afford {ncards} Experience cards. Try again.", False)
+                else:
+                    result = CommandResult(CommandResult.ERROR, f'{choice} is an invalid selection. Valid selections and costs are {amounts}', False)
+                
+            elif what == PendingAction.BUY_STARS.value:
+                result = player.pending_game_square.execute_special_processing(player, choice=choice, what='stars')
+                
+            elif what == PendingAction.BUY_INSURANCE.value:    # assume 1 quantity, regardless of the qty specified
+                amount = game_square.special_processing.amount
+                result = self.buy(what, choice, amount)
+                
+            elif what == PendingAction.STAY_OR_MOVE.value:
+                if choice.lower() == "stay":
+                    result = game_square.execute(player)
+                else:   # move off Holiday
+                    player.on_holiday = False
+                    result = self._roll(player, player.pending_dice)
+            else:
+                result = CommandResult(CommandResult.ERROR, f'Sorry {player.player_initials}, "{what}" is an invalid pending action!', False)
         else:
-            message = f'Nothing to resolve for {what}'
-        return CommandResult(CommandResult.SUCCESS, message, True)
+            result = CommandResult(CommandResult.ERROR, f'Nothing to resolve for {what}', False)
+
+        #
+        # reset pending_action and pending_game_square if result is SUCCESS
+        #            
+        if result.is_successful() and not player.on_holiday:
+            player.clear_pending()
+        return result
     
     #####################################
     #
@@ -788,18 +842,18 @@ class CareersGameEngine(object):
         self.game_state.set_next_player()    # sets the player number to 0 and the curent_player Player reference
         return CommandResult(CommandResult.SUCCESS, message, True)
     
-    def _buy(self, player:Player, what:str, qty_str:str="1", amount_str:str="0") -> CommandResult:
+    def _buy(self, player:Player, what:str, qty_arg:Union[int,str]=1, amount_arg:Union[int,str]=1) -> CommandResult:
         """Implements the buy command
             Arguments:
                 player - the current or affected player reference
                 what - "hearts" | "stars" | "experience" | "insurance" | "opportunity"
-                qty - how many to buy (adds to the player's score or card deck)
-                amount - cash amount cost
+                qty - how many to buy (adds to the player's score or card deck). May be an int or str
+                amount - cash amount cost. May be an int or str
              The player must have the appropriate pending_action in order to be valid
             and it must match the current location's special processing type
         """
-        amount = int(amount_str)
-        qty = int(qty_str)
+        amount = int(amount_arg)
+        qty = int(qty_arg)
 
         if player.cash < amount:
             return CommandResult(CommandResult.ERROR, f'Insufficient funds {self.currency_symbol}{player.cash} for amount {self.currency_symbol}{amount}', True)
@@ -808,7 +862,7 @@ class CareersGameEngine(object):
         special_processing = game_square.special_processing  # could be None or empty
         sptype = special_processing.processing_type if special_processing is not None else ""
         
-        if player.pending_action is None or player.pending_action != sptype:
+        if player.pending_action is None or player.pending_action is not sptype:
             return CommandResult(CommandResult.ERROR, f'Cannot buy {qty} {what} here', False)
         
         player.add_cash(-amount)
@@ -823,7 +877,7 @@ class CareersGameEngine(object):
         elif what.lower().startswith('opp'):    # buy Opportunity card(s)
             self.add_opportunity_cards(player, qty)
             player.pending_action = None
-        elif what.lower().startswith('ins'):    # buy insurance, okay to buy more than 1 policy
+        elif 'insurance' in what.lower():    # buy insurance, okay to buy more than 1 policy
             total_amount = qty * amount
             if player.cash < total_amount:
                 return CommandResult(CommandResult.ERROR, f'Insufficient funds {self.currency_symbol}{player.cash} for insurance amount {self.currency_symbol}{amount}', True)
@@ -1071,7 +1125,7 @@ class CareersGameEngine(object):
 
             player.set_pending(game_square.special_processing.pending_action, game_square=game_square)
             choices = self._careersGame.college_degrees["degreePrograms"]
-            message = f'{player.player_initials} Leaving {board_location.occupation_name}, pending_action: {player.pending_action}'
+            message = f'{player.player_initials} Leaving {board_location.occupation_name}, pending_action: {player.pending_action.value}'
         
         self.log(message)
         result = CommandResult(CommandResult.SUCCESS, message, True, choices=choices)
@@ -1180,4 +1234,17 @@ class CareersGameEngine(object):
         """
         return game_square.square_class is GameSquareClass.OCCUPATION or \
             (player.board_location.occupation_name is not None and player.board_location.occupation_name==game_square.name)
+    
+    def _resolve_pending(self, player:Player):
+        '''Is there a pending action for this player? This might include a pending penalty.
+            clear pending_action, pending_amount, pending_game_square and pending_dice
+        '''
+        game_square = self._careersGame.get_game_square(player.board_location)
+        if player.pending_action is not None:
+            if game_square.special_processing is not None and player.pending_action is game_square.special_processing.processing_type:
+                if game_square.special_processing.penalty > 0:
+                    if player.pending_action==SpecialProcessingType.BUY_HEARTS and player.happiness > 0:
+                        player.add_hearts(-game_square.special_processing.penalty)
+            player.clear_pending()
+    
     

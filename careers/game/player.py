@@ -8,6 +8,7 @@ from game.careersObject import CareersObject
 from game.boardLocation import BoardLocation
 from game.opportunityCard import OpportunityCard
 from game.experienceCard import ExperienceCard
+from game.gameConstants import PendingAction
 from datetime import datetime
 from typing import Dict, List, Union
 import json
@@ -295,11 +296,11 @@ class Player(CareersObject):
         self._can_use_opportunity = value
     
     @property
-    def pending_action(self) -> str:
+    def pending_action(self) -> PendingAction:
         return self._pending_action
     
     @pending_action.setter
-    def pending_action(self, value:str):
+    def pending_action(self, value:PendingAction):
         self._pending_action = value
     
     @property  
@@ -319,14 +320,18 @@ class Player(CareersObject):
         self._pending_game_square = value
         
     @property
-    def pending_dice(self):
+    def pending_dice(self) ->Union[int,List[int]]:
         return self._pending_dice
     
     @pending_dice.setter
-    def pending_dice(self, value:int):
+    def pending_dice(self, value:Union[int,List[int]]):
+        '''Set pending dice for the current pending_action.
+            This can be an int to represent the number or spaces,
+            or the actual dice roll as a List.
+        '''
         self._pending_dice = value
         
-    def set_pending(self, action, game_square=None, amount:SPECIAL_PROCESSING=None, dice:int=0):
+    def set_pending(self, action:PendingAction, game_square=None, amount:SPECIAL_PROCESSING=None, dice:Union[int,List[int]]=0):
         self.pending_action = action
         self.pending_game_square = game_square
         self.pending_amount = amount
@@ -437,6 +442,18 @@ class Player(CareersObject):
                 nstars = -self.fame
         self._fame.append(self.fame + nstars)
         
+    def add_points(self, what:str, qty:int):
+        '''Add hearts, stars or cash
+        '''
+        if 'hearts' in what:
+            self.add_hearts(qty)
+        elif 'stars' in what:
+            self.add_stars(qty)
+        elif 'cash' in what:
+            self.add_cash(qty)
+        else:
+            raise AttributeError(f'{what} is not a valid choice')
+        
     def add_cash(self, money):
         """Adds cash to the players cash-on-hand.
             This can be negative if losing cash.
@@ -509,7 +526,9 @@ class Player(CareersObject):
         v = self.get_total_loans()
         pending_action = self.pending_action if self.pending_action is not None else "None"
         fstring = f'''salary:{self.salary}, Cash: {self.cash},  Fame: {self.fame}, Happiness: {self.happiness}, 
-Insured: {self.is_insured}, Unemployed: {self.is_unemployed}, Sick: {self.is_sick}, Pending action: {pending_action}, Pending amount: {self.pending_amount} '''
+Insured: {self.is_insured}, Unemployed: {self.is_unemployed}, Sick: {self.is_sick}, 
+Pending action: {pending_action}, Pending amount: {self.pending_amount} Pending dice: {self.pending_dice} '''
+
         if self.cash < 0:
             fstring = f'{fstring}\nALERT: You have negative cash amount and must declare bankruptcy OR borrow the needed funds from another player!!'
         if include_successFormula:
@@ -527,6 +546,13 @@ Insured: {self.is_insured}, Unemployed: {self.is_unemployed}, Sick: {self.is_sic
     
     def _set_starting_board_location(self):
         self._board_location = BoardLocation(border_square_number=0, border_square_name="Payday", occupation_name=None, occupation_square_number=0 )
+        
+    def clear_pending(self):
+        self._pending_action = None
+        self._pending_amount = 0
+        self._pending_game_square = None
+        self._pending_dice = 0
+        self._on_holiday = False
     
     def info(self):
         return  f' "name" : "{self.player_name}",  "number" : "{self.number}",  "initials" : "{self.player_initials}"'

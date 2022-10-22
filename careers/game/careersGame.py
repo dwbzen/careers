@@ -23,6 +23,7 @@ from game.careersObject import CareersObject
 from threading import Lock
 from game.boardLocation import BoardLocation
 from game.gameParameters import GameParameters
+from game.gameConstants import GameConstants
 
 class CareersGame(CareersObject):
     """
@@ -91,7 +92,7 @@ class CareersGame(CareersObject):
         #
         self._game_state = GameState(self._gameId, total_points, self._game_type)
 
-        
+        self._game_constants = GameConstants({'edition':edition_name})
 
         
     def _load_game_configuration(self):
@@ -266,6 +267,10 @@ class CareersGame(CareersObject):
     @property
     def college_degrees(self):
         return self._college_degrees
+    
+    @property
+    def game_constants(self) -> GameConstants:
+        return self._game_constants
    
     def add_player(self, aplayer:Player):
         self.game_state.add_player(aplayer)
