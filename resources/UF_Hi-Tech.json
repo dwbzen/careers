@@ -55,6 +55,7 @@
 			"action_text" : "",
 			"specialProcessing" : {
 				"type" : "shortcut",
+				"pending_action" : "take_shortcut",
 				"next_square" : 9
 			}
 		},

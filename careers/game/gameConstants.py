@@ -15,6 +15,7 @@ class PendingAction(Enum):
     BUY_INSURANCE = "buy_insurance"
     GAMBLE = "gamble"
     STAY_OR_MOVE = "stay_or_move"
+    TAKE_SHORTCUT = "take_shortcut"
 
 class GameConstants(object):
     '''

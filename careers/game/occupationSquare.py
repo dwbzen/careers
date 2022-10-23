@@ -46,7 +46,7 @@ class OccupationSquare(GameSquare):
         self._square_type = OccupationSquareType[occupation_square_dict.get('type', 'regular_square').upper()]    # square type is optional for OccupationSquare
         self.action_text = occupation_square_dict.get('action_text', None)
         self._bonus = occupation_square_dict.get('bonus',0)
-        
+
         
     @property
     def stars(self):
@@ -121,8 +121,8 @@ class OccupationSquare(GameSquare):
             player.add_cash(-payment)       # this will set the bankrupt pending_action if cash is < 0 as a result
         elif sptype is SpecialProcessingType.FAVORS:
             pass    # TODO
-        elif sptype is SpecialProcessingType.SHORTCUT:
-            pass    # TODO
+        elif sptype is SpecialProcessingType.SHORTCUT:    # pending action amount is the square# to goto if the shortcut is taken
+            player.set_pending(self.special_processing.pending_action, self, amount=self.special_processing.next_square)    # TODO
         elif sptype is SpecialProcessingType.CASH_LOSS_OR_UNEMPLOYMENT:
             #
             # if the player's cash is < the amount, put them in Unemployment

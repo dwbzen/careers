@@ -88,8 +88,10 @@ class BorderSquare(GameSquare):
                 if player.opportunity_card.opportunity_type  is OpportunityType.OCCUPATION and player.opportunity_card.destination == self.name:
                     next_action = f'enter {self.name}'
                     result = CommandResult(CommandResult.SUCCESS, f'Entering {self.name}', False, next_action=next_action)
+                else:
+                    result = CommandResult.successfull_result()
             else:
-                result = CommandResult(CommandResult.SUCCESS, "", True)
+                result = CommandResult.successfull_result()
             return result
         
         elif self.square_type is BorderSquareType.ACTION_SQUARE:

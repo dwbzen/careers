@@ -1,0 +1,138 @@
+{
+  "number_opportunity_cards": 5,
+  "opportunity_cards": [
+    {
+      "type": "opportunity",
+      "number": 24,
+      "text": "OPPORTUNITY KNOCKS\nAdvance to the nearest OPPORTUNITY square and roll again"
+    },
+    {
+      "type": "opportunity",
+      "number": 10,
+      "text": "SPECIAL OPPORTUNITY to join Facebook  because of your problem solving skills.\nAll expenses paid and no prior experience required."
+    },
+    {
+      "type": "opportunity",
+      "number": 26,
+      "text": "Get out of Unemployment free\nPlay this card to immediately leave Unemployment."
+    },
+    {
+      "type": "opportunity",
+      "number": 12,
+      "text": "SPECIAL OPPORTUNITY to join ESPN  because of your sports knowledge.\nAll expenses paid and no prior experience required."
+    },
+    {
+      "type": "opportunity",
+      "number": 3,
+      "text": "OPPORTUNITY to join SpaceX\nMeet Normal Requirements"
+    }
+  ],
+  "number_experience_cards": 10,
+  "experience_cards": [
+    {
+      "type": "experience",
+      "number": 4,
+      "spaces": 3,
+      "card_type": "fixed",
+      "range": [
+        3
+      ]
+    },
+    {
+      "type": "experience",
+      "number": 5,
+      "spaces": 4,
+      "card_type": "fixed",
+      "range": [
+        4
+      ]
+    },
+    {
+      "type": "experience",
+      "number": 0,
+      "spaces": 1,
+      "card_type": "fixed",
+      "range": [
+        1
+      ]
+    },
+    {
+      "type": "experience",
+      "number": 4,
+      "spaces": 3,
+      "card_type": "fixed",
+      "range": [
+        3
+      ]
+    },
+    {
+      "type": "experience",
+      "number": 0,
+      "spaces": 1,
+      "card_type": "fixed",
+      "range": [
+        1
+      ]
+    },
+    {
+      "type": "experience",
+      "number": 4,
+      "spaces": 3,
+      "card_type": "fixed",
+      "range": [
+        3
+      ]
+    },
+    {
+      "type": "experience",
+      "number": 2,
+      "spaces": 2,
+      "card_type": "fixed",
+      "range": [
+        2
+      ]
+    },
+    {
+      "type": "experience",
+      "number": 0,
+      "spaces": 1,
+      "card_type": "fixed",
+      "range": [
+        1
+      ]
+    },
+    {
+      "type": "experience",
+      "number": 5,
+      "spaces": 4,
+      "card_type": "fixed",
+      "range": [
+        4
+      ]
+    },
+    {
+      "type": "experience",
+      "number": 11,
+      "spaces": 0,
+      "card_type": "triple_wild",
+      "range": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ]
+    }
+  ],
+  "number_of_degrees": 1,
+  "degrees": {
+    "Marketing": 1
+  }
+}

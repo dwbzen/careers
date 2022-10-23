@@ -571,12 +571,14 @@ class CareersGameEngine(object):
                         player.is_sick = False
                     else:
                         player.is_unemployed = False
+                    player.can_use_opportunity = True
                     message = f'{player.player_initials} paid {amt_needed} and may leave {game_square.name}'
                 else:
                     message = f'{player.player_initials} paid {amount} but needs {amt_needed} and must stay in {game_square.name}'
             else:
                 player.add_cash(-amount)
-                message = f'{player.player_initials} paid {amount}'
+                player.add_savings(amount)
+                message = f'{player.player_initials} deposited {amount} into savings'
             return CommandResult(CommandResult.SUCCESS, message, True)
         else:
             message = f'{player.player_initials} has insufficient funds to cover {amount} and must either borrow cash from another player or declare bankruptcy or remain in Hospital/Unemployment'
@@ -817,8 +819,14 @@ class CareersGameEngine(object):
                 else:   # move off Holiday
                     player.on_holiday = False
                     result = self._roll(player, player.pending_dice)
+            elif what == PendingAction.TAKE_SHORTCUT.value:   # yes=take the shortcut - TODO
+                if choice.lower() == "yes":
+                    result = self._goto(player.pending_amount, player)
+                else:
+                    player.clear_pending()
+                    result = self.roll()
             else:
-                result = CommandResult(CommandResult.ERROR, f'Sorry {player.player_initials}, "{what}" is an invalid pending action!', False)
+                result = CommandResult(CommandResult.ERROR, f'Sorry {player.player_initials}, "{what}" is an invalid or unimplemented pending action!', False)
         else:
             result = CommandResult(CommandResult.ERROR, f'Nothing to resolve for {what}', False)
 

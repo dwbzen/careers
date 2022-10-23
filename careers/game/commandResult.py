@@ -136,4 +136,8 @@ class CommandResult(CareersObject):
     def to_JSON(self):
         jstr = json.dumps(self.to_dict())
         return jstr
+    
+    @staticmethod
+    def successfull_result(message=""):
+        return CommandResult(CommandResult.SUCCESS, message, True)
         

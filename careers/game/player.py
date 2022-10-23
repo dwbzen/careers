@@ -70,7 +70,8 @@ class Player(CareersObject):
         self._my_experience_cards = []       # list of ExperienceCards this player holds
         self._my_opportunity_cards = []      # list of OpportunityCards this player holds
         self._happiness = [0]                # record of happiness (hearts) earned. Cumulative amounts, total is happiness[-1]
-        self._fame = [0]                     # record of fame (stars) earned. Cumulative amounts, total is fame[-1]        
+        self._fame = [0]                     # record of fame (stars) earned. Cumulative amounts, total is fame[-1]
+        self._savings = 0                    # savings account - populated with "pay", draw funds with "withdraw"
     
     @property
     def player_name(self):
@@ -330,6 +331,21 @@ class Player(CareersObject):
             or the actual dice roll as a List.
         '''
         self._pending_dice = value
+    
+    @property
+    def savings(self) ->int:
+        return self._savings
+    
+    @savings.setter
+    def savings(self, value:int):
+        self._savings = value
+        
+    def add_savings(self, amount:int):
+        self._savings = self._savings + amount
+        
+    def withdraw(self, amount:int) ->int:
+        amt = amount if amount <= self.savings else self.savings
+        return amt
         
     def set_pending(self, action:PendingAction, game_square=None, amount:SPECIAL_PROCESSING=None, dice:Union[int,List[int]]=0):
         self.pending_action = action
@@ -524,7 +540,7 @@ class Player(CareersObject):
     
     def player_info(self, include_successFormula=False):
         v = self.get_total_loans()
-        pending_action = self.pending_action if self.pending_action is not None else "None"
+        pending_action = self.pending_action.value if self.pending_action is not None else "None"
         fstring = f'''salary:{self.salary}, Cash: {self.cash},  Fame: {self.fame}, Happiness: {self.happiness}, 
 Insured: {self.is_insured}, Unemployed: {self.is_unemployed}, Sick: {self.is_sick}, 
 Pending action: {pending_action}, Pending amount: {self.pending_amount} Pending dice: {self.pending_dice} '''
