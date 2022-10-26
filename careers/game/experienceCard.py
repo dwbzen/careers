@@ -79,15 +79,16 @@ class ExperienceCard(CareersObject):
         else:
             return self.card_type.value
         
-    def to_dict(self):
+    def to_dict(self, include_range=True):
         cd = {"type":"experience", "number":self.number}
         cd["spaces"] = self.spaces
         cd["card_type"] = self.card_type.value
         
-        if self.card_type is ExperienceType.FIXED:
-            cd["range"] = list(range(self.spaces, self.spaces+1))
-        else:
-            cd["range"] = self.range
+        if include_range:
+            if self.card_type is ExperienceType.FIXED:
+                cd["range"] = list(range(self.spaces, self.spaces+1))
+            else:
+                cd["range"] = self.range
 
         return cd
 

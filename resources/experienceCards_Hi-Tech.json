@@ -5,19 +5,19 @@
 	],
 	"types" : [
 		{
-			"type" : "fixed",
+			"card_type" : "fixed",
 			"Help" : "Advance a fixed number of spaces as indicated by 'spaces'. Range is 1 to 7."
 		},
 		{
-			"type" : "one_die_wild",
+			"card_type" : "one_die_wild",
 			"Help" : "Advance the number of spaces chosen by the player. Can be used only when on an occupation path. Range is 1 to 6."
 		},
 		{
-			"type" : "two_die_wild",
+			"card_type" : "two_die_wild",
 			"Help" : "Advance the number of spaces chosen by the player. Can be used only on border squares. Range is 2 to 12."
 		},
 		{
-			"type" : "triple_wild",
+			"card_type" : "triple_wild",
 			"Help" : "Can be used as a 1- or 2- die wild card. Range is 1 to 6 on an occupation path, 2 to 12 on a border square."
 		}
 	],
@@ -25,73 +25,73 @@
 		{
 			"number" : 0,
 			"spaces" : 1,
-			"type" : "fixed",
+			"card_type" : "fixed",
 			"quantity" : 8
 		},
 		{
 			"number" : 1,
 			"spaces" : -1,
-			"type" : "fixed",
+			"card_type" : "fixed",
 			"quantity" : 2
 		},
 		{
 			"number" : 2,
 			"spaces" : 2,
-			"type" : "fixed",
+			"card_type" : "fixed",
 			"quantity" : 8
 		},
 		{
 			"number" : 3,
 			"spaces" : -2,
-			"type" : "fixed",
-			"quantity" : 2
+			"card_type" : "fixed",
+			"quantity" : 10
 		},
 		{
 			"number" : 4,
 			"spaces" : 3,
-			"type" : "fixed",
+			"card_type" : "fixed",
 			"quantity" : 6
 		},
 		{
 			"number" : 5,
 			"spaces" : 4,
-			"type" : "fixed",
+			"card_type" : "fixed",
 			"quantity" : 6
 		},
 		{
 			"number" : 6,
 			"spaces" : 5,
-			"type" : "fixed",
+			"card_type" : "fixed",
 			"quantity" : 4
 		},
 		{
 			"number" : 7,
 			"spaces" : 6,
-			"type" : "fixed",
+			"card_type" : "fixed",
 			"quantity" : 4
 		},
 		{
 			"number" : 8,
 			"spaces" : 7,
-			"type" : "fixed",
+			"card_type" : "fixed",
 			"quantity" : 2
 		},
 		{
 			"number" : 9,
 			"spaces" : 0,
-			"type" : "one_die_wild",
+			"card_type" : "one_die_wild",
 			"quantity" : 4
 		},
 		{
 			"number" : 10,
 			"spaces" : 0,
-			"type" : "two_die_wild",
+			"card_type" : "two_die_wild",
 			"quantity" : 4
 		},
 		{
 			"number" : 11,
 			"spaces" : 0,
-			"type" : "triple_wild",
+			"card_type" : "triple_wild",
 			"quantity" : 4
 		}
 	]

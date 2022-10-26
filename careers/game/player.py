@@ -404,7 +404,7 @@ class Player(CareersObject):
                 if spaces > 0:
                     cards_dict[key] = {"quantity" : 1, "spaces" : str(spaces), "card" : card}
                 else:
-                    cards_dict[key] = {"quantity" : 1, "spaces" : card.type, "card" : card}
+                    cards_dict[key] = {"quantity" : 1, "spaces" : card.card_type, "card" : card}
         return cards_dict
     
     def used_opportunity(self):

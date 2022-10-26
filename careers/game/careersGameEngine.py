@@ -14,7 +14,7 @@ from game.careersGame import CareersGame
 from game.commandResult import CommandResult
 from game.player import  Player
 from game.opportunityCard import OpportunityCard, OpportunityType, OpportunityActionType
-from game.experienceCard import ExperienceCard
+from game.experienceCard import ExperienceCard, ExperienceType
 from game.boardLocation import BoardLocation
 from game.successFormula import SuccessFormula
 from game.borderSquare import BorderSquare, BorderSquareType
@@ -244,7 +244,7 @@ class CareersGameEngine(object):
     def _roll(self, player, dice:List[int]) -> CommandResult:
         num_spaces = sum(dice)
         next_square_number = self._get_next_square_number(player, num_spaces)
-        message = f' {player.player_initials}  rolled {num_spaces} {dice}'
+        message = f' {player.player_initials}  rolled {num_spaces} {dice}, next_square_number {next_square_number}'
         self.log(message)
         #
         # check if player is on a holiday
@@ -274,7 +274,7 @@ class CareersGameEngine(object):
                 result = self.goto(next_square_number)
         return result
     
-    def use(self, what, card_number, spaces=0) -> CommandResult:
+    def use(self, what, card_number, spaces:Any=0) -> CommandResult:
         """Use an Experience or Opportunity card in place of rolling the die.
             Experience and Opportunity cards are identified (through the UI) by number, which uniquely
             identifies the card function. i.e. Cards having the same "number" are identical
@@ -311,21 +311,24 @@ class CareersGameEngine(object):
                     player.can_use_opportunity = False
                     
                 result = self._execute_opportunity_card(player, opportunityCard=thecard)
+                
         elif what.lower() == 'experience' and player.can_roll:
             cards = player.get_experience_cards()   # dict with number as the key
             thecard_dict = cards.get(card_number, None)
-            if thecard is None:    # no such card
+            if thecard_dict is None:    # no such card
                 result = CommandResult(CommandResult.ERROR, f"No {what} card exists with number {card_number} ", False)
             else:
                 thecard = thecard_dict['card']
                 player.experience_card = thecard
-                result = self._execute_experience_card(player, experienceCard=thecard, spaces=spaces)
+                result = self._execute_experience_card(player, experienceCard=thecard, roll=spaces)
+                
         elif what.lower() == "roll":        # use a pre-existing dice roll.
             # card_number is a string having the dice roll
             self.log(f'use roll {card_number}')
             diestr = card_number.lstrip(' [').rstrip('] ').split(",")
             die = [int(s) for s in diestr]
             result = self._roll(player, die)
+            
         else:
             result = CommandResult(CommandResult.ERROR, f"use can't use a '{what}' here ", False)
             
@@ -669,8 +672,20 @@ class CareersGameEngine(object):
             self._careersGame.add_player(player)        # adds to GameState
             if player.number == 0:      # the first player can roll
                 player.can_roll = True
-            
+
+            starting_experience = self.careersGame.game_parameters.get_param('starting_experience_cards')
+            for i in range(starting_experience):
+                thecard = self.careersGame.experience_cards.draw()
+                player.add_experience_card(thecard)
+                
+            starting_opportunities = self.careersGame.game_parameters.get_param('starting_opportunity_cards')
+            if starting_opportunities > 0:
+                for i in range(starting_opportunities):
+                    thecard = self._careersGame.opportunities.draw()
+                    player.add_opportunity_card(thecard)
+                
             message = f'Player "{name}" "{initials} number: {player.number}" added'
+            
         else:    
             # adds a degree in the current (or named) player's degree programs
             # name is the name of the degree program
@@ -774,6 +789,9 @@ class CareersGameEngine(object):
         message = f'{what}:{choice}'
         player = self.game_state.current_player
         game_square = self.get_player_game_square(player)
+        
+        if what == "*" and player.pending_action is not None:    # resolve the current pending action
+            what = player.pending_action.value
         # TODO - finish
         if player.pending_action.value == what:
             if what == PendingAction.SELECT_DEGREE.value:  # the degree program chosen is the 'choice'
@@ -825,6 +843,18 @@ class CareersGameEngine(object):
                 else:
                     player.clear_pending()
                     result = self.roll()
+            elif what in PendingAction.CASH_LOSS_OR_UNEMPLOYMENT.value:
+                #
+                # the player can afford the amount - question is what is their choice? 
+                # pay or go (to unemployment)
+                #
+                self.log(f'{player.player_initials} resolve {what} choice is "{choice}"')
+                if choice.lower() == 'pay':
+                    amount = game_square.special_processing.amount
+                    player.add_cash(-amount)
+                    result = CommandResult(CommandResult.SUCCESS, f'You paid {amount} to avoid Unemployment', True)
+                else:    # go to Unemployment
+                    result = self.goto("Unemployment")
             else:
                 result = CommandResult(CommandResult.ERROR, f'Sorry {player.player_initials}, "{what}" is an invalid or unimplemented pending action!', False)
         else:
@@ -909,18 +939,59 @@ class CareersGameEngine(object):
             # If there is a next_action, then execute it
             #
             self._execute_next_action(player, result)
+            player.used_opportunity()
             return result                   
     
-    def _execute_experience_card(self,  player:Player, experienceCard:ExperienceCard, spaces=0) -> CommandResult:
-            player.experience_card = experienceCard
-            nspaces = experienceCard.spaces
-            if experienceCard.spaces == 0 and experienceCard.type != 'fixed':    # must be a wild card
-                nspaces = spaces
-
-            message = f'{player.player_initials} Moving: {nspaces} spaces'
-            self.log(message)
-            result = CommandResult(CommandResult.SUCCESS, message, False)   #  TODO
-            return result        
+    def _execute_experience_card(self,  player:Player, experienceCard:ExperienceCard, roll:Any="") -> CommandResult:
+        '''Executes an Experience card.
+            Command format is "use experience [roll]"
+            roll is required only for wild cards and specifies the dice as a csv list, for example "4,5" to roll a 9, or "3" as a single die roll
+            If the experience is a wild card, it must be appropriate to the class of the current_game square.
+            one_die_wild - can only be used when the player is on an occupation square
+            two_die_wild - can only be used on a border square
+            triple_wild - can be used in both
+            
+        '''
+        player.experience_card = experienceCard
+        nspaces = experienceCard.spaces
+        game_square = self.get_player_game_square(player)    # determines what wild card is valid
+        roll = str(roll)    # roll can be an int or a str
+        
+        if experienceCard.card_type is ExperienceType.FIXED:   # could be negative for moving backwards
+            dice = [nspaces]
+        else:    # must be a wild card - ?, ?? or ???
+            in_occupation = game_square.square_class is GameSquareClass.OCCUPATION
+            if in_occupation and (experienceCard.card_type is ExperienceType.TWO_DIE_WILD or \
+             (not in_occupation and experienceCard.card_type is ExperienceType.ONE_DIE_WILD)):
+                message = f'Experience type {experienceCard.card_type.value} cannot be used for {game_square.square_class.value} '
+                self.log(message)
+                return CommandResult(CommandResult.ERROR, message, False)
+            else:   # simulate a roll of 1 or 2 die
+                if len(roll) == 0:
+                    message = f'A roll must be specified for {experienceCard.card_type.value}'
+                    self.log(message)
+                    return CommandResult(CommandResult.ERROR, message, False)
+                else:
+                    x = roll.split(',')
+                    ndie = len(x)
+                    if ndie == 1 and experienceCard.card_type is ExperienceType.TWO_DIE_WILD or \
+                       ndie == 2 and experienceCard.card_type is ExperienceType.ONE_DIE_WILD:
+                        message = f'Roll {x} cannot be applied to {experienceCard.card_type.value}'
+                        self.log(message)
+                        return CommandResult(CommandResult.ERROR, message, False)
+                    
+                    dice = [int(c) for c in x]
+                    nspaces = sum(dice)
+                    
+        message = f'{player.player_initials} roll: {dice}, moving: {nspaces} spaces'
+        self.log(message)
+        
+        result = self._roll(player, dice)
+        #
+        # remove the used experience from the player's deck
+        #
+        player.used_experience()
+        return result        
     
     def execute_game_square(self, player:Player, board_location:BoardLocation) -> CommandResult:
         """Executes the actions associated with a given BoardLocation and Player
@@ -968,7 +1039,9 @@ class CareersGameEngine(object):
         """Gets the next square number given the number of spaces to advance.
             Arguments:
                 player - the Player
-                num_spaces - the number of spaces to advance. Must be >0 to go anywhere, but this doesn't check.
+                num_spaces - the number of spaces to advance. abs(num_spaces) Must be >0 to go anywhere, but this doesn't check.
+                    If num_spaces <0, this is a move backwards.
+                    
             Returns: the next square number, depending on whether the player is currently on a BorderSquare or OccupationSquare
             NOTE that the square number returned could be out of bounds for the occupation or along the border.
             This is handled by goto() which does the actual placement.
@@ -1028,9 +1101,17 @@ class CareersGameEngine(object):
                 
         else:   # goto designated border square. Possible that square_number == the player's current position
                 # in that case the player stays on that space. For example, on Holiday and they choose to stay put.
+                # need to take into account if the player moved backwards using an Experience card
+            moved_backwards = True if player.experience_card is not None \
+                and player.experience_card.card_type is ExperienceType.FIXED \
+                and player.experience_card.spaces < 0 else False
+            current_square_number = board_location.border_square_number
+            board_size = self._careersGame.game_board.game_layout_dimensions['size']   # total number of squares, 42 is typical
+            if square_number < 0:
+                square_number = board_size + square_number
             if square_number >= 0 and \
-               square_number < self._careersGame.game_board.game_layout_dimensions['size'] and \
-               square_number >= board_location.border_square_number :
+               square_number < board_size and \
+               (square_number >= current_square_number or (square_number < current_square_number and moved_backwards)):
                 player = self.game_state.current_player
                 border_square = self._careersGame.get_border_square(square_number)
                 board_location.border_square_number = square_number

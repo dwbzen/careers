@@ -8,38 +8,38 @@
 	],
 	"types" : [
 		{
-			"type" : "occupation",
+			"card_type" : "occupation",
 			"Help" : "Advance to the occupation named as 'destination'. Player enters immediately."
 		},
 		{
-			"type" : "occupation_choice",
+			"card_type" : "occupation_choice",
 			"Help" : "Advance to the occupation chosen by the player. Player enters immediately."
 		},
 		{
-			"type" : "border_square",
+			"card_type" : "border_square",
 			"Help" : "Advance to the border square named as 'destination'. Subsequent player action depends on the landing square."
 		},
 		{
-			"type" : "border_square_choice",
+			"card_type" : "border_square_choice",
 			"Help" : "Advance to any border square chosen by the player. Subsequent player action depends on the landing square."
 		},
 		{
-			"type" : "action",
+			"card_type" : "action",
 			"Help" : "Non-movement player action. There are three action types: extra_turn, leave_unemployment, collect_experience."
 		},
 		{
-			"type" : "travel",
+			"card_type" : "travel",
 			"Help" : "Advance to the nearest Amtrak station and roll again."
 		},
 		{
-			"type" : "opportunity",
+			"card_type" : "opportunity",
 			"Help" : "Advance to the nearest Opportunity space and roll again."
 		}
 	],
 	"cards" : [
 		{
 			"number" : 0,
-			"type" : "occupation",
+			"card_type" : "occupation",
 			"destination" : "FMC",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
@@ -48,7 +48,7 @@
 		},
 		{
 			"number" : 1,
-			"type" : "occupation",
+			"card_type" : "occupation",
 			"destination" : "Amazon",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
@@ -57,7 +57,7 @@
 		},
 		{
 			"number" : 2,
-			"type" : "occupation",
+			"card_type" : "occupation",
 			"destination" : "Pfizer",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
@@ -66,7 +66,7 @@
 		},
 		{
 			"number" : 3,
-			"type" : "occupation",
+			"card_type" : "occupation",
 			"destination" : "SpaceX",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
@@ -75,7 +75,7 @@
 		},
 		{
 			"number" : 4,
-			"type" : "occupation",
+			"card_type" : "occupation",
 			"destination" : "SpaceX",
 			"expenses_paid" : 1,
 			"double_happiness" : 0,
@@ -84,7 +84,7 @@
 		},
 		{
 			"number" : 5,
-			"type" : "occupation",
+			"card_type" : "occupation",
 			"destination" : "Disney",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
@@ -93,7 +93,7 @@
 		},
 		{
 			"number" : 6,
-			"type" : "occupation",
+			"card_type" : "occupation",
 			"destination" : "Disney",
 			"expenses_paid" : 0,
 			"double_happiness" : 1,
@@ -102,7 +102,7 @@
 		},
 		{
 			"number" : 7,
-			"type" : "occupation",
+			"card_type" : "occupation",
 			"destination" : "Google",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
@@ -111,7 +111,7 @@
 		},
 		{
 			"number" : 8,
-			"type" : "occupation",
+			"card_type" : "occupation",
 			"destination" : "Google",
 			"expenses_paid" : 1,
 			"double_happiness" : 0,
@@ -120,7 +120,7 @@
 		},
 		{
 			"number" : 9,
-			"type" : "occupation",
+			"card_type" : "occupation",
 			"destination" : "Facebook",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
@@ -129,7 +129,7 @@
 		},
 		{
 			"number" : 10,
-			"type" : "occupation",
+			"card_type" : "occupation",
 			"destination" : "Facebook",
 			"expenses_paid" : 1,
 			"double_happiness" : 0,
@@ -138,7 +138,7 @@
 		},
 		{
 			"number" : 11,
-			"type" : "occupation",
+			"card_type" : "occupation",
 			"destination" : "ESPN",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
@@ -147,7 +147,7 @@
 		},
 		{
 			"number" : 12,
-			"type" : "occupation",
+			"card_type" : "occupation",
 			"destination" : "ESPN",
 			"expenses_paid" : 1,
 			"double_happiness" : 0,
@@ -156,7 +156,7 @@
 		},
 		{
 			"number" : 13,
-			"type" : "occupation",
+			"card_type" : "occupation",
 			"destination" : "UF",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
@@ -165,7 +165,7 @@
 		},
 		{
 			"number" : 14,
-			"type" : "occupation",
+			"card_type" : "occupation",
 			"destination" : "UF",
 			"expenses_paid" : 1,
 			"double_happiness" : 0,
@@ -174,7 +174,7 @@
 		},
 		{
 			"number" : 15,
-			"type" : "occupation",
+			"card_type" : "occupation",
 			"destination" : "ListerAndBacon",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
@@ -183,7 +183,7 @@
 		},
 		{
 			"number" : 16,
-			"type" : "occupation_choice",
+			"card_type" : "occupation_choice",
 			"destination" : "",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
@@ -192,7 +192,7 @@
 		},
 		{
 			"number" : 17,
-			"type" : "border_square_choice",
+			"card_type" : "border_square_choice",
 			"destination" : "",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
@@ -201,7 +201,7 @@
 		},
 		{
 			"number" : 18,
-			"type" : "border_square",
+			"card_type" : "border_square",
 			"destination" : "BuyInsurance",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
@@ -210,7 +210,7 @@
 		},
 		{
 			"number" : 19,
-			"type" : "border_square",
+			"card_type" : "border_square",
 			"destination" : "SpringBreak",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
@@ -219,7 +219,7 @@
 		},
 		{
 			"number" : 20,
-			"type" : "border_square",
+			"card_type" : "border_square",
 			"destination" : "Payday",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
@@ -228,7 +228,7 @@
 		},
 		{
 			"number" : 21,
-			"type" : "border_square",
+			"card_type" : "border_square",
 			"destination" : "GambleInVegas",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
@@ -237,7 +237,7 @@
 		},
 		{
 			"number" : 22,
-			"type" : "border_square",
+			"card_type" : "border_square",
 			"destination" : "BuyExperience",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
@@ -246,7 +246,7 @@
 		},
 		{
 			"number" : 23,
-			"type" : "travel",
+			"card_type" : "travel",
 			"destination" : "Amtrak",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
@@ -255,7 +255,7 @@
 		},
 		{
 			"number" : 24,
-			"type" : "opportunity",
+			"card_type" : "opportunity",
 			"destination" : "Opportunity",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
@@ -264,7 +264,7 @@
 		},
 		{
 			"number" : 25,
-			"type" : "action", 
+			"card_type" : "action", 
 			"action_type" : "collect_experience",
 			"destination" : "",
 			"expenses_paid" : 0,
@@ -274,7 +274,7 @@
 		},
 		{
 			"number" : 26,
-			"type" : "action",
+			"card_type" : "action",
 			"action_type" : "leave_unemployment",
 			"destination" : "",
 			"expenses_paid" : 0,
@@ -284,7 +284,7 @@
 		},
 		{
 			"number" : 27,
-			"type" : "action", 
+			"card_type" : "action", 
 			"action_type" : "extra_turn",
 			"destination" : "",
 			"expenses_paid" : 0,

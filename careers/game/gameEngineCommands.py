@@ -180,7 +180,7 @@ class GameEngineCommands(object):
             ncards = len(player.my_experience_cards)
             list_dict['number_experience_cards'] = ncards
             if ncards > 0:
-                list_dict['experience_cards'] = [cd.to_dict() for cd in player.my_experience_cards]
+                list_dict['experience_cards'] = [cd.to_dict(include_range=False) for cd in player.my_experience_cards]
                 
         if what.lower().startswith('degree') or listall:    # list degrees completed
             ndegrees = len(player.my_degrees)
@@ -194,7 +194,7 @@ class GameEngineCommands(object):
                 list_dict['occupations_completed'] = noccupations
                 list_dict['occupations'] = player.occupation_record
             
-        message = json.dumps(list_dict, indent=2)
+        message = json.dumps(list_dict, indent=2, separators=(',', ':'), sort_keys=True)
         result = CommandResult(CommandResult.SUCCESS, message, False)
         return result   
 
@@ -234,16 +234,17 @@ class GameEngineCommands(object):
             # Now execute this Opportunity card
             #
             #board_location = player.board_location
-            opportunity_type = opportunityCard.opportunity_type   # one of 7 types: OpportunityType enum
+            opportunity_type = opportunityCard.opportunity_type   #   OpportunityType enum
+            result = CommandResult(CommandResult.SUCCESS, message, False)   #  TODO
             
             if opportunity_type is OpportunityType.OCCUPATION:
                 occupation = self.careersGame.get_occupation(opportunityCard.destination)
                 if self.can_enter(occupation, player):    # okay to enter, so make it so
                     next_square_number = occupation.entry_square_number
                     next_action = f'goto {next_square_number};roll' 
-                    return CommandResult(CommandResult.EXECUTE_NEXT, f'Advance to  {occupation.name}', False, next_action=next_action)
+                    result = CommandResult(CommandResult.EXECUTE_NEXT, f'Advance to  {occupation.name}', False, next_action=next_action)
                 else:
-                    return CommandResult(CommandResult.ERROR, f'Cannot use {opportunity_type} to enter {occupation.name}', False)
+                    result = CommandResult(CommandResult.ERROR, f'Cannot use {opportunity_type} to enter {occupation.name}', False)
             
             elif opportunity_type is OpportunityType.OCCUPATION_CHOICE:
                 pass
@@ -258,9 +259,8 @@ class GameEngineCommands(object):
             elif opportunity_type is OpportunityType.OPPORTUNITY:
                 pass
             else:
-                return CommandResult(CommandResult.ERROR, f'Opportunity type: {opportunity_type} not yet implemented', False)
+                result = CommandResult(CommandResult.ERROR, f'Opportunity type: {opportunity_type} not yet implemented', False)
             
-            result = CommandResult(CommandResult.SUCCESS, message, False)   #  TODO
             return result
     
     def save_game(self, gamefile_base_name:str, game_id:str, how='json') -> CommandResult:

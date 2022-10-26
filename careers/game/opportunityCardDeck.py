@@ -31,7 +31,7 @@ class OpportunityCardDeck(CardDeck):
         """
         number = card_spec['number']
         destination = card_spec['destination']
-        ctype = card_spec['type']
+        ctype = card_spec['card_type']
         expenses_paid = card_spec.get('expenses_paid', 0) == 1
         double_happiness = card_spec.get('double_happiness', 0) == 1
 

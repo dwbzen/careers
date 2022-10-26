@@ -55,6 +55,7 @@
 			"action_text" : "Pay $2000 OR go on Unemployment",
 			"specialProcessing" : {
 				"type" : "cash_loss_or_unemployment",
+				"pending_action" : "cash_loss_or_unemployment",
 				"amount" : 2000,
 				"of" : "cash"
 			}

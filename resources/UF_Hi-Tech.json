@@ -95,6 +95,7 @@
 			"action_text" : "Pay $5000 for tutoring OR go to Unemployment",
 			"specialProcessing" : {
 				"type" : "cash_loss_or_unemployment",
+				"pending_action" : "cash_loss_or_unemployment",
 				"amount" : 5000,
 				"of" : "cash"
 			}
