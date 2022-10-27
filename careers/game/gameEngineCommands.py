@@ -10,6 +10,7 @@ from game.player import Player
 from game.gameUtils import GameUtils
 from game.opportunityCard import OpportunityCard, OpportunityType
 from game.occupation import Occupation
+from game.gameConstants import GameConstants
 
 from typing import Tuple, List
 import joblib
@@ -19,12 +20,7 @@ class GameEngineCommands(object):
     """Implementations of CareersGameEngine commands.
     
     """
-    COMMANDS = ['add', 'bankrupt', 'bump', 'buy', 'create', 'done', 'end', 'enter', 
-                'game_status', 'goto', 'list', 'load', 'next', 'pay', 'perform', 'quit', 'retire', 
-                'roll', 'resolve', 'save', 'saved', 'start', 'status', 'transfer', 'use', 'use_insurance', 
-                'where', 'who']
     
-
     def __init__(self, thegame:CareersGame, logfile_pointer):
         self._careersGame = thegame
         self._game_state = self._careersGame.game_state
@@ -132,7 +128,7 @@ class GameEngineCommands(object):
         command_args = txt.split()
             
         command = command_args[0]
-        if not command in GameEngineCommands.COMMANDS:
+        if not command in GameConstants.COMMANDS:
             return CommandResult(CommandResult.ERROR,  f'Invalid command: "{command}"',  False)
         if len(command_args) > 1:
             args = command_args[1:]

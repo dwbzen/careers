@@ -22,6 +22,11 @@ class GameConstants(object):
     '''
     classdocs
     '''
+    
+    COMMANDS = ['add', 'bankrupt', 'bump', 'buy', 'create', 'done', 'end', 'enter', 
+            'game_status', 'goto', 'info', 'list', 'load', 'next', 'pay', 'perform', 'quit', 'retire', 
+            'roll', 'resolve', 'save', 'saved', 'start', 'status', 'transfer', 'use', 'use_insurance', 
+            'where', 'who']
 
     def __init__(self, params:dict):
         '''

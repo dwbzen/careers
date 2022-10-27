@@ -34,7 +34,7 @@ import os
 class CareersGameEngine(object):
     """CareersGameEngine executes the action(s) associated with each player's turn.
     Valid commands + arguments:
-        command :: <roll> | <use> | <retire> | <bump> | <bankrupt> | <list> | <status> | <quit> | <done> | <end game> |
+        command :: <roll> | <use> | <retire> | <bump> | <bankrupt> | <list> | <status> | <info> | <quit> | <done> | <end game> |
                    <saved games> | <save> | <load> | <query> | <enter> | <goto> | <add> | <use insurance> | <add degree> |
                    <pay> | <transfer> | <game_status> | <create> | <start> | <buy> | <perform>
         <use> :: "use"  <what> <card_number>
@@ -46,7 +46,8 @@ class CareersGameEngine(object):
         <bankrupt> :: "bankrupt"                ;declare bankruptcy
         <list> :: "list"  <card_type> | "occupations"           ;list my opportunities or experience cards, or occupations completed
             <card_type> :: "opportunity" | "experience"
-        <status> :: "status"                    ;display my cash, #hearts, #stars, salary, total points, and success formula
+        <status> :: "status"                    ;display a player's cash, #hearts, #stars, salary, total points, and success formula, pending and loan info
+        <info> :: "info"                        ;returns JSON-formatted player info
         <quit> :: "quit" player_initials        ;current player leaves the game, must include initials
         <done> :: "done" | "next"               ;done with my turn - next player's turn
         <end game> :: "end game"                ;saves the current game state then ends the game
@@ -74,6 +75,7 @@ class CareersGameEngine(object):
         <perform> :: "perform roll <ndice>"      ; roll the dice and return the result without moving
             <ndice> :: 0 | 1 | 2
         <resolve_pending> :: "resolve" choice [pending_amount]    ; resolve a pending action and amount. choice is the player's choice based on the game_square's "pending_action",
+            <choice> :: * | <pending_action>                      ; * = the current pending_action, else the pending_action to resolve such as "buy_hearts"
     """
     
     
@@ -407,8 +409,20 @@ class CareersGameEngine(object):
     def status(self, initials:str=None) -> CommandResult:
         player = self.game_state.current_player if initials is None else self.get_player(initials)
         message = player.player_info(include_successFormula=True)
-        result = CommandResult(CommandResult.SUCCESS,  message, False)
-        return result       
+        result = CommandResult(CommandResult.SUCCESS,  message, True)
+        return result
+    
+    def info(self, initials:str=None) -> CommandResult:
+        '''Gets player info in JSON format.
+            Arguments:
+                initials - optional player player_initials, default if not specified is the current player
+            Returns:
+                CommandResult where the message is JSON-formatted player_info (same information returned by 'status') 
+        '''
+        player = self.game_state.current_player if initials is None else self.get_player(initials)
+        message = player.player_info(include_successFormula=True, as_json=True)
+        result = CommandResult(CommandResult.SUCCESS,  message, True)
+        return result
     
     def done(self) -> CommandResult:
         """End my turn and go to the next player
@@ -664,7 +678,7 @@ class CareersGameEngine(object):
     
         """
         if what == 'player':
-            sf = SuccessFormula(stars=stars, hearts=hearts, cash=cash)
+            sf = SuccessFormula(stars=stars, hearts=hearts, money=cash)
             player = Player(name=name, initials=initials)
             player.success_formula = sf
             player.set_starting_parameters(cash=self.careersGame.game_parameters.get_param('starting_cash'), salary=self._careersGame.game_parameters.get_param('starting_salary') )
@@ -891,7 +905,7 @@ class CareersGameEngine(object):
             and it must match the current location's special processing type
         """
         amount = int(amount_arg)
-        qty = int(qty_arg)
+        qty = 1 if qty_arg is None else int(qty_arg)
 
         if player.cash < amount:
             return CommandResult(CommandResult.ERROR, f'Insufficient funds {self.currency_symbol}{player.cash} for amount {self.currency_symbol}{amount}', True)

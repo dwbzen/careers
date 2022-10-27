@@ -110,11 +110,11 @@ class Player(CareersObject):
             self.pending_action = 'bankrupt'
     
     @property
-    def success_formula(self):
+    def success_formula(self) -> SuccessFormula:
         return self._success_formula
     
     @success_formula.setter
-    def success_formula(self, value):
+    def success_formula(self, value:SuccessFormula):
         self._success_formula = value
         
     @property
@@ -352,7 +352,13 @@ class Player(CareersObject):
         self.pending_game_square = game_square
         self.pending_amount = amount
         self.pending_dice = dice
-        
+
+    def get_pending(self) ->dict:
+        pact =  self.pending_action.value if self.pending_action is not None else "None"
+        pending_dict = {"pending_action":pact, "pending_amount":self.pending_amount, "pending_dice":self.pending_dice}
+
+        return pending_dict
+
     def set_starting_parameters(self, cash:int, salary:int):
         self._starting_cash = cash
         self._starting_salary = salary
@@ -494,6 +500,11 @@ class Player(CareersObject):
     def loan_points(self):
         return self.get_total_loans() // 1000
     
+    def net_worth(self):
+        '''Net worth is the cash + savings - loans
+        '''
+        return self.savings + self.cash - self.get_total_loans()
+    
     def is_complete(self):
         """Returns True if this players's total points are >= game total points, False otherwise
     
@@ -538,20 +549,35 @@ class Player(CareersObject):
         self._salary_history = [self.salary]
         self._initialize()
     
-    def player_info(self, include_successFormula=False):
+    def player_info(self, include_successFormula=False, as_json=False) ->str:
+        '''Returns key player information.
+            Arguments:
+                include_successFormula - if True, include the player's success formula
+                as_json - if True, return player info as a JSON-formatted string
+        '''
         v = self.get_total_loans()
         pending_action = self.pending_action.value if self.pending_action is not None else "None"
-        fstring = f'''salary:{self.salary}, Cash: {self.cash},  Fame: {self.fame}, Happiness: {self.happiness}, 
-Insured: {self.is_insured}, Unemployed: {self.is_unemployed}, Sick: {self.is_sick}, 
+        net_worth = self.net_worth()
+        info_dict = {"salary":self.salary, "cash":self.cash, "fame":self.fame, "happiness":self.happiness, "points":self.total_points()}
+        info_dict.update( {"insured":self.is_insured, "unemployed":self.is_unemployed, "sick":self.is_sick, "net_worth":net_worth} )
+        info_dict.update( self.get_pending() )
+        
+        fstring = \
+f'''Salary:{self.salary}, Cash: {self.cash},  Fame: {self.fame}, Happiness: {self.happiness}, Points: {self.total_points()}
+Insured: {self.is_insured}, Unemployed: {self.is_unemployed}, Sick: {self.is_sick}, Net worth: {net_worth}
 Pending action: {pending_action}, Pending amount: {self.pending_amount} Pending dice: {self.pending_dice} '''
 
         if self.cash < 0:
             fstring = f'{fstring}\nALERT: You have negative cash amount and must declare bankruptcy OR borrow the needed funds from another player!!'
+            info_dict.update( {"is_bankrupt":True})
         if include_successFormula:
             fstring = f'{fstring}\nSuccess Formula: {self.success_formula}'
+            info_dict.update( self.success_formula.to_dict())
         if v > 0:
             fstring = f'{fstring}\nloans: {v}'
-        return fstring
+            info_dict.update( {"loans":self.loans})
+        
+        return json.dumps(info_dict) if as_json else fstring
     
     def get_current_location(self) -> BoardLocation:
         """Gets the location of this player on the board.
