@@ -34,10 +34,11 @@ class OpportunityCardDeck(CardDeck):
         ctype = card_spec['card_type']
         expenses_paid = card_spec.get('expenses_paid', 0) == 1
         double_happiness = card_spec.get('double_happiness', 0) == 1
+        special_processing = card_spec.get('special_processing', None)
 
         for ncard in range(1, qty+1):
             action_type = card_spec.get("action_type", None)
-            opportunity_card = OpportunityCard(ctype, number, ncard, destination, card_spec['text'], expenses_paid, double_happiness, action_type)
+            opportunity_card = OpportunityCard(ctype, number, ncard, destination, card_spec['text'], expenses_paid, double_happiness, action_type, special_processing)
             self._deck.append(opportunity_card)
 
     @property

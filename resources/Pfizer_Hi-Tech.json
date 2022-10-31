@@ -5,7 +5,7 @@
 		"fullName" : "Pfizer",
 		"background_image" : "occupation_entrance.png",
 		"image" : "Pfizer logo.jpg",
-		"entryFee" : 10000,
+		"entry_fee" : 10000,
 		"size" : 16,
 		"entrance_square_number" : 36,
 		"exit_square_number" : 37,

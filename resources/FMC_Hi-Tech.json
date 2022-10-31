@@ -5,7 +5,7 @@
 		"fullName" : "FMC",
 		"background_image" : "occupation_entrance.png",
 		"image" : "FMC logo.jpg",
-		"entryFee" : 1000,
+		"entry_fee" : 1000,
 		"size" : 12,
 		"entrance_square_number" : 4,
 		"exit_square_number" : 5,

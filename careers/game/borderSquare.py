@@ -125,11 +125,13 @@ class BorderSquare(GameSquare):
                 if sp_type is SpecialProcessingType.UNEMPLOYMENT:
                     player.is_unemployed = True
                     self.update_board_location(player)
+                    player.can_use_opportunity = False
                     result = CommandResult(CommandResult.SUCCESS, f'Player {player.player_initials}: {self.action_text}', True)
                     
                 elif sp_type is SpecialProcessingType.HOSPITAL:
                     player.is_sick = True
                     self.update_board_location(player)
+                    player.can_use_opportunity = False
                     result = CommandResult(CommandResult.SUCCESS, f'Player {player.player_initials}: {self.action_text}', True)
                                       
                 elif sp_type is SpecialProcessingType.PAYDAY:

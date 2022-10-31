@@ -5,7 +5,7 @@
 		"fullName" : "Facebook",
 		"background_image" : "occupation_entrance.png",
 		"image" : "facebook logo.jpg",
-		"entryFee" : 500,
+		"entry_fee" : 500,
 		"size" : 11,
 		"entrance_square_number" : 27,
 		"exit_square_number" : 31,

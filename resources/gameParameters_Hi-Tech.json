@@ -4,10 +4,12 @@
 	"currency" : "dollars",
 	"currency_symbol" : "\u0024",
 	"date_format" : "yyyy-mm-dd",
-	"starting_experience_cards" : 10,
+	"starting_experience_cards" : 2,
 	"starting_opportunity_cards" : 2,
 	"default_game_points" : 100,
 	"timed_game" : 0,
 	"default_game_minutes" : 60,
-	"allow_negative_experience" : 0
+	"allow_negative_experience" : 1,
+	"interest_rate" : 2.5,
+	"early_withdrawal_penalty" : 5.0
 }

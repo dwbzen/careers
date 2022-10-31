@@ -24,6 +24,8 @@ class GameParameters(object):
         self._default_game_points = params.get("default_game_points", 100)
         self._default_game_minutes = params.get("default_game_minutes", 60)
         self._allow_negative_experience = (params.get("allow_negative_experience", 0) == 1)
+        self._interest_rate = params.get("interest_rate", 0.0)
+        self._early_withdrawal_penalty = params.get("early_withdrawal_penalty", 0.0)
     
     def game_parameters(self):
         return self._game_parameters

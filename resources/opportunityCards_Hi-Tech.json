@@ -80,7 +80,7 @@
 			"expenses_paid" : 1,
 			"double_happiness" : 0,
 			"text" : "SPECIAL OPPORTUNITY to join SpaceX because of your technical brilliance.\nAll expenses paid and no prior experience required.",
-			"quantity" : 1
+			"quantity" : 1		
 		},
 		{
 			"number" : 5,
@@ -116,7 +116,7 @@
 			"expenses_paid" : 1,
 			"double_happiness" : 0,
 			"text" : "SPECIAL OPPORTUNITY to join Google because of your technical brilliance. \nAll expenses paid and no prior experience required.",
-			"quantity" :1
+			"quantity" :1			
 		},
 		{
 			"number" : 9,
@@ -134,7 +134,7 @@
 			"expenses_paid" : 1,
 			"double_happiness" : 0,
 			"text" : "SPECIAL OPPORTUNITY to join Facebook  because of your problem solving skills.\nAll expenses paid and no prior experience required.",
-			"quantity" : 1
+			"quantity" : 1		
 		},
 		{
 			"number" : 11,
@@ -188,7 +188,11 @@
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
 			"text" : "GOLDEN  OPPORTUNITY to join the Company of your choice\nMeet Normal Requirements",
-			"quantity" : 2
+			"quantity" : 20,
+			"special_processing" : {
+				"type" : "choose_occupation",
+				"pending_action" : "choose_occupation"
+			}
 		},
 		{
 			"number" : 17,
@@ -197,7 +201,11 @@
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
 			"text" : "GOLDEN  OPPORTUNITY to advance to ANY border square\n*meet normal requirements for Occupation or College entrance*",
-			"quantity" : 2
+			"quantity" : 2,
+			"special_processing" : {
+				"type" : "choose_destination",
+				"pending_action" : "choose_destination"
+			}			
 		},
 		{
 			"number" : 18,
@@ -206,7 +214,10 @@
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
 			"text" : "OPPORTUNITY to buy Insurance\nAdvance to the Insurance Store and pay $5,000 premium",
-			"quantity" : 4
+			"quantity" : 4,
+			"special_processing" : {
+				"type" : "buy_insurance"
+			}
 		},
 		{
 			"number" : 19,
@@ -270,7 +281,10 @@
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
 			"text" : "SPECIAL OPPORTUNITY to gain EXPERIENCE!\nCollect one randomly selected EXPERIENCE card from each player.",
-			"quantity" : 2
+			"quantity" : 2,
+			"special_processing" : {
+				"type" : "select_experience"
+			}
 		},
 		{
 			"number" : 26,

@@ -183,9 +183,9 @@ class CareersGame(CareersObject):
         """
         return self._game_board.get_square(num)
     
-    def get_occupation_square(self, name:str, num:int) -> OccupationSquare:
-        occupation = self.occupations[name]
-        gameSquare = occupation.occupationSquares[num]
+    def get_occupation_square(self, name:str, num:int) -> Union[OccupationSquare, None]:
+        occupation = self.occupations.get(name, None)
+        gameSquare = occupation.occupationSquares[num] if occupation is not None else None
         return gameSquare
     
     def get_game_square(self, board_location:BoardLocation) ->GameSquare:

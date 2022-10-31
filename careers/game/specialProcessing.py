@@ -7,18 +7,19 @@ Created on Aug 12, 2022
 from game.careersObject import CareersObject
 from game.gameUtils import GameUtils
 from game.player import Player
-import json
-from typing import Dict, List, Union
-from enum import Enum
 from game.commandResult import CommandResult
 from game.gameParameters import GameParameters
 from game.gameConstants import PendingAction
+
+import json
+from typing import Dict, List, Union
+from enum import Enum
 
 class SpecialProcessingType(Enum):
     # border squares
     BUY_HEARTS = "buy_hearts"
     BUY_EXPERIENCE = "buy_experience"
-    BUY_INSURANCE = "buy_insurance"
+    BUY_INSURANCE = "buy_insurance"     # also applies to Opportunity cards
     BUY_STARS = "buy_stars"
     ENTER_COLLEGE = "enter_college"
     ENTER_OCCUPATION = "enter_occupation"
@@ -29,6 +30,7 @@ class SpecialProcessingType(Enum):
     OPPORTUNITY = "opportunity"
     PAY_TAX = "pay_tax"
     UNEMPLOYMENT = "unemployment"
+    
     # occupation squares
     SHORTCUT = "shortcut"
     CASH_LOSS_OR_UNEMPLOYMENT = "cash_loss_or_unemployment"
@@ -40,7 +42,8 @@ class SpecialProcessingType(Enum):
     BACKSTAB = "backstab"
     FAME_LOSS = "fame_loss"
     HAPPINESS_LOSS = "happiness_loss"
-    # common to both
+    
+    # common to Occupation and Border squares
     TRAVEL_BORDER = "travel_border"
     CASH_LOSS = "cash_loss"
     EXTRA_TURN = "extra_turn"
@@ -54,12 +57,11 @@ class SpecialProcessing(CareersObject):
 
     all_types = list(SpecialProcessingType)
         
-    border_types = all_types[:12]
+    border_types = all_types[:13]
 
-    occupation_types = all_types[12:22]
+    occupation_types = all_types[13:23]
     
-    common_types = all_types[22:]
-    
+    common_types = all_types[23:]
 
     
     SPECIAL_PROCESSING = Dict[str, Union[str, List[int], int, float, Dict[str, int]]]
@@ -68,13 +70,13 @@ class SpecialProcessing(CareersObject):
         """Constructor
             Arguments:
                 special_processing_dict - the JSON specialProcessing section of a border or occupation square as a dictionary
-                square_type - "occupation" or "border"
+                square_type - "occupation", "border" or "opportunity"
         """
         self._special_processing_dict = special_processing_dict
         #
         # mandatory elements
         #
-        self._square_type = square_type     # "occupation" or "border"
+        self._square_type = square_type     #  "occupation", "border" or "opportunity"
         self._processing_type = SpecialProcessingType[special_processing_dict["type"].upper()]    # must be one of the above types
         #
         # optional elements which are type-dependent
@@ -280,6 +282,7 @@ class SpecialProcessing(CareersObject):
         cash_loss = 0
         player_salary = player.salary
         player_cash = player.cash
+        player_net_worth = player_cash + player.savings - player.get_total_loans()
         if self.processing_type is SpecialProcessingType.PAY_TAX:
             # compute tax amount from tax table as a % of salary
             for k in self.tax_table.keys():
@@ -288,7 +291,10 @@ class SpecialProcessing(CareersObject):
                     cash_loss = int(self.tax_table[k] * player_salary)    # truncate the amount
                     
         elif self.processing_type is SpecialProcessingType.CASH_LOSS:
-            cash_loss = self._compute_amount(player_cash) if self.of=='cash' else self._compute_amount(player_salary)
+            if self.of=='net_worth':
+                cash_loss = self._compute_amount(player_net_worth)
+            else:    
+                cash_loss = self._compute_amount(player_cash) if self.of=='cash' else self._compute_amount(player_salary)
             
         elif  self.processing_type is SpecialProcessingType.CASH_LOSS_OR_UNEMPLOYMENT.value:
             cash_loss = self._compute_amount(player_cash) if self.of=='cash' else self._compute_amount(player_salary)

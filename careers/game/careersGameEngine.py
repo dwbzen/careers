@@ -59,7 +59,7 @@ class CareersGameEngine(object):
             <who> :: "am I" | "is" <playerID>
         <playerID> :: player_name | player_initials
         <enter> :: "enter" <occupation_name> [<square_number>]                 ;enter occupation at occupation square square_number
-        <goto> :: "goto" <square_number> | <square_name>                                      ;go to border square square_number
+        <goto> :: "goto" <square_number> | <square_name>                       ;go to border square square_number
         <add> :: "add player" player_name player_initials cash stars hearts    ;adds a new player to the game
         <use insurance> :: "use_insurance"
         <add degree> :: "add degree" <degree program>
@@ -314,7 +314,7 @@ class CareersGameEngine(object):
                     
                 result = self._execute_opportunity_card(player, opportunityCard=thecard)
                 
-        elif what.lower() == 'experience' and player.can_roll:
+        elif what.lower() == 'experience' and player.can_roll:    # Can I use an Experience card?
             cards = player.get_experience_cards()   # dict with number as the key
             thecard_dict = cards.get(card_number, None)
             if thecard_dict is None:    # no such card
@@ -851,6 +851,7 @@ class CareersGameEngine(object):
                 else:   # move off Holiday
                     player.on_holiday = False
                     result = self._roll(player, player.pending_dice)
+                    
             elif what == PendingAction.TAKE_SHORTCUT.value:   # yes=take the shortcut - TODO
                 if choice.lower() == "yes":
                     result = self._goto(player.pending_amount, player)
@@ -869,6 +870,29 @@ class CareersGameEngine(object):
                     result = CommandResult(CommandResult.SUCCESS, f'You paid {amount} to avoid Unemployment', True)
                 else:    # go to Unemployment
                     result = self.goto("Unemployment")
+            elif what == PendingAction.CHOOSE_OCCUPATION.value:
+                # choice is the occupation name
+                game_square = self._careersGame.find_border_square(choice)
+                if game_square is None or game_square.square_type is not BorderSquareType.OCCUPATION_ENTRANCE_SQUARE:
+                    result = CommandResult(CommandResult.ERROR, f'There is no Occupation named {choice}', False)
+                else:
+                    # can't use this to choose College - must be an occupation
+                    sp_type = game_square.special_processing.processing_type
+                    if sp_type is SpecialProcessingType.ENTER_COLLEGE:
+                        result = CommandResult(CommandResult.ERROR, "You cannot choose College. Your choice must be an Occupation", False)
+                    else:
+                        occupation = self._careersGame.get_occupation(game_square.name)
+                        can_enter = self._gameEngineCommands.can_enter(occupation, player)
+                        can_move = not (player.is_sick or player.is_unemployed)
+                        if can_enter and can_move:
+                            #
+                            # advance the occupation square and immediately enter
+                            #
+                            result1 = self._goto(game_square.number, player)
+                            result2 = self.enter(occupation.name)
+                            result = CommandResult(CommandResult.SUCCESS, f'{result1.message}\n{result2.message}', True)
+                        else:
+                            result = CommandResult(CommandResult.ERROR, f'You can afford the {self.currency_symbol}{occupation.entry_fee} for {occupation.name}', False)
             else:
                 result = CommandResult(CommandResult.ERROR, f'Sorry {player.player_initials}, "{what}" is an invalid or unimplemented pending action!', False)
         else:

@@ -18,7 +18,7 @@ class Occupation(object):
         self._name = occupation_dict['name']
         self._configuration = occupation_dict['configuration']
         self._occupationClass = self._configuration['occupationClass']
-        self._entryFee = self._configuration['entryFee']
+        self._entry_fee = self._configuration['entry_fee']
         self._size = self._configuration['size']
         self._entry_square_number = self._configuration['entrance_square_number']
         self._exit_square_number = self._configuration['exit_square_number']
@@ -56,8 +56,12 @@ class Occupation(object):
         return self._occupationClass
     
     @property
-    def entryFee(self):
+    def entry_fee(self) ->int:
         return self._entryFee
+    
+    @entry_fee.setter
+    def entry_fee(self, value:int):
+        self._entry_fee = value
     
     @property
     def size(self):

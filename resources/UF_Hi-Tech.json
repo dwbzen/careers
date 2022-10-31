@@ -5,7 +5,7 @@
 		"fullName" : "University of Florida",
 		"background_image" : "occupation_entrance.png",
 		"image" : "UF logo.jpg",
-		"entryFee" : 500,
+		"entry_fee" : 500,
 		"size" : 11,
 		"entrance_square_number" : 7,
 		"exit_square_number" : 11,

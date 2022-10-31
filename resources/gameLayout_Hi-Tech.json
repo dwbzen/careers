@@ -507,12 +507,12 @@
 				"background_image" : "danger_border_square.png",
 				"image" : "divorce icon.jpg",
 				"text" : "DIVORCE COURT",
-				"action_text" : "You and your partner split amicably. Throw 2 die to see how amicable. Pay numbers thrown times 10% of your annual salary.",
+				"action_text" : "You and your partner split amicably. Throw 2 die to see how amicable. Pay numbers thrown times 10% of your net worth.",
 				"specialProcessing" : {
 					"type" : "cash_loss",
 					"dice" : 2,
 					"percent" : 0.1,
-					"of" : "salary"
+					"of" : "net_worth"
 				}
 			},
 			{

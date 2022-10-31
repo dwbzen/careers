@@ -5,7 +5,7 @@
 		"fullName" : "Disney",
 		"background_image" : "occupation_entrance.png",
 		"image" : "disney logo.jpg",
-		"entryFee" : 500,
+		"entry_fee" : 500,
 		"size" : 11,
 		"entrance_square_number" : 18,
 		"exit_square_number" : 19,

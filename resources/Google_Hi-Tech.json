@@ -5,7 +5,7 @@
 		"fullName" : "Google",
 		"background_image" : "occupation_entrance.png",
 		"image" : "google logo.jpg",
-		"entryFee" : 500,
+		"entry_fee" : 500,
 		"size" : 14,
 		"entrance_square_number" : 33,
 		"exit_square_number" : 34,

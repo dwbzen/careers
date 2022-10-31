@@ -5,7 +5,9 @@ Created on Aug 9, 2022
 '''
 
 from game.careersObject import CareersObject
+from game.gameConstants import PendingAction
 from enum import Enum
+from typing import Union
 import json
 
 class OpportunityType(Enum):
@@ -22,13 +24,19 @@ class OpportunityActionType(Enum):
     EXTRA_TURN          = 'extra_turn'
     LEAVE_UNEMPLOYMENT  = 'leave_unemployment'
     
+class OpportunitySpecialProcessingType(Enum):
+    BUY_INSURANCE = "buy_insurance"
+    SELECT_EXPERIENCE = "select_experience"
+    CHOOSE_OCCUPATION = "choose_occupation"
+    CHOOSE_DESTINATION = "choose_destination"
+    
     
 class OpportunityCard(CareersObject):
     """
     Represents a single Opportunity card
     """
 
-    def __init__(self, opportunity_type:str, number:int, ncard:int, destination:str=None, text="", expenses_paid=False, double_happiness=False, action_type=None):
+    def __init__(self, opportunity_type:str, number:int, ncard:int, destination:str=None, text="", expenses_paid=False, double_happiness=False, action_type=None, special_processing=None):
         """Constructor
             Arguments:
                 opportunity_type - the OpportunityType of this card
@@ -51,6 +59,16 @@ class OpportunityCard(CareersObject):
         self._action_type = None
         self._ncard = ncard
         self._number = number
+        self._special_processing_dict = None
+        
+        if special_processing is not None:
+            self._special_processing_dict = special_processing
+            self._special_processing_type = OpportunitySpecialProcessingType[special_processing['type'].upper()]
+            pa = special_processing.get('pending_action', None)
+            self._pending_action = PendingAction[pa.upper()] if pa is not None else None
+        else:
+            self._special_processing_type = None
+            self._pending_action = None
         
     @property
     def opportunity_type(self) ->str:
@@ -108,6 +126,14 @@ class OpportunityCard(CareersObject):
     def number(self):
         return self._number
 
+    @property
+    def special_processing_type(self) ->Union[OpportunitySpecialProcessingType, None]:
+        return self._special_processing_type
+
+    @property
+    def pending_action(self) -> Union[PendingAction, None]:
+        return self._pending_action
+
     def __str__(self):
         return self.text
     
@@ -117,6 +143,8 @@ class OpportunityCard(CareersObject):
         cd['text'] = self.text
         if self.action_type is not None:
             cd['action_type'] = self.action_type
+        if self._special_processing_dict is not None:
+            cd['special_processing'] = self._special_processing_dict
         return cd
     
     def to_JSON(self):

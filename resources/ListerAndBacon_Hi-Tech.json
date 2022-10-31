@@ -5,7 +5,7 @@
 		"fullName" : "Lister & Bacon",
 		"background_image" : "occupation_entrance.png",
 		"image" : "Lister and Bacon.jpg",
-		"entryFee" : 8000,
+		"entry_fee" : 8000,
 		"size" : 12,
 		"entrance_square_number" : 24,
 		"exit_square_number" : 25,

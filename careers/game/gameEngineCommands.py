@@ -87,7 +87,7 @@ class GameEngineCommands(object):
                 [2] entry amount owed, if any. Could be 0
         """
 
-        entry_fee = occupation.entryFee
+        entry_fee = occupation.entry_fee
         has_fee = player.cash >= entry_fee
         occupationClass = occupation.occupationClass
         # anyone can go to college if they have the funds
@@ -231,7 +231,7 @@ class GameEngineCommands(object):
             #
             #board_location = player.board_location
             opportunity_type = opportunityCard.opportunity_type   #   OpportunityType enum
-            result = CommandResult(CommandResult.SUCCESS, message, False)   #  TODO
+            result =  CommandResult(CommandResult.ERROR, f'Opportunity type: {opportunity_type} not yet implemented', False)
             
             if opportunity_type is OpportunityType.OCCUPATION:
                 occupation = self.careersGame.get_occupation(opportunityCard.destination)
@@ -240,22 +240,38 @@ class GameEngineCommands(object):
                     next_action = f'goto {next_square_number};roll' 
                     result = CommandResult(CommandResult.EXECUTE_NEXT, f'Advance to  {occupation.name}', False, next_action=next_action)
                 else:
-                    result = CommandResult(CommandResult.ERROR, f'Cannot use {opportunity_type} to enter {occupation.name}', False)
+                    result = CommandResult(CommandResult.ERROR, f'Cannot use {opportunity_type} to enter {occupation.name} now.', False)
             
             elif opportunity_type is OpportunityType.OCCUPATION_CHOICE:
-                pass
+                player.pending_action = opportunityCard.pending_action
+                message = f'{opportunityCard.text}\n{opportunityCard.pending_action}'
+                result = CommandResult(CommandResult.NEED_PLAYER_CHOICE, message, False)
+                
             elif opportunity_type is OpportunityType.BORDER_SQUARE:
-                pass
+                #
+                # advance to the designated border square and execute it
+                #
+                ...
+                
             elif opportunity_type is OpportunityType.BORDER_SQUARE_CHOICE:
-                pass
+                ...
             elif opportunity_type is OpportunityType.ACTION:
-                pass
+                #
+                # depends on action_type: leave_unemployment, extra_turn, collect_experience
+                ...
             elif opportunity_type is OpportunityType.TRAVEL:
+                #
+                # advance to the nearest travel square and roll again
+                #
                 pass
             elif opportunity_type is OpportunityType.OPPORTUNITY:
-                pass
+                #
+                # advance to the Opportunity square closest to the player's current position
+                # and roll again
+                #
+                ...
             else:
-                result = CommandResult(CommandResult.ERROR, f'Opportunity type: {opportunity_type} not yet implemented', False)
+                result = CommandResult(CommandResult.ERROR, f'No such Opportunity type: {opportunity_type}', False)
             
             return result
     

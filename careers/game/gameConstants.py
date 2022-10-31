@@ -5,6 +5,7 @@ Created on Oct 21, 2022
 '''
 
 from enum import Enum
+from typing import List
 
 
 class PendingAction(Enum):
@@ -17,10 +18,12 @@ class PendingAction(Enum):
     STAY_OR_MOVE = "stay_or_move"
     TAKE_SHORTCUT = "take_shortcut"
     CASH_LOSS_OR_UNEMPLOYMENT = "cash_loss_or_unemployment"
+    CHOOSE_OCCUPATION = "choose_occupation"
+    CHOOSE_DESTINATION = "choose_destination"
 
 class GameConstants(object):
     '''
-    classdocs
+    Define global constants and Enums
     '''
     
     COMMANDS = ['add', 'bankrupt', 'bump', 'buy', 'create', 'done', 'end', 'enter', 
@@ -41,3 +44,8 @@ class GameConstants(object):
     @params.setter
     def params(self, value:dict):
         self._params = value
+        
+    def get_commands(self) -> List[str]:
+        return GameConstants.COMMANDS
+    
+    

@@ -5,7 +5,7 @@
 		"fullName" : "SpaceX",
 		"background_image" : "occupation_entrance.png",
 		"image" : "spacex logo.jpg",
-		"entryFee" : 5000,
+		"entry_fee" : 5000,
 		"size" : 13,
 		"entrance_square_number" : 40,
 		"exit_square_number" : 1,
