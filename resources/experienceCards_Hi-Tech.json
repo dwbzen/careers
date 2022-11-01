@@ -80,19 +80,19 @@
 			"number" : 9,
 			"spaces" : 0,
 			"card_type" : "one_die_wild",
-			"quantity" : 4
+			"quantity" : 10
 		},
 		{
 			"number" : 10,
 			"spaces" : 0,
 			"card_type" : "two_die_wild",
-			"quantity" : 4
+			"quantity" : 10
 		},
 		{
 			"number" : 11,
 			"spaces" : 0,
 			"card_type" : "triple_wild",
-			"quantity" : 4
+			"quantity" : 10
 		}
 	]
 }

@@ -107,7 +107,7 @@ class OccupationSquare(GameSquare):
         if sptype is SpecialProcessingType.BONUS:
             if dice > 0:
                 n = GameUtils.roll(dice)
-                amount = amount * n
+                amount = amount * sum(n)
                 message += f'\n You rolled a {n}, collect {amount}'
             player.add_cash(amount)
         elif sptype is SpecialProcessingType.SALARY_INCREASE:

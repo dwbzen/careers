@@ -57,7 +57,7 @@ class Occupation(object):
     
     @property
     def entry_fee(self) ->int:
-        return self._entryFee
+        return self._entry_fee
     
     @entry_fee.setter
     def entry_fee(self, value:int):

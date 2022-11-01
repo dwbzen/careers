@@ -276,7 +276,7 @@ class CareersGameEngine(object):
                 result = self.goto(next_square_number)
         return result
     
-    def use(self, what, card_number, spaces:Any=0) -> CommandResult:
+    def use(self, what, card_number, spaces:Union[str,int,None]=None) -> CommandResult:
         """Use an Experience or Opportunity card in place of rolling the die.
             Experience and Opportunity cards are identified (through the UI) by number, which uniquely
             identifies the card function. i.e. Cards having the same "number" are identical
@@ -286,7 +286,7 @@ class CareersGameEngine(object):
                 what - "opportunity", "experience", "roll"
                 card_number - the unique number for this card. Corresponds to card.number OR
                     if what == 'roll', the dice roll as a list. For example, "[3, 4]"
-                spaces - required for Experience wild cards, the number of spaces to move. Can be + or -
+                spaces - required for Experience wild cards, the number of spaces to move. Can be + or
         """
         player = self.game_state.current_player
 
@@ -322,7 +322,7 @@ class CareersGameEngine(object):
             else:
                 thecard = thecard_dict['card']
                 player.experience_card = thecard
-                result = self._execute_experience_card(player, experienceCard=thecard, roll=spaces)
+                result = self._execute_experience_card(player, experienceCard=thecard, spaces=spaces)
                 
         elif what.lower() == "roll":        # use a pre-existing dice roll.
             # card_number is a string having the dice roll
@@ -478,7 +478,7 @@ class CareersGameEngine(object):
         result = CommandResult(CommandResult.SUCCESS, "'quit' command not yet implemented", False)
         return result
     
-    def save(self, how="pkl") -> CommandResult:
+    def save(self, how="json") -> CommandResult:
         """Save the current game state.
             Arguments: how - save format: 'json' or 'pkl' (the default).
             save('pkl') uses joblib.dump() to save the CareersGame instance to binary pickel format.
@@ -980,7 +980,7 @@ class CareersGameEngine(object):
             player.used_opportunity()
             return result                   
     
-    def _execute_experience_card(self,  player:Player, experienceCard:ExperienceCard, roll:Any="") -> CommandResult:
+    def _execute_experience_card(self,  player:Player, experienceCard:ExperienceCard, spaces:Union[str,int,None]=None) -> CommandResult:
         '''Executes an Experience card.
             Command format is "use experience [roll]"
             roll is required only for wild cards and specifies the dice as a csv list, for example "4,5" to roll a 9, or "3" as a single die roll
@@ -988,47 +988,58 @@ class CareersGameEngine(object):
             one_die_wild - can only be used when the player is on an occupation square
             two_die_wild - can only be used on a border square
             triple_wild - can be used in both
+            Arguments:
+                player - the current Player
+                experienceCard - the ExperienceCard being played
+                spaces - applies to wild cards only (?, ??, ???) the roll to apply.
+                         For ONE_DIE_WILD, this a string with numerical value from 1 to 6 inclusive,
+                         for TWO_DIE_WILD this is a comma-delimited string representing the 2 die, for example "2,5"
+                         for TRIPLE_WILD, this can be either depending on the player's board position.
             
         '''
         player.experience_card = experienceCard
         nspaces = experienceCard.spaces
         game_square = self.get_player_game_square(player)    # determines what wild card is valid
-        roll = str(roll)    # roll can be an int or a str
+        board_location = player.board_location
+        roll = str(spaces) if spaces is not None else None   # for wild cards roll can be an int or a str
         
         if experienceCard.card_type is ExperienceType.FIXED:   # could be negative for moving backwards
             dice = [nspaces]
         else:    # must be a wild card - ?, ?? or ???
-            in_occupation = game_square.square_class is GameSquareClass.OCCUPATION
-            if in_occupation and (experienceCard.card_type is ExperienceType.TWO_DIE_WILD or \
-             (not in_occupation and experienceCard.card_type is ExperienceType.ONE_DIE_WILD)):
+            #
+            # If the player has done an enter but not yet rolled:
+            game_square_class = game_square.square_class if board_location.occupation_name is None else GameSquareClass.OCCUPATION
+            
+            if game_square_class is GameSquareClass.OCCUPATION and experienceCard.card_type is ExperienceType.TWO_DIE_WILD or \
+               game_square_class is GameSquareClass.BORDER and experienceCard.card_type is ExperienceType.ONE_DIE_WILD:
                 message = f'Experience type {experienceCard.card_type.value} cannot be used for {game_square.square_class.value} '
                 self.log(message)
                 return CommandResult(CommandResult.ERROR, message, False)
             else:   # simulate a roll of 1 or 2 die
-                if len(roll) == 0:
+                if spaces is None:
                     message = f'A roll must be specified for {experienceCard.card_type.value}'
                     self.log(message)
                     return CommandResult(CommandResult.ERROR, message, False)
                 else:
-                    x = roll.split(',')
-                    ndie = len(x)
+                    die = roll.split(',')
+                    ndie = len(die)
                     if ndie == 1 and experienceCard.card_type is ExperienceType.TWO_DIE_WILD or \
                        ndie == 2 and experienceCard.card_type is ExperienceType.ONE_DIE_WILD:
-                        message = f'Roll {x} cannot be applied to {experienceCard.card_type.value}'
+                        message = f'Roll {die} cannot be applied to {experienceCard.card_type.value}'
                         self.log(message)
                         return CommandResult(CommandResult.ERROR, message, False)
-                    
-                    dice = [int(c) for c in x]
-                    nspaces = sum(dice)
+                                     
+                dice = [int(c) for c in die]
+                nspaces = sum(dice)
                     
         message = f'{player.player_initials} roll: {dice}, moving: {nspaces} spaces'
         self.log(message)
-        
         result = self._roll(player, dice)
         #
         # remove the used experience from the player's deck
         #
         player.used_experience()
+            
         return result        
     
     def execute_game_square(self, player:Player, board_location:BoardLocation) -> CommandResult:

@@ -287,7 +287,7 @@ class GameEngineCommands(object):
         if how == 'json':
             jstr = f'{{\n  "game_id" : "{game_id}",\n'
             jstr += f'  "gameState" : '
-            jstr += self.game_state.to_JSON()
+            jstr += self._careersGame.game_state.to_JSON()
             jstr += "}\n"
 
             with open(filename, "w") as fp:
