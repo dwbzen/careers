@@ -8,13 +8,14 @@ from game.careersGame import CareersGame
 from game.commandResult import CommandResult
 from game.player import Player
 from game.gameUtils import GameUtils
-from game.opportunityCard import OpportunityCard, OpportunityType
+from game.opportunityCard import OpportunityCard, OpportunityType, OpportunityActionType
 from game.occupation import Occupation
 from game.gameConstants import GameConstants
 
-from typing import Tuple, List
+from typing import Tuple, List, Union
 import joblib
 import random, json
+from game.borderSquare import BorderSquareType
 
 class GameEngineCommands(object):
     """Implementations of CareersGameEngine commands.
@@ -148,17 +149,19 @@ class GameEngineCommands(object):
                 command = command + f'"{arg}",'
             command = command[:-1]
         if len(command_args) == 2 and command_args[0].lower().startswith("resolve"):
-            # add the choice argument for resolve command as 'none'
-            command += f',"none")'
+            # add the choice argument for resolve command as '1'
+            command += f',"1")'
         else:
             command += ")"
         
         return CommandResult(CommandResult.SUCCESS, command, False)
     
     @staticmethod
-    def list(player, what) ->CommandResult:
+    def list(player, what, how) ->CommandResult:
         """List the Experience or Opportunity cards held by the current player
-            Arguments: what - 'experience', 'opportunity', or 'all'
+            Arguments: 
+                what - 'experience', 'opportunity', or 'all'
+                how - display control: 'full' or 'condensed'
             Returns: CommandResult.message is the stringified list of str(card).
                 For Opportunity cards this is the text property.
                 For Experience cards this is the number of spaces (if type is fixed), otherwise the type.
@@ -170,13 +173,19 @@ class GameEngineCommands(object):
             ncards = len(player.my_opportunity_cards)
             list_dict['number_opportunity_cards'] = ncards
             if ncards > 0:
-                list_dict['opportunity_cards'] = [cd.to_dict() for cd in player.my_opportunity_cards]
+                if how == 'full':
+                    list_dict['opportunity_cards'] = [cd.to_dict() for cd in player.my_opportunity_cards]
+                else:
+                    list_dict['opportunity_cards'] = [cd.text for cd in player.my_opportunity_cards]
                     
         if what.lower().startswith('exp') or listall:    # list experience cards
             ncards = len(player.my_experience_cards)
             list_dict['number_experience_cards'] = ncards
             if ncards > 0:
-                list_dict['experience_cards'] = [cd.to_dict(include_range=False) for cd in player.my_experience_cards]
+                if how == 'full':
+                    list_dict['experience_cards'] = [cd.to_dict(include_range=False) for cd in player.my_experience_cards]
+                else:
+                    list_dict['experience_cards'] = [str(cd) for cd in player.my_experience_cards]
                 
         if what.lower().startswith('degree') or listall:    # list degrees completed
             ndegrees = len(player.my_degrees)
@@ -222,58 +231,115 @@ class GameEngineCommands(object):
         
         return result
         
-    def execute_opportunity_card(self,  player:Player, opportunityCard:OpportunityCard) -> CommandResult:
-            player.opportunity_card = opportunityCard
-            message = f'{player.player_initials} Playing  {opportunityCard.opportunity_type}: {opportunityCard.text}'
-            self.log(message)
-            #
-            # Now execute this Opportunity card
-            #
-            #board_location = player.board_location
-            opportunity_type = opportunityCard.opportunity_type   #   OpportunityType enum
-            result =  CommandResult(CommandResult.ERROR, f'Opportunity type: {opportunity_type} not yet implemented', False)
-            
-            if opportunity_type is OpportunityType.OCCUPATION:
-                occupation = self.careersGame.get_occupation(opportunityCard.destination)
+    def execute_opportunity_card(self,  player:Player, opportunityCard:OpportunityCard, dest:Union[str,int,None]=None) -> CommandResult:
+        """Executes a given OpportunityCard for a Player
+            Arguments:
+                player - the current Player
+                opportunityCard - a OpportunityCard instance
+                dest - optional destination choice as a game square name, for example 'Amazon' or 'Payday'
+                       If used, a pending_action to resolve the border or occupation square is not set.
+        
+        """
+        player.opportunity_card = opportunityCard
+        message = f'{player.player_initials} Playing  {opportunityCard.opportunity_type}: {opportunityCard.text}'
+        self.log(message)
+        #
+        # Now execute this Opportunity card
+        #
+        #board_location = player.board_location
+        opportunity_type = opportunityCard.opportunity_type   #   OpportunityType enum
+        result =  CommandResult(CommandResult.ERROR, f'Opportunity type: {opportunity_type} not yet implemented', False)
+        
+        if opportunity_type is OpportunityType.OCCUPATION:
+            occupation = self.careersGame.get_occupation(opportunityCard.destination)
+            if self.can_enter(occupation, player):    # okay to enter, so make it so
+                next_square_number = occupation.entry_square_number
+                next_action = f'goto {next_square_number};roll' 
+                result = CommandResult(CommandResult.EXECUTE_NEXT, f'Advance to  {occupation.name}', False, next_action=next_action)
+            else:
+                result = CommandResult(CommandResult.ERROR, f'Cannot use {opportunity_type} to enter {occupation.name} now.', False)
+        
+        elif opportunity_type is OpportunityType.OCCUPATION_CHOICE:    # choose_occupation
+            if dest is None:
+                player.pending_action = opportunityCard.pending_action
+                message = f'{opportunityCard.text}\n{opportunityCard.pending_action}'
+                result = CommandResult(CommandResult.NEED_PLAYER_CHOICE, message, False)
+            else:
+                occupation = self.careersGame.get_occupation(dest)
                 if self.can_enter(occupation, player):    # okay to enter, so make it so
                     next_square_number = occupation.entry_square_number
                     next_action = f'goto {next_square_number};roll' 
                     result = CommandResult(CommandResult.EXECUTE_NEXT, f'Advance to  {occupation.name}', False, next_action=next_action)
                 else:
-                    result = CommandResult(CommandResult.ERROR, f'Cannot use {opportunity_type} to enter {occupation.name} now.', False)
+                    result = CommandResult(CommandResult.ERROR, f'Cannot use {opportunity_type} to enter {occupation.name} now.', False)     
             
-            elif opportunity_type is OpportunityType.OCCUPATION_CHOICE:
+        elif opportunity_type is OpportunityType.BORDER_SQUARE:    # border_square
+            #
+            # advance to the designated border square and execute it
+            #
+            game_square = self.careersGame.find_border_square(opportunityCard.destination)
+            next_square_number = game_square.number
+            next_action = f'goto {next_square_number}'
+            result = CommandResult(CommandResult.EXECUTE_NEXT, f'Advance to  {opportunityCard.destination}', False, next_action=next_action)                
+            
+        elif opportunity_type is OpportunityType.BORDER_SQUARE_CHOICE:    # choose_destination
+            if dest is None:
                 player.pending_action = opportunityCard.pending_action
                 message = f'{opportunityCard.text}\n{opportunityCard.pending_action}'
                 result = CommandResult(CommandResult.NEED_PLAYER_CHOICE, message, False)
-                
-            elif opportunity_type is OpportunityType.BORDER_SQUARE:
-                #
-                # advance to the designated border square and execute it
-                #
-                ...
-                
-            elif opportunity_type is OpportunityType.BORDER_SQUARE_CHOICE:
-                ...
-            elif opportunity_type is OpportunityType.ACTION:
-                #
-                # depends on action_type: leave_unemployment, extra_turn, collect_experience
-                ...
-            elif opportunity_type is OpportunityType.TRAVEL:
-                #
-                # advance to the nearest travel square and roll again
-                #
-                pass
-            elif opportunity_type is OpportunityType.OPPORTUNITY:
-                #
-                # advance to the Opportunity square closest to the player's current position
-                # and roll again
-                #
-                ...
             else:
-                result = CommandResult(CommandResult.ERROR, f'No such Opportunity type: {opportunity_type}', False)
+                game_square = self.careersGame.find_border_square(dest)
+                next_square_number = game_square.number
+                next_action = f'goto {next_square_number}'
+                result = CommandResult(CommandResult.EXECUTE_NEXT, f'Advance to  {dest}', False, next_action=next_action)
             
-            return result
+        elif opportunity_type is OpportunityType.ACTION:
+            #
+            # depends on action_type: leave_unemployment, extra_turn, collect_experience
+            action_type = opportunityCard.action_type
+            if action_type is OpportunityActionType.COLLECT_EXPERIENCE:
+                #
+                # collect a randomly selected Experience card from all other players (holding experience cards)
+                #
+                message = ""
+                for aplayer in self.careersGame.game_state.players:
+                    ncards = len(aplayer.my_experience_cards)
+                    if player.number != aplayer.number and ncards > 0:
+                        ind = random.randint(0, ncards-1)    # the index of the card to move to this player
+                        thecard = aplayer.my_experience_cards[ind]
+                        aplayer.remove_experience_card(thecard)
+                        player.add_experience_card(thecard)
+                        message += f'Experience card {thecard.card_type.value} moved from player {aplayer.player_initials} to {player.player_initials}\n'
+                if len(message) == 0:
+                    message = "Sadly, no other player has Experience to move."
+                result = CommandResult(CommandResult.SUCCESS, message, True)
+            
+            else:    # TODO: OpportunityActionType.EXTRA_TURN or OpportunityActionType.LEAVE_UNEMPLOYMENT
+                result = CommandResult(CommandResult.SUCCESS, f'{action_type.value} not yet implemented', True)
+            
+        elif opportunity_type is OpportunityType.TRAVEL:
+            #
+            # advance to the nearest travel square and roll again
+            #
+            current_square_number = player.board_location.border_square_number
+            next_square_number, next_square = self.careersGame.find_next_border_square(current_square_number, BorderSquareType.TRAVEL_SQUARE)
+            next_action = f'goto {next_square_number}'
+            result = CommandResult(CommandResult.EXECUTE_NEXT, f'Advance to position {next_square_number}:  {next_square.name}', False, next_action=next_action)
+                            
+        elif opportunity_type is OpportunityType.OPPORTUNITY:
+            #
+            # advance to the Opportunity square closest to the player's current position
+            # and roll again
+            #
+            current_square_number = player.board_location.border_square_number
+            next_square_number, next_square = self.careersGame.find_next_border_square(current_square_number, BorderSquareType.OPPORTUNITY_SQUARE)
+            next_action = f'goto {next_square_number}'
+            result = CommandResult(CommandResult.EXECUTE_NEXT, f'Advance to position {next_square_number}:  {next_square.name}', False, next_action=next_action)
+            
+        else:
+            result = CommandResult(CommandResult.ERROR, f'No such Opportunity type: {opportunity_type}', False)
+        
+        return result
     
     def save_game(self, gamefile_base_name:str, game_id:str, how='json') -> CommandResult:
         """Save the complete serialized game state so it can be restarted at a later time.

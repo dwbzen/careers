@@ -56,7 +56,6 @@ class OpportunityCard(CareersObject):
         self._text = text
         self._expenses_paid = expenses_paid
         self._double_happiness = double_happiness
-        self._action_type = None
         self._ncard = ncard
         self._number = number
         self._special_processing_dict = None
@@ -138,11 +137,11 @@ class OpportunityCard(CareersObject):
         return self.text
     
     def to_dict(self):
-        cd = {"type":"opportunity"}
+        cd = {"card_type": self.opportunity_type.value}
         cd["number"] = self.number
         cd['text'] = self.text
         if self.action_type is not None:
-            cd['action_type'] = self.action_type
+            cd['action_type'] = self.action_type.value
         if self._special_processing_dict is not None:
             cd['special_processing'] = self._special_processing_dict
         return cd

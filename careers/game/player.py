@@ -355,8 +355,10 @@ class Player(CareersObject):
 
     def get_pending(self) ->dict:
         pact =  self.pending_action.value if self.pending_action is not None else "None"
+       
         pending_dict = {"pending_action":pact, "pending_amount":self.pending_amount, "pending_dice":self.pending_dice}
-
+        if self.pending_game_square is not None:
+            pending_dict.update({ "pending_game_square" : self.pending_game_square.name} )
         return pending_dict
 
     def set_starting_parameters(self, cash:int, salary:int):
@@ -417,15 +419,21 @@ class Player(CareersObject):
         """The player has used the saved Opportunity card. Set it to None and remove from their deck
         """
         if self.opportunity_card is not None:
-            self.my_opportunity_cards.remove(self._opportunity_card)
+            self.remove_opportunity_card(self._opportunity_card)
             self._opportunity_card = None
+    
+    def remove_opportunity_card(self, card):
+        self.my_opportunity_cards.remove(card)
     
     def used_experience(self):
         """The player has used the saved Experience card. Set it to None and remove from their deck
         """
         if self.experience_card is not None:
-            self.my_experience_cards.remove(self.experience_card)
+            self.remove_experience_card(self.experience_card)
             self._experience_card = None
+    
+    def remove_experience_card(self, card:ExperienceCard):
+            self.my_experience_cards.remove(card)
                 
     def add_degree(self, degree_program):
         if degree_program in self.my_degrees:
@@ -608,13 +616,14 @@ Pending action: {pending_action}, Pending amount: {self.pending_amount} Pending 
         pdict['successFormula'] = self._success_formula.to_dict()
         points = self.total_points()
         pdict['score'] = {"cash":self.cash, "fame":self.fame, "happiness":self.happiness, "total_points":points, "is_insured":self.is_insured}
-        pdict['loans'] = self.loans
+        pdict['loans'] = self.loans 
         pdict['board_location'] = self.board_location.to_dict()
         pdict['is_sick'] = self.is_sick
         pdict['is_unemployed'] = self.is_unemployed
         pdict['can_roll'] = self.can_roll
         pdict['can_use_opportunity'] = self.can_use_opportunity
         pdict['occupation_record'] = self.occupation_record
+        pdict.update(self.get_pending())
         
         return pdict
 

@@ -71,8 +71,7 @@ class BorderSquare(GameSquare):
             # advance to the next travel_square and roll again
             # 
             #
-            next_square_number = self._careersGame.find_next_border_square(self.number, BorderSquareType.TRAVEL_SQUARE)
-            game_square = careersGame.game_board.get_square(next_square_number)
+            next_square_number, game_square = self._careersGame.find_next_border_square(self.number, BorderSquareType.TRAVEL_SQUARE)
             next_action = f'goto {next_square_number};roll'    # player.board_location set by 'goto' command
 
             result = CommandResult(CommandResult.SUCCESS, f'Advance to square {next_square_number}, {game_square.name} and roll again', False)

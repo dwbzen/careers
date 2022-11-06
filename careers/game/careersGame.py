@@ -9,7 +9,7 @@ from game.player import Player
 import json, random
 from datetime import datetime
 from pathlib import Path
-from typing import Dict, Union, List
+from typing import Dict, Union, List, Tuple
 
 from game.opportunityCardDeck import OpportunityCardDeck
 from game.experienceCardDeck import ExperienceCardDeck
@@ -317,7 +317,7 @@ class CareersGame(CareersObject):
         """
         pass
     
-    def find_next_border_square(self, current_square_number, atype:BorderSquareType, name:str=None) -> int:
+    def find_next_border_square(self, current_square_number, atype:BorderSquareType, name:str=None) -> Tuple[int,BorderSquare]:
         """Find the next border square of a given type and optional name
             Arguments:
                 current_square_number - square number on the game board
@@ -325,17 +325,22 @@ class CareersGame(CareersObject):
                 atype - the square type to look for. Valid values are 'travel_square', 'corner_square', 'travel_square', and 'occupation_entrance_square'
                 name - optional square.name to use for comparison. For example in the UK edition, the travel squares
                        all have different names.
-            Returns: the next square number OR None if no square of a given type/name is found.
+            Returns: a 2-item tupple : the next square number OR None if no square of a given type/name is found,
+                     and the game_square instance.
             BTW, the next_square_number could be < current_square_number if it's past Payday
         """
         squares = []
         next_square_num = None
+        game_square = None
         if atype is BorderSquareType.TRAVEL_SQUARE:
             squares = self.game_board.travel_squares
+            
         elif atype is BorderSquareType.OPPORTUNITY_SQUARE:
             squares=self.game_board.opportunity_squares
+            
         elif atype is BorderSquareType.OCCUPATION_ENTRANCE_SQUARE:
             squares = self.game_board.occupation_entrance_squares
+            
         elif atype is BorderSquareType.CORNER_SQUARE:
             squares = self.game_board.corner_squares
         
@@ -343,12 +348,14 @@ class CareersGame(CareersObject):
             if square.square_type is atype and (name is None or square.name==name):
                 if square.number > current_square_number:
                     next_square_num = square.number
+                    game_square = square
                     break
         if next_square_num is None:     # wrap-around the board
             square = squares[0]
             next_square_num = square.number
+            game_square = square
             
-        return next_square_num
+        return next_square_num, game_square
     
     def find_border_square(self, name:str) -> Union[BorderSquare, None]:
         bs = None

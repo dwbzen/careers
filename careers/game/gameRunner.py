@@ -7,6 +7,7 @@ Created on Aug 12, 2022
 from game.player import  Player
 from game.careersGameEngine import CareersGameEngine
 from game.commandResult import CommandResult
+import argparse
 
 class GameRunner(object):
     """A command-line text version of Careers game play used for testing and simulating web server operation.
@@ -95,6 +96,10 @@ class GameRunner(object):
 
 if __name__ == '__main__':
 
+    parser = argparse.ArgumentParser(description="Run a command-driven Careers Game for 1 to 4 players")
+    parser.add_argument("--players", "-p", help="the number of players", type=int, choices=range(1,5), default=1)
+    args = parser.parse_args()
+    
     total_points = 100
     edition = 'Hi-Tech'
     game_type = 'points'            # or 'timed'
@@ -102,10 +107,17 @@ if __name__ == '__main__':
     game_runner = GameRunner(edition, installationId, game_type, total_points)  # creates a CareersGameEngine
     game_runner.execute_command(f'create {edition} {installationId} {game_type} {total_points}', None)     # creates a CareersGame for points
     #
-    # add 2 players
+    # add players
     #
+    nplayers = args.players
     game_runner.execute_command("add player Don DWB 40 10 50", None)
-    game_runner.execute_command("add player Brian BDB 20 40 40", None)
+    if nplayers >= 2:
+        game_runner.execute_command("add player Brian BDB 20 40 40", None)
+    if nplayers >= 3:
+        game_runner.execute_command("add player Beth Beth 30 30 40", None)
+    if nplayers == 4:
+        game_runner.execute_command("add player Cheryl CJL 10 50 40", None)
+        
     game_runner.execute_command("start", None)
     
     game_runner.run_game()

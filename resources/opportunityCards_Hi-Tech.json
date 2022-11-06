@@ -281,7 +281,7 @@
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
 			"text" : "SPECIAL OPPORTUNITY to gain EXPERIENCE!\nCollect one randomly selected EXPERIENCE card from each player.",
-			"quantity" : 2,
+			"quantity" : 20,
 			"special_processing" : {
 				"type" : "select_experience"
 			}

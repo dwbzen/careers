@@ -192,7 +192,7 @@ class CareersGameEngine(object):
             command_result = eval(command)
         except Exception as ex:
             command_result = CommandResult(CommandResult.ERROR,  f'"{command}" : Invalid command format or syntax\n{str(ex)}',  False, exception=ex)
-            raise ex
+            #raise ex
         return command_result
     
     def get_player_game_square(self, player:Player) -> GameSquare:
@@ -287,6 +287,8 @@ class CareersGameEngine(object):
                 card_number - the unique number for this card. Corresponds to card.number OR
                     if what == 'roll', the dice roll as a list. For example, "[3, 4]"
                 spaces - required for Experience wild cards, the number of spaces to move. Can be + or
+                         For card types choose_destination, choose_occupation spaces can be the chosen destination.
+                         This is optional but if specified it resolves the choice (so sending a "resolve" command is not needed).
         """
         player = self.game_state.current_player
 
@@ -312,7 +314,7 @@ class CareersGameEngine(object):
                 else:
                     player.can_use_opportunity = False
                     
-                result = self._execute_opportunity_card(player, opportunityCard=thecard)
+                result = self._execute_opportunity_card(player, opportunityCard=thecard, spaces=spaces)
                 
         elif what.lower() == 'experience' and player.can_roll:    # Can I use an Experience card?
             cards = player.get_experience_cards()   # dict with number as the key
@@ -446,6 +448,7 @@ class CareersGameEngine(object):
         player = self.game_state.current_player
         player.opportunity_card = None
         player.experience_card = None
+        player.can_use_opportunity = True
         if cp.number != player.number:    # could be only 1 player if doing a solo game
             cp.can_roll = False
         #
@@ -624,16 +627,17 @@ class CareersGameEngine(object):
         return result
         
     
-    def list(self, what='all') ->CommandResult:
+    def list(self, what='all', how='full') ->CommandResult:
         """List the Experience or Opportunity cards held by the current player
             Arguments: what - 'experience', 'opportunity', or 'all'
+                how - display control: 'full' (the default) or 'condensed'
             Returns: CommandResult.message is the stringified list of str(card).
                 For Opportunity cards this is the text property.
                 For Experience cards this is the number of spaces (if type is fixed), otherwise the type.
             
         """
         player = self.game_state.current_player
-        return GameEngineCommands.list(player, what)
+        return GameEngineCommands.list(player, what, how)
     
     def perform(self, what:str, how:str) -> CommandResult:
         player = self.game_state.current_player
@@ -807,7 +811,7 @@ class CareersGameEngine(object):
         if what == "*" and player.pending_action is not None:    # resolve the current pending action
             what = player.pending_action.value
         # TODO - finish
-        if player.pending_action.value == what:
+        if player.pending_action is not None and player.pending_action.value == what:
             if what == PendingAction.SELECT_DEGREE.value:  # the degree program chosen is the 'choice'
                 result = self.add_degree(player, choice)
                 result.message = f'{message}\n{result.message}'
@@ -937,8 +941,9 @@ class CareersGameEngine(object):
         game_square = self.get_player_game_square(player)
         special_processing = game_square.special_processing  # could be None or empty
         sptype = special_processing.processing_type if special_processing is not None else ""
+        sp_pending_action = special_processing.pending_action
         
-        if player.pending_action is None or player.pending_action is not sptype:
+        if player.pending_action is None or player.pending_action is not sp_pending_action:
             return CommandResult(CommandResult.ERROR, f'Cannot buy {qty} {what} here', False)
         
         player.add_cash(-amount)
@@ -968,9 +973,9 @@ class CareersGameEngine(object):
 
 
     
-    def _execute_opportunity_card(self,  player:Player, opportunityCard:OpportunityCard=None) -> CommandResult:
+    def _execute_opportunity_card(self,  player:Player, opportunityCard:OpportunityCard=None, spaces:Union[str,int,None]=None) -> CommandResult:
             
-            result = self._gameEngineCommands.execute_opportunity_card(player, opportunityCard)
+            result = self._gameEngineCommands.execute_opportunity_card(player, opportunityCard, dest=spaces)
             if result.is_successful():
                 player.opportunity_card = opportunityCard
             #

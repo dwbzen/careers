@@ -74,7 +74,7 @@ class ExperienceCard(CareersObject):
         return self._range
 
     def __str__(self):
-        if self.card_type == 'fixed':
+        if self.card_type is ExperienceType.FIXED:
             return f'{self.spaces} spaces'
         else:
             return self.card_type.value
