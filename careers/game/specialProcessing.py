@@ -9,46 +9,11 @@ from game.gameUtils import GameUtils
 from game.player import Player
 from game.commandResult import CommandResult
 from game.gameParameters import GameParameters
-from game.gameConstants import PendingAction
+from game.gameConstants import PendingAction, SpecialProcessingType
 
 import json
 from typing import Dict, List, Union
-from enum import Enum
 
-class SpecialProcessingType(Enum):
-    # border squares
-    BUY_HEARTS = "buy_hearts"
-    BUY_EXPERIENCE = "buy_experience"
-    BUY_INSURANCE = "buy_insurance"     # also applies to Opportunity cards
-    BUY_STARS = "buy_stars"
-    ENTER_COLLEGE = "enter_college"
-    ENTER_OCCUPATION = "enter_occupation"
-    GAMBLE = "gamble"
-    HOLIDAY = "holiday"
-    HOSPITAL = "hospital"
-    PAYDAY = "payday"
-    OPPORTUNITY = "opportunity"
-    PAY_TAX = "pay_tax"
-    UNEMPLOYMENT = "unemployment"
-    
-    # occupation squares
-    SHORTCUT = "shortcut"
-    CASH_LOSS_OR_UNEMPLOYMENT = "cash_loss_or_unemployment"
-    GOTO = "goto"
-    SALARY_INCREASE = "salary_increase"
-    SALARY_CUT = "salary_cut"
-    BONUS = "bonus"
-    FAVORS = "favors"
-    BACKSTAB = "backstab"
-    FAME_LOSS = "fame_loss"
-    HAPPINESS_LOSS = "happiness_loss"
-    
-    # common to Occupation and Border squares
-    TRAVEL_BORDER = "travel_border"
-    CASH_LOSS = "cash_loss"
-    EXTRA_TURN = "extra_turn"
-    LOSE_NEXT_TURN = "lose_next_turn"
-    
 
 class SpecialProcessing(CareersObject):
     """Encapsulates the "specialProcessing" section of a border square or occupation square.
@@ -56,13 +21,6 @@ class SpecialProcessing(CareersObject):
     """
 
     all_types = list(SpecialProcessingType)
-        
-    border_types = all_types[:13]
-
-    occupation_types = all_types[13:23]
-    
-    common_types = all_types[23:]
-
     
     SPECIAL_PROCESSING = Dict[str, Union[str, List[int], int, float, Dict[str, int]]]
 

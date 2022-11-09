@@ -157,11 +157,11 @@ class GameEngineCommands(object):
         return CommandResult(CommandResult.SUCCESS, command, False)
     
     @staticmethod
-    def list(player, what, how) ->CommandResult:
+    def list(player:Player, what:str, how:str) ->CommandResult:
         """List the Experience or Opportunity cards held by the current player
             Arguments: 
                 what - 'experience', 'opportunity', or 'all'
-                how - display control: 'full' or 'condensed'
+                how - display control: 'full', 'condensed' or 'count'
             Returns: CommandResult.message is the stringified list of str(card).
                 For Opportunity cards this is the text property.
                 For Experience cards this is the number of spaces (if type is fixed), otherwise the type.
@@ -175,8 +175,8 @@ class GameEngineCommands(object):
             if ncards > 0:
                 if how == 'full':
                     list_dict['opportunity_cards'] = [cd.to_dict() for cd in player.my_opportunity_cards]
-                else:
-                    list_dict['opportunity_cards'] = [cd.text for cd in player.my_opportunity_cards]
+                elif how.startswith('cond'):
+                    list_dict['opportunity_cards'] = [f'{cd.number}: {cd.text}' for cd in player.my_opportunity_cards]
                     
         if what.lower().startswith('exp') or listall:    # list experience cards
             ncards = len(player.my_experience_cards)
@@ -184,8 +184,8 @@ class GameEngineCommands(object):
             if ncards > 0:
                 if how == 'full':
                     list_dict['experience_cards'] = [cd.to_dict(include_range=False) for cd in player.my_experience_cards]
-                else:
-                    list_dict['experience_cards'] = [str(cd) for cd in player.my_experience_cards]
+                elif how.startswith('cond'):
+                    list_dict['experience_cards'] = [f'{cd.number}: {str(cd)}'  for cd in player.my_experience_cards]
                 
         if what.lower().startswith('degree') or listall:    # list degrees completed
             ndegrees = len(player.my_degrees)
@@ -314,7 +314,15 @@ class GameEngineCommands(object):
                     message = "Sadly, no other player has Experience to move."
                 result = CommandResult(CommandResult.SUCCESS, message, True)
             
-            else:    # TODO: OpportunityActionType.EXTRA_TURN or OpportunityActionType.LEAVE_UNEMPLOYMENT
+            elif action_type is OpportunityActionType.LEAVE_UNEMPLOYMENT:
+                player.is_unemployed = False
+                result = CommandResult(CommandResult.SUCCESS, f'{player.player_initials} may leave Unemployment' , False)
+            
+            elif action_type is OpportunityActionType.EXTRA_TURN:
+                player.extra_turn = player.extra_turn + 1    # give the player 1 extra turn
+                result = CommandResult(CommandResult.SUCCESS, f'{player.player_initials} may take an extra turn!', False)
+            
+            else:
                 result = CommandResult(CommandResult.SUCCESS, f'{action_type.value} not yet implemented', True)
             
         elif opportunity_type is OpportunityType.TRAVEL:

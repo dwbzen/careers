@@ -23,8 +23,7 @@ from game.gameSquare import GameSquare, GameSquareClass
 from game.gameEngineCommands import GameEngineCommands
 from game.gameUtils import GameUtils
 from game.environment import Environment
-from game.specialProcessing import SpecialProcessingType
-from game.gameConstants import PendingAction
+from game.gameConstants import PendingAction, SpecialProcessingType
 
 from datetime import datetime
 import random
@@ -296,13 +295,27 @@ class CareersGameEngine(object):
         #
         # get the actual card instance from the players deck
         #
-        if what.lower() == 'opportunity' and player.can_use_opportunity:
+        if what.lower() == 'opportunity':
             cards = player.get_opportunity_cards()   # dict with number as the key
             thecard_dict = cards.get(card_number, None)
             if thecard_dict is None:    # no such card
                 result = CommandResult(CommandResult.ERROR, f"No {what} card exists with number {card_number} ", False)
             else:
                 thecard = thecard_dict['card']
+                leave_unemployment = thecard.opportunity_type is OpportunityType.ACTION and thecard.action_type is OpportunityActionType.LEAVE_UNEMPLOYMENT
+                if leave_unemployment and not player.is_unemployed:
+                    result = CommandResult(CommandResult.ERROR, f"You need to be Unemployed to use {thecard.opportunity_type.value} ", False)
+                    return result
+                
+                if player.is_unemployed:    # player is sitting in Unemployment
+                    if leave_unemployment:
+                        player.opportunity_card = thecard
+                        player.can_use_opportunity = True
+                        result = self._execute_opportunity_card(player, opportunityCard=thecard, spaces=spaces)
+                    else:
+                        result = CommandResult(CommandResult.ERROR, f"use can't use a '{thecard.opportunity_type.value}' here ", False)
+                    return result
+                
                 player.opportunity_card = thecard
                 #
                 # cannot use 2 Opportunities in the same turn except if
@@ -313,7 +326,7 @@ class CareersGameEngine(object):
                     player.can_use_opportunity = True
                 else:
                     player.can_use_opportunity = False
-                    
+                
                 result = self._execute_opportunity_card(player, opportunityCard=thecard, spaces=spaces)
                 
         elif what.lower() == 'experience' and player.can_roll:    # Can I use an Experience card?
@@ -565,7 +578,7 @@ class CareersGameEngine(object):
         result = CommandResult(CommandResult.SUCCESS, f'{player.player_initials} has declared bankruptcy', False)
         return result
     
-    def pay(self, amount_str:str, initials=None) -> CommandResult:
+    def pay(self, amount_str:Union[int,str], initials:Union[str,None]=None) -> CommandResult:
         """The current player, or the player whose initials are provided, makes a payment associated with their current board position.
             If the paying player has sufficient cash to make the payment that amount is subtracted
             from their cash on hand and CommandResult.SUCCESS with done_flag = True is returned 
@@ -579,7 +592,7 @@ class CareersGameEngine(object):
             will subtract all loan amounts from cash on hand.
             
         """
-        amount = int(amount_str)
+        amount = int(amount_str) if isinstance(amount_str, str) else amount_str
         player = self.game_state.current_player if initials is None else self.get_player(initials)
         game_square = self._careersGame.get_game_square(player.board_location)
         amt_needed = game_square.special_processing.compute_cash_loss(player)
@@ -627,10 +640,10 @@ class CareersGameEngine(object):
         return result
         
     
-    def list(self, what='all', how='full') ->CommandResult:
+    def list(self, what='all', how='condensed') ->CommandResult:
         """List the Experience or Opportunity cards held by the current player
             Arguments: what - 'experience', 'opportunity', or 'all'
-                how - display control: 'full' (the default) or 'condensed'
+                how - display control: 'full', 'condensed'  (the default), or 'count'
             Returns: CommandResult.message is the stringified list of str(card).
                 For Opportunity cards this is the text property.
                 For Experience cards this is the number of spaces (if type is fixed), otherwise the type.
@@ -1141,7 +1154,7 @@ class CareersGameEngine(object):
                 #
                 # go to next border square and update board_location after the occupation exit
                 #
-                board_location.border_square_number = square_number - occupation.size + occupation.exit_square_number - 1
+                board_location.border_square_number = square_number - occupation.size + occupation.exit_square_number
                 board_location.occupation_name = None
                 game_square =  self._careersGame.get_border_square(board_location.border_square_number)
                 board_location.border_square_name = game_square.name                

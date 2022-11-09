@@ -7,7 +7,7 @@ from game.gameSquare import GameSquare, GameSquareClass
 from game.player import Player
 from game.commandResult import CommandResult
 from game.gameUtils import GameUtils
-from game.specialProcessing import SpecialProcessingType
+from game.gameConstants import SpecialProcessingType
 from enum import Enum
 import json
 

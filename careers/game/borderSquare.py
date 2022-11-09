@@ -7,7 +7,7 @@ Created on Aug 12, 2022
 from game.gameSquare import GameSquare, GameSquareClass
 from game.player import Player
 from game.commandResult import CommandResult
-from game.specialProcessing import SpecialProcessingType
+from game.gameConstants import SpecialProcessingType
 from game.opportunityCard import OpportunityType
 
 from typing import  List
@@ -28,6 +28,8 @@ class BorderSquare(GameSquare):
     Border squares are numbered consecutively starting with 0 (Payday by convention).
     They also have a name which may not be unique. For example, there are 12 squares named "Opportunity"
     The border square "type" is enumerated in the gameLayout JSON as "types_list
+    
+    Note: the square name for Hospital and Unemployment must the same across all editions.
     """
 
     types_list = list(BorderSquareType)
@@ -116,6 +118,7 @@ class BorderSquare(GameSquare):
                 # If you get this far, the sp_type is invalid or unsupported
                 message = f'Invalid SpecialProcessingType {sp_type} for {message}'
                 return CommandResult(CommandResult.ERROR, message, False)
+            
         elif self.square_type is BorderSquareType.CORNER_SQUARE:
                 # check special processing type because corner square names are edition-dependent, specialProcessing type is independent of the edition
                 special_processing = self.special_processing
@@ -162,6 +165,7 @@ class BorderSquare(GameSquare):
                     result = CommandResult(CommandResult.NEED_PLAYER_CHOICE, f'Player {player.player_initials} may buy insurance', False)
                     
                 return result
+            
         elif self.square_type is BorderSquareType.DANGER_SQUARE:   # IncomeTax, DonateNow, CarPayment, PayRent, ShoppingSpree, DivorceCourt
             sp_type = self.special_processing.processing_type    # special processing type independent of the square name
             payment = self.special_processing.compute_cash_loss(player)

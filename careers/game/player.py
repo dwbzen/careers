@@ -6,7 +6,7 @@ Created on Aug 5, 2022
 from game.successFormula import SuccessFormula
 from game.careersObject import CareersObject
 from game.boardLocation import BoardLocation
-from game.opportunityCard import OpportunityCard
+from game.opportunityCard import OpportunityCard, OpportunityType, OpportunityActionType
 from game.experienceCard import ExperienceCard
 from game.gameConstants import PendingAction
 from datetime import datetime
@@ -295,7 +295,7 @@ class Player(CareersObject):
     @can_use_opportunity.setter
     def can_use_opportunity(self, value):
         self._can_use_opportunity = value
-    
+
     @property
     def pending_action(self) -> PendingAction:
         return self._pending_action
@@ -567,13 +567,13 @@ class Player(CareersObject):
         pending_action = self.pending_action.value if self.pending_action is not None else "None"
         net_worth = self.net_worth()
         info_dict = {"salary":self.salary, "cash":self.cash, "fame":self.fame, "happiness":self.happiness, "points":self.total_points()}
-        info_dict.update( {"insured":self.is_insured, "unemployed":self.is_unemployed, "sick":self.is_sick, "net_worth":net_worth} )
+        info_dict.update( {"insured":self.is_insured, "unemployed":self.is_unemployed, "sick":self.is_sick, "extra_turn":self.extra_turn, "net_worth":net_worth} )
         info_dict.update( self.get_pending() )
         
         fstring = \
 f'''Salary:{self.salary}, Cash: {self.cash},  Fame: {self.fame}, Happiness: {self.happiness}, Points: {self.total_points()}
 Insured: {self.is_insured}, Unemployed: {self.is_unemployed}, Sick: {self.is_sick}, Net worth: {net_worth}
-Pending action: {pending_action}, Pending amount: {self.pending_amount} Pending dice: {self.pending_dice} '''
+Pending action: {pending_action}, Pending amount: {self.pending_amount} Pending dice: {self.pending_dice}  Extra turn: {self.extra_turn} '''
 
         if self.cash < 0:
             fstring = f'{fstring}\nALERT: You have negative cash amount and must declare bankruptcy OR borrow the needed funds from another player!!'
@@ -593,6 +593,25 @@ Pending action: {pending_action}, Pending amount: {self.pending_amount} Pending 
         
         """
         return  self.current_board_location
+    
+    def has_opportunity(self, opportunity_card_type:OpportunityType,  opportunity_action_type:OpportunityActionType=None)->bool:
+        """Check if this player has an opportunity card of a given OpportunityType and OpportunityActionType
+            Arguments:
+                opportunity_card_type - OpportunityType to search for
+                opportunity_action_type - OpportunityActionType to search for, applies only when OpportunityType is ACTION
+            Returns:
+                True if the player has that opportunity card, else False
+        """
+        result = False
+        for card in self.my_opportunity_cards:
+            if card.opportunity_type is opportunity_card_type:
+                if opportunity_action_type is None:
+                    result = True
+                else:
+                    if card.action_type is not None and card.action_type is opportunity_action_type:
+                        result = True
+    
+        return result
     
     def _set_starting_board_location(self):
         self._board_location = BoardLocation(border_square_number=0, border_square_name="Payday", occupation_name=None, occupation_square_number=0 )
@@ -621,6 +640,7 @@ Pending action: {pending_action}, Pending amount: {self.pending_amount} Pending 
         pdict['is_sick'] = self.is_sick
         pdict['is_unemployed'] = self.is_unemployed
         pdict['can_roll'] = self.can_roll
+        pdict['extra_turn'] = self.extra_turn
         pdict['can_use_opportunity'] = self.can_use_opportunity
         pdict['occupation_record'] = self.occupation_record
         pdict.update(self.get_pending())

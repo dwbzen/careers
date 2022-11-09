@@ -1,7 +1,7 @@
 '''
 Created on Oct 21, 2022
 
-@author: dwbze
+@author: don_bacon
 '''
 
 from enum import Enum
@@ -21,6 +21,40 @@ class PendingAction(Enum):
     CHOOSE_OCCUPATION = "choose_occupation"
     CHOOSE_DESTINATION = "choose_destination"
 
+class SpecialProcessingType(Enum):
+    # border squares
+    BUY_HEARTS = "buy_hearts"
+    BUY_EXPERIENCE = "buy_experience"
+    BUY_INSURANCE = "buy_insurance"     # also applies to Opportunity cards
+    BUY_STARS = "buy_stars"
+    ENTER_COLLEGE = "enter_college"
+    ENTER_OCCUPATION = "enter_occupation"
+    GAMBLE = "gamble"
+    HOLIDAY = "holiday"
+    HOSPITAL = "hospital"
+    PAYDAY = "payday"
+    OPPORTUNITY = "opportunity"
+    PAY_TAX = "pay_tax"
+    UNEMPLOYMENT = "unemployment"
+    
+    # occupation squares
+    SHORTCUT = "shortcut"
+    CASH_LOSS_OR_UNEMPLOYMENT = "cash_loss_or_unemployment"
+    GOTO = "goto"
+    SALARY_INCREASE = "salary_increase"
+    SALARY_CUT = "salary_cut"
+    BONUS = "bonus"
+    FAVORS = "favors"
+    BACKSTAB = "backstab"
+    FAME_LOSS = "fame_loss"
+    HAPPINESS_LOSS = "happiness_loss"
+    
+    # common to Occupation and Border squares
+    TRAVEL_BORDER = "travel_border"
+    CASH_LOSS = "cash_loss"
+    EXTRA_TURN = "extra_turn"
+    LOSE_NEXT_TURN = "lose_next_turn"
+    
 class GameConstants(object):
     '''
     Define global constants and Enums

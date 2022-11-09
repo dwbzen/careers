@@ -25,6 +25,7 @@ from game.boardLocation import BoardLocation
 from game.gameParameters import GameParameters
 from game.gameConstants import GameConstants
 
+
 class CareersGame(CareersObject):
     """
     Represents a Careers Game instance.
