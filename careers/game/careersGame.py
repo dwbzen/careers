@@ -9,7 +9,7 @@ from game.player import Player
 import json, random
 from datetime import datetime
 from pathlib import Path
-from typing import Dict, Union, List, Tuple
+from typing import Dict, List, Tuple, Union
 
 from game.opportunityCardDeck import OpportunityCardDeck
 from game.experienceCardDeck import ExperienceCardDeck
@@ -184,7 +184,7 @@ class CareersGame(CareersObject):
         """
         return self._game_board.get_square(num)
     
-    def get_occupation_square(self, name:str, num:int) -> Union[OccupationSquare, None]:
+    def get_occupation_square(self, name:str, num:int) -> OccupationSquare | None:
         occupation = self.occupations.get(name, None)
         gameSquare = occupation.occupationSquares[num] if occupation is not None else None
         return gameSquare
@@ -276,7 +276,7 @@ class CareersGame(CareersObject):
     def add_player(self, aplayer:Player):
         self.game_state.add_player(aplayer)
     
-    def complete_player_move(self) -> Union[Player, None]:
+    def complete_player_move(self) -> Player | None:
         """Completes the move of the current player and determines if there's a winner and returns winning_player.
             If so winning_player is set. Otherise, current_player and current_player_number advanced to the next player.
             Returns: winning_player (Player instance) or None
@@ -358,7 +358,7 @@ class CareersGame(CareersObject):
             
         return next_square_num, game_square
     
-    def find_border_square(self, name:str) -> Union[BorderSquare, None]:
+    def find_border_square(self, name:str) -> BorderSquare | None:
         bs = None
         for square in self.game_board.border_squares:
             if square.name.lower() == name.lower():
@@ -373,7 +373,6 @@ class CareersGame(CareersObject):
         return CareersObject.json_pickle(self)
     
 if __name__ == '__main__':
-    game = CareersGame('Hi-Tech')
-    print(game.occupation_list)
+    print(CareersGame.__doc__)
     
     

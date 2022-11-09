@@ -7,7 +7,6 @@ Created on Aug 9, 2022
 from game.careersObject import CareersObject
 from game.gameConstants import PendingAction
 from enum import Enum
-from typing import Union
 import json
 
 class OpportunityType(Enum):
@@ -102,41 +101,41 @@ class OpportunityCard(CareersObject):
         self._expenses_paid = ep
     
     @property
-    def double_happiness(self):
+    def double_happiness(self) -> bool:
         return self._double_happiness
     
     @double_happiness.setter
-    def double_happiness(self, dh):
+    def double_happiness(self, dh:bool):
         self._double_happiness = dh
 
     @property
-    def action_type(self):
+    def action_type(self) ->OpportunityActionType:
         return self._action_type
     
     @action_type.setter
-    def action_type(self, value):
+    def action_type(self, value:OpportunityActionType):
         self._action_type = value
         
     @property
-    def ncard(self):
+    def ncard(self) ->int:
         return self._ncard
     
     @property
-    def number(self):
+    def number(self) -> int:
         return self._number
 
     @property
-    def special_processing_type(self) ->Union[OpportunitySpecialProcessingType, None]:
+    def special_processing_type(self) -> OpportunitySpecialProcessingType | None:
         return self._special_processing_type
 
     @property
-    def pending_action(self) -> Union[PendingAction, None]:
+    def pending_action(self) ->PendingAction | None:
         return self._pending_action
 
     def __str__(self):
         return self.text
     
-    def to_dict(self):
+    def to_dict(self) ->dict:
         cd = {"card_type": self.opportunity_type.value}
         cd["number"] = self.number
         cd['text'] = self.text
@@ -146,7 +145,7 @@ class OpportunityCard(CareersObject):
             cd['special_processing'] = self._special_processing_dict
         return cd
     
-    def to_JSON(self):
+    def to_JSON(self) ->str:
         return json.dumps(self.to_dict())
     
     

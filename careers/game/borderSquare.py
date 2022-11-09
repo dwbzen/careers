@@ -35,7 +35,7 @@ class BorderSquare(GameSquare):
     types_list = list(BorderSquareType)
 
 
-    def __init__(self, border_square_dict, game=None):
+    def __init__(self, border_square_dict:dict, game=None):
         """Create a BorderSquare instance.
             Arguments:
                 border_square_dict - the dictionary defining this BorderSquare. This would be an element of the game layout.

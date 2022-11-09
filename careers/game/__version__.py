@@ -4,7 +4,7 @@ Created on Aug 06, 2022
 @author: don_bacon
 '''
 
-VERSION_TUPLE = (0, 0, 7)
+VERSION_TUPLE = (0, 1, 0)
 __version__ = ".".join(map(str, VERSION_TUPLE))
 __title__ = 'server'
 __description__ = 'Python Careers game'

@@ -12,7 +12,7 @@ from game.opportunityCard import OpportunityCard, OpportunityType, OpportunityAc
 from game.occupation import Occupation
 from game.gameConstants import GameConstants
 
-from typing import Tuple, List, Union
+from typing import Tuple, List
 import joblib
 import random, json
 from game.borderSquare import BorderSquareType
@@ -176,7 +176,7 @@ class GameEngineCommands(object):
                 if how == 'full':
                     list_dict['opportunity_cards'] = [cd.to_dict() for cd in player.my_opportunity_cards]
                 elif how.startswith('cond'):
-                    list_dict['opportunity_cards'] = [f'{cd.number}: {cd.text}' for cd in player.my_opportunity_cards]
+                    list_dict['opportunity_cards'] = sorted([f'{cd.number:>2}: {cd.text}' for cd in player.my_opportunity_cards])
                     
         if what.lower().startswith('exp') or listall:    # list experience cards
             ncards = len(player.my_experience_cards)
@@ -185,7 +185,7 @@ class GameEngineCommands(object):
                 if how == 'full':
                     list_dict['experience_cards'] = [cd.to_dict(include_range=False) for cd in player.my_experience_cards]
                 elif how.startswith('cond'):
-                    list_dict['experience_cards'] = [f'{cd.number}: {str(cd)}'  for cd in player.my_experience_cards]
+                    list_dict['experience_cards'] = sorted([f'{cd.number:>2}: {str(cd)}'  for cd in player.my_experience_cards])
                 
         if what.lower().startswith('degree') or listall:    # list degrees completed
             ndegrees = len(player.my_degrees)
@@ -231,7 +231,7 @@ class GameEngineCommands(object):
         
         return result
         
-    def execute_opportunity_card(self,  player:Player, opportunityCard:OpportunityCard, dest:Union[str,int,None]=None) -> CommandResult:
+    def execute_opportunity_card(self,  player:Player, opportunityCard:OpportunityCard, dest:str|int|None=None) -> CommandResult:
         """Executes a given OpportunityCard for a Player
             Arguments:
                 player - the current Player

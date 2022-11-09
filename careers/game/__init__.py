@@ -12,6 +12,7 @@ __all__ = [
     'cardDeck',
     'careersGame',
     'careersGameEngine',
+    'gameEngineCommands',
     'careersObject',
     'commandResult',
     'experienceCard',
@@ -45,6 +46,7 @@ from .careersObject import CareersObject
 from .cardDeck import CardDeck
 from .careersGame import CareersGame
 from .careersGameEngine import CareersGameEngine
+from .gameEngineCommands import GameEngineCommands
 from .gameParameters import GameParameters
 from .gameRunner import GameRunner
 from .gameUtils import GameUtils

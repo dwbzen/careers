@@ -321,11 +321,11 @@ class Player(CareersObject):
         self._pending_game_square = value
         
     @property
-    def pending_dice(self) ->Union[int,List[int]]:
+    def pending_dice(self) ->int | List[int]:
         return self._pending_dice
     
     @pending_dice.setter
-    def pending_dice(self, value:Union[int,List[int]]):
+    def pending_dice(self, value:int | List[int] ):
         '''Set pending dice for the current pending_action.
             This can be an int to represent the number or spaces,
             or the actual dice roll as a List.
@@ -347,7 +347,7 @@ class Player(CareersObject):
         amt = amount if amount <= self.savings else self.savings
         return amt
         
-    def set_pending(self, action:PendingAction, game_square=None, amount:SPECIAL_PROCESSING=None, dice:Union[int,List[int]]=0):
+    def set_pending(self, action:PendingAction, game_square=None, amount:SPECIAL_PROCESSING=None, dice:int | List[int]=0):
         self.pending_action = action
         self.pending_game_square = game_square
         self.pending_amount = amount
@@ -373,13 +373,13 @@ class Player(CareersObject):
             total += v
         return total
     
-    def add_loan(self, amt, player_number):
+    def add_loan(self, amt:int, player_number:int):
         if player_number in self._loans:
             self._loans[player_number] = self._loans[player_number] + amt
         else:
             self._loans[player_number] = amt
     
-    def get_opportunity_cards(self) -> list:
+    def get_opportunity_cards(self) -> List[OpportunityCard]:
         """Returns a of dict of Opportunity cards indexed by number
             This method used to display the cards to a player for selection.
             Return format is:
@@ -422,7 +422,7 @@ class Player(CareersObject):
             self.remove_opportunity_card(self._opportunity_card)
             self._opportunity_card = None
     
-    def remove_opportunity_card(self, card):
+    def remove_opportunity_card(self, card:OpportunityCard):
         self.my_opportunity_cards.remove(card)
     
     def used_experience(self):
@@ -435,7 +435,7 @@ class Player(CareersObject):
     def remove_experience_card(self, card:ExperienceCard):
             self.my_experience_cards.remove(card)
                 
-    def add_degree(self, degree_program):
+    def add_degree(self, degree_program:str):
         if degree_program in self.my_degrees:
             count = self.my_degrees[degree_program]
             # max of 4 degrees in any degree program
@@ -447,7 +447,7 @@ class Player(CareersObject):
         else:
             self._my_degrees[degree_program] = 1
     
-    def add_occupation(self, occupation_name):
+    def add_occupation(self, occupation_name:str):
         if occupation_name in self.occupation_record:
             count = self._occupation_record[occupation_name] + 1
             self._occupation_record[occupation_name] = count
@@ -457,7 +457,7 @@ class Player(CareersObject):
             self._occupation_record[occupation_name] = 1
             
         
-    def add_hearts(self, nhearts):
+    def add_hearts(self, nhearts:int):
         """Adds the number of Hearts indicated. Could be negative if losing hearts.
             If so, the resulting number will never be < 0.
         """
@@ -466,7 +466,7 @@ class Player(CareersObject):
                 nhearts = -self.happiness
         self._happiness.append(self.happiness + nhearts)
     
-    def add_stars(self, nstars):
+    def add_stars(self, nstars:int):
         if nstars < 0:    # subract this amount but don't go below 0
             if self.fame + nstars < 0:
                 nstars = -self.fame
@@ -484,7 +484,7 @@ class Player(CareersObject):
         else:
             raise AttributeError(f'{what} is not a valid choice')
         
-    def add_cash(self, money):
+    def add_cash(self, money:int):
         """Adds cash to the players cash-on-hand.
             This can be negative if losing cash.
             If the cash falls below 0, the 'bankrupt' pending_action is set.
@@ -493,7 +493,7 @@ class Player(CareersObject):
         if self._cash < 0:
             self.pending_action = 'bankrupt'
     
-    def add_to_salary(self, money): #  again, could be negative amount
+    def add_to_salary(self, money:int): #  again, could be negative amount
         self.salary = self.salary + money
         self._salary_history.append(self.salary)
         
@@ -519,7 +519,7 @@ class Player(CareersObject):
         """
         return  self.total_points() >= self.success_formula.total_points()
 
-    def save(self, gameId=None):
+    def save(self, gameId:str|None=None):
         """Persist this player's state to a JSON file.
         File name is "player_" + player_initials + yyyy-mm-dd_hhmmss + _state.json"
         
@@ -557,7 +557,7 @@ class Player(CareersObject):
         self._salary_history = [self.salary]
         self._initialize()
     
-    def player_info(self, include_successFormula=False, as_json=False) ->str:
+    def player_info(self, include_successFormula:bool=False, as_json:bool=False) ->str:
         '''Returns key player information.
             Arguments:
                 include_successFormula - if True, include the player's success formula
@@ -652,23 +652,5 @@ Pending action: {pending_action}, Pending amount: {self.pending_amount} Pending 
 
     
 if __name__ == '__main__':
-    player = Player(0, name='Don', initials='DWB')
-    sf = SuccessFormula(stars=40, hearts=10, cash=50)
-    player.success_formula = sf
-
-    
-    print(str(player))
-    print(repr(player))
-    
-    player.add_cash(5000)
-    player.add_hearts(3)
-    player.add_stars(6)
-    print("\n" + player.player_info(include_successFormula=False) )
-    player.add_to_salary(2000)
-    print("\n" + player.player_info(include_successFormula=True)  )
-    
-    print("\njson_pickle:")
-    print(player.json_pickle())
-    print("\nto_JSON:")
-    print(player.to_JSON())
+    print(Player.__doc__)
     

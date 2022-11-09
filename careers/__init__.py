@@ -2,7 +2,7 @@
 from __future__ import absolute_import
 
 import sys
-minPythonVersion = (3, 9)
+minPythonVersion = (3, 10)
 minPythonVersionStr = '.'.join([str(x) for x in minPythonVersion])
 
 del sys
@@ -10,7 +10,7 @@ del minPythonVersion
 del minPythonVersionStr
 
 __author__ = "Donald Bacon"
-__version__ = "0.0.6"
+__version__ = "0.1.0"
 
 
 # this defines what  is loaded when importing __all__
@@ -22,17 +22,12 @@ __version__ = "0.0.6"
 __all__ = [
     # sub folders
     'game',
-    'server',
-    # individual modules
-    # KEEP ALPHABETICAL unless necessary for load reasons, if so
-    # put a note.  Keep one letter per line.
-    'environment'
+    'server'
 ]
 
 # -----------------------------------------------------------------------------
 # this brings all of our own __all__ names into the dwbzen package namespace
 # pylint: disable=wildcard-import
 # 
-from environment import Environment
 import game
 import server

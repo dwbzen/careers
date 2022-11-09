@@ -27,7 +27,7 @@ from game.gameConstants import PendingAction, SpecialProcessingType
 
 from datetime import datetime
 import random
-from typing import Union, List, Any
+from typing import List, Any
 import os
 
 class CareersGameEngine(object):
@@ -198,7 +198,7 @@ class CareersGameEngine(object):
         game_square = self._careersGame.get_game_square(player.board_location)
         return game_square
     
-    def get_player(self, pid:str) -> Union[Player, None] :
+    def get_player(self, pid:str) -> Player | None :
         """Gets a Player by initials, name, or number
             Arguments:
                 pid - string that represents a player number, name or initials
@@ -275,7 +275,7 @@ class CareersGameEngine(object):
                 result = self.goto(next_square_number)
         return result
     
-    def use(self, what, card_number, spaces:Union[str,int,None]=None) -> CommandResult:
+    def use(self, what, card_number, spaces:str|int|None=None) -> CommandResult:
         """Use an Experience or Opportunity card in place of rolling the die.
             Experience and Opportunity cards are identified (through the UI) by number, which uniquely
             identifies the card function. i.e. Cards having the same "number" are identical
@@ -578,7 +578,7 @@ class CareersGameEngine(object):
         result = CommandResult(CommandResult.SUCCESS, f'{player.player_initials} has declared bankruptcy', False)
         return result
     
-    def pay(self, amount_str:Union[int,str], initials:Union[str,None]=None) -> CommandResult:
+    def pay(self, amount_str:int|str, initials:str|None=None) -> CommandResult:
         """The current player, or the player whose initials are provided, makes a payment associated with their current board position.
             If the paying player has sufficient cash to make the payment that amount is subtracted
             from their cash on hand and CommandResult.SUCCESS with done_flag = True is returned 
@@ -786,7 +786,7 @@ class CareersGameEngine(object):
     def start(self) -> CommandResult:
         return self._start()
     
-    def buy(self, what:str, qty_str:Union[int,str], amount_str:Union[int,str]) -> CommandResult:
+    def buy(self, what:str, qty_str:int|str, amount_str:int|str) -> CommandResult:
         """Buy a number of items for the current player.
             The buy command is associated with one of the action_squares, specifically the game square's specialProcessing processingType.
             
@@ -803,7 +803,7 @@ class CareersGameEngine(object):
         player = self.game_state.current_player
         return self._buy(player, what, qty_str, amount_str)
     
-    def resolve(self, what:str, choice:Union[int,str] ):
+    def resolve(self, what:str, choice:int|str ):
         """Resolve a player's pending_action.
             Arguments:
                 what - the pending_action that needs resolution, for example "select_degree"
@@ -935,7 +935,7 @@ class CareersGameEngine(object):
         self.game_state.set_next_player()    # sets the player number to 0 and the curent_player Player reference
         return CommandResult(CommandResult.SUCCESS, message, True)
     
-    def _buy(self, player:Player, what:str, qty_arg:Union[int,str]=1, amount_arg:Union[int,str]=1) -> CommandResult:
+    def _buy(self, player:Player, what:str, qty_arg:int|str=1, amount_arg:int|str=1) -> CommandResult:
         """Implements the buy command
             Arguments:
                 player - the current or affected player reference
@@ -986,7 +986,7 @@ class CareersGameEngine(object):
 
 
     
-    def _execute_opportunity_card(self,  player:Player, opportunityCard:OpportunityCard=None, spaces:Union[str,int,None]=None) -> CommandResult:
+    def _execute_opportunity_card(self,  player:Player, opportunityCard:OpportunityCard=None, spaces:int|str|None=None) -> CommandResult:
             
             result = self._gameEngineCommands.execute_opportunity_card(player, opportunityCard, dest=spaces)
             if result.is_successful():
@@ -998,7 +998,7 @@ class CareersGameEngine(object):
             player.used_opportunity()
             return result                   
     
-    def _execute_experience_card(self,  player:Player, experienceCard:ExperienceCard, spaces:Union[str,int,None]=None) -> CommandResult:
+    def _execute_experience_card(self,  player:Player, experienceCard:ExperienceCard, spaces:int|str|None=None) -> CommandResult:
         '''Executes an Experience card.
             Command format is "use experience [roll]"
             roll is required only for wild cards and specifies the dice as a csv list, for example "4,5" to roll a 9, or "3" as a single die roll
@@ -1402,5 +1402,8 @@ class CareersGameEngine(object):
                     if player.pending_action==SpecialProcessingType.BUY_HEARTS and player.happiness > 0:
                         player.add_hearts(-game_square.special_processing.penalty)
             player.clear_pending()
+    
+if __name__ == '__main__':
+    print(CareersGameEngine.__doc__)
     
     

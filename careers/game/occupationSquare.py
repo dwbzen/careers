@@ -10,6 +10,7 @@ from game.gameUtils import GameUtils
 from game.gameConstants import SpecialProcessingType
 from enum import Enum
 import json
+from typing import Any
 
 class OccupationSquareType(Enum):
     DANGER_SQUARE = 'danger_square'
@@ -27,7 +28,7 @@ class OccupationSquare(GameSquare):
     types_list = list(OccupationSquareType)
 
 
-    def __init__(self, occupation_square_dict, game=None):
+    def __init__(self, occupation_square_dict:dict, game:Any=None):
         """Create a OccupationSquare instance.
             Arguments:
                 occupation_square_dict - the dictionary defining this OccupationSquare. This would be an element of occupationSquares.
@@ -149,12 +150,12 @@ class OccupationSquare(GameSquare):
             #
             if amount > 0:
                 player.add_to_salary(-amount)
-                message += f'Salary cut by {amount}. Your new salary is {player.salary}'
+                message += f' Salary cut by {amount}. Your new salary is {player.salary}'
             elif percent > 0:
                 cutAmount = player.salary * percent
                 cutAmount = 1000 * int(cutAmount / 1000)
                 player.add_to_salary(-cutAmount)
-                message += f'Salary cut by {cutAmount}. Your new salary is {player.salary}'
+                message += f' Salary cut by {cutAmount}. Your new salary is {player.salary}'
         elif sptype is SpecialProcessingType.BACKSTAB:
             ...    # TODO
         elif sptype is SpecialProcessingType.GOTO:
