@@ -1,5 +1,5 @@
 # For more information, please refer to https://aka.ms/vscode-docker-python
-FROM python:3.9.14-slim-buster
+FROM python:3.10.8-slim-buster
 
 EXPOSE 9000
 
@@ -21,11 +21,11 @@ RUN useradd appuser && chown -R appuser /app
 
 WORKDIR /app
 RUN python -m pip install -e .
-RUN echo 'DB_URL=mongodb://root:rootpassword@localhost' > .env
 
 USER root
 
 WORKDIR /app/careers
+RUN echo 'DB_URL=mongodb://root:rootpassword@localhost' > .env
 
-# During debugging, this entry point will be overridden. For more information, please refer to https://aka.ms/vscode-docker-python-debug
+#docker run --rm -it --network host careers
 CMD ["uvicorn", "--port", "9000", "--host", "0.0.0.0",  "app:app"]
