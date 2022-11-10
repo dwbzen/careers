@@ -44,11 +44,11 @@ def getGameDetails(joinCode: str):
 def startGame():
     pass
 
-@app.put('/game/{gameId}/player/{playerName}/{playerInitials}/{money}/{hearts}/{stars}', status_code=201)
-def joinGame(gameId: str, playerName: str, playerInitials: str, money: int, hearts: int, stars: int, 
+@app.put('/game/{gameId}/player/{userId}/{money}/{hearts}/{stars}', status_code=201)
+def joinGame(gameId: str, userId: str, money: int, hearts: int, stars: int, 
         gameInstance: CareersGameEngine=Depends(manager)):
-    manager.joinGame(gameId, playerName, playerInitials)
-    return gameInstance.execute_command(f'add player {playerName} {playerInitials} {money} {hearts} {stars}', None)
+    user = manager.joinGame(gameId, userId)
+    return gameInstance.execute_command(f'add player {user["name"]} {user["initials"]} {money} {hearts} {stars}', None)
 
 @app.get('/games/{installationId}', status_code=200)
 def getGames(installationId: str):

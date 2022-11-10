@@ -19,6 +19,7 @@ import dotenv
 from pydantic import BaseModel, Field
 from pymongo import MongoClient
 import pymongo
+from careers.server.userManager import CareersUserManager, User
 from game.careersGameEngine import CareersGameEngine
 
 class Game(BaseModel):
@@ -39,6 +40,7 @@ class CareersGameManager(object):
         self.mongo_client = MongoClient(self.config["DB_URL"])
         self.database = self.mongo_client["careers"]
         self.database["games"].create_index('players')
+        self.userManager = CareersUserManager()
 
     def create(self, edition: str, userId: str, points: int):
         """
@@ -67,8 +69,9 @@ class CareersGameManager(object):
         """
         return list(self.database["games"].find({"players": installationId}))
 
-    def joinGame(self, gameId: str, playerName: str, playerInitials: str):
-        self.database["games"].update_one({"_id": gameId}, {'$push': {'players': playerInitials}})
+    def joinGame(self, gameId: str, userId: str) -> User:
+        self.database["games"].update_one({"_id": gameId}, {'$push': {'players': userId}})
+        return self.userManager.getUserByUserId(userId)
 
     def __call__(self, gameId: str = None) -> CareersGameEngine:
         """Create a new game engine for the user and return the instance"""

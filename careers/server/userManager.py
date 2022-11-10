@@ -30,3 +30,6 @@ class CareersUserManager(object):
         self.collection.insert_one(jsonable_encoder(user))
 
         return user
+    
+    def getUserByUserId(self, userId: str) -> User:
+        return self.collection.find_one({"_id": userId})
