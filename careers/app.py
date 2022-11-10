@@ -50,12 +50,12 @@ def joinGame(gameId: str, userId: str, money: int, hearts: int, stars: int,
     user = manager.joinGame(gameId, userId)
     return gameInstance.execute_command(f'add player {user["name"]} {user["initials"]} {money} {hearts} {stars}', None)
 
-@app.get('/games/{installationId}', status_code=200)
-def getGames(installationId: str):
+@app.get('/games/{userId}', status_code=200)
+def getGames(userId: str):
     """
         Gets all the games the user (installationId) has created or participates in
     """
-    return manager.getGames(installationId)
+    return manager.getGames(userId)
 
 if __name__ == "__main__":
     uvicorn.run("app:app", port=9000, reload=True)
