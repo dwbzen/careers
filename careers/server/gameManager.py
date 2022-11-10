@@ -51,7 +51,7 @@ class CareersUserManager(object):
         user.id = str(uuid4())
         self.collection.insert_one(jsonable_encoder(user))
 
-        return self.collection.find_one({"_id": user.id})
+        return user
 
 class CareersGameManager(object):
 
