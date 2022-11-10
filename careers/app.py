@@ -53,7 +53,7 @@ def joinGame(gameId: str, userId: str, money: int, hearts: int, stars: int,
 @app.get('/games/{userId}', status_code=200)
 def getGames(userId: str):
     """
-        Gets all the games the user (installationId) has created or participates in
+        Gets all the games the user has created or participates in
     """
     return manager.getGames(userId)
 
