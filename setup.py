@@ -15,7 +15,7 @@ requirements = [
 
 setup(
     name="careers",
-    version="0.0.7",
+    version="0.1.0",
     author="Donald Bacon",
     author_email="dwbzen@gmail.com",
     description="Careers Game game engine and server",
@@ -24,6 +24,7 @@ setup(
     url="https://github.com/dwbzen/careers.git",
     packages=find_packages(exclude=["test",]),
     data_files=[('resources', ['resources/editions.json','resources/experienceCards_Hi-Tech.json','resources/opportunityCards_Hi-Tech.json',
+                'resources/gameParameters_Hi-Tech.json',
                 'resources/collegeDegrees_Hi-Tech.json', 'resources/gameLayout_Hi-Tech.json', 'resources/occupations_Hi-Tech.json',
                 'resources/FMC_Hi-Tech.json','resources/UF_Hi-Tech.json', 'resources/Amazon_Hi-Tech.json', 'resources/ESPN_Hi-Tech.json',
                 'resources/Disney_Hi-Tech.json','resources/Facebook_Hi-Tech.json','resources/Google_Hi-Tech.json',
@@ -41,7 +42,6 @@ setup(
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
-	    "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
     ],
     python_requires='>=3.9',

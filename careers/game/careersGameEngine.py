@@ -705,15 +705,14 @@ class CareersGameEngine(object):
                 player.can_roll = True
 
             starting_experience = self.careersGame.game_parameters.get_param('starting_experience_cards')
-            for i in range(starting_experience):
-                thecard = self.careersGame.experience_cards.draw()
-                player.add_experience_card(thecard)
+            if starting_experience > 0:
+                card_list = self.careersGame.experience_cards.draw_cards(starting_experience)
+                player.add_experience_card(card_list)
                 
             starting_opportunities = self.careersGame.game_parameters.get_param('starting_opportunity_cards')
             if starting_opportunities > 0:
-                for i in range(starting_opportunities):
-                    thecard = self._careersGame.opportunities.draw()
-                    player.add_opportunity_card(thecard)
+                card_list = self._careersGame.opportunities.draw_cards(starting_opportunities)
+                player.add_opportunity_card(card_list)
                 
             message = f'Player "{name}" "{initials} number: {player.number}" added'
             

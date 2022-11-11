@@ -85,13 +85,11 @@ class OccupationSquare(GameSquare):
             message += f'\n Hearts: {str(self.hearts)}'
             player.add_hearts(self.hearts)
         if self.opportunities > 0:
-            for i in range(self.opportunities):
-                thecard = self.careersGame.opportunities.draw()
-                player.add_opportunity_card(thecard)
+            card_list = self.careersGame.opportunities.draw_cards(self.opportunities)
+            player.add_opportunity_card(card_list)
         if self.experience > 0:
-            for i in range(self.experience):
-                thecard = self.careersGame.experience_cards.draw()
-                player.add_experience_card(thecard)
+            card_list = self.careersGame.experience_cards.draw_cards(self.experience)
+            player.add_experience_card(card_list)
         if self.special_processing is not None:
             return self.execute_special_processing(message, player)
             

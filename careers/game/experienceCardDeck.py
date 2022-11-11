@@ -6,6 +6,7 @@ Created on Aug 9, 2022
 
 from game.cardDeck import CardDeck
 from game.experienceCard import ExperienceCard
+from typing import List
 
 class ExperienceCardDeck(CardDeck):
     """The deck of Experience Cards used in game play.
@@ -30,3 +31,9 @@ class ExperienceCardDeck(CardDeck):
             experience_card = ExperienceCard(number, ncard, card_spec['card_type'], card_spec['spaces'])
             self._deck.append(experience_card)
     
+    def draw_cards(self, ncards:int) -> List[ExperienceCard]:
+        assert(ncards > 0)
+        card_list = []
+        for i in range(ncards):
+            card_list.append(self.draw())
+        return card_list

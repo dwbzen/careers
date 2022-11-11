@@ -63,6 +63,12 @@ class CardDeck(object):
             return self.draw()
         return next_card
     
+    def draw_cards(self, ncards:int):
+        #
+        # override in derived class
+        #
+        return None
+    
     def load_cards(self, path, name, edition_name):
         """Loads the specified card deck JSON file. This assumes the resulting structure is a dict
             with keys: "Help", "type_list", "types", and "cards"

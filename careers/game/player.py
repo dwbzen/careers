@@ -179,7 +179,7 @@ class Player(CareersObject):
         return self.board_location.occupation_square_number
     
     @property
-    def my_opportunity_cards(self):
+    def my_opportunity_cards(self) -> List[OpportunityCard]:
         return self._my_opportunity_cards
     
     @property
@@ -194,13 +194,16 @@ class Player(CareersObject):
         """
         self._opportunity_card = value
         
-    def add_opportunity_card(self, thecard:OpportunityCard):
-        """Add a single OpportunityCard to my deck
+    def add_opportunity_card(self, thecard:OpportunityCard|List[OpportunityCard]):
+        """Add a single OpportunityCard OR a List[OpportunityCard] to my deck
         """
-        self._my_opportunity_cards.append(thecard)
+        if isinstance(thecard, OpportunityCard):
+            self._my_opportunity_cards.append(thecard)
+        else:
+            self._my_opportunity_cards += thecard
     
     @property
-    def my_experience_cards(self):
+    def my_experience_cards(self) -> List[ExperienceCard]:
         return self._my_experience_cards
         
     @property
@@ -215,10 +218,13 @@ class Player(CareersObject):
         """
         self._experience_card = value
         
-    def add_experience_card(self, thecard:ExperienceCard):
-        """Add a single ExperienceCard to my deck
+    def add_experience_card(self, thecard:ExperienceCard|List[ExperienceCard]):
+        """Add a single ExperienceCard OR a List[ExperienceCard] to my deck
         """
-        self._my_experience_cards.append(thecard)
+        if isinstance(thecard, ExperienceCard):
+            self._my_experience_cards.append(thecard)
+        else:
+            self._my_experience_cards += thecard
     
     @property
     def is_unemployed(self):

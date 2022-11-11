@@ -6,6 +6,7 @@ Created on Aug 9, 2022
 
 from game.cardDeck import CardDeck
 from game.opportunityCard import OpportunityCard,OpportunityType
+from typing import List
 
 class OpportunityCardDeck(CardDeck):
     """The deck of Opportunity Cards used in game play.
@@ -41,6 +42,13 @@ class OpportunityCardDeck(CardDeck):
             opportunity_card = OpportunityCard(ctype, number, ncard, destination, card_spec['text'], expenses_paid, double_happiness, action_type, special_processing)
             self._deck.append(opportunity_card)
 
+    def draw_cards(self, ncards:int) -> List[OpportunityCard]:
+        assert(ncards > 0)
+        card_list = []
+        for i in range(ncards):
+            card_list.append(self.draw())
+        return card_list
+        
     @property
     def opportunity_types(self):
         return self._opportunity_types
