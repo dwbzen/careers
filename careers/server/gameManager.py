@@ -5,6 +5,7 @@
 from array import array
 import imp
 from multiprocessing.dummy import Array
+from bson import ObjectId
 from fastapi.encoders import jsonable_encoder
 from typing import Any, List, Optional
 import uuid
@@ -12,12 +13,24 @@ import json
 import random
 import string
 from datetime import date, datetime
+from uuid import uuid4
 
 import dotenv
 from pydantic import BaseModel, Field
 from pymongo import MongoClient
 import pymongo
+from careers.server.userManager import CareersUserManager, User
 from game.careersGameEngine import CareersGameEngine
+
+class Game(BaseModel):
+    id: str = Field(alias="_id", default=None)
+    createdBy: str = Field(...)
+    createdDate: datetime = Field(...)
+    points: int = Field(...)
+    edition: str = Field(default="Hi-Tech")
+    players: List[str] = Field()
+    joinCode: str = Field(...)
+    inProgress: bool = Field(default=False)
 
 class CareersGameManager(object):
 
@@ -27,16 +40,17 @@ class CareersGameManager(object):
         self.mongo_client = MongoClient(self.config["DB_URL"])
         self.database = self.mongo_client["careers"]
         self.database["games"].create_index('players')
+        self.userManager = CareersUserManager()
 
-    def create(self, edition: str, installationId: str, points: int):
+    def create(self, edition: str, userId: str, points: int):
         """
             Creates a new game instance. Stores it in memory for quick retreival
             but also stores it in mongo for later lookups
         """
         gameEngine = CareersGameEngine()
-        gameId = json.loads(gameEngine.create(edition, installationId, 'points', points).message)['gameId']
-        game = Game(_id=gameId, createdBy=installationId, points=points, 
-            players=[installationId], createdDate=datetime.now(), joinCode=''.join(random.choices(string.ascii_letters, k=5)))
+        gameId = json.loads(gameEngine.create(edition, userId, 'points', points).message)['gameId']
+        game = Game(_id=gameId, createdBy=userId, points=points, 
+            players=[userId], createdDate=datetime.now(), joinCode=''.join(random.choices(string.ascii_letters, k=5)))
 
         self.database["games"].insert_one(jsonable_encoder(game))
         self.games[gameId] = gameEngine
@@ -55,8 +69,9 @@ class CareersGameManager(object):
         """
         return list(self.database["games"].find({"players": installationId}))
 
-    def joinGame(self, gameId: str, playerName: str, playerInitials: str):
-        self.database["games"].update_one({"_id": gameId}, {'$push': {'players': playerInitials}})
+    def joinGame(self, gameId: str, userId: str) -> User:
+        self.database["games"].update_one({"_id": gameId}, {'$push': {'players': userId}})
+        return self.userManager.getUserByUserId(userId)
 
     def __call__(self, gameId: str = None) -> CareersGameEngine:
         """Create a new game engine for the user and return the instance"""
@@ -70,13 +85,3 @@ class CareersGameManager(object):
             self.games[gameId] = CareersGameEngine()
             self.games[gameId].load(gameId)
             return self.games[gameId]
-
-class Game(BaseModel):
-    id: str = Field(alias="_id")
-    createdBy: str = Field(...)
-    createdDate: datetime = Field(...)
-    points: int = Field(...)
-    edition: str = Field(default="Hi-Tech")
-    players: List[str] = Field()
-    joinCode: str = Field(...)
-    inProgress: bool = Field(default=False)
