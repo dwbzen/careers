@@ -358,9 +358,20 @@ class CareersGame(CareersObject):
             
         return next_square_num, game_square
     
-    def find_border_square(self, name:str) -> BorderSquare | None:
+    def find_border_square(self, name:str, starting_square_number:int=0) -> BorderSquare | None:
+        """Find the BorderSquare with the name provided.
+            Argument:
+                name - the name of the BorderSquare to find. NOT case sensitive.
+                starting_square_number - the square number to start the search. Default is 0.
+                
+            Returns:
+                BorderSquare instance or None if not found.
+        """
         bs = None
-        for square in self.game_board.border_squares:
+        indicies = [(i+starting_square_number)%42 for i in range(42)]
+        
+        for i in indicies:
+            square = self.game_board.border_squares[i]
             if square.name.lower() == name.lower():
                 bs = square
                 break

@@ -363,7 +363,7 @@ class CareersGameEngine(object):
             result = CommandResult(CommandResult.ERROR, "You don't have insurance!", False)
         return result
         
-    def goto(self, square_ref:Any) -> CommandResult:
+    def goto(self, square_ref:int|str,  starting_square_number:int=0) -> CommandResult:
         """Immediately place the designated player on the designated BorderSquare OR OccupationSquare and execute that square.
             If the current player is in an occupation, this places the player on square_number of that Occupation.
             Otherwise, the square_ref refers to a BorderSquare name or number.
@@ -377,7 +377,7 @@ class CareersGameEngine(object):
         player = self.game_state.current_player
         square_number = square_ref
         if isinstance(square_ref, str):
-            bs = self._careersGame.find_border_square(square_ref)
+            bs = self._careersGame.find_border_square(square_ref, starting_square_number)
             square_number = bs.number
             player.board_location.occupation_name = None    # leaving the occupation (if in one) to go to a BorderSquare
         return self._goto(square_number, player)

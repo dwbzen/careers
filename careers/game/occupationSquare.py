@@ -136,7 +136,10 @@ class OccupationSquare(GameSquare):
                 player.pending_amount = amount    # always a fixed amount
                 done_flag = False
         elif sptype is SpecialProcessingType.TRAVEL_BORDER:
-            pass    # TODO
+            destination = self.special_processing.next_square   # possible destinations: Unemployment and Hospital
+            next_action = f'goto {destination}'
+            message = f'Go to {destination}'
+            player.pending_action = None
         elif sptype is  SpecialProcessingType.LOSE_NEXT_TURN:
             player.lose_turn = True
         elif sptype is  SpecialProcessingType.EXTRA_TURN:

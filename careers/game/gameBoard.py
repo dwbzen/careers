@@ -32,7 +32,7 @@ class GameBoard(object):
         fp.close()
         self._game_layout = self._game_board_dict['layout']
         self._game_layout_dimensions = self._game_board_dict['dimensions']
-        self._game_board_size = self._game_layout_dimensions['size']
+        self._game_board_size = self._game_layout_dimensions['size']     # the last square number is size-1
         self._types = self._game_board_dict['types_list']        # a list of border square types
         
         self._border_squares = list()
