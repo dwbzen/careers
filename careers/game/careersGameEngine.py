@@ -453,7 +453,19 @@ class CareersGameEngine(object):
                 if cp.pending_action is SpecialProcessingType.BUY_HEARTS and cp.happiness > 0:
                     cp.add_hearts(-game_square.special_processing.penalty)
             cp.pending_action = None
-            
+        
+        #
+        # has this player won the game?
+        #
+        if cp.total_points() >= self._careersGame.game_state.total_points:
+            self._careersGame.game_state.winning_player = cp
+            self._careersGame.game_state.game_complete = True
+            save_result = self.save()
+            message = f'The game is over, the winner is {cp.player_initials} with {cp.total_points()} points'
+            message += f'\nGame saved as: {save_result.message}'
+            result = CommandResult(CommandResult.TERMINATE, message, True)
+            return result
+    
         cp.board_location.reset_prior()            # this player's prior board position no longer relevant
         cp.pending_action = None
         

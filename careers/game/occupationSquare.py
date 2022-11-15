@@ -9,7 +9,7 @@ from game.commandResult import CommandResult
 from game.gameUtils import GameUtils
 from game.gameConstants import SpecialProcessingType
 from enum import Enum
-import json
+import json, random
 from typing import Any
 
 class OccupationSquareType(Enum):
@@ -109,19 +109,39 @@ class OccupationSquare(GameSquare):
                 amount = amount * sum(n)
                 message += f'\n You rolled a {n}, collect {amount}'
             player.add_cash(amount)
+            
         elif sptype is SpecialProcessingType.SALARY_INCREASE:
             if dice > 0:
                 n = GameUtils.roll(dice)
                 amount = amount * sum(n)
                 message = f'{message}\n You rolled a {n}, salary increase {amount}'
             player.add_to_salary(amount)
+            
         elif sptype is SpecialProcessingType.CASH_LOSS:      # could cause the player into bankruptcy
             payment = self.special_processing.compute_cash_loss(player)
             player.add_cash(-payment)       # this will set the bankrupt pending_action if cash is < 0 as a result
+            
         elif sptype is SpecialProcessingType.FAVORS:
-            pass    # TODO
+            #
+            # collect a randomly selected Opportunity card from the other players
+            #
+            message = ""
+            for aplayer in self.careersGame.game_state.players:
+                ncards = len(aplayer.my_opportunity_cards)
+                if player.number != aplayer.number and ncards > 0:
+                    ind = random.randint(0, ncards-1)    # the index of the card to move to this player
+                    thecard = aplayer.my_opportunity_cards[ind]
+                    aplayer.remove_opportunity_card(thecard)
+                    player.add_opportunity_card(thecard)
+                    message += f'Opportunity card "{thecard.text}" moved from player {aplayer.player_initials} to {player.player_initials}\n'
+            if len(message) == 0:
+                message = "Sadly, no other player has Opportunity to give to you."             
+
         elif sptype is SpecialProcessingType.SHORTCUT:    # pending action amount is the square# to goto if the shortcut is taken
-            player.set_pending(self.special_processing.pending_action, self, amount=self.special_processing.next_square)    # TODO
+            next_square = self.special_processing.next_square
+            player.set_pending(self.special_processing.pending_action, self, amount=next_square)
+            message = f'{player.player_initials} may take a shortcut to square {next_square}'
+            
         elif sptype is SpecialProcessingType.CASH_LOSS_OR_UNEMPLOYMENT:
             #
             # if the player's cash is < the amount, put them in Unemployment
@@ -135,15 +155,19 @@ class OccupationSquare(GameSquare):
                 player.pending_action = sptype
                 player.pending_amount = amount    # always a fixed amount
                 done_flag = False
+                
         elif sptype is SpecialProcessingType.TRAVEL_BORDER:
             destination = self.special_processing.next_square   # possible destinations: Unemployment and Hospital
             next_action = f'goto {destination}'
             message = f'Go to {destination}'
             player.pending_action = None
+            
         elif sptype is  SpecialProcessingType.LOSE_NEXT_TURN:
             player.lose_turn = True
+            
         elif sptype is  SpecialProcessingType.EXTRA_TURN:
             player.extra_turn = player.extra_turn + 1
+            
         elif sptype is SpecialProcessingType.SALARY_CUT:
             #
             # if cut is by percent (like half) round up to the nearest $1000
@@ -157,10 +181,17 @@ class OccupationSquare(GameSquare):
                 cutAmount = 1000 * int(cutAmount / 1000)
                 player.add_to_salary(-cutAmount)
                 message += f' Salary cut by {cutAmount}. Your new salary is {player.salary}'
+                
         elif sptype is SpecialProcessingType.BACKSTAB:
             ...    # TODO
         elif sptype is SpecialProcessingType.GOTO:
-            ...    # TODO
+            #
+            # goto next_square
+            #
+            message = self.action_text     # could be blank
+            next_action = f'goto {self.special_processing.next_square}'
+            done_flag = False
+            
         elif sptype is SpecialProcessingType.FAME_LOSS:
             ...    # TODO
         elif sptype is SpecialProcessingType.HAPPINESS_LOSS:

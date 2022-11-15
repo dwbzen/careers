@@ -56,7 +56,8 @@
 			"specialProcessing" : {
 				"type" : "shortcut",
 				"pending_action" : "take_shortcut",
-				"next_square" : 9
+				"next_square" : 9,
+				"next_square_text" : "4.0 GPA: Draw 2 OPPORTUNITY CARDS"
 			}
 		},
 		{

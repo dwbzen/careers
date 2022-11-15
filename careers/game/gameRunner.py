@@ -98,9 +98,10 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser(description="Run a command-driven Careers Game for 1 to 4 players")
     parser.add_argument("--players", "-p", help="the number of players", type=int, choices=range(1,5), default=1)
+    parser.add_argument("--points", help="Total game points", type=int, choices=range(40, 10000), default=100)
     args = parser.parse_args()
     
-    total_points = 100
+    total_points = args.points
     edition = 'Hi-Tech'
     game_type = 'points'            # or 'timed'
     installationId = 'ZenAlien2013'      # uniquely identifies 'me' as the game creator

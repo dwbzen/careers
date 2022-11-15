@@ -32,6 +32,7 @@
 			"number" : 1,
 			"background_image" : "occupation_square.png",
 			"text" : "Super-smart, may take shortcut",
+			"type" : "shortcut_square",
 			"image" : "shortcut_emoji.png",
 			"stars" : 0,
 			"hearts" : 0,
@@ -41,7 +42,9 @@
 			"action_text" : "",
 			"specialProcessing" : {
 				"type" : "shortcut",
-				"next_square" : 13
+				"pending_action" : "take_shortcut",
+				"next_square" : 13,
+				"next_square_text" : "Healthy lifestyle: collect 6 hearts"
 			}
 		},
 		{

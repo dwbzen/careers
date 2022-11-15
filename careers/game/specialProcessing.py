@@ -58,6 +58,7 @@ class SpecialProcessing(CareersObject):
         
         # square number to advance to, relative to the overall game layout or occupation
         self._next_square = special_processing_dict.get('next_square', None)    
+        self.next_square_text = special_processing_dict.get('next_square_text', None)
 
         self._destination = special_processing_dict.get('destinationOccupation', None)  # the name of a destination occupation
         self._percent = special_processing_dict.get('percent', 0.0)                     # a percent amount of salary or cash depending on type

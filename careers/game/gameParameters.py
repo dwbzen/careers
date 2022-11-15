@@ -33,3 +33,12 @@ class GameParameters(object):
     def get_param(self, param_name):
         return self._game_parameters.get(param_name, None)
     
+    @property
+    def default_game_points(self):
+        return self._default_game_points
+    
+    @default_game_points.setter
+    def default_game_points(self, value):
+        self._default_game_points = value
+        
+    

@@ -65,16 +65,20 @@ class GameState(CareersObject):
         return self._players
     
     @property
-    def winning_player(self):
+    def winning_player(self) -> Player:
         return self._winning_player
     
+    @winning_player.setter
+    def winning_player(self, player:Player):
+        self._winning_player = player
+    
     @property
-    def current_player(self):
+    def current_player(self) -> Player:
         return self._current_player
     
     @current_player.setter
-    def current_player(self, value):
-        self._current_player = value
+    def current_player(self, player:Player):
+        self._current_player = player
     
     @property
     def current_player_number(self):
@@ -89,8 +93,12 @@ class GameState(CareersObject):
         return self._game_type
     
     @property
-    def game_complete(self):
+    def game_complete(self) -> bool:
         return self._game_complete
+    
+    @game_complete.setter
+    def game_complete(self, value:bool):
+        self._game_complete = value
     
     @property
     def total_points(self):
