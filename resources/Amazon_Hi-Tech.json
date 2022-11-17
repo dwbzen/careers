@@ -31,7 +31,7 @@
 		{
 			"number" : 1,
 			"background_image" : "occupation_square.png",
-			"text" : "Lunch with Jeff Bezon",
+			"text" : "Lunch with Jeff Bezos",
 			"stars" : 0,
 			"hearts" : 0,
 			"experience" : 0,
@@ -137,7 +137,10 @@
 			"opportunities" : 0,
 			"action_text" : "You lose 4 Hearts\n They lose 12 Hearts",
 			"specialProcessing" : {
-				"type" : "backstab"
+				"type" : "backstab",
+				"pending_action" : "backstab_or_not",
+				"amount" : -12,
+				"of" : "hearts"
 			}
 		},
 		{

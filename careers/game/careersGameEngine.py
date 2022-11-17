@@ -27,7 +27,7 @@ from game.gameConstants import PendingAction, SpecialProcessingType
 
 from datetime import datetime
 import random
-from typing import List, Any
+from typing import List
 import os
 
 class CareersGameEngine(object):
@@ -711,6 +711,8 @@ class CareersGameEngine(object):
             player = Player(name=name, initials=initials)
             player.success_formula = sf
             player.set_starting_parameters(cash=self.careersGame.game_parameters.get_param('starting_cash'), salary=self._careersGame.game_parameters.get_param('starting_salary') )
+            player.add_hearts(self.careersGame.game_parameters.get_param('starting_hearts'))
+            player.add_stars(self.careersGame.game_parameters.get_param('starting_stars'))
             
             self._careersGame.add_player(player)        # adds to GameState
             if player.number == 0:      # the first player can roll
@@ -822,10 +824,11 @@ class CareersGameEngine(object):
                         This can also be an amount/quantity to apply. For example: resolve buy_hearts 4 (buy 4 hearts).
                 
             Returns: CommandResult
-           Note that only a BorderSquare may have a pending_action. Currently the pending actions are:
-               buy_hearts, buy_stars, buy_experience, buy_insurance - all require a quantity (amount)
+           Note that border and occupation squares may have a pending_action. See GameConstants.PendingAction
+               for a complete list.
                gamble - requires an amount
                select_degree - choice is a DegreeProgram
+               resolve back_stab_or_not <opponent player's initials> or no
                
         """
         message = f'{what}:{choice}'
@@ -886,6 +889,35 @@ class CareersGameEngine(object):
                 else:
                     player.clear_pending()
                     result = self.roll()
+                    
+            elif what == PendingAction.BACKSTAB_OR_NOT.value:
+                # resolve backstab_or_not   yes|no  <player_initials>
+                #
+                player_initials = choice
+                    # the named player must have completed the associated occupation
+                    # or is currently in the occupation
+                if player_initials is None:
+                    result = CommandResult(CommandResult.ERROR, "You must specify the player to back stab", True)
+                elif player_initials == 'no':
+                    result = CommandResult(CommandResult.SUCCESS, 'You elect not to back stab another player. Good for you!', True)
+                else:
+                    other_player = self.get_player(player_initials)
+                    if other_player is None:
+                        result = CommandResult(CommandResult.ERROR, f'No such player: {player_initials}', True)
+                    else:
+                        occupation =self.careersGame.get_occupation(player.current_occupation_name())
+                        occupation_square = occupation.occupationSquares[player.board_location.occupation_square_number]
+                        can_backstab = self._gameEngineCommands.can_backstab_player(player, other_player, occupation)
+                        if not can_backstab:
+                            result = CommandResult(CommandResult.ERROR, f'You cannot back stab "{player_initials}"', True)
+                        else:
+                            player.add_hearts(occupation_square.hearts)    # this will be <0
+                            hearts_loss = occupation_square.special_processing.amount
+                            other_player.add_hearts(hearts_loss)    # this will be <0
+                            message = f'{player.player_initials} back stabs {other_player.player_initials} who loses {-hearts_loss} Hearts. You lose {-occupation_square.hearts} for regret.'
+                            result = CommandResult(CommandResult.SUCCESS, message, True)
+
+                    
             elif what in PendingAction.CASH_LOSS_OR_UNEMPLOYMENT.value:
                 #
                 # the player can afford the amount - question is what is their choice? 
@@ -898,6 +930,7 @@ class CareersGameEngine(object):
                     result = CommandResult(CommandResult.SUCCESS, f'You paid {amount} to avoid Unemployment', True)
                 else:    # go to Unemployment
                     result = self.goto("Unemployment")
+                    
             elif what == PendingAction.CHOOSE_OCCUPATION.value:
                 # choice is the occupation name
                 game_square = self._careersGame.find_border_square(choice)

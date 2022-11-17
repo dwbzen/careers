@@ -183,7 +183,11 @@ class OccupationSquare(GameSquare):
                 message += f' Salary cut by {cutAmount}. Your new salary is {player.salary}'
                 
         elif sptype is SpecialProcessingType.BACKSTAB:
-            ...    # TODO
+            player.pending_action = self.special_processing.pending_action
+            player.pending_amount = self.hearts     # this will be <0 as the player loses hearts
+            player.pending_dict = {self.special_processing.of, self.special_processing.amount}
+            # there is no additional message for this
+            
         elif sptype is SpecialProcessingType.GOTO:
             #
             # goto next_square

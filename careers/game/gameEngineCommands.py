@@ -120,6 +120,19 @@ class GameEngineCommands(object):
         
         return has_fee, entry_fee
 
+    def can_backstab_player(self, player:Player, other_player:Player, occupation:Occupation) ->bool:
+        '''Determine if this player can back stab another player in a given Occupation.
+            Rule (1) player is currently on the Occupation path, AND
+                 (2) other_player must have completed the Occupation, OR
+                 (3) other_player is currently on the Occupation path
+        '''
+        can_do = occupation.name in other_player.occupation_record
+        if not can_do:
+            can_do = other_player.board_location.occupation_name is not None and other_player.board_location.occupation_name==occupation.name
+        can_do = can_do or occupation.name in player.occupation_record
+        return can_do
+    
+
     @staticmethod
     def parse_command_string(txt:str, addl_args=[]) -> CommandResult:
         """Parses a command string into a string that can be evaluated with eval()

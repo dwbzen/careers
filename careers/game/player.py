@@ -67,6 +67,7 @@ class Player(CareersObject):
         self._pending_amount = 0
         self._pending_game_square = None     # reference to the BorderSquare or OccupationSquare associated with this pending_action
         self._pending_dice = 0               # the number of dice to use or 0 if N/A
+        self._pending_dict = {}              # content depends on the game square
         self._my_experience_cards = []       # list of ExperienceCards this player holds
         self._my_opportunity_cards = []      # list of OpportunityCards this player holds
         self._happiness = [0]                # record of happiness (hearts) earned. Cumulative amounts, total is happiness[-1]
@@ -339,6 +340,14 @@ class Player(CareersObject):
         self._pending_dice = value
     
     @property
+    def pending_dict(self)->Dict[str,int]:
+        return self._pending_dict
+    
+    @pending_dict.setter
+    def pending_dict(self, value:Dict[str,int]):
+        self._pending_dict = value
+            
+    @property
     def savings(self) ->int:
         return self._savings
     
@@ -366,7 +375,7 @@ class Player(CareersObject):
         if self.pending_game_square is not None:
             pending_dict.update({ "pending_game_square" : self.pending_game_square.name} )
         return pending_dict
-
+        
     def set_starting_parameters(self, cash:int, salary:int):
         self._starting_cash = cash
         self._starting_salary = salary
@@ -467,7 +476,7 @@ class Player(CareersObject):
         """Adds the number of Hearts indicated. Could be negative if losing hearts.
             If so, the resulting number will never be < 0.
         """
-        if nhearts < 0:    # subract this amount but don't go below 0
+        if nhearts < 0:    # subtract this amount but don't go below 0
             if self.happiness + nhearts < 0:
                 nhearts = -self.happiness
         self._happiness.append(self.happiness + nhearts)

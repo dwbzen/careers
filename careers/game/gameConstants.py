@@ -15,11 +15,12 @@ class PendingAction(Enum):
     BUY_STARS = "buy_stars"
     BUY_INSURANCE = "buy_insurance"
     GAMBLE = "gamble"
-    STAY_OR_MOVE = "stay_or_move"
+    STAY_OR_MOVE = "stay_or_move"                           # resolve stay_or_move  stay | move
     TAKE_SHORTCUT = "take_shortcut"
-    CASH_LOSS_OR_UNEMPLOYMENT = "cash_loss_or_unemployment"
+    CASH_LOSS_OR_UNEMPLOYMENT = "cash_loss_or_unemployment" # resolve cash_loss_or_unemployment  pay | unemployment
     CHOOSE_OCCUPATION = "choose_occupation"
     CHOOSE_DESTINATION = "choose_destination"
+    BACKSTAB_OR_NOT = "backstab_or_not"                     # resolve backstab_or_not   <player's initials> | no
 
 class SpecialProcessingType(Enum):
     # border squares
