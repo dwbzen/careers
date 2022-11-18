@@ -33,12 +33,16 @@ import os
 class CareersGameEngine(object):
     """CareersGameEngine executes the action(s) associated with each player's turn.
     Valid commands + arguments:
-        command :: <roll> | <use> | <retire> | <bump> | <bankrupt> | <list> | <status> | <info> | <quit> | <done> | <end game> |
-                   <saved games> | <save> | <load> | <query> | <enter> | <goto> | <add> | <use insurance> | <add degree> |
+        command :: <roll> | <use> | <use insurance> | <update> | <retire> | <bump> | <bankrupt> | 
+                   <list> | <status> | <info> | <quit> | <done> | <end game> |
+                   <saved games> | <save> | <load> | <query> | <enter> | <goto> | <add> | <add degree> |
                    <pay> | <transfer> | <game_status> | <create> | <start> | <buy> | <perform>
         <use> :: "use"  <what> <card_number>
             <what> :: "opportunity" | "experience" | "roll"
             <card_number> :: <integer> | '[' <integer list> ']'
+        <use insurance> :: "use_insurance"
+        <update>  :: "update" <playerID> <success_formula>   ;update a player's success formula
+            <success_formula>  :: nstars nhearts cash
         <roll> :: "roll"  [1|2]                 ;roll 1 or 2 dice depending on where the player is on the board
         <retire> :: "retire"                    ;immediate go to retirement square (Spring Break, Holiday)
         <bump> :: "bump" player_initials        ;bump another player, who must be on the same square as the bumper
@@ -60,7 +64,7 @@ class CareersGameEngine(object):
         <enter> :: "enter" <occupation_name> [<square_number>]                 ;enter occupation at occupation square square_number
         <goto> :: "goto" <square_number> | <square_name>                       ;go to border square square_number
         <add> :: "add player" player_name player_initials cash stars hearts    ;adds a new player to the game
-        <use insurance> :: "use_insurance"
+
         <add degree> :: "add degree" <degree program>
             <degree program> :: See collegeDegrees-<edition name>.json "degreePrograms"
         <pay> :: "pay" amount                ;current player makes a payment associated with their current board location
@@ -275,6 +279,21 @@ class CareersGameEngine(object):
                 result = self.goto(next_square_number)
         return result
     
+    def update(self, who:str, nhearts:int, nstars:int, cash_amount:int) -> CommandResult:
+        '''Update a player's success formula.
+        '''
+        player = self.get_player(who)
+        if player is None:
+            result = CommandResult(CommandResult.ERROR, f'Player {who} does not exist (as far as we know)', True)
+        else:
+            if (nhearts + nstars + cash_amount) == self.careersGame.game_state.total_points:
+                player.success_formula = SuccessFormula(nstars, nhearts, cash_amount)
+                result = CommandResult(CommandResult.SUCCESS, f"{who}'s success formula updated to {nstars} stars, {nhearts} hearts, {self.currency_symbol}{1000*cash_amount} money", True)
+            else:
+                result = CommandResult(CommandResult.ERROR, f'Total points must add up to {self.careersGame.game_state.total_points}', True)
+        
+        return result
+    
     def use(self, what, card_number, spaces:str|int|None=None) -> CommandResult:
         """Use an Experience or Opportunity card in place of rolling the die.
             Experience and Opportunity cards are identified (through the UI) by number, which uniquely
@@ -457,7 +476,7 @@ class CareersGameEngine(object):
         #
         # has this player won the game?
         #
-        if cp.total_points() >= self._careersGame.game_state.total_points:
+        if cp.total_points() >= self._careersGame.game_state.total_points and cp.has_success():
             self._careersGame.game_state.winning_player = cp
             self._careersGame.game_state.game_complete = True
             save_result = self.save()

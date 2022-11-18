@@ -74,6 +74,11 @@ class Player(CareersObject):
         self._fame = [0]                     # record of fame (stars) earned. Cumulative amounts, total is fame[-1]
         self._savings = 0                    # savings account - populated with "pay", draw funds with "withdraw"
     
+    def has_success(self) -> bool:
+        return self.happiness >= self.success_formula.hearts and \
+            self.fame >= self.success_formula.stars and \
+            (self.cash + self.savings) >= self.success_formula.money
+    
     @property
     def player_name(self):
         """Get the player's name."""

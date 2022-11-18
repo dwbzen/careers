@@ -113,7 +113,7 @@ if __name__ == '__main__':
     nplayers = args.players
     game_runner.execute_command("add player Don DWB 40 10 50", None)
     if nplayers >= 2:
-        game_runner.execute_command("add player Brian BDB 20 40 40", None)
+        game_runner.execute_command("add player Brian BDB", None)    # use update command to add success_formula
     if nplayers >= 3:
         game_runner.execute_command("add player Beth Beth 30 30 40", None)
     if nplayers == 4:
