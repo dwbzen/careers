@@ -633,6 +633,50 @@ Pending action: {pending_action}, Pending amount: {self.pending_amount} Pending 
     
         return result
     
+    def list(self, what:str, how:str) -> dict:
+        """List the Experience or Opportunity cards held thisplayer
+            Arguments: 
+                what - 'experience', 'opportunity', 'degrees'  or 'all'
+                how - display control: 'full', 'condensed' or 'count'
+            Returns: CommandResult.message is the stringified list of str(card).
+                For Opportunity cards this is the text property.
+                For Experience cards this is the number of spaces (if type is fixed), otherwise the type.
+            
+        """
+        listall = (what.lower() == 'all')
+        list_dict = {}
+        if what.lower().startswith('opp') or listall:    # list opportunity cards
+            ncards = len(self.my_opportunity_cards)
+            list_dict['number_opportunity_cards'] = ncards
+            if ncards > 0:
+                if how == 'full':
+                    list_dict['opportunity_cards'] = [cd.to_dict() for cd in self.my_opportunity_cards]
+                elif how.startswith('cond'):
+                    list_dict['opportunity_cards'] = sorted([f'{cd.number:>2}: {cd.text}' for cd in self.my_opportunity_cards])
+                    
+        if what.lower().startswith('exp') or listall:    # list experience cards
+            ncards = len(self.my_experience_cards)
+            list_dict['number_experience_cards'] = ncards
+            if ncards > 0:
+                if how == 'full':
+                    list_dict['experience_cards'] = [cd.to_dict(include_range=False) for cd in self.my_experience_cards]
+                elif how.startswith('cond'):
+                    list_dict['experience_cards'] = sorted([f'{cd.number:>2}: {str(cd)}'  for cd in self.my_experience_cards])
+                
+        if what.lower().startswith('degree') or listall:    # list degrees completed
+            ndegrees = len(self.my_degrees)
+            list_dict['number_of_degrees'] = ndegrees
+            if ndegrees > 0:
+                list_dict['degrees'] = self.my_degrees
+        
+        if what.lower().startswith('occ'): # list occupations completed
+            noccupations = len(self.occupation_record)
+            if noccupations > 0:
+                list_dict['occupations_completed'] = noccupations
+                list_dict['occupations'] = self.occupation_record
+
+        return list_dict
+    
     def _set_starting_board_location(self):
         self._board_location = BoardLocation(border_square_number=0, border_square_name="Payday", occupation_name=None, occupation_square_number=0 )
         
@@ -654,15 +698,17 @@ Pending action: {pending_action}, Pending amount: {self.pending_amount} Pending 
         pdict = {"name" : self.player_name, "number" : self.number, "initials" : self.player_initials}
         pdict['successFormula'] = self._success_formula.to_dict()
         points = self.total_points()
-        pdict['score'] = {"cash":self.cash, "fame":self.fame, "happiness":self.happiness, "total_points":points, "is_insured":self.is_insured}
+        pdict['score'] = {"cash":self.cash, "fame":self.fame, "happiness":self.happiness, "total_points":points}
         pdict['loans'] = self.loans 
         pdict['board_location'] = self.board_location.to_dict()
+        pdict['is_insured'] = self.is_insured
         pdict['is_sick'] = self.is_sick
         pdict['is_unemployed'] = self.is_unemployed
         pdict['can_roll'] = self.can_roll
         pdict['extra_turn'] = self.extra_turn
         pdict['can_use_opportunity'] = self.can_use_opportunity
         pdict['occupation_record'] = self.occupation_record
+        pdict.update(self.list('all','cond'))
         pdict.update(self.get_pending())
         
         return pdict

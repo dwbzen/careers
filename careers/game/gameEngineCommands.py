@@ -180,38 +180,7 @@ class GameEngineCommands(object):
                 For Experience cards this is the number of spaces (if type is fixed), otherwise the type.
             
         """
-        listall = (what.lower() == 'all')
-        list_dict = {}
-        if what.lower().startswith('opp') or listall:    # list opportunity cards
-            ncards = len(player.my_opportunity_cards)
-            list_dict['number_opportunity_cards'] = ncards
-            if ncards > 0:
-                if how == 'full':
-                    list_dict['opportunity_cards'] = [cd.to_dict() for cd in player.my_opportunity_cards]
-                elif how.startswith('cond'):
-                    list_dict['opportunity_cards'] = sorted([f'{cd.number:>2}: {cd.text}' for cd in player.my_opportunity_cards])
-                    
-        if what.lower().startswith('exp') or listall:    # list experience cards
-            ncards = len(player.my_experience_cards)
-            list_dict['number_experience_cards'] = ncards
-            if ncards > 0:
-                if how == 'full':
-                    list_dict['experience_cards'] = [cd.to_dict(include_range=False) for cd in player.my_experience_cards]
-                elif how.startswith('cond'):
-                    list_dict['experience_cards'] = sorted([f'{cd.number:>2}: {str(cd)}'  for cd in player.my_experience_cards])
-                
-        if what.lower().startswith('degree') or listall:    # list degrees completed
-            ndegrees = len(player.my_degrees)
-            list_dict['number_of_degrees'] = ndegrees
-            if ndegrees > 0:
-                list_dict['degrees'] = player.my_degrees
-        
-        if what.lower().startswith('occ'): # list occupations completed
-            noccupations = len(player.occupation_record)
-            if noccupations > 0:
-                list_dict['occupations_completed'] = noccupations
-                list_dict['occupations'] = player.occupation_record
-            
+        list_dict = player.list(what, how)
         message = json.dumps(list_dict, indent=2, separators=(',', ':'), sort_keys=True)
         result = CommandResult(CommandResult.SUCCESS, message, False)
         return result   

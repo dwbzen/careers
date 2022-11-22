@@ -45,7 +45,7 @@ class SuccessFormula(CareersObject):
         return f'Money: ${self.money},000  stars: {self.stars}  hearts: {self.hearts}'
     
     def to_dict(self):
-        return { "success_formula" : {"money" : self.money, "stars" : self.stars, "hearts" : self.hearts}}
+        return { "money" : self.money, "stars" : self.stars, "hearts" : self.hearts}
 
     def to_JSON(self):
         """Returns the JSON serialization of SuccessFormula.
