@@ -21,16 +21,16 @@ from pymongo import MongoClient
 import pymongo
 from careers.server.userManager import CareersUserManager, User
 from game.careersGameEngine import CareersGameEngine
+from game.gameParameters import GameParameters
 
 class Game(BaseModel):
     id: str = Field(alias="_id", default=None)
     createdBy: str = Field(...)
     createdDate: datetime = Field(...)
-    points: int = Field(...)
     edition: str = Field(default="Hi-Tech")
-    players: List[str] = Field()
     joinCode: str = Field(...)
-    inProgress: bool = Field(default=False)
+    gameParameters: Any = Field(...)
+    gameState: Any = Field(...)
 
 class CareersGameManager(object):
 
@@ -49,8 +49,17 @@ class CareersGameManager(object):
         """
         gameEngine = CareersGameEngine()
         gameId = json.loads(gameEngine.create(edition, userId, 'points', points).message)['gameId']
-        game = Game(_id=gameId, createdBy=userId, points=points, 
-            players=[userId], createdDate=datetime.now(), joinCode=''.join(random.choices(string.ascii_letters, k=5)))
+
+        "Add the creator as a player"
+        user = self.userManager.getUserByUserId(userId)
+        gameEngine.execute_command(f'add player {user["name"]} {user["initials"]}', None)
+
+        game = Game(_id=gameId, 
+            createdBy=userId, 
+            createdDate=datetime.now(), 
+            joinCode=''.join(random.choices(string.ascii_letters, k=5)),
+            gameParameters = gameEngine.careersGame.game_parameters._game_parameters,
+            gameState= json.loads(gameEngine.careersGame.game_state.to_JSON()))
 
         self.database["games"].insert_one(jsonable_encoder(game))
         self.games[gameId] = gameEngine
