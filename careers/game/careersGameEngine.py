@@ -486,7 +486,11 @@ class CareersGameEngine(object):
             return result
     
         cp.board_location.reset_prior()            # this player's prior board position no longer relevant
-        cp.pending_action = None
+        #
+        # SELECT_DEGREE can carry over until a new pending action overwrites it
+        #
+        if cp.pending_action is not PendingAction.SELECT_DEGREE:
+            cp.pending_action = None
         
         npn = self.game_state.set_next_player()    # sets current_player and returns the next player number (npn) and increments turns
         player = self.game_state.current_player
