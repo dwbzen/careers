@@ -5,7 +5,7 @@ Created on Aug 9, 2022
 '''
 
 from game.careersObject import CareersObject
-from game.gameConstants import PendingAction
+from game.gameConstants import PendingActionType
 from enum import Enum
 import json
 
@@ -63,7 +63,7 @@ class OpportunityCard(CareersObject):
             self._special_processing_dict = special_processing
             self._special_processing_type = OpportunitySpecialProcessingType[special_processing['type'].upper()]
             pa = special_processing.get('pending_action', None)
-            self._pending_action = PendingAction[pa.upper()] if pa is not None else None
+            self._pending_action = PendingActionType[pa.upper()] if pa is not None else None
         else:
             self._special_processing_type = None
             self._pending_action = None
@@ -129,7 +129,7 @@ class OpportunityCard(CareersObject):
         return self._special_processing_type
 
     @property
-    def pending_action(self) ->PendingAction | None:
+    def pending_action(self) ->PendingActionType | None:
         return self._pending_action
 
     def __str__(self):

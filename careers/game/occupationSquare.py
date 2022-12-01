@@ -139,7 +139,7 @@ class OccupationSquare(GameSquare):
 
         elif sptype is SpecialProcessingType.SHORTCUT:    # pending action amount is the square# to goto if the shortcut is taken
             next_square = self.special_processing.next_square
-            player.set_pending(self.special_processing.pending_action, self, amount=next_square)
+            player.add_pending_action(self.special_processing.pending_action, self, amount=next_square)
             message = f'{player.player_initials} may take a shortcut to square {next_square}'
             
         elif sptype is SpecialProcessingType.CASH_LOSS_OR_UNEMPLOYMENT:

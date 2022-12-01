@@ -23,7 +23,7 @@ from game.gameSquare import GameSquare, GameSquareClass
 from game.gameEngineCommands import GameEngineCommands
 from game.gameUtils import GameUtils
 from game.environment import Environment
-from game.gameConstants import PendingAction, SpecialProcessingType
+from game.gameConstants import PendingActionType, SpecialProcessingType
 
 from datetime import datetime
 import random
@@ -78,7 +78,7 @@ class CareersGameEngine(object):
         <perform> :: "perform roll <ndice>"      ; roll the dice and return the result without moving
             <ndice> :: 0 | 1 | 2
         <resolve_pending> :: "resolve" choice [pending_amount]    ; resolve a pending action and amount. choice is the player's choice based on the game_square's "pending_action",
-            <choice> :: * | <pending_action>                      ; * = the current pending_action, else the pending_action to resolve such as "buy_hearts"
+            <choice> :: * | <pending_action>                      ; * = the most recently added pending_action, else the pending_action to resolve such as "buy_hearts"
     """
     
     
@@ -258,10 +258,11 @@ class CareersGameEngine(object):
             game_square = self.get_player_game_square(player)    # HOLIDAY square
             must_roll = game_square.special_processing.must_roll
             if num_spaces in must_roll:    # player may remain
-                player.pending_dice = dice # if they choose not to stay
+                pending_action = player.pending_actions.get_pending_action(PendingActionType.STAY_OR_MOVE)    # there's a system problem if not found
+                pending_action.pending_dice = dice # if they choose to move
                 result = CommandResult(CommandResult.NEED_PLAYER_CHOICE, f'{message} and may remain on {game_square.name}', False)
             else:
-                player.clear_pending()
+                player.clear_pending(PendingActionType.SELECT_DEGREE)       # clear all except SELECT_DEGREE
                 result = self.goto(next_square_number)
             
         #
@@ -425,7 +426,7 @@ class CareersGameEngine(object):
             if player.opportunity_card is not None and player.opportunity_card.opportunity_type is OpportunityType.OCCUPATION and player.opportunity_card == occupation_name:
                 player.used_opportunity()
                     
-            entry_ok, entry_fee = self._gameEngineCommands.can_enter(occupation, player)        # this also checks the Opportunity card used (if any)
+            entry_ok, entry_fee, message = self._gameEngineCommands.can_enter(occupation, player)        # this also checks the Opportunity card used (if any)
             if entry_ok:
                 player.cash = player.cash - entry_fee
                 player.board_location.border_square_number = occupation_entrance_square.number
@@ -436,7 +437,7 @@ class CareersGameEngine(object):
                 result = self.where("am","I")
                 return CommandResult(result.return_code, f'{result.message}', True)
             else:
-                return CommandResult(CommandResult.ERROR, f"Sorry, you don't meet the entry conditions for {occupation_name}, entry fee: {entry_fee}", False)
+                return CommandResult(CommandResult.ERROR, message, False)
         else:
             return CommandResult(CommandResult.ERROR, "No such occupation", False)
     
@@ -466,13 +467,14 @@ class CareersGameEngine(object):
         ###################################################################################
         # is there a pending action for this player? This might include a pending penalty.
         ###################################################################################
-        if cp.pending_action is not None and game_square.special_processing is not None \
-           and cp.pending_action==game_square.special_processing.processing_type:
-            if game_square.special_processing.penalty > 0:
-                if cp.pending_action is SpecialProcessingType.BUY_HEARTS and cp.happiness > 0:
+        if cp.pending_actions.size() > 0 and game_square.special_processing is not None:
+            ind = cp.pending_actions.index_of(game_square.special_processing.processing_type)
+
+            if ind >= 0 and game_square.special_processing.penalty > 0:
+                pa = cp.get_pending_action(ind)    # also removes from the player's pending_action list
+                if pa is PendingActionType.BUY_HEARTS and cp.happiness > 0:
                     cp.add_hearts(-game_square.special_processing.penalty)
-            cp.pending_action = None
-        
+
         #
         # has this player won the game?
         #
@@ -487,10 +489,9 @@ class CareersGameEngine(object):
     
         cp.board_location.reset_prior()            # this player's prior board position no longer relevant
         #
-        # SELECT_DEGREE can carry over until a new pending action overwrites it
+        # SELECT_DEGREE can carry over - remove all the others
         #
-        if cp.pending_action is not PendingAction.SELECT_DEGREE:
-            cp.pending_action = None
+        cp.clear_pending(PendingActionType.SELECT_DEGREE)
         
         npn = self.game_state.set_next_player()    # sets current_player and returns the next player number (npn) and increments turns
         player = self.game_state.current_player
@@ -847,7 +848,7 @@ class CareersGameEngine(object):
                         This can also be an amount/quantity to apply. For example: resolve buy_hearts 4 (buy 4 hearts).
                 
             Returns: CommandResult
-           Note that border and occupation squares may have a pending_action. See GameConstants.PendingAction
+           Note that border and occupation squares may have a pending_action. See GameConstants.PendingActionType
                for a complete list.
                gamble - requires an amount
                select_degree - choice is a DegreeProgram
@@ -858,25 +859,29 @@ class CareersGameEngine(object):
         player = self.game_state.current_player
         game_square = self.get_player_game_square(player)
         
-        if what == "*" and player.pending_action is not None:    # resolve the current pending action
-            what = player.pending_action.value
-        # TODO - finish
-        if player.pending_action is not None and player.pending_action.value == what:
-            if what == PendingAction.SELECT_DEGREE.value:  # the degree program chosen is the 'choice'
+        if what == "*" and player.pending_actions.size() > 0:    # resolve the most recently added PendingAction
+            pending_action = player.pending_actions.get(-1)
+            what = pending_action.pending_action_type.value
+            
+        else:
+            pending_action = player.pending_actions.find(what)     # also removes from the pending actions list
+            
+        if pending_action is not None:
+            if what == PendingActionType.SELECT_DEGREE.value:  # the degree program chosen is the 'choice'
                 result = self.add_degree(player, choice)
                 result.message = f'{message}\n{result.message}'
 
-            elif what == PendingAction.GAMBLE.value:
+            elif what == PendingActionType.GAMBLE.value:
                 #
                 # execute the special processing for the Gamble game square
                 #
-                result = player.pending_game_square.execute_special_processing(player)
+                result = player.pending_action.pending_game_square.execute_special_processing(player)
 
-            elif what == PendingAction.BUY_HEARTS.value:
-                result = player.pending_game_square.execute_special_processing(player, choice=choice, what='hearts')
+            elif what == PendingActionType.BUY_HEARTS.value:
+                result = player.pending_action.pending_game_square.execute_special_processing(player, choice=choice, what='hearts')
                 
-            elif what == PendingAction.BUY_EXPERIENCE.value:
-                amounts = player.pending_game_square.special_processing.amount_dict
+            elif what == PendingActionType.BUY_EXPERIENCE.value:
+                amounts = pending_action.pending_game_square.special_processing.amount_dict
                 ncards = str(choice)
                 if ncards in amounts:
                     cost = amounts[ncards]
@@ -892,28 +897,27 @@ class CareersGameEngine(object):
                 else:
                     result = CommandResult(CommandResult.ERROR, f'{choice} is an invalid selection. Valid selections and costs are {amounts}', False)
                 
-            elif what == PendingAction.BUY_STARS.value:
-                result = player.pending_game_square.execute_special_processing(player, choice=choice, what='stars')
+            elif what == PendingActionType.BUY_STARS.value:
+                result = player.pending_action.pending_game_square.execute_special_processing(player, choice=choice, what='stars')
                 
-            elif what == PendingAction.BUY_INSURANCE.value:    # assume 1 quantity, regardless of the qty specified
+            elif what == PendingActionType.BUY_INSURANCE.value:    # assume 1 quantity, regardless of the qty specified
                 amount = game_square.special_processing.amount
                 result = self.buy(what, choice, amount)
                 
-            elif what == PendingAction.STAY_OR_MOVE.value:
+            elif what == PendingActionType.STAY_OR_MOVE.value:
                 if choice.lower() == "stay":
                     result = game_square.execute(player)
                 else:   # move off Holiday
                     player.on_holiday = False
-                    result = self._roll(player, player.pending_dice)
+                    result = self._roll(player, pending_action.pending_dice)
                     
-            elif what == PendingAction.TAKE_SHORTCUT.value:   # yes=take the shortcut - TODO
+            elif what == PendingActionType.TAKE_SHORTCUT.value:   # yes=take the shortcut - TODO
                 if choice.lower() == "yes":
-                    result = self._goto(player.pending_amount, player)
+                    result = self._goto(pending_action.pending_amount, player)
                 else:
-                    player.clear_pending()
                     result = self.roll()
                     
-            elif what == PendingAction.BACKSTAB_OR_NOT.value:
+            elif what == PendingActionType.BACKSTAB_OR_NOT.value:
                 # resolve backstab_or_not   yes|no  <player_initials>
                 #
                 player_initials = choice
@@ -941,7 +945,7 @@ class CareersGameEngine(object):
                             result = CommandResult(CommandResult.SUCCESS, message, True)
 
                     
-            elif what in PendingAction.CASH_LOSS_OR_UNEMPLOYMENT.value:
+            elif what in PendingActionType.CASH_LOSS_OR_UNEMPLOYMENT.value:
                 #
                 # the player can afford the amount - question is what is their choice? 
                 # pay or go (to unemployment)
@@ -954,7 +958,7 @@ class CareersGameEngine(object):
                 else:    # go to Unemployment
                     result = self.goto("Unemployment")
                     
-            elif what == PendingAction.CHOOSE_OCCUPATION.value:
+            elif what == PendingActionType.CHOOSE_OCCUPATION.value:
                 # choice is the occupation name
                 game_square = self._careersGame.find_border_square(choice)
                 if game_square is None or game_square.square_type is not BorderSquareType.OCCUPATION_ENTRANCE_SQUARE:
@@ -986,7 +990,7 @@ class CareersGameEngine(object):
         # reset pending_action and pending_game_square if result is SUCCESS
         #            
         if result.is_successful() and not player.on_holiday:
-            player.clear_pending()
+            player.clear_pending(PendingActionType.SELECT_DEGREE)
         return result
     
     #####################################
@@ -1345,10 +1349,9 @@ class CareersGameEngine(object):
             # special_processing.processing_type == SpecialProcessingType.ENTER_COLLEGE
             # player must choose a degree program
             # salary increase is dependent on the # of degrees earned in that degree program
-
-            player.set_pending(game_square.special_processing.pending_action, game_square=game_square)
+            player.add_pending_action(PendingActionType.SELECT_DEGREE, game_square=game_square)
             choices = self._careersGame.college_degrees["degreePrograms"]
-            message = f'{player.player_initials} Leaving {board_location.occupation_name}, pending_action: {player.pending_action.value}'
+            message = f'{player.player_initials} Leaving {board_location.occupation_name}, pending_action: {PendingActionType.SELECT_DEGREE.value}'
         
         self.log(message)
         result = CommandResult(CommandResult.SUCCESS, message, True, choices=choices)
@@ -1392,7 +1395,7 @@ class CareersGameEngine(object):
         """Adds a degree to the player and adjusts the salary as needed.
             The maximum number of degrees a player can have in any degree program is "maxDegrees".
             Player's Salary is not adjusted if their number of degrees exceeds that.
-            The player's pending_action is also reset if it's PendingAction.SELECT_DEGREE
+            The player's pending_action is also reset if it's PendingActionType.SELECT_DEGREE
         """
         game_degrees = self._careersGame.college_degrees
         degree_names = game_degrees['degreeNames']

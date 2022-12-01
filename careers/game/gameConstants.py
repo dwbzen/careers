@@ -8,7 +8,7 @@ from enum import Enum
 from typing import List
 
 
-class PendingAction(Enum):
+class PendingActionType(Enum):
     SELECT_DEGREE = "select_degree"
     BUY_EXPERIENCE = "buy_experience"
     BUY_HEARTS = "buy_hearts"
@@ -21,6 +21,7 @@ class PendingAction(Enum):
     CHOOSE_OCCUPATION = "choose_occupation"
     CHOOSE_DESTINATION = "choose_destination"
     BACKSTAB_OR_NOT = "backstab_or_not"                     # resolve backstab_or_not   <player's initials> | no
+    BANKRUPT = "bankrupt"
 
 class SpecialProcessingType(Enum):
     # border squares

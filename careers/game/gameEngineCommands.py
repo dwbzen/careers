@@ -10,7 +10,7 @@ from game.player import Player
 from game.gameUtils import GameUtils
 from game.opportunityCard import OpportunityCard, OpportunityType, OpportunityActionType
 from game.occupation import Occupation
-from game.gameConstants import GameConstants
+from game.gameConstants import GameConstants, PendingActionType
 
 from typing import Tuple, List
 import joblib
@@ -86,23 +86,30 @@ class GameEngineCommands(object):
             Returns: tupple -
                 [0] bool True if can enter, False otherwise
                 [2] entry amount owed, if any. Could be 0
+                [3] an error message if player cannot enter (blank string if player can enter)
         """
-
+        message = ""
         entry_fee = occupation.entry_fee
         has_fee = player.cash >= entry_fee
         occupationClass = occupation.occupationClass
         # anyone can go to college if they have the funds
         if occupationClass == 'college':
+            # check if any outstanding SELECT_DEGREE pending actions
+            # Need to resolve before entering
+            if player.has_pending_action(PendingActionType.SELECT_DEGREE):
+                message = f'You need to resolve {PendingActionType.SELECT_DEGREE.value} before entering College'
+                return (False, entry_fee, message)
             if has_fee:
-                return (True, entry_fee)    # always pay for college
+                return (True, entry_fee, message)    # always pay for college
             else:    # Can't afford College
-                return (False, entry_fee)
+                message = f"Sorry, you don't meet the conditions for entering {occupation.name}, entry fee: {entry_fee}"
+                return (False, entry_fee, message)
         
         #
         # check occupation record for prior trips through 
         #
         if occupation.name in player.occupation_record and player.occupation_record[occupation.name] > 0:
-            return (True, 0)
+            return (True, 0, message)
         #
         # check degree requirements
         #
@@ -110,15 +117,15 @@ class GameEngineCommands(object):
         degreeName = degreeRequirements['degreeName']
         numberRequired = degreeRequirements['numberRequired']
         if degreeName in player.my_degrees and player.my_degrees[degreeName] >= numberRequired:
-            return (True, 0)        # can enter for free
+            return (True, 0, message)        # can enter for free
         #
         # is the player using a  "All expenses paid" Opportunity card ?
         #
         if player.opportunity_card is not None:
             if player.opportunity_card.expenses_paid:
-                return (True, 0)
+                return (True, 0, message)
         
-        return has_fee, entry_fee
+        return has_fee, entry_fee, message
 
     def can_backstab_player(self, player:Player, other_player:Player, occupation:Occupation) ->bool:
         '''Determine if this player can back stab another player in a given Occupation.
@@ -243,7 +250,7 @@ class GameEngineCommands(object):
         
         elif opportunity_type is OpportunityType.OCCUPATION_CHOICE:    # choose_occupation
             if dest is None:
-                player.pending_action = opportunityCard.pending_action
+                player.add_pending_action(PendingActionType.CHOOSE_OCCUPATION)
                 message = f'{opportunityCard.text}\n{opportunityCard.pending_action}'
                 result = CommandResult(CommandResult.NEED_PLAYER_CHOICE, message, False)
             else:
@@ -266,7 +273,7 @@ class GameEngineCommands(object):
             
         elif opportunity_type is OpportunityType.BORDER_SQUARE_CHOICE:    # choose_destination
             if dest is None:
-                player.pending_action = opportunityCard.pending_action
+                player.add_pending_action(PendingActionType.CHOOSE_DESTINATION)
                 message = f'{opportunityCard.text}\n{opportunityCard.pending_action}'
                 result = CommandResult(CommandResult.NEED_PLAYER_CHOICE, message, False)
             else:

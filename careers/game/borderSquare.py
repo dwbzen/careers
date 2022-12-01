@@ -100,19 +100,19 @@ class BorderSquare(GameSquare):
             pending_action = self.special_processing.pending_action         # PendingActionType
             message = f'{self.text}\n{self.action_text}'
             if sp_type is SpecialProcessingType.BUY_HEARTS or sp_type is SpecialProcessingType.BUY_STARS:
-                player.set_pending(pending_action, game_square=self, amount=self.special_processing.get_amount())
+                player.add_pending_action(pending_action, game_square=self, amount=self.special_processing.get_amount())
                 return CommandResult(CommandResult.NEED_PLAYER_CHOICE, message, False)   # player needs to execute a 'buy hearts' or 'buy stars'
             
             elif sp_type is SpecialProcessingType.BUY_EXPERIENCE:
-                player.set_pending(pending_action, game_square=self, amount=self.special_processing.get_amount())
+                player.add_pending_action(pending_action, game_square=self, amount=self.special_processing.get_amount())
                 return CommandResult(CommandResult.NEED_PLAYER_CHOICE, message, False)   # player needs to execute a 'buy experience' 
             
             elif sp_type is SpecialProcessingType.BUY_INSURANCE:
-                player.set_pending(pending_action, game_square=self, amount=self.special_processing.get_amount())
+                player.add_pending_action(pending_action, game_square=self, amount=self.special_processing.get_amount())
                 return CommandResult(CommandResult.NEED_PLAYER_CHOICE, message, False)   # player needs to buy insurance
             
             elif sp_type is SpecialProcessingType.GAMBLE: 
-                player.set_pending(pending_action, game_square=self, dice=self.special_processing.dice)              # Roll 2 dice to gamble
+                player.add_pending_action(pending_action, game_square=self, dice=self.special_processing.dice)              # Roll 2 dice to gamble
                 return CommandResult(CommandResult.NEED_PLAYER_CHOICE, message, False)   # player needs to indicate they intend to Gamble, then roll
             else:
                 # If you get this far, the sp_type is invalid or unsupported
@@ -156,7 +156,7 @@ class BorderSquare(GameSquare):
                     nhearts = self.special_processing.hearts[0] if player.on_holiday else self.special_processing.hearts[1]
                     player.add_hearts(nhearts)
                     player.on_holiday = True
-                    player.set_pending(self.special_processing.pending_action, game_square=self, amount=0)
+                    player.add_pending_action(self.special_processing.pending_action, game_square=self, amount=0)
                     result = CommandResult(CommandResult.SUCCESS, f'Player {player.player_initials} {self.action_text}\n collect {nhearts} hearts', True)
                     
                 elif sp_type is SpecialProcessingType.BUY_INSURANCE:

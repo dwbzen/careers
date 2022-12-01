@@ -9,7 +9,7 @@ from game.gameUtils import GameUtils
 from game.player import Player
 from game.commandResult import CommandResult
 from game.gameParameters import GameParameters
-from game.gameConstants import PendingAction, SpecialProcessingType
+from game.gameConstants import PendingActionType, SpecialProcessingType
 
 import json
 from typing import Dict, List, Union
@@ -68,7 +68,7 @@ class SpecialProcessing(CareersObject):
         self._tax_table = special_processing_dict.get('taxTable', None)    # format is upper limit : % amount, for example { 3000 : 0.2 } if you make <= 3000/yr, take 20% as tax
         pending_action = special_processing_dict.get('pending_action', None) 
         if pending_action is not None:
-            self._pending_action = PendingAction[pending_action.upper()]
+            self._pending_action = PendingActionType[pending_action.upper()]
         else:
             self._pending_action = None
         # self._pending_action = special_processing_dict.get('pending_action', None) 
@@ -143,11 +143,11 @@ class SpecialProcessing(CareersObject):
         return self._hearts
     
     @property
-    def pending_action(self) ->PendingAction:
+    def pending_action(self) ->PendingActionType:
         return self._pending_action
     
     @pending_action.setter
-    def pending_action(self, value:PendingAction):
+    def pending_action(self, value:PendingActionType):
         self._pending_action = value
     
     @property

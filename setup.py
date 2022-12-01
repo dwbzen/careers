@@ -15,14 +15,14 @@ requirements = [
 
 setup(
     name="careers",
-    version="0.1.0",
+    version="0.1.1",
     author="Donald Bacon",
     author_email="dwbzen@gmail.com",
     description="Careers Game game engine and server",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/dwbzen/careers.git",
-    packages=find_packages(exclude=["test",]),
+    packages=find_packages(exclude=["tests","docs"]),
     data_files=[('resources', ['resources/editions.json','resources/experienceCards_Hi-Tech.json','resources/opportunityCards_Hi-Tech.json',
                 'resources/gameParameters_Hi-Tech.json',
                 'resources/collegeDegrees_Hi-Tech.json', 'resources/gameLayout_Hi-Tech.json', 'resources/occupations_Hi-Tech.json',

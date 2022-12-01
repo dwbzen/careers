@@ -8,7 +8,9 @@ from game.careersObject import CareersObject
 from game.boardLocation import BoardLocation
 from game.opportunityCard import OpportunityCard, OpportunityType, OpportunityActionType
 from game.experienceCard import ExperienceCard
-from game.gameConstants import PendingAction
+from game.gameConstants import PendingActionType
+from game.pendingAction import PendingAction
+from game.pendingActions import PendingActions
 from datetime import datetime
 from typing import Dict, List, Union
 import json
@@ -63,11 +65,7 @@ class Player(CareersObject):
         # there are currently 5: buy_hearts, buy_experience, buy_insurance, gamble, and cash_loss_or_unemployment
         # Also 'bankrupt' is a pending action that is set if the cash < 0
         #
-        self._pending_action = None
-        self._pending_amount = 0
-        self._pending_game_square = None     # reference to the BorderSquare or OccupationSquare associated with this pending_action
-        self._pending_dice = 0               # the number of dice to use or 0 if N/A
-        self._pending_dict = {}              # content depends on the game square
+        self._pending_actions = PendingActions()
         self._my_experience_cards = []       # list of ExperienceCards this player holds
         self._my_opportunity_cards = []      # list of OpportunityCards this player holds
         self._happiness = [0]                # record of happiness (hearts) earned. Cumulative amounts, total is happiness[-1]
@@ -113,7 +111,7 @@ class Player(CareersObject):
     def cash(self, value):
         self._cash = value
         if value < 0:
-            self.pending_action = 'bankrupt'
+            self.add_pending_action(PendingActionType.BANKRUPT)
     
     @property
     def success_formula(self) -> SuccessFormula:
@@ -307,51 +305,7 @@ class Player(CareersObject):
     @can_use_opportunity.setter
     def can_use_opportunity(self, value):
         self._can_use_opportunity = value
-
-    @property
-    def pending_action(self) -> PendingAction:
-        return self._pending_action
-    
-    @pending_action.setter
-    def pending_action(self, value:PendingAction):
-        self._pending_action = value
-    
-    @property  
-    def pending_amount(self) -> SPECIAL_PROCESSING:
-        return self._pending_amount
-    
-    @pending_amount.setter
-    def pending_amount(self, value:SPECIAL_PROCESSING):
-        self._pending_amount = value
         
-    @property
-    def pending_game_square(self):
-        return self._pending_game_square    # a GameSquare reference
-    
-    @pending_game_square.setter
-    def pending_game_square(self, value):
-        self._pending_game_square = value
-        
-    @property
-    def pending_dice(self) ->int | List[int]:
-        return self._pending_dice
-    
-    @pending_dice.setter
-    def pending_dice(self, value:int | List[int] ):
-        '''Set pending dice for the current pending_action.
-            This can be an int to represent the number or spaces,
-            or the actual dice roll as a List.
-        '''
-        self._pending_dice = value
-    
-    @property
-    def pending_dict(self)->Dict[str,int]:
-        return self._pending_dict
-    
-    @pending_dict.setter
-    def pending_dict(self, value:Dict[str,int]):
-        self._pending_dict = value
-            
     @property
     def savings(self) ->int:
         return self._savings
@@ -367,19 +321,48 @@ class Player(CareersObject):
         amt = amount if amount <= self.savings else self.savings
         return amt
         
-    def set_pending(self, action:PendingAction, game_square=None, amount:SPECIAL_PROCESSING=None, dice:int | List[int]=0):
-        self.pending_action = action
-        self.pending_game_square = game_square
-        self.pending_amount = amount
-        self.pending_dice = dice
+    def add_pending_action(self, action:PendingActionType, game_square=None, amount:SPECIAL_PROCESSING=None, dice:int | List[int]=0):
+        self._pending_actions.add(PendingAction(action, game_square, amount, dice))
+        
+    def get_pending_action(self, index=-1) -> PendingAction:
+        """Gets the PendingAction at the index requested
+            Arguments:
+                index = the index of the PendingAction, defaults to -1 which returns the last (most recently added) PendingAction
+            Returns:
+                PendingAction, also it is removed from the player's  PendingActions
+        """
+        pa = self._pending_actions.get(index)
+        return pa
+    
+    def has_pending_action(self, pending_action_type:PendingActionType) -> bool:
+        """Determine if the player has a PendingAction of a given PendingActionType
+            Returns: True is so, False otherwise
+        """
+        return self._pending_actions.index_of(pending_action_type) >= 0
+    
+    def clear_pending_actions(self, pending_action_type:PendingActionType=None):
+        """Removes all PendingAction except a given PendingActionType from the player's PendingActions
+        """
+        if self._pending_actions.size() > 0:
+            new_pending_actions = PendingActions()
+            for ind in range(self._pending_actions.size()):
+                pa = self._pending_actions.get(ind, remove=False)
+                if pending_action_type is None or ( pa.pending_action_type is pending_action_type ):
+                    new_pending_actions.add(pa)
+            self._pending_actions = new_pending_actions
+    
+    @property
+    def pending_actions(self) -> PendingActions:
+        return self._pending_actions
+    
+    def pending_actions_size(self):
+        return self._pending_actions.size()
 
-    def get_pending(self) ->dict:
-        pact =  self.pending_action.value if self.pending_action is not None else "None"
-       
-        pending_dict = {"pending_action":pact, "pending_amount":self.pending_amount, "pending_dice":self.pending_dice}
-        if self.pending_game_square is not None:
-            pending_dict.update({ "pending_game_square" : self.pending_game_square.name} )
-        return pending_dict
+    def find_pending_action(self, pendingActionType:PendingActionType) -> PendingAction|None:
+        return self._pending_actions.find(pendingActionType)
+    
+    def _get_pending(self) ->dict:
+        return self._pending_actions.to_dict()
         
     def set_starting_parameters(self, cash:int, salary:int):
         self._starting_cash = cash
@@ -584,16 +567,23 @@ class Player(CareersObject):
                 as_json - if True, return player info as a JSON-formatted string
         '''
         v = self.get_total_loans()
-        pending_action = self.pending_action.value if self.pending_action is not None else "None"
         net_worth = self.net_worth()
         info_dict = {"salary":self.salary, "cash":self.cash, "fame":self.fame, "happiness":self.happiness, "points":self.total_points()}
         info_dict.update( {"insured":self.is_insured, "unemployed":self.is_unemployed, "sick":self.is_sick, "extra_turn":self.extra_turn, "net_worth":net_worth} )
-        info_dict.update( self.get_pending() )
+        info_dict.update( self._get_pending() )
         
+        if self.pending_actions.size() == 0:
+            pending_string = "Pending actions: None"  
+        else:
+            pending_string = "Pending actions: {"
+            for pa in self.pending_actions.get_all():
+                pending_string +=  f'{pa.pending_action_type.value}, '
+            pending_string = pending_string[:len(pending_string)-2] + "}"
+          
         fstring = \
 f'''Salary:{self.salary}, Cash: {self.cash},  Fame: {self.fame}, Happiness: {self.happiness}, Points: {self.total_points()}
 Insured: {self.is_insured}, Unemployed: {self.is_unemployed}, Sick: {self.is_sick}, Net worth: {net_worth}
-Pending action: {pending_action}, Pending amount: {self.pending_amount} Pending dice: {self.pending_dice}  Extra turn: {self.extra_turn} '''
+{pending_string}, Extra turn: {self.extra_turn} '''
 
         if self.cash < 0:
             fstring = f'{fstring}\nALERT: You have negative cash amount and must declare bankruptcy OR borrow the needed funds from another player!!'
@@ -680,11 +670,8 @@ Pending action: {pending_action}, Pending amount: {self.pending_amount} Pending 
     def _set_starting_board_location(self):
         self._board_location = BoardLocation(border_square_number=0, border_square_name="Payday", occupation_name=None, occupation_square_number=0 )
         
-    def clear_pending(self):
-        self._pending_action = None
-        self._pending_amount = 0
-        self._pending_game_square = None
-        self._pending_dice = 0
+    def clear_pending(self,  pending_action_type:PendingActionType=None):
+        self.clear_pending_actions(pending_action_type)    # clear all the PendingActions except for pending_action_type
         self._on_holiday = False
     
     def info(self):
@@ -709,7 +696,7 @@ Pending action: {pending_action}, Pending amount: {self.pending_amount} Pending 
         pdict['can_use_opportunity'] = self.can_use_opportunity
         pdict['occupation_record'] = self.occupation_record
         pdict.update(self.list('all','cond'))
-        pdict.update(self.get_pending())
+        pdict.update(self._get_pending())
         
         return pdict
 
