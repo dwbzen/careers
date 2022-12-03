@@ -20,8 +20,10 @@ from pydantic import BaseModel, Field
 from pymongo import MongoClient
 import pymongo
 from careers.server.userManager import CareersUserManager, User
+from game.careersGame import CareersGame
 from game.careersGameEngine import CareersGameEngine
 from game.gameParameters import GameParameters
+from game.player import Player
 
 class Game(BaseModel):
     id: str = Field(alias="_id", default=None)
@@ -52,7 +54,7 @@ class CareersGameManager(object):
 
         "Add the creator as a player"
         user = self.userManager.getUserByUserId(userId)
-        gameEngine.execute_command(f'add player {user["name"]} {user["initials"]}', None)
+        gameEngine.execute_command(f'add player {user["name"]} {user["initials"]} {userId} {user["email"]}', None)
 
         game = Game(_id=gameId, 
             createdBy=userId, 
