@@ -19,12 +19,14 @@ class Player(CareersObject):
     
     SPECIAL_PROCESSING = Dict[str, Union[str, List[int], int, float, Dict[str, int]]]
     
-    def __init__(self, number=0, name="Player", salary=2000, cash=2000, initials="XXX"):
+    def __init__(self, number=0, name="Player", id="", email="", salary=2000, cash=2000, initials="XXX"):
         self._player_name = name
         self._player_initials = initials            # unique initials - no player can have the same initials
         self._salary_history = [salary]             # list of salaries the player has attained
         self.set_starting_parameters(cash, salary)
         self._success_formula = None         # my SuccessFormula
+        self._player_id = id
+        self._player_email = email
         
         self._number = number               # my player number, values 0 to #players-1
         self._laps = 0                      # the number of times player has passed or landed on Payday
@@ -77,6 +79,22 @@ class Player(CareersObject):
             self.fame >= self.success_formula.stars and \
             (self.cash + self.savings) >= self.success_formula.money
     
+    @property
+    def player_id(self):
+        return self._player_id
+
+    @player_id.setter
+    def player_id(self, value):
+        self._player_id = value
+
+    @property
+    def player_email(self):
+        return self._player_email
+
+    @player_email.setter
+    def player_email(self, value):
+        self.player_email = value
+
     @property
     def player_name(self):
         """Get the player's name."""
@@ -695,6 +713,8 @@ Insured: {self.is_insured}, Unemployed: {self.is_unemployed}, Sick: {self.is_sic
         pdict['extra_turn'] = self.extra_turn
         pdict['can_use_opportunity'] = self.can_use_opportunity
         pdict['occupation_record'] = self.occupation_record
+        pdict['_id'] = self.player_id
+        pdict['email'] = self.player_email
         pdict.update(self.list('all','cond'))
         pdict.update(self._get_pending())
         

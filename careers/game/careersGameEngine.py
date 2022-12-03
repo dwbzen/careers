@@ -726,13 +726,13 @@ class CareersGameEngine(object):
             
         return CommandResult(result, message, True)
     
-    def add(self, what, name, initials=None, stars=0, hearts=0, cash=0) -> CommandResult:
+    def add(self, what, name, initials=None, id=None, email=None, stars=0, hearts=0, cash=0) -> CommandResult:
         """Add a new player to the Game OR add a degree to the current player or the player whose initials are provided.
     
         """
         if what == 'player':
             sf = SuccessFormula(stars=stars, hearts=hearts, money=cash)
-            player = Player(name=name, initials=initials)
+            player = Player(name=name, initials=initials, id=id, email=email)
             player.success_formula = sf
             player.set_starting_parameters(cash=self.careersGame.game_parameters.get_param('starting_cash'), salary=self._careersGame.game_parameters.get_param('starting_salary') )
             player.add_hearts(self.careersGame.game_parameters.get_param('starting_hearts'))

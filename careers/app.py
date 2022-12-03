@@ -18,7 +18,11 @@ app = FastAPI()
 def get(game: CareersGameManager=Depends(manager)):
     return {}
 
-@app.post("/user", status_code=200)
+@app.get('/user/{userId}')
+def getUserById(userId: str):
+    return userManager.getUserByUserId(userId)
+
+@app.put("/user", status_code=200)
 def createUser(user: User):
     return userManager.createUser(user)
 
