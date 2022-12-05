@@ -148,9 +148,9 @@ class CareersGameEngine(object):
             print(msg)
 
     def execute_command(self, command:str, aplayer:Player, args:list=[]) -> CommandResult:
-        """Executes command(s) for a given Player
+        """Executes a command for a given Player
             Arguments:
-                command - the command name, for example "roll". Multiple commands are separated by a semicolon.
+                command - the command name, for example "roll".
                 args - a possibly empty list of additional string arguments
                 player - a Player reference. If none, admin_player is used.
             Returns: a CommandResult object. The player's current board_location is always returned in the CommandResult
