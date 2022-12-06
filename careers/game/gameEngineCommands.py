@@ -142,7 +142,7 @@ class GameEngineCommands(object):
 
     @staticmethod
     def parse_command_string(txt:str, addl_args=[]) -> CommandResult:
-        """Parses a command string into a string that can be evaluated with eval()
+        """Parses a command string into an executable string, i.e. that can be evaluated with eval()
             Returns: if return_code == 0, a CommandResult with commandResult.message as the string to eval()
                 else if return_code == 1, commandResult.message has the error message
         """

@@ -97,27 +97,32 @@ class GameRunner(object):
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser(description="Run a command-driven Careers Game for 1 to 4 players")
-    parser.add_argument("--players", "-p", help="the number of players", type=int, choices=range(1,5), default=1)
+    parser.add_argument("--players", "-p", help="The number of players", type=int, choices=range(1,5), default=1)
     parser.add_argument("--points", help="Total game points", type=int, choices=range(40, 10000), default=100)
+    parser.add_argument("--params", help="Game parameters type: '_test', '_prod' or '' for default", type=str, default="")
+    parser.add_argument("--gameid", help="Game ID", type=str, default=None)
     args = parser.parse_args()
     
     total_points = args.points
     edition = 'Hi-Tech'
     game_type = 'points'            # or 'timed'
     installationId = 'ZenAlien2013'      # uniquely identifies 'me' as the game creator
+    gameId = args.gameid
+    game_parameters_type = args.params
     game_runner = GameRunner(edition, installationId, game_type, total_points)  # creates a CareersGameEngine
-    game_runner.execute_command(f'create {edition} {installationId} {game_type} {total_points}', None)     # creates a CareersGame for points
+    game_runner.execute_command(f'create {edition} {installationId} {game_type} {total_points} {gameId} {game_parameters_type}', None)     # creates a CareersGame for points
     #
     # add players
     #
     nplayers = args.players
-    game_runner.execute_command("add player Don DWB 40 10 50", None)
+    # name, initials=None, player_id=None, email=None, stars=0, hearts=0, cash=0
+    game_runner.execute_command("add player Don DWB dwb20221206 dwbzen@gmail.com 40 10 50", None)
     if nplayers >= 2:
-        game_runner.execute_command("add player Brian BDB 50 20 30", None)    # use update command to add success_formula
+        game_runner.execute_command("add player Brian BDB bdb20221206 brian.bacon01@gmail.com 50 20 30", None)    # use update command to add success_formula
     if nplayers >= 3:
-        game_runner.execute_command("add player Beth Beth 30 30 40", None)
+        game_runner.execute_command("add player Beth Beth beth20221206 beth.bacon01@gmail.com 30 30 40", None)
     if nplayers == 4:
-        game_runner.execute_command("add player Cheryl CJL 10 50 40", None)
+        game_runner.execute_command("add player Cheryl CJL cjl20221206 Lister.Cheryl@gmail.com 10 50 40", None)
         
     game_runner.execute_command("start", None)
     

@@ -726,13 +726,13 @@ class CareersGameEngine(object):
             
         return CommandResult(result, message, True)
     
-    def add(self, what, name, initials=None, id=None, email=None, stars=0, hearts=0, cash=0) -> CommandResult:
+    def add(self, what, name, initials=None, player_id=None, email=None, stars=0, hearts=0, cash=0) -> CommandResult:
         """Add a new player to the Game OR add a degree to the current player or the player whose initials are provided.
     
         """
         if what == 'player':
             sf = SuccessFormula(stars=stars, hearts=hearts, money=cash)
-            player = Player(name=name, initials=initials, id=id, email=email)
+            player = Player(name=name, initials=initials, player_id=player_id, email=email)
             player.success_formula = sf
             player.set_starting_parameters(cash=self.careersGame.game_parameters.get_param('starting_cash'), salary=self._careersGame.game_parameters.get_param('starting_salary') )
             player.add_hearts(self.careersGame.game_parameters.get_param('starting_hearts'))
@@ -771,7 +771,7 @@ class CareersGameEngine(object):
         
         return CommandResult(CommandResult.SUCCESS, message, True)
     
-    def create(self, edition, installationId, game_type, points, game_id=None) -> CommandResult:
+    def create(self, edition, installationId, game_type, points, game_id=None, game_parameters_type="") -> CommandResult:
         """Create a new CareersGame.
             Arguments:
                 edition - 'Hi-Tech' or 'UK' are the only editions currently supported
@@ -792,7 +792,7 @@ class CareersGameEngine(object):
         #
         # Create the CareersGame instance and the GameEngineCommands
         #
-        self._careersGame = CareersGame(self._edition, installationId, points, game_id, game_type=game_type)
+        self._careersGame = CareersGame(self._edition, installationId, points, game_id, game_type=game_type, game_parameters_type=game_parameters_type)
         
         self._game_state = self._careersGame.game_state
         self._gameId = self._careersGame.gameId         # the gameId includes the installationId

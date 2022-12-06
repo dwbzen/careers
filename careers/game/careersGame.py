@@ -35,7 +35,7 @@ class CareersGame(CareersObject):
     """
     _lock = Lock()
     
-    def __init__(self, edition_name,  installationId, total_points, game_id, game_type="points"):
+    def __init__(self, edition_name:str,  installationId:str, total_points:int, game_id:str, game_type="points", game_parameters_type=""):
         """CareersGame Constructor
             Arguments:
                 installationId - An ID that uniquely identifies the game's creator - a.k.a the game master
@@ -49,8 +49,11 @@ class CareersGame(CareersObject):
         """
         self._installationId = installationId
         self._edition_name = edition_name
+        self._game_parameters_type = game_parameters_type      # can be "_test", "_prod" or "" for default
         self._env = Environment.get_environment()
         self._resource_folder = self._env.get_resource_folder()     # base resource folder
+        self._game_parameters_filename = None
+        self._occupations_filename = None
         #
         # validate the Edition
         #
@@ -82,7 +85,7 @@ class CareersGame(CareersObject):
         #
         # if a gameId is not provided, create one
         #
-        if game_id is None:
+        if game_id is None or game_id.lower()=="none":
             # create a unique ID for this game, used for logging    
             self._gameId = self._create_game_id()
         else:
@@ -100,11 +103,13 @@ class CareersGame(CareersObject):
         """Loads the game parameters and occupations JSON files for this edition.
         
         """
-        with open(self._resource_folder + "/gameParameters_" + self._edition_name + ".json", "r") as fp:
+        self._game_parameters_filename = f'{self._resource_folder}/gameParameters_{self._edition_name}{self._game_parameters_type}.json'
+        with open(self._game_parameters_filename, "r") as fp:
             jtxt = fp.read()
             self._game_parameters = GameParameters(json.loads(jtxt))
 
-        with open(self._resource_folder + "/occupations_" + self._edition_name + ".json", "r") as fp:
+        self._occupations_filename = f'{self._resource_folder}/occupations_{self._edition_name}.json'
+        with open(self._occupations_filename, "r") as fp:
             jtxt = fp.read()
             occupations_dict = json.loads(jtxt)
             self._occupation_names = occupations_dict['occupations']

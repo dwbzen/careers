@@ -1,5 +1,5 @@
 {
-	"description" : "Default game parameters",
+	"description" : "Game parameters for production",
 	"starting_salary" : 2000,
 	"starting_cash" : 2000,
 	"currency" : "dollars",

@@ -9,6 +9,10 @@ Created on Oct 19, 2022
 class GameParameters(object):
     '''
     Encapsulates global game parameters for this game edition.
+    There are 3 gameParameter files per edition:
+        gameParameters_<edition>_prod.json    - for production runs
+        gameParameters_<edition>_test.json    - for testing
+        gameParameters_<edition>.json    - default parameters file (when _test or _prod is not specified)
     '''
 
 
@@ -28,6 +32,7 @@ class GameParameters(object):
         self._early_withdrawal_penalty = params.get("early_withdrawal_penalty", 0.0)
         self._starting_hearts = params.get("starting_hearts", 0)
         self._starting_stars = params.get("starting_stars", 0)
+        self._description = params.get("description", "No description")
     
     def game_parameters(self):
         return self._game_parameters

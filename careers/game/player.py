@@ -19,13 +19,13 @@ class Player(CareersObject):
     
     SPECIAL_PROCESSING = Dict[str, Union[str, List[int], int, float, Dict[str, int]]]
     
-    def __init__(self, number=0, name="Player", id="", email="", salary=2000, cash=2000, initials="XXX"):
+    def __init__(self, number=0, name="Player", player_id="", email="", salary=2000, cash=2000, initials="XXX"):
         self._player_name = name
         self._player_initials = initials            # unique initials - no player can have the same initials
         self._salary_history = [salary]             # list of salaries the player has attained
         self.set_starting_parameters(cash, salary)
         self._success_formula = None         # my SuccessFormula
-        self._player_id = id
+        self._player_id = player_id
         self._player_email = email
         
         self._number = number               # my player number, values 0 to #players-1

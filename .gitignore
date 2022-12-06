@@ -3,6 +3,10 @@ venv
 __pycache__
 log
 games
+dist
+build
 careers.egg-info
 .vs
 .vscode
+.pydevproject
+.project

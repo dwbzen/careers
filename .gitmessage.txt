@@ -1,0 +1,10 @@
+######## up to 50 characters############################
+Summary
+## Action(s): FIX, ADD, UPDATE, DOC
+Actions:
+
+########72 characters##################################################
+Problems
+# Problem, Task, Reason for CommitSolution
+# Solution or List of ChangesNote
+# Special instructions, testing steps, rake, etc

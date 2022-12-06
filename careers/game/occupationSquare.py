@@ -101,106 +101,121 @@ class OccupationSquare(GameSquare):
         dice = self.special_processing.dice
         amount = self.special_processing.amount
         percent = self.special_processing.percent
-        next_action = None
-        done_flag = True
-        if sptype is SpecialProcessingType.BONUS:
-            if dice > 0:
-                n = GameUtils.roll(dice)
-                amount = amount * sum(n)
-                message += f'\n You rolled a {n}, collect {amount}'
-            player.add_cash(amount)
+        cmd_result = CommandResult.SUCCESS
+        na = None
+        df = True
+                
+        match sptype:
+            case SpecialProcessingType.BONUS:
+                if dice > 0:
+                    n = GameUtils.roll(dice)
+                    amount = amount * sum(n)
+                    message += f'\n You rolled a {n}, collect {amount}'
+                player.add_cash(amount)
+                
+            case SpecialProcessingType.SALARY_INCREASE:
+                if dice > 0:
+                    n = GameUtils.roll(dice)
+                    amount = amount * sum(n)
+                    message = f'{message}\n You rolled a {n}, salary increase {amount}'
+                player.add_to_salary(amount)
             
-        elif sptype is SpecialProcessingType.SALARY_INCREASE:
-            if dice > 0:
-                n = GameUtils.roll(dice)
-                amount = amount * sum(n)
-                message = f'{message}\n You rolled a {n}, salary increase {amount}'
-            player.add_to_salary(amount)
+            case SpecialProcessingType.CASH_LOSS:      # could cause the player into bankruptcy
+                payment = self.special_processing.compute_cash_loss(player)
+                player.add_cash(-payment)       # this will set the bankrupt pending_action if cash is < 0 as a result
             
-        elif sptype is SpecialProcessingType.CASH_LOSS:      # could cause the player into bankruptcy
-            payment = self.special_processing.compute_cash_loss(player)
-            player.add_cash(-payment)       # this will set the bankrupt pending_action if cash is < 0 as a result
-            
-        elif sptype is SpecialProcessingType.FAVORS:
-            #
-            # collect a randomly selected Opportunity card from the other players
-            #
-            message = ""
-            for aplayer in self.careersGame.game_state.players:
-                ncards = len(aplayer.my_opportunity_cards)
-                if player.number != aplayer.number and ncards > 0:
-                    ind = random.randint(0, ncards-1)    # the index of the card to move to this player
-                    thecard = aplayer.my_opportunity_cards[ind]
-                    aplayer.remove_opportunity_card(thecard)
-                    player.add_opportunity_card(thecard)
-                    message += f'Opportunity card "{thecard.text}" moved from player {aplayer.player_initials} to {player.player_initials}\n'
-            if len(message) == 0:
-                message = "Sadly, no other player has Opportunity to give to you."             
+            case SpecialProcessingType.FAVORS:
+                #
+                # collect a randomly selected Opportunity card from the other players
+                #
+                message = ""
+                for aplayer in self.careersGame.game_state.players:
+                    ncards = len(aplayer.my_opportunity_cards)
+                    if player.number != aplayer.number and ncards > 0:
+                        ind = random.randint(0, ncards-1)    # the index of the card to move to this player
+                        thecard = aplayer.my_opportunity_cards[ind]
+                        aplayer.remove_opportunity_card(thecard)
+                        player.add_opportunity_card(thecard)
+                        message += f'Opportunity card "{thecard.text}" moved from player {aplayer.player_initials} to {player.player_initials}\n'
+                if len(message) == 0:
+                    message = "Sadly, no other player has Opportunity to give to you."             
 
-        elif sptype is SpecialProcessingType.SHORTCUT:    # pending action amount is the square# to goto if the shortcut is taken
-            next_square = self.special_processing.next_square
-            player.add_pending_action(self.special_processing.pending_action, self, amount=next_square)
-            message = f'{player.player_initials} may take a shortcut to square {next_square}'
+            case SpecialProcessingType.SHORTCUT:    # pending action amount is the square# to goto if the shortcut is taken
+                next_square = self.special_processing.next_square
+                player.add_pending_action(self.special_processing.pending_action, self, amount=next_square)
+                message = f'{player.player_initials} may take a shortcut to square {next_square}'
             
-        elif sptype is SpecialProcessingType.CASH_LOSS_OR_UNEMPLOYMENT:
-            #
-            # if the player's cash is < the amount, put them in Unemployment
-            # otherwise player needs to choose to pay or go to Unemployment
-            #
-            if player.cash < amount:
-                message += f'\nInsufficient cash to cover amount: {amount}, you will be sent to Unemployment'
-                next_action = 'goto unemployment'
+            case SpecialProcessingType.CASH_LOSS_OR_UNEMPLOYMENT:
+                #
+                # if the player's cash is < the amount, put them in Unemployment
+                # otherwise player needs to choose to pay or go to Unemployment
+                #
+                if player.cash < amount:
+                    message += f'\nInsufficient cash to cover amount: {amount}, you will be sent to Unemployment'
+                    na = 'goto unemployment'
+                    player.pending_action = None
+                else:
+                    player.pending_action = sptype
+                    player.pending_amount = amount    # always a fixed amount
+                    df = False
+                
+            case SpecialProcessingType.TRAVEL_BORDER:
+                destination = self.special_processing.next_square   # possible destinations: Unemployment and Hospital
+                na = f'goto {destination}'
+                message = f'Go to {destination}'
                 player.pending_action = None
-            else:
-                player.pending_action = sptype
-                player.pending_amount = amount    # always a fixed amount
-                done_flag = False
+            
+            case SpecialProcessingType.LOSE_NEXT_TURN:
+                player.lose_turn = True
                 
-        elif sptype is SpecialProcessingType.TRAVEL_BORDER:
-            destination = self.special_processing.next_square   # possible destinations: Unemployment and Hospital
-            next_action = f'goto {destination}'
-            message = f'Go to {destination}'
-            player.pending_action = None
-            
-        elif sptype is  SpecialProcessingType.LOSE_NEXT_TURN:
-            player.lose_turn = True
-            
-        elif sptype is  SpecialProcessingType.EXTRA_TURN:
-            player.extra_turn = player.extra_turn + 1
-            
-        elif sptype is SpecialProcessingType.SALARY_CUT:
-            #
-            # if cut is by percent (like half) round up to the nearest $1000
-            # So if your $3000 salary is cut in half, it becomes $2000, not $1500
-            #
-            if amount > 0:
-                player.add_to_salary(-amount)
-                message += f' Salary cut by {amount}. Your new salary is {player.salary}'
-            elif percent > 0:
-                cutAmount = player.salary * percent
-                cutAmount = 1000 * int(cutAmount / 1000)
-                player.add_to_salary(-cutAmount)
-                message += f' Salary cut by {cutAmount}. Your new salary is {player.salary}'
+            case SpecialProcessingType.EXTRA_TURN:
+                player.extra_turn = player.extra_turn + 1
                 
-        elif sptype is SpecialProcessingType.BACKSTAB:
-            player.pending_action = self.special_processing.pending_action
-            player.pending_amount = self.hearts     # this will be <0 as the player loses hearts
-            player.pending_dict = {self.special_processing.of, self.special_processing.amount}
-            # there is no additional message for this
+            case SpecialProcessingType.SALARY_CUT:
+                #
+                # if cut is by percent (like half) round up to the nearest $1000
+                # So if your $3000 salary is cut in half, it becomes $2000, not $1500
+                #
+                if amount > 0:
+                    player.add_to_salary(-amount)
+                    message += f' Salary cut by {amount}. Your new salary is {player.salary}'
+                elif percent > 0:
+                    cutAmount = player.salary * percent
+                    cutAmount = 1000 * int(cutAmount / 1000)
+                    player.add_to_salary(-cutAmount)
+                    message += f' Salary cut by {cutAmount}. Your new salary is {player.salary}'
+                
+            case SpecialProcessingType.BACKSTAB:
+                player.pending_action = self.special_processing.pending_action
+                player.pending_amount = self.hearts     # this will be <0 as the player loses hearts
+                player.pending_dict = {self.special_processing.of, self.special_processing.amount}
+                # there is no additional message for this
             
-        elif sptype is SpecialProcessingType.GOTO:
-            #
-            # goto next_square
-            #
-            message = self.action_text     # could be blank
-            next_action = f'goto {self.special_processing.next_square}'
-            done_flag = False
+            case SpecialProcessingType.GOTO:
+                #
+                # goto next_square
+                #
+                message = self.action_text     # could be blank
+                na = f'goto {self.special_processing.next_square}'
+                df = False
             
-        elif sptype is SpecialProcessingType.FAME_LOSS:
-            ...    # TODO
-        elif sptype is SpecialProcessingType.HAPPINESS_LOSS:
-            ...    # TODO
-        return CommandResult(CommandResult.SUCCESS, message, done_flag, next_action=next_action)
+            case SpecialProcessingType.FAME_LOSS:
+                if  percent > 0:
+                    amount = int(player.fame * percent)
+                player.add_stars(-amount)
+                message = f'{player.player_initials} loses {amount} stars'
+                
+            case SpecialProcessingType.HAPPINESS_LOSS:
+                if  percent > 0:
+                    amount = int(player.happiness * percent)
+                player.add_hearts(-amount)
+                message = f'{player.player_initials} loses {amount} hearts'
+                
+            case _:
+                cmd_result = CommandResult.ERROR
+                message = f'New or unsupported SpecialProcessingType "{sptype}"'
+                
+        return CommandResult(cmd_result, message, df, next_action=na)
     
     def to_JSON(self):
         txt = json.dumps(self.game_square_dict)
