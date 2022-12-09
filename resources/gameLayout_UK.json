@@ -1,6 +1,6 @@
 {
 	"Help" : "Board layout for the UK version. NOTE: do not use - still in development.",
-	"type_list" : [
+	"types_list" : [
 		"corner_square", "opportunity_square", "danger_square", "travel_square", "occupation_entrance_square", "action_square"
 	],
 	"types" : [
@@ -75,10 +75,13 @@
 				"number" :3,
 				"name" : "Victoria",
 				"type" : "travel_square",
+				"travel_class" : "rail",
 				"background_image" : "1200px-British_Rail_-_Flame_Red_logo.svg.png",
 				"text" : "",
 				"specialProcessing" : {
 					"type" : "travelBorder",
+					"pending_action" : "choose_destination",
+					"choices" : "Leicester Square,Charing Cross",
 					"next_square" : 13
 				}
 			}
@@ -178,11 +181,14 @@
 			{
 				"number" : 12,
 				"name" : "Leicester Square",
+				"travel_class" : "underground",
 				"type" : "travel_square",
 				"background_image" : "Underground logo.jpg",
 				"text" : "",
 				"specialProcessing" : {
 					"type" : "travelBorder",
+					"pending_action" : "choose_destination",
+					"choices" : "Charing Cross,Pimlico",
 					"next_square" : 23
 				}
 			},
@@ -298,10 +304,13 @@
 				"number" : 22,
 				"name" : "Charing Cross",
 				"type" : "travel_square",
+				"travel_class" : "rail",
 				"background_image" : "1200px-British_Rail_-_Flame_Red_logo.svg.png",
 				"text" : "",
 				"specialProcessing" : {
 					"type" : "travelBorder",
+					"pending_action" : "choose_destination",
+					"choices" : "Pimlico,Victoria",
 					"next_square" : 36
 				}
 			}, 
@@ -451,10 +460,13 @@
 				"number" : 35,
 				"name" : "Pimlico",
 				"type" : "travel_square",
+				"travel_class" : "underground",
 				"background_image" : "Underground logo.jpg",
 				"text" : "",
 				"specialProcessing" : {
 					"type" : "travelBorder",
+					"pending_action" : "choose_destination",
+					"choices" : "Victoria,Leicester Square",
 					"next_square" : 4
 				}
 			},

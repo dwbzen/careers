@@ -22,6 +22,11 @@ class BorderSquareType(str, Enum):
     OCCUPATION_ENTRANCE_SQUARE = 'occupation_entrance_square'
     ACTION_SQUARE = 'action_square'
     
+class TravelClass(str, Enum):
+    RAIL = 'rail'
+    UNDERGROUND = 'underground'    # UK edition
+    SUBWAY = 'subway'              # all US editions
+    
 
 class BorderSquare(GameSquare):
     """Encapsulates a Careers game border (non-occupation) square.
@@ -49,10 +54,21 @@ class BorderSquare(GameSquare):
         self._game_square_dict["square_class"] = GameSquareClass.BORDER
         self._square_type = BorderSquareType[border_square_dict['type'].upper()]
         self.action_text = border_square_dict.get('action_text', None)
+        self._travel_class = None
+        if border_square_dict.get('travel_class', None) is not None:
+            self._travel_class = TravelClass[border_square_dict['travel_class'].upper()]
 
     @property
     def game_square_dict(self):
         return self._game_square_dict
+    
+    @property
+    def travel_class(self) ->TravelClass | None:
+        return self._travel_class
+    
+    @property
+    def square_type(self) -> BorderSquareType:
+        return self._square_type
     
     def execute(self, player:Player) -> CommandResult:
         """Execute the actions associated with landing on this BorderSquare. Overrides GameSquare.execute().

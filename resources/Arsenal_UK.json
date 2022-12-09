@@ -1,0 +1,166 @@
+{
+	"name" : "Arsenal",
+	"configuration" : {
+		"occupationClass" : "occupation",
+		"fullName" : "Arsenal",
+		"background_image" : "occupation_entrance.png",
+		"image" : "408px-Arsenal_FC.svg.png",
+		"entry_fee" : 500,
+		"size" : 11,
+		"entrance_square_number" : 15,
+		"exit_square_number" : 16,
+		"text" : "Must have: £500 for sports training; or Athletic Training degree; or Arsenal experience",
+		"degreeRequirements" : { 
+			"degreeName" : "Athletic Training",
+			"numberRequired" : 1
+		}
+	},
+	"occupationSquares" : [
+		{
+			"number" : 0,
+			"background_image" : "occupation_square.png",
+			"text" : "Big Florida Cup win over Orlando City",
+			"stars" : 0,
+			"hearts" : 4,
+			"bonus" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 1,
+			"background_image" : "occupation_square.png",
+			"text" : "Lunch with commentator Martin Tyler",
+			"stars" : 0,
+			"hearts" : 0,
+			"experience" : 0,
+			"opportunities" : 1,
+			"action_text" : "Draw 1 OPPORTUNITY CARD",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 2,
+			"background_image" : "occupation_square.png",
+			"text" : "Score Premier League goal of the season",
+			"stars" : 2,
+			"hearts" : 4,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 3,
+			"background_image" : "occupation_square.png",
+			"text" : "Trainer for Arsenal Women",
+			"stars" : 0,
+			"hearts" : 0,
+			"bonus" : 0,
+			"experience" : 2,
+			"opportunities" : 0,
+			"action_text" : "Draw 2 EXPERIENCE CARDS",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 4,
+			"background_image" : "occupation_square.png",
+			"text" : "Enrolled in the 100 Club",
+			"stars" : 0,
+			"hearts" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "Collect £1000 x roll of 1 die",
+			"specialProcessing" : {
+				"type" : "bonus",
+				"dice" : 1,
+				"amount" : 1000
+			}
+		},
+		{
+			"number" : 5,
+			"background_image" : "danger_occupation_square.png",
+			"text" : "Collision with Chelsea forward",
+			"type" : "danger_square",
+			"stars" : 0,
+			"hearts" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "Go to Hospital",
+			"specialProcessing" : {
+				"type" : "travel_border",
+				"next_square" : "Hospital"
+			}
+		},
+		{
+			"number" : 6,
+			"background_image" : "occupation_square.png",
+			"text" : "Need some opportunities quick!",
+			"type" : "action_square",
+			"stars" : 4,
+			"hearts" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "CALL IN FAVORS",
+			"specialProcessing" : {
+				"type" : "favors"
+			}
+		},
+		{
+			"number" : 7,
+			"background_image" : "occupation_square.png",
+			"text" : "Interviewed on American late-night TV",
+			"stars" : 4,
+			"hearts" : 2,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 8,
+			"background_image" : "occupation_square.png",
+			"text" : "Commentator for FIFA World Cup",
+			"stars" : 0,
+			"hearts" : 0, 
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "Collect bonus £5000",
+			"specialProcessing" : {
+				"type" : "bonus",
+				"amount" : 5000
+			}
+		},
+		{
+			"number" : 9,
+			"background_image" : "danger_occupation_square.png",
+			"text" : "Sports betting scandal",
+			"type" : "danger_square",
+			"stars" : 0,
+			"hearts" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "Spend 1/2 your cash for legal expenses",
+			"specialProcessing" : {
+				"type" : "cash_loss",
+				"amount" : 0,
+				"percent" : 0.5,
+				"of" : "cash"
+			}
+		},
+		{
+			"number" : 10,
+			"background_image" : "occupation_square.png",
+			"text" : "Coach of the year",
+			"stars" : 6,
+			"hearts" : 0, 
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "Salary up £5000",
+			"specialProcessing" : {
+				"type" : "salary_increase",
+				"amount" : 5000
+			}
+		}
+	]
+}

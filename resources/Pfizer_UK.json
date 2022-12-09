@@ -9,7 +9,7 @@
 		"size" : 16,
 		"entrance_square_number" : 36,
 		"exit_square_number" : 37,
-		"text" : "Must have: $10,000 for special training; or Pharmacy Board Certification; or Pfizer experience",
+		"text" : "Must have: £10,000 for special training; or Pharmacy Board Certification; or Pfizer experience",
 		"degreeRequirements" : { 
 			"degreeName" : "Pharmacy",
 			"numberRequired" : 2
@@ -94,7 +94,7 @@
 			"hearts" : 0, 
 			"experience" : 0,
 			"opportunities" : 0,
-			"action_text" : "Collect bonus $4000",
+			"action_text" : "Collect bonus £4000",
 			"specialProcessing" : {
 				"type" : "bonus",
 				"amount" : 4000
@@ -178,7 +178,7 @@
 			"hearts" : 0, 
 			"experience" : 0,
 			"opportunities" : 0,
-			"action_text" : "Collect bonus $5000",
+			"action_text" : "Collect bonus £5000",
 			"specialProcessing" : {
 				"type" : "bonus",
 				"amount" : 5000
@@ -235,7 +235,7 @@
 			"hearts" : 0, 
 			"experience" : 0,
 			"opportunities" : 0,
-			"action_text" : "Salary up $3000",
+			"action_text" : "Salary up £3000",
 			"specialProcessing" : {
 				"type" : "salary_increase",
 				"amount" : 3000

@@ -75,6 +75,7 @@
 				"number" :3,
 				"name" : "Amtrak",
 				"type" : "travel_square",
+				"travel_class" : "rail",
 				"background_image" : "amtrak.png",
 				"text" : "",
 				"specialProcessing" : {
@@ -187,6 +188,7 @@
 				"number" : 12,
 				"name" : "Amtrak",
 				"type" : "travel_square",
+				"travel_class" : "rail",
 				"background_image" : "amtrak.png",
 				"text" : "",
 				"specialProcessing" : {
@@ -310,6 +312,7 @@
 				"number" : 22,
 				"name" : "Amtrak",
 				"type" : "travel_square",
+				"travel_class" : "rail",
 				"background_image" : "amtrak.png",
 				"text" : "",
 				"specialProcessing" : {
@@ -470,6 +473,7 @@
 				"number" : 35,
 				"name" : "Amtrak",
 				"type" : "travel_square",
+				"travel_class" : "rail",
 				"background_image" : "amtrak.png",
 				"text" : "",
 				"specialProcessing" : {

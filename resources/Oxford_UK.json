@@ -2,21 +2,21 @@
 	"name" : "UF",
 	"configuration" : {
 		"occupationClass" : "college",
-		"fullName" : "University of Florida",
+		"fullName" : "University of Oxford",
 		"background_image" : "occupation_entrance.png",
-		"image" : "UF logo.jpg",
-		"entry_fee" : 500,
+		"image" : "Oxford logo.png",
+		"entry_fee" : 1000,
 		"size" : 11,
 		"entrance_square_number" : 7,
 		"exit_square_number" : 11,
-		"text" : "Must have: $500 tuition\nDegrees available: Aerospace, Agronomy, Business Admin,\nComputer Science, Hospitality, Journalism, Law, Marketting and Pharmacy",
+		"text" : "Must have: £1000 tuition\nDegrees available:Engineering, IT, Athletic Training, Law, \nHistory, Anthropology, Sales & Marketting, Journalism and Pharmacology",
 		"Help" : [ "Each Degree Program is with a specific occupation. maxDegrees is the maximum number of degrees attainable in any degree program." ]
 	},
 	"occupationSquares" : [
 		{
 			"number" : 0,
 			"background_image" : "occupation_square.png",
-			"text" : "You need serious counseling",
+			"text" : "You need some serious counseling",
 			"image" : "frown_emoji.png",
 			"stars" : 0,
 			"hearts" : 0,
@@ -31,7 +31,7 @@
 		{
 			"number" : 1,
 			"background_image" : "occupation_square.png",
-			"text" : "Attend Group Love concert",
+			"text" : "Join Board Games Society",
 			"image" : "",
 			"stars" : 0,
 			"hearts" : 2,
@@ -57,7 +57,7 @@
 				"type" : "shortcut",
 				"pending_action" : "take_shortcut",
 				"next_square" : 9,
-				"next_square_text" : "4.0 GPA: Draw 2 OPPORTUNITY CARDS"
+				"next_square_text" : "Trinity term exam top score"
 			}
 		},
 		{
@@ -76,7 +76,7 @@
 		{
 			"number" : 4,
 			"background_image" : "occupation_square.png",
-			"text" : "Partner has connections",
+			"text" : "Partner has business connections",
 			"stars" : 0,
 			"hearts" : 0,
 			"experience" : 0,
@@ -93,7 +93,7 @@
 			"hearts" : 0,
 			"experience" : 0,
 			"opportunities" : 0,
-			"action_text" : "Pay $5000 for tutoring OR go to Unemployment",
+			"action_text" : "Pay £5000 for tutoring OR go to Unemployment",
 			"specialProcessing" : {
 				"type" : "cash_loss_or_unemployment",
 				"pending_action" : "cash_loss_or_unemployment",
@@ -104,7 +104,7 @@
 		{
 			"number" : 6,
 			"background_image" : "occupation_square.png",
-			"text" : "Pledge Sorority/Fraternity",
+			"text" : "Win Oxford-Cambridge boat race",
 			"stars" : 2,
 			"hearts" : 4,
 			"experience" : 0,
@@ -119,15 +119,15 @@
 			"stars" : 0,
 			"hearts" : 0,
 			"bonus" : 0,
-			"experience" : 1,
+			"experience" : 2,
 			"opportunities" : 0,
-			"action_text" : "Draw 1 EXPERIENCE CARD",
+			"action_text" : "Draw 2 EXPERIENCE CARD",
 			"specialProcessing" : {}
 		},		
 		{
 			"number" : 8,
 			"background_image" : "occupation_square.png",
-			"text" : "Great party in the Commons",
+			"text" : "Great party in The Kidneys",
 			"stars" : 0,
 			"hearts" : 6,
 			"experience" : 0,
@@ -138,7 +138,7 @@
 		{
 			"number" : 9,
 			"background_image" : "occupation_square.png",
-			"text" : "4.0 GPA",
+			"text" : "Trinity term exam top score",
 			"stars" : 0,
 			"hearts" : 0,
 			"experience" : 0,
@@ -149,7 +149,7 @@
 		{
 			"number" : 10,
 			"background_image" : "occupation_square.png",
-			"text" : "Your YouTube channel has 100K followers",
+			"text" : "Your YouTube channel has 500K followers",
 			"stars" : 6,
 			"hearts" : 0,
 			"experience" : 0,

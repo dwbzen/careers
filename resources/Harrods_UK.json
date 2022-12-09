@@ -1,17 +1,17 @@
 {
-	"name" : "Amazon",
+	"name" : "Harrods",
 	"configuration" : {
 		"occupationClass" : "occupation",
-		"fullName" : "Amazon",
+		"fullName" : "Harrods",
 		"background_image" : "occupation_entrance.png",
-		"image" : "Amazon logo.jpg",
+		"image" : "Harrods.jpg",
 		"entry_fee" : 1000,
 		"size" : 13,
 		"entrance_square_number" : 13,
 		"exit_square_number" : 14,
-		"text" : "Must have: $1000 for AWS training; or Computer Science degree; or Amazon experience",
+		"text" : "Must have: £1000 for AWS training; or Sales & Marketing degree; or Harrods experience",
 		"degreeRequirements" : { 
-			"degreeName" : "Computer Science",
+			"degreeName" : "Sales & Marketing",
 			"numberRequired" : 1
 		}
 	},
@@ -19,7 +19,7 @@
 		{
 			"number" : 0,
 			"background_image" : "occupation_square.png",
-			"text" : "Earn AWS Cloud Practitioner Certification",
+			"text" : "Attend fine wine seminar",
 			"stars" : 0,
 			"hearts" : 0,
 			"bonus" : 0,
@@ -31,7 +31,7 @@
 		{
 			"number" : 1,
 			"background_image" : "occupation_square.png",
-			"text" : "Lunch with Jeff Bezos",
+			"text" : "Board meeting in Qatar",
 			"stars" : 0,
 			"hearts" : 0,
 			"experience" : 0,
@@ -42,12 +42,12 @@
 		{
 			"number" : 2,
 			"background_image" : "occupation_square.png",
-			"text" : "Introduce new web service",
+			"text" : "Officially launch Dyson Technology",
 			"stars" : 0,
 			"hearts" : 0,
 			"experience" : 0,
 			"opportunities" : 0,
-			"action_text" : "**Salary up** $2000",
+			"action_text" : "**Salary up** £2000",
 			"specialProcessing" : {
 				"type" : "salary_increase",
 				"amount" : 2000
@@ -56,7 +56,7 @@
 		{
 			"number" : 3,
 			"background_image" : "occupation_square.png",
-			"text" : "Code requires all-nighter to fix",
+			"text" : "Return flight from Qatar delayed",
 			"image" : "frown_emoji.png",
 			"stars" : 0,
 			"hearts" : 0,
@@ -71,7 +71,7 @@
 		{
 			"number" : 4,
 			"background_image" : "occupation_square.png",
-			"text" : "Testify before Congress",
+			"text" : "Work at Baccarat Bar for 2 weeks",
 			"stars" : 0,
 			"hearts" : 0,
 			"bonus" : 0,
@@ -83,7 +83,7 @@
 		{
 			"number" : 5,
 			"background_image" : "danger_occupation_square.png",
-			"text" : "AMZN stock slumps",
+			"text" : "Retire to part-time work",
 			"type" : "danger_square",
 			"stars" : 0,
 			"hearts" : 0,
@@ -99,12 +99,12 @@
 		{
 			"number" : 6,
 			"background_image" : "occupation_square.png",
-			"text" : "AWS Architect Certified!",
+			"text" : "Graduate from culinary school",
 			"stars" : 0,
 			"hearts" : 0, 
 			"experience" : 0,
 			"opportunities" : 0,
-			"action_text" : "Collect bonus $3000",
+			"action_text" : "Collect bonus £3000",
 			"specialProcessing" : {
 				"type" : "bonus",
 				"amount" : 3000
@@ -113,7 +113,7 @@
 		{
 			"number" : 7,
 			"background_image" : "danger_occupation_square.png",
-			"text" : "Too ambitious",
+			"text" : "Loose situation in seasonal RIF",
 			"type" : "danger_square",
 			"stars" : 0,
 			"hearts" : 0,
@@ -146,12 +146,12 @@
 		{
 			"number" : 9,
 			"background_image" : "occupation_square.png",
-			"text" : "Promotion to Team Lead",
+			"text" : "Promoted to head of Chocolate Hall",
 			"stars" : 0,
 			"hearts" : 0,
 			"experience" : 0,
 			"opportunities" : 0,
-			"action_text" : "Salary up $1000 x roll of 1 die",
+			"action_text" : "Salary up £1000 x roll of 1 die",
 			"specialProcessing" : {
 				"type" : "salary_increase",
 				"dice" : 1,
@@ -161,7 +161,7 @@
 		{
 			"number" : 10,
 			"background_image" : "occupation_square.png",
-			"text" : "Successful recruiting trip",
+			"text" : "Successful charity drive",
 			"stars" : 0,
 			"hearts" : 2,
 			"bonus" : 0,
@@ -173,7 +173,7 @@
 		{
 			"number" : 11,
 			"background_image" : "occupation_square.png",
-			"text" : "Granted AMZN stock options",
+			"text" : "Granted bonus stock options",
 			"stars" : 0,
 			"hearts" : 4,
 			"bonus" : 0,
@@ -190,7 +190,7 @@
 			"hearts" : 6, 
 			"experience" : 0,
 			"opportunities" : 0,
-			"action_text" : "Salary up $3000",
+			"action_text" : "Salary up £3000",
 			"specialProcessing" : {
 				"type" : "salary_increase",
 				"amount" : 3000

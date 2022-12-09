@@ -1,17 +1,17 @@
 {
-	"name" : "Amazon",
+	"name" : "Tower of London",
 	"configuration" : {
 		"occupationClass" : "occupation",
-		"fullName" : "Amazon",
+		"fullName" : "Tower of London",
 		"background_image" : "occupation_entrance.png",
-		"image" : "Amazon logo.jpg",
-		"entry_fee" : 1000,
-		"size" : 13,
-		"entrance_square_number" : 13,
-		"exit_square_number" : 14,
-		"text" : "Must have: $1000 for AWS training; or Computer Science degree; or Amazon experience",
+		"image" : "Tower of London.png",
+		"entry_fee" : 4000,
+		"size" : 14,
+		"entrance_square_number" : 33,
+		"exit_square_number" : 34,
+		"text" : "Must have: £4000 for cloud training; or History degree; or Tower of London experience",
 		"degreeRequirements" : { 
-			"degreeName" : "Computer Science",
+			"degreeName" : "History",
 			"numberRequired" : 1
 		}
 	},
@@ -19,59 +19,75 @@
 		{
 			"number" : 0,
 			"background_image" : "occupation_square.png",
-			"text" : "Earn AWS Cloud Practitioner Certification",
+			"text" : "Good team interview",
 			"stars" : 0,
-			"hearts" : 0,
+			"hearts" : 2,
 			"bonus" : 0,
-			"experience" : 1,
-			"opportunities" : 0,
-			"action_text" : "Draw 1 EXPERIENCE CARD",
-			"specialProcessing" : {}
-		},		
-		{
-			"number" : 1,
-			"background_image" : "occupation_square.png",
-			"text" : "Lunch with Jeff Bezos",
-			"stars" : 0,
-			"hearts" : 0,
 			"experience" : 0,
-			"opportunities" : 2,
-			"action_text" : "Draw 2 OPPORTUNITY CARDS",
+			"opportunities" : 0,
+			"action_text" : "",
 			"specialProcessing" : {}
 		},
 		{
-			"number" : 2,
+			"number" : 1,
 			"background_image" : "occupation_square.png",
-			"text" : "Introduce new web service",
+			"text" : "Project emergency",
+			"type" : "action_square",
+			"stars" : 0,
+			"hearts" : 2,
+			"bonus" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "Roll again",
+			"specialProcessing" : {
+				"type" : "extra_turn"
+			}
+		},
+		{
+			"number" : 2,
+			"background_image" : "danger_occupation_square.png",
+			"text" : "Your laptop is stolen",
+			"type" : "danger_square",
 			"stars" : 0,
 			"hearts" : 0,
 			"experience" : 0,
 			"opportunities" : 0,
-			"action_text" : "**Salary up** $2000",
+			"action_text" : "Pay £2000 OR go on Unemployment",
 			"specialProcessing" : {
-				"type" : "salary_increase",
-				"amount" : 2000
+				"type" : "cash_loss_or_unemployment",
+				"pending_action" : "cash_loss_or_unemployment",
+				"amount" : 2000,
+				"of" : "cash"
 			}
 		},
 		{
 			"number" : 3,
 			"background_image" : "occupation_square.png",
-			"text" : "Code requires all-nighter to fix",
-			"image" : "frown_emoji.png",
+			"text" : "Awesome pod mates",
 			"stars" : 0,
-			"hearts" : 0,
+			"hearts" : 2,
 			"bonus" : 0,
 			"experience" : 0,
 			"opportunities" : 0,
-			"action_text" : "Lose next turn",
-			"specialProcessing" : {
-				"type" : "lose_next_turn"
-			}
+			"action_text" : "",
+			"specialProcessing" : {}
 		},
 		{
 			"number" : 4,
 			"background_image" : "occupation_square.png",
-			"text" : "Testify before Congress",
+			"text" : "Foil foreign hacking attempt",
+			"stars" : 0,
+			"hearts" : 2,
+			"bonus" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 5,
+			"background_image" : "occupation_square.png",
+			"text" : "Lead online Marketing blitz",
 			"stars" : 0,
 			"hearts" : 0,
 			"bonus" : 0,
@@ -81,54 +97,50 @@
 			"specialProcessing" : {}
 		},
 		{
-			"number" : 5,
-			"background_image" : "danger_occupation_square.png",
-			"text" : "AMZN stock slumps",
-			"type" : "danger_square",
-			"stars" : 0,
-			"hearts" : 0,
-			"experience" : 0,
-			"opportunities" : 0,
-			"action_text" : "Cut salary by 1/2",
-			"specialProcessing" : {
-				"type" : "salary_cut",
-				"amount" : 0,
-				"percent" : 0.5
-			}
-		},
-		{
 			"number" : 6,
 			"background_image" : "occupation_square.png",
-			"text" : "AWS Architect Certified!",
-			"stars" : 0,
+			"text" : "Promoted to Scrum Master",
+			"stars" : 4,
 			"hearts" : 0, 
 			"experience" : 0,
 			"opportunities" : 0,
-			"action_text" : "Collect bonus $3000",
+			"action_text" : "Salary up £3000",
 			"specialProcessing" : {
-				"type" : "bonus",
+				"type" : "salary_increase",
 				"amount" : 3000
 			}
 		},
 		{
 			"number" : 7,
+			"background_image" : "occupation_square.png",
+			"text" : "Make major Python enhancement",
+			"stars" : 6,
+			"hearts" : 0,
+			"bonus" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 8,
 			"background_image" : "danger_occupation_square.png",
-			"text" : "Too ambitious",
+			"text" : "Hurt in company soccer match",
 			"type" : "danger_square",
 			"stars" : 0,
 			"hearts" : 0,
 			"experience" : 0,
 			"opportunities" : 0,
-			"action_text" : "Go to Unemployment",
+			"action_text" : "Go to Hospital",
 			"specialProcessing" : {
 				"type" : "travel_border",
-				"next_square" : "Unemployment"
+				"next_square" : "Hospital"
 			}
 		},
 		{
-			"number" : 8,
+			"number" : 9,
 			"background_image" : "occupation_square.png",
-			"text" : "May backstab colleague(s)",
+			"text" : "May backstab a colleague",
 			"type" : "action_square",
 			"stars" : 0,
 			"hearts" : -4,
@@ -144,37 +156,24 @@
 			}
 		},
 		{
-			"number" : 9,
-			"background_image" : "occupation_square.png",
-			"text" : "Promotion to Team Lead",
-			"stars" : 0,
-			"hearts" : 0,
-			"experience" : 0,
-			"opportunities" : 0,
-			"action_text" : "Salary up $1000 x roll of 1 die",
-			"specialProcessing" : {
-				"type" : "salary_increase",
-				"dice" : 1,
-				"amount" : 1000
-			}
-		},
-		{
 			"number" : 10,
 			"background_image" : "occupation_square.png",
-			"text" : "Successful recruiting trip",
+			"text" : "Patent new search algorithm",
 			"stars" : 0,
-			"hearts" : 2,
-			"bonus" : 0,
+			"hearts" : 0, 
 			"experience" : 0,
 			"opportunities" : 0,
-			"action_text" : "",
-			"specialProcessing" : {}
+			"action_text" : "Collect bonus £5000",
+			"specialProcessing" : {
+				"type" : "bonus",
+				"amount" : 5000
+			}
 		},
 		{
 			"number" : 11,
 			"background_image" : "occupation_square.png",
-			"text" : "Granted AMZN stock options",
-			"stars" : 0,
+			"text" : "Successfull cloud project launch",
+			"stars" : 2,
 			"hearts" : 4,
 			"bonus" : 0,
 			"experience" : 0,
@@ -185,15 +184,27 @@
 		{
 			"number" : 12,
 			"background_image" : "occupation_square.png",
-			"text" : "Employee of the year",
-			"stars" : 4,
-			"hearts" : 6, 
+			"text" : "Company meeting in Reno",
+			"stars" : 0,
+			"hearts" : 6,
+			"bonus" : 0,
 			"experience" : 0,
 			"opportunities" : 0,
-			"action_text" : "Salary up $3000",
+			"action_text" : "",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 13,
+			"background_image" : "occupation_square.png",
+			"text" : "Employee of the year",
+			"stars" : 0,
+			"hearts" : 0, 
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "Collect bonus £20,000",
 			"specialProcessing" : {
-				"type" : "salary_increase",
-				"amount" : 3000
+				"type" : "bonus",
+				"amount" : 20000
 			}
 		}
 	]

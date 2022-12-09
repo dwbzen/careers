@@ -5,11 +5,11 @@
 		"fullName" : "Google",
 		"background_image" : "occupation_entrance.png",
 		"image" : "google logo.jpg",
-		"entry_fee" : 500,
+		"entry_fee" : 4000,
 		"size" : 14,
 		"entrance_square_number" : 33,
 		"exit_square_number" : 34,
-		"text" : "Must have:<br/>**$4000 for cloud training; or Marketing degree; or Google experience**",
+		"text" : "Must have: $4000 for cloud training; or Marketing degree; or Google experience",
 		"degreeRequirements" : { 
 			"degreeName" : "Marketing",
 			"numberRequired" : 1

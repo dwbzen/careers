@@ -15,7 +15,7 @@ requirements = [
 
 setup(
     name="careers",
-    version="0.1.1",
+    version="0.1.2",
     author="Donald Bacon",
     author_email="dwbzen@gmail.com",
     description="Careers Game game engine and server",
@@ -24,11 +24,19 @@ setup(
     url="https://github.com/dwbzen/careers.git",
     packages=find_packages(exclude=["tests","docs"]),
     data_files=[('resources', ['resources/editions.json','resources/experienceCards_Hi-Tech.json','resources/opportunityCards_Hi-Tech.json',
-                'resources/gameParameters_Hi-Tech.json',
+                'resources/gameParameters_Hi-Tech.json', 'resources/gameParameters_Hi-Tech_prod.json', 'resources/gameParameters_Hi-Tech_test.json',
                 'resources/collegeDegrees_Hi-Tech.json', 'resources/gameLayout_Hi-Tech.json', 'resources/occupations_Hi-Tech.json',
                 'resources/FMC_Hi-Tech.json','resources/UF_Hi-Tech.json', 'resources/Amazon_Hi-Tech.json', 'resources/ESPN_Hi-Tech.json',
                 'resources/Disney_Hi-Tech.json','resources/Facebook_Hi-Tech.json','resources/Google_Hi-Tech.json',
-                'resources/ListerAndBacon_Hi-Tech.json','resources/Pfizer_Hi-Tech.json', 'resources/SpaceX_Hi-Tech.json'
+                'resources/ListerAndBacon_Hi-Tech.json','resources/Pfizer_Hi-Tech.json', 'resources/SpaceX_Hi-Tech.json',
+                
+                'resources/gameParameters_UK.json', 'resources/gameParameters_UK_prod.json', 'resources/gameParameters_UK_test.json',
+                'resources/collegeDegrees_UK.json',
+                'resources/AGRIVI_UK.json', 'resources/Oxford_UK.json', 
+                'resources/Harrods_UK.json', 'resources/Arsenal_UK.json', 'resources/Stonehenge_UK.json',
+                'resources/ListerAndBacon_UK.json', 'resources/BBCNews_UK.json', 
+                'resources/TowerOfLondon_UK.json', 'resources/Pfizer_UK.json', 'resources/RollsRoyce_UK.json',
+                'resources/experienceCards_UK.json', 'resources/opportunityCards_UK.json'
                 ])],
     install_requires=requirements,
     license="MIT",

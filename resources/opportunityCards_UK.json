@@ -29,7 +29,7 @@
 		},
 		{
 			"card_type" : "travel",
-			"Help" : "Advance to the nearest Amtrak station and roll again."
+			"Help" : "Advance to the nearest  British Rail or Underground station and roll again."
 		},
 		{
 			"card_type" : "opportunity",
@@ -40,19 +40,19 @@
 		{
 			"number" : 0,
 			"card_type" : "occupation",
-			"destination" : "FMC",
+			"destination" : "AGRIVI",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
-			"text" : "OPPORTUNITY to join FMC\nMeet Normal Requirements",
+			"text" : "OPPORTUNITY to join AGRIVI\nMeet Normal Requirements",
 			"quantity" : 3
 		},
 		{
 			"number" : 1,
 			"card_type" : "occupation",
-			"destination" : "Amazon",
+			"destination" : "Harrods",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
-			"text" : "OPPORTUNITY to join Amazon\nMeet Normal Requirements",
+			"text" : "OPPORTUNITY to join Harrods\nMeet Normal Requirements",
 			"quantity" : 3
 		},
 		{
@@ -67,37 +67,37 @@
 		{
 			"number" : 3,
 			"card_type" : "occupation",
-			"destination" : "SpaceX",
+			"destination" : "Rolls Royce",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
-			"text" : "OPPORTUNITY to join SpaceX\nMeet Normal Requirements",
+			"text" : "OPPORTUNITY to join Rolls Royce\nMeet Normal Requirements",
 			"quantity" : 2
 		},
 		{
 			"number" : 4,
 			"card_type" : "occupation",
-			"destination" : "SpaceX",
+			"destination" : "Rolls Royce",
 			"expenses_paid" : 1,
 			"double_happiness" : 0,
-			"text" : "SPECIAL OPPORTUNITY to join SpaceX because of your technical brilliance.\nAll expenses paid and no prior experience required.",
+			"text" : "SPECIAL OPPORTUNITY to join Rolls Royce because of your technical brilliance.\nAll expenses paid and no prior experience required.",
 			"quantity" : 1		
 		},
 		{
 			"number" : 5,
 			"card_type" : "occupation",
-			"destination" : "Disney",
+			"destination" : "Stonehenge",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
-			"text" : "OPPORTUNITY to join Disney\nMeet Normal Requirements",
+			"text" : "OPPORTUNITY to join Stonehenge\nMeet Normal Requirements",
 			"quantity" : 2
 		},
 		{
 			"number" : 6,
 			"card_type" : "occupation",
-			"destination" : "Disney",
+			"destination" : "Stonehenge",
 			"expenses_paid" : 0,
 			"double_happiness" : 1,
-			"text" : "SPECIAL OPPORTUNITY to join Disney because of your Magic touch.\nDOUBLE all Happiness earned\nMeet Normal Requirements",
+			"text" : "SPECIAL OPPORTUNITY to join Stonehenge because of your Mystical touch.\nDOUBLE all Happiness earned\nMeet Normal Requirements",
 			"quantity" : 2
 		},
 		{
@@ -112,64 +112,64 @@
 		{
 			"number" : 8,
 			"card_type" : "occupation",
-			"destination" : "Google",
+			"destination" : "Tower Of London",
 			"expenses_paid" : 1,
 			"double_happiness" : 0,
-			"text" : "SPECIAL OPPORTUNITY to join Google because of your technical brilliance. \nAll expenses paid and no prior experience required.",
+			"text" : "SPECIAL OPPORTUNITY to join the Tower Of London because of your technical brilliance. \nAll expenses paid and no prior experience required.",
 			"quantity" :1			
 		},
 		{
 			"number" : 9,
 			"card_type" : "occupation",
-			"destination" : "Facebook",
+			"destination" : "BBC News",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
-			"text" : "OPPORTUNITY to join Facebook\nMeet Normal Requirements",
+			"text" : "OPPORTUNITY to join BBC News\nMeet Normal Requirements",
 			"quantity" : 2
 		},
 		{
 			"number" : 10,
 			"card_type" : "occupation",
-			"destination" : "Facebook",
+			"destination" : "BBC News",
 			"expenses_paid" : 1,
 			"double_happiness" : 0,
-			"text" : "SPECIAL OPPORTUNITY to join Facebook  because of your problem solving skills.\nAll expenses paid and no prior experience required.",
+			"text" : "SPECIAL OPPORTUNITY to join BBC News because of your journalism chops.\nAll expenses paid and no prior experience required.",
 			"quantity" : 1		
 		},
 		{
 			"number" : 11,
 			"card_type" : "occupation",
-			"destination" : "ESPN",
+			"destination" : "Arsenal",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
-			"text" : "OPPORTUNITY to join ESPN\nMeet Normal Requirements",
+			"text" : "OPPORTUNITY to join Arsenal\nMeet Normal Requirements",
 			"quantity" : 2
 		},
 		{
 			"number" : 12,
 			"card_type" : "occupation",
-			"destination" : "ESPN",
+			"destination" : "Arsenal",
 			"expenses_paid" : 1,
 			"double_happiness" : 0,
-			"text" : "SPECIAL OPPORTUNITY to join ESPN  because of your sports knowledge.\nAll expenses paid and no prior experience required.",
+			"text" : "SPECIAL OPPORTUNITY to join Arsenal because of your football knowledge.\nAll expenses paid and no prior experience required.",
 			"quantity" : 1
 		},
 		{
 			"number" : 13,
 			"card_type" : "occupation",
-			"destination" : "UF",
+			"destination" : "Oxford",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
-			"text" : "OPPORTUNITY to enter the University of Florida\nMeet Normal Requirements",
+			"text" : "OPPORTUNITY to enter Oxford\nMeet Normal Requirements",
 			"quantity" : 3
 		},
 		{
 			"number" : 14,
 			"card_type" : "occupation",
-			"destination" : "UF",
+			"destination" : "Oxford",
 			"expenses_paid" : 1,
 			"double_happiness" : 0,
-			"text" : "SPECIAL OPPORTUNITY to enter College on Scholarship, all expenses paid.",
+			"text" : "SPECIAL OPPORTUNITY to enter Oxford on Scholarship, all expenses paid.",
 			"quantity" : 2
 		},
 		{
@@ -215,7 +215,7 @@
 			"destination" : "BuyInsurance",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
-			"text" : "OPPORTUNITY to buy Insurance\nAdvance to the Insurance Store and pay $5,000 premium",
+			"text" : "OPPORTUNITY to buy Insurance\nAdvance to the Insurance Store and pay £5,000 premium",
 			"quantity" : 4,
 			"special_processing" : {
 				"type" : "buy_insurance"
@@ -224,10 +224,10 @@
 		{
 			"number" : 19,
 			"card_type" : "border_square",
-			"destination" : "SpringBreak",
+			"destination" : "Holiday",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
-			"text" : "OPPORTUNITY to go on Spring Break!",
+			"text" : "OPPORTUNITY to go on Holiday!",
 			"quantity" : 4
 		},
 		{
@@ -242,10 +242,10 @@
 		{
 			"number" : 21,
 			"card_type" : "border_square",
-			"destination" : "GambleInVegas",
+			"destination" : "HippodromeCasino",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
-			"text" : "OPPORTUNITY to Gamble in Las Vegas",
+			"text" : "OPPORTUNITY to Gamble at the Hippodrome Casino",
 			"quantity" : 3
 		},
 		{
@@ -260,11 +260,20 @@
 		{
 			"number" : 23,
 			"card_type" : "travel",
-			"destination" : "Amtrak",
+			"destination" : "BritishRail",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
-			"text" : "TRAVEL OPPORTUNITY Advance to the nearest Amtrak Station and roll again.",
-			"quantity" : 4
+			"text" : "TRAVEL OPPORTUNITY Advance to the nearest British Rail Station and roll again.",
+			"quantity" : 2
+		},
+		{
+			"number" : 23,
+			"card_type" : "travel",
+			"destination" : "Underground",
+			"expenses_paid" : 0,
+			"double_happiness" : 0,
+			"text" : "TRAVEL OPPORTUNITY Advance to the nearest Underground Station and roll again.",
+			"quantity" : 2
 		},
 		{
 			"number" : 24,

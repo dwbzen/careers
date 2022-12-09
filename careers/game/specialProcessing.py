@@ -71,7 +71,10 @@ class SpecialProcessing(CareersObject):
             self._pending_action = PendingActionType[pending_action.upper()]
         else:
             self._pending_action = None
-        # self._pending_action = special_processing_dict.get('pending_action', None) 
+        self._choices = []
+        if special_processing_dict.get('choices',None) is not None:
+            self._choices = special_processing_dict.get('choices').split(",")
+            
         self._amount_dice = special_processing_dict.get('amount_dice', 0)  # the number of dice to use to determine an amount multiplier
         self._game_parameters = None    # set by GameSquare
     
@@ -173,6 +176,14 @@ class SpecialProcessing(CareersObject):
     @game_parameters.setter
     def game_parameters(self, value:GameParameters):
         self._game_parameters = value
+        
+    @property
+    def choices(self) -> List[str]:
+        return self._choices
+    
+    @choices.setter
+    def choices(self, values:str):
+        self._choices = values.split(",")
     
     def gamble(self, player) -> CommandResult:
         # amount computed from a roll of the dice
