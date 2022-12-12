@@ -29,7 +29,6 @@ from datetime import datetime
 import random
 from typing import List
 import os
-from dns.rdataclass import NONE
 
 class CareersGameEngine(object):
     """CareersGameEngine executes the action(s) associated with each player's turn.

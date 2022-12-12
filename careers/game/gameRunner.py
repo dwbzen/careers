@@ -26,8 +26,8 @@ class GameRunner(object):
         self.game_engine.trace = self._trace
         self._master_id = master_id
 
-    def add_player(self, name, initials, stars=0, hearts=0, cash=0):
-        self.game_engine.add(name, initials, stars, hearts, cash)
+    def add_player(self, name, initials, player_id=None, email=None, stars=0, hearts=0, cash=0):
+        self.game_engine.add(name, initials, player_id, email, stars, hearts, cash)
     
     @property
     def trace(self):

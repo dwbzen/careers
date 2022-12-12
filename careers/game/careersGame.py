@@ -103,12 +103,12 @@ class CareersGame(CareersObject):
         """Loads the game parameters and occupations JSON files for this edition.
         
         """
-        self._game_parameters_filename = f'{self._resource_folder}/gameParameters_{self._edition_name}{self._game_parameters_type}.json'
+        self._game_parameters_filename = f'{self._resource_folder}/{self._edition_name}/gameParameters_{self._game_parameters_type}.json'
         with open(self._game_parameters_filename, "r") as fp:
             jtxt = fp.read()
             self._game_parameters = GameParameters(json.loads(jtxt))
 
-        self._occupations_filename = f'{self._resource_folder}/occupations_{self._edition_name}.json'
+        self._occupations_filename = f'{self._resource_folder}/{self._edition_name}/occupations.json'
         with open(self._occupations_filename, "r") as fp:
             jtxt = fp.read()
             occupations_dict = json.loads(jtxt)
@@ -136,7 +136,7 @@ class CareersGame(CareersObject):
         self._experience_cards = ExperienceCardDeck(self._resource_folder, self._edition_name)
         
     def _create_game_board(self) -> GameBoard:
-        game_layout_filename = self._resource_folder + "/gameLayout_" + self._edition_name + ".json"
+        game_layout_filename = f'{self._resource_folder}/{self._edition_name}/gameLayout.json'
         game_board = GameBoard(game_layout_filename, game=self)
         return game_board
 
@@ -151,7 +151,7 @@ class CareersGame(CareersObject):
         """
         occupations:Dict[str, Occupation] = {}
         for name in self._occupation_names:
-            filepath = self._resource_folder + "/" + name + "_" + self._edition_name + ".json"
+            filepath = f'{self._resource_folder}/{self._edition_name}/{name}.json'
             p = Path(filepath)
             if p.exists():
                 fp = open(filepath, "r")
@@ -165,7 +165,7 @@ class CareersGame(CareersObject):
 
     
     def _load_college_degrees(self) -> Dict[str, Union[List[int] ,List[str], int]]:
-        fp = open(self._resource_folder + "/collegeDegrees_" + self._edition_name + ".json", "r")
+        fp = open(f'{self._resource_folder}/{self._edition_name}/collegeDegrees.json', "r")
         degrees = json.loads(fp.read())
         return degrees
     

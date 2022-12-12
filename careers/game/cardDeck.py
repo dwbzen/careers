@@ -80,7 +80,7 @@ class CardDeck(object):
                 the JSON content as a dict
         """
         cards = dict()
-        filepath = f'{path}/{name}_{edition_name}.json'
+        filepath = f'{path}/{edition_name}/{name}.json'
         p = Path(filepath)
         if p.exists():
             fp = open(filepath, "r")
