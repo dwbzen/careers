@@ -66,18 +66,24 @@ class PendingActions(CareersObject):
                 ind+=1
         return -1
     
-    def get_pending_action(self, pending_action_type:PendingActionType|str) -> PendingAction:
+    def get_pending_action(self, pending_action_type:PendingActionType|str, remove:bool=False) -> PendingAction:
         """Gets the PendingAction of a given type without removing from the list
             Arguments:
                 pending_action_type - a PendingActionType or a str value in PendingActionType
+                remove - if True pop the pending_actions list at the specified index, removing it from the list.
+                        If false, return the PendingAction without removal.
+                        Default is False
             Returns:
                 if found, the PendingAction
                 None if not found
         """
         pending_action = None
-        ind = self.index_of(pending_action_type)
-        if ind >= 0:
-            pending_action = self._pending_actions[ind]
+        index = self.index_of(pending_action_type)
+        if index >= 0:
+            if remove:
+                pending_action = self._pending_actions.pop(index)
+            else:
+                pending_action = self._pending_actions[index]
         return pending_action
     
     def get(self, index:int=-1, remove:bool=True) -> PendingAction:

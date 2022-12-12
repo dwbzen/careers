@@ -9,7 +9,7 @@
 		"size" : 14,
 		"entrance_square_number" : 33,
 		"exit_square_number" : 34,
-		"text" : "Must have: £4000 for cloud training; or History degree; or Tower of London experience",
+		"text" : "Must have: £4000 for special training; or History degree; or Tower of London experience",
 		"degreeRequirements" : { 
 			"degreeName" : "History",
 			"numberRequired" : 1

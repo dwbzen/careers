@@ -9,7 +9,7 @@
 		"size" : 12,
 		"entrance_square_number" : 24,
 		"exit_square_number" : 25,
-		"text" : "Must have:<br/>**$8000 for bar exam; or a Law Board Certification degree; or Law Firm experience**",
+		"text" : "Must have:<br/>**£8000 for bar exam; or a Law Board Certification degree; or Law Firm experience**",
 		"degreeRequirements" : { 
 			"degreeName" : "Law",
 			"numberRequired" : 2
@@ -19,7 +19,7 @@
 		{
 			"number" : 0,
 			"background_image" : "danger_occupation_square.png",
-			"text" : "Fail Bar exam",
+			"text" : "Unable to find a tenancy",
 			"type" : "danger_square",
 			"stars" : 0,
 			"hearts" : 0,
@@ -34,7 +34,7 @@
 		{
 			"number" : 1,
 			"background_image" : "occupation_square.png",
-			"text" : "Clerk for SCOTUS Justice",
+			"text" : "Join the Inner Temple Inn",
 			"stars" : 0,
 			"hearts" : 0,
 			"experience" : 0,
@@ -45,7 +45,7 @@
 		{
 			"number" : 2,
 			"background_image" : "occupation_square.png",
-			"text" : "Write tort law textbook",
+			"text" : "Complete 10 dinners and Called to the Bar",
 			"stars" : 4,
 			"hearts" : 0,
 			"experience" : 0,
@@ -56,12 +56,12 @@
 		{
 			"number" : 3,
 			"background_image" : "occupation_square.png",
-			"text" : "Attorney General likes you",
+			"text" : "Obtain pupilage from QC Barrister",
 			"stars" : 0,
 			"hearts" : 0,
 			"experience" : 0,
 			"opportunities" : 0,
-			"action_text" : "**Salary up** $2000",
+			"action_text" : "**Salary up** £2000",
 			"specialProcessing" : {
 				"type" : "salary_increase",
 				"amount" : 2000
@@ -70,7 +70,7 @@
 		{
 			"number" : 4,
 			"background_image" : "occupation_square.png",
-			"text" : "Represent FB is privacy litigation",
+			"text" : "Represent Harrods in privacy litigation",
 			"stars" : 0,
 			"hearts" : 0,
 			"bonus" : 0,
@@ -82,9 +82,9 @@
 		{
 			"number" : 5,
 			"background_image" : "occupation_square.png",
-			"text" : "Serve as Inns of Court President",
+			"text" : "Serve as Inner Temple Inns of Court President",
 			"stars" : 6,
-			"hearts" : 0,
+			"hearts" : 2,
 			"experience" : 0,
 			"opportunities" : 0,
 			"action_text" : "",
@@ -93,7 +93,7 @@
 		{
 			"number" : 6,
 			"background_image" : "occupation_square.png",
-			"text" : "Publish in Harvard Law Review",
+			"text" : "receive Channel 4 Rising Star Award",
 			"stars" : 2,
 			"hearts" : 4,
 			"experience" : 0,
@@ -104,7 +104,7 @@
 		{
 			"number" : 7,
 			"background_image" : "occupation_square.png",
-			"text" : "May backstab a Partner",
+			"text" : "May backstab learned friend(s)",
 			"type" : "action_square",
 			"stars" : 0,
 			"hearts" : -4,
@@ -122,7 +122,7 @@
 		{
 			"number" : 8,
 			"background_image" : "occupation_square.png",
-			"text" : "POTUS appoints you US AG",
+			"text" : "Appointed Home Secretary by PM",
 			"stars" : 8,
 			"hearts" : 0,
 			"experience" : 0,
@@ -138,7 +138,7 @@
 			"hearts" : 0, 
 			"experience" : 0,
 			"opportunities" : 0,
-			"action_text" : "Collect bonus $5000",
+			"action_text" : "Collect bonus £5000",
 			"specialProcessing" : {
 				"type" : "bonus",
 				"amount" : 5000
@@ -147,7 +147,7 @@
 		{
 			"number" : 10,
 			"background_image" : "danger_occupation_square.png",
-			"text" : "Plead no contest to tax evasion",
+			"text" : "Disciplined by Bar Standards Board",
 			"type" : "danger_square",
 			"stars" : 0,
 			"hearts" : 0,
@@ -164,12 +164,12 @@
 		{
 			"number" : 11,
 			"background_image" : "occupation_square.png",
-			"text" : "Receive AV peer review rating",
+			"text" : "Appointed to Queens Council",
 			"stars" : 12,
 			"hearts" : 0, 
 			"experience" : 0,
 			"opportunities" : 0,
-			"action_text" : "Salary up $4000",
+			"action_text" : "Salary up £4000",
 			"specialProcessing" : {
 				"type" : "salary_increase",
 				"amount" : 4000

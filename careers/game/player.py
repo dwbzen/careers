@@ -379,6 +379,9 @@ class Player(CareersObject):
     def find_pending_action(self, pendingActionType:PendingActionType) -> PendingAction|None:
         return self._pending_actions.find(pendingActionType)
     
+    def has_pending_actions(self) -> bool:
+        return self.pending_actions_size() > 0
+    
     def _get_pending(self) ->dict:
         return self._pending_actions.to_dict()
         
