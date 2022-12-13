@@ -132,6 +132,7 @@
 				"action_text" : "Must have £1000 for tuition.\nAvailable degrees: Engineering, IT, Sports Medicine, Law, History, Anthropology,Sales&Marketing, Journalism, Pharmacology",
 				"specialProcessing" : {
 					"type" : "enterCollege",
+					"pending_action" : "select_degree",
 					"destinationOccupation" : "Oxford"
 				}
 			},
@@ -153,7 +154,11 @@
 				"text" : "HOSPITAL",
 				"action_text" : "You are LAID UP and in the Hospital. Loose one turn while you wait to see a doctor.",
 				"specialProcessing" : { 
-					"type" : "loseNextTurn"
+					"type" : "hospital",
+					"must_roll" : [2, 3, 4, 5],
+					"require_doubles" : 0,
+					"percent" : 0.5,
+					"of" : "salary"
 				}
 			},
 			{
@@ -175,7 +180,8 @@
 				"specialProcessing" : {
 					"type" : "cashLoss",
 					"dice" : 0,
-					"amount" : 1000
+					"amount" : 1000,
+					"of" : "cash"
 				}
 			},
 			{
@@ -202,7 +208,7 @@
 				"action_text" : "Must have: £1000 for Retail Sales training; or Sales & Marketing degree; or Harrods experience",
 				"specialProcessing" : {
 					"type" : "enterOccupation",
-					"destinationOccupation" : "Amazon"
+					"destinationOccupation" : "Harrods"
 				}
 			},
 			{
@@ -220,12 +226,12 @@
 				"name" : "Arsenal",
 				"type" : "occupation_entrance_square",
 				"background_image" : "occupation_entrance_square.png",
-				"image" : "ESPN logo.jpg",
+				"image" : "Arsenal logo.jpg",
 				"text" : "Arsenal",
 				"action_text" : "",
 				"specialProcessing" : {
 					"type" : "enterOccupation",
-					"destinationOccupation" : "ESPN"
+					"destinationOccupation" : "Arsenal"
 				}
 			},
 			{
@@ -373,7 +379,7 @@
 				"action_text" : "",
 				"specialProcessing" : {
 					"type" : "enterOccupation",
-					"destinationOccupation" : "Facebook"
+					"destinationOccupation" : "BBC News"
 				}
 			},
 			{
@@ -394,7 +400,7 @@
 				"text" : "Insurance Store",
 				"action_text" : "May purchase insurance to protect your cash,\nHappiness and Fame from catastrophic loss.\nCost of coverage is £5,000.",
 				"specialProcessing" : { 
-					"type" : "buyInsurance"
+					"type" : "buy_insurance"
 				}
 			},
 			{
@@ -406,7 +412,8 @@
 				"action_text" : "You are on Holiday! Collect 6 Hearts for landing here and 3 each time you stay with a roll of 7 or less",
 				"specialProcessing" : {
 					"type": "holiday",
-					"must_roll" : [8, 9, 10, 11, 12],
+					"pending_action": "stay_or_move",
+					"must_roll" : [2, 3, 4, 5, 6, 7],
 					"hearts" : [3, 6]
 				}
 			},
@@ -430,7 +437,10 @@
 				"action_text" : "Roll 2 dice to start gambling.\n6 or less - lose £1000 x roll of 1 die\n7 - Jackpot! Collect £10,000\n8 or more - collect £1000 x roll of 1 die",
 				"specialProcessing" : {
 					"type" : "gamble",
-					"dice" : 2
+					"pending_action" : "gamble",
+					"dice" : 2,
+					"amount_dice" : 1,
+					"amount" : {"1": -1000, "2": -1000, "3": -1000, "4": -1000, "5": -1000, "6": -1000, "7": "10000", "8": 1000, "9": 1000, "10": 1000, "11": 1000, "12": 1000}
 				}
 			},
 			{
@@ -443,7 +453,7 @@
 				"action_text" : "",
 				"specialProcessing" : {
 					"type" : "enterOccupation",
-					"destinationOccupation" : "Google"
+					"destinationOccupation" : "TowerOfLondon"
 				}
 			},
 			{
@@ -504,7 +514,7 @@
 					"type" : "cashLoss",
 					"dice" : 2,
 					"percent" : 0.1,
-					"of" : "salary"
+					"of" : "net_worth"
 				}
 			},
 			{
@@ -514,7 +524,8 @@
 				"background_image" : "light blue action square.png",
 				"text" : "VINTAGE CARS",
 				"specialProcessing" : {
-					"type" : "buyHearts",
+					"type" : "buy_hearts",
+					"pending_action" : "buy_hearts",
 					"amount" : {"4" : 2000, "8" : 8000, "12" : 16000},
 					"limit" : "",
 					"penalty" : 0
@@ -541,7 +552,8 @@
 				"text" : "WEB PRESENCE",
 				"action_text" : "May hire consultant to build web site. Score Fame points as follows:",
 				"specialProcessing" : {
-					"type" : "buyStars",
+					"type" : "buy_stars",
+					"pending_action" : "buy_stars",
 					"amount" : {"4" : 4000, "10" : 8000, "16" : 12000, "22" : 16000},
 					"limit" : "",
 					"penalty" : 0

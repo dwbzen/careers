@@ -19,7 +19,7 @@
 		{
 			"number" : 0,
 			"background_image" : "occupation_square.png",
-			"text" : "Cape Canaveral is beautiful",
+			"text" : "Assigned to artificial intelligence (AI) Unit",
 			"stars" : 0,
 			"hearts" : 2,
 			"bonus" : 0,
@@ -31,7 +31,7 @@
 		{
 			"number" : 1,
 			"background_image" : "occupation_square.png",
-			"text" : "Successful Falcon Heavy take-off",
+			"text" : "Pioneer UltraFan engine design",
 			"stars" : 6,
 			"hearts" : 0,
 			"bonus" : 0,
@@ -43,41 +43,41 @@
 		{
 			"number" : 2,
 			"background_image" : "danger_occupation_square.png",
-			"text" : "Dragon docking fails",
+			"text" : "Fired for inappropriate conduct",
 			"type" : "danger_square",
 			"stars" : 0,
 			"hearts" : 0,
 			"experience" : 0,
 			"opportunities" : 0,
-			"action_text" : "Lose ALL your Fame",
+			"action_text" : "Lose ALL your Happiness",
 			"specialProcessing" : {
-				"type" : "fame_loss",
+				"type" : "happiness_loss",
 				"amount" : 0,
 				"percent" : 1.0,
-				"of" : "fame"
+				"of" : "happiness"
 			}
 		},
 		{
 			"number" : 3,
 			"background_image" : "danger_occupation_square.png",
-			"text" : "Falcon 9 explodes on the launch pad",
+			"text" : "Prototype engine blows up in testing",
 			"type" : "danger_square",
 			"stars" : 0,
 			"hearts" : 0,
 			"experience" : 0,
 			"opportunities" : 0,
-			"action_text" : "Lose ALL your Cash",
+			"action_text" : "Lose HALF your Cash",
 			"specialProcessing" : {
 				"type" : "cash_loss",
 				"amount" : 0,
-				"percent" : 1.0,
+				"percent" : 0.5,
 				"of" : "cash"
 			}
 		},
 		{
 			"number" : 4,
 			"background_image" : "occupation_square.png",
-			"text" : "Enhance Draco thruster test facility",
+			"text" : "Enhance Testbed 80 for Trent XWB engine",
 			"stars" : 2,
 			"hearts" : 4,
 			"bonus" : 0,
@@ -89,7 +89,7 @@
 		{
 			"number" : 5,
 			"background_image" : "occupation_square.png",
-			"text" : "Mars Mission Starship design",
+			"text" : "New intelligent engine design",
 			"stars" : 0,
 			"hearts" : 0,
 			"experience" : 0,
@@ -103,7 +103,7 @@
 		{
 			"number" : 6,
 			"background_image" : "occupation_square.png",
-			"text" : "Grueling avionics project",
+			"text" : "Grueling Avionics Programme",
 			"stars" : 0,
 			"hearts" : 0,
 			"bonus" : 0,
@@ -115,7 +115,7 @@
 		{
 			"number" : 7,
 			"background_image" : "occupation_square.png",
-			"text" : "Selected for first Mars Mission Crew",
+			"text" : "Sign contract with UK Ministry of Defense",
 			"stars" : 16,
 			"hearts" : 0,
 			"bonus" : 0,
@@ -127,7 +127,7 @@
 		{
 			"number" : 8,
 			"background_image" : "occupation_square.png",
-			"text" : "Lunch with Elon Musk",
+			"text" : "Lunch with Head of IT Innovation",
 			"stars" : 2,
 			"hearts" : 10,
 			"bonus" : 0,
@@ -139,7 +139,7 @@
 		{
 			"number" : 9,
 			"background_image" : "occupation_square.png",
-			"text" : "Advance for new Mars Mission book",
+			"text" : "Cash advance for company tell-all book",
 			"stars" : 0,
 			"hearts" : 0, 
 			"experience" : 0,
@@ -168,7 +168,7 @@
 		{
 			"number" : 11,
 			"background_image" : "occupation_square.png",
-			"text" : "Survive Falcon Heavy launch",
+			"text" : "Sign contract with UK Space Agency",
 			"stars" : 6,
 			"hearts" : 4,
 			"bonus" : 0,
@@ -188,7 +188,7 @@
 			"action_text" : "Collect Bonus £5000",
 			"specialProcessing" : {
 				"type" : "bonus",
-				"amount" : 3000
+				"amount" : 5000
 			}
 		}
 	]

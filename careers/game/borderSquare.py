@@ -54,6 +54,7 @@ class BorderSquare(GameSquare):
         self._game_square_dict["square_class"] = GameSquareClass.BORDER
         self._square_type = BorderSquareType[border_square_dict['type'].upper()]
         self.action_text = border_square_dict.get('action_text', None)
+        self._help_text = border_square_dict.get('help_text', None)
         self._travel_class = None
         if border_square_dict.get('travel_class', None) is not None:
             self._travel_class = TravelClass[border_square_dict['travel_class'].upper()]

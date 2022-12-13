@@ -40,6 +40,7 @@ class GameSquare(CareersObject):
         self._special_processing = SpecialProcessing(special_processing_dict, square_class) if special_processing_dict is not None and len(special_processing_dict) > 0 else None
         self._careersGame = None
         self._game_parameters = None
+        self._help_text = None    # optional "help_text" content
         #
         # avoids circular import
         #
@@ -115,6 +116,14 @@ class GameSquare(CareersObject):
     @property
     def game_parameters(self) -> GameParameters:
         return self._game_parameters
+    
+    @property
+    def help_text(self) -> str:
+        return self._help_text
+    
+    @help_text.setter
+    def help_text(self, text:str):
+        self._help_text = text
     
     def execute(self, player:Player) -> CommandResult:
         """Execute actions associated with this Occupation or Border square

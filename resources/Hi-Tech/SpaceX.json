@@ -188,7 +188,7 @@
 			"action_text" : "Collect Bonus $5000",
 			"specialProcessing" : {
 				"type" : "bonus",
-				"amount" : 3000
+				"amount" : 5000
 			}
 		}
 	]

@@ -47,7 +47,7 @@ class OccupationSquare(GameSquare):
         self._square_type = OccupationSquareType[occupation_square_dict.get('type', 'regular_square').upper()]    # square type is optional for OccupationSquare
         self.action_text = occupation_square_dict.get('action_text', None)
         self._bonus = occupation_square_dict.get('bonus',0)
-
+        self._help_text = occupation_square_dict.get('help_text', None)
         
     @property
     def stars(self):

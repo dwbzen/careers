@@ -19,7 +19,7 @@
 		{
 			"number" : 0,
 			"background_image" : "occupation_square.png",
-			"text" : "Write fake news filter",
+			"text" : "Your story picked up by Reuters",
 			"stars" : 2,
 			"hearts" : 0,
 			"bonus" : 0,
@@ -31,7 +31,7 @@
 		{
 			"number" : 1,
 			"background_image" : "occupation_square.png",
-			"text" : "Extra web site training",
+			"text" : "Write for BBC News Online",
 			"stars" : 0,
 			"hearts" : 0,
 			"bonus" : 0,
@@ -43,7 +43,7 @@
 		{
 			"number" : 2,
 			"background_image" : "occupation_square.png",
-			"text" : "Lunch with Mark Zuckerberg",
+			"text" : "Lunch with BBC Director of News",
 			"stars" : 0,
 			"hearts" : 0,
 			"experience" : 0,
@@ -54,7 +54,7 @@
 		{
 			"number" : 3,
 			"background_image" : "occupation_square.png",
-			"text" : "Switch CDN service provider",
+			"text" : "Given your own programme",
 			"stars" : 6,
 			"hearts" : 2,
 			"experience" : 0,
@@ -65,7 +65,7 @@
 		{
 			"number" : 4,
 			"background_image" : "occupation_square.png",
-			"text" : "Update livestream video",
+			"text" : "Broker partnership with CBS News",
 			"stars" : 0,
 			"hearts" : 0,
 			"experience" : 0,
@@ -73,13 +73,13 @@
 			"action_text" : "**Salary up** £1000",
 			"specialProcessing" : {
 				"type" : "salary_increase",
-				"amount" : 1000
+				"amount" : 2000
 			}
 		},
 		{
 			"number" : 5,
 			"background_image" : "occupation_square.png",
-			"text" : "Attend Tech Conference in Zurich",
+			"text" : "Cover Tech Conference in Geneva",
 			"stars" : 0,
 			"hearts" : 4,
 			"experience" : 0,
@@ -90,7 +90,7 @@
 		{
 			"number" : 6,
 			"background_image" : "danger_occupation_square.png",
-			"text" : "Your fancy new search algorithm bombs",
+			"text" : "Lose news anchor position",
 			"type" : "danger_square",
 			"stars" : 0,
 			"hearts" : 0,
@@ -106,7 +106,7 @@
 		{
 			"number" : 7,
 			"background_image" : "danger_occupation_square.png",
-			"text" : "Testify before Congress",
+			"text" : "Throw a wobbly on live TV",
 			"type" : "danger_square",
 			"stars" : 10,
 			"hearts" : 0,
@@ -123,7 +123,7 @@
 		{
 			"number" : 8,
 			"background_image" : "occupation_square.png",
-			"text" : "You have a bad feeling about this...",
+			"text" : "Stranded in Russion without a visa...",
 			"type" : "action_square",
 			"stars" : 4,
 			"hearts" : 0,
@@ -137,7 +137,7 @@
 		{
 			"number" : 9,
 			"background_image" : "occupation_square.png",
-			"text" : "Promoted to Manager",
+			"text" : "Promoted to Director",
 			"stars" : 0,
 			"hearts" : 0,
 			"experience" : 0,
@@ -152,7 +152,7 @@
 		{
 			"number" : 10,
 			"background_image" : "occupation_square.png",
-			"text" : "Employee of the year",
+			"text" : "Win Orwell Prize for Journalism",
 			"stars" : 12,
 			"hearts" : 0, 
 			"experience" : 0,

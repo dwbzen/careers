@@ -62,7 +62,7 @@
 		{
 			"number" : 3,
 			"background_image" : "occupation_square.png",
-			"text" : "POTUS advisor appointment",
+			"text" : "Prime Minister advisor appointment",
 			"stars" : 4,
 			"hearts" : 4,
 			"bonus" : 0,
@@ -115,7 +115,7 @@
 		{
 			"number" : 7,
 			"background_image" : "occupation_square.png",
-			"text" : "You have a bad feeling about this...",
+			"text" : "Market may take a nosedive...",
 			"type" : "action_square",
 			"stars" : 4,
 			"hearts" : 0,
@@ -146,7 +146,7 @@
 		{
 			"number" : 9,
 			"background_image" : "occupation_square.png",
-			"text" : "Tour CDC",
+			"text" : "Work at Francis Crick Institute",
 			"stars" : 0,
 			"hearts" : 4,
 			"bonus" : 0,
@@ -158,7 +158,7 @@
 		{
 			"number" : 10,
 			"background_image" : "occupation_square.png",
-			"text" : "May backstab a colleague",
+			"text" : "May backstab colleague(s)",
 			"type" : "action_square",
 			"stars" : 0,
 			"hearts" : -4,
@@ -214,7 +214,7 @@
 		{
 			"number" : 14,
 			"background_image" : "occupation_square.png",
-			"text" : "Story about you on CNN",
+			"text" : "Story about you on BBC America",
 			"type" : "travel_square",
 			"stars" : 4,
 			"hearts" : 4,

@@ -37,6 +37,7 @@ class CareersGameEngine(object):
                    <list> | <status> | <info> | <quit> | <done> | <end game> |
                    <saved games> | <save> | <load> | <query> | <enter> | <goto> | <add> | <add degree> |
                    <pay> | <transfer> | <game_status> | <create> | <start> | <buy> | <perform>
+                   
         <use> :: "use"  <what> <card_number>
             <what> :: "opportunity" | "experience" | "roll"
             <card_number> :: <integer> | '[' <integer list> ']'

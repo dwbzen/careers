@@ -1,10 +1,11 @@
 {
+  "gameId": "ZenAlien2013_20221213-111402-287195-47908",
   "game_type": "points",
   "number_of_players": 2,
-  "current_player_number": 1,
-  "turns": 0,
-  "turn_number": 1,
-  "total_points": 100,
+  "current_player_number": 0,
+  "turns": 6,
+  "turn_number": 7,
+  "total_points": 200,
   "seconds_remaining": 0,
   "game_complete": false,
   "players": [
@@ -13,46 +14,100 @@
       "number": 0,
       "initials": "DWB",
       "successFormula": {
-        "cash": 50,
-        "fame": 40,
-        "happiness": 10
+        "money": 50,
+        "stars": 40,
+        "hearts": 10
       },
       "score": {
-        "cash": 4000,
-        "fame": 0,
-        "happiness": 0,
-        "is_insured": false
+        "cash": 14000,
+        "fame": 14,
+        "happiness": 16,
+        "total_points": 44
       },
       "loans": {},
       "board_location": {
-        "border_square_number": 16,
-        "border_square_name": "Opportunity",
-        "occupation_square_number": 0,
+        "border_square_number": 15,
+        "border_square_name": "ESPN",
+        "occupation_square_number": 12,
         "occupation_name": null
-      }
+      },
+      "is_insured": false,
+      "is_sick": false,
+      "is_unemployed": false,
+      "can_roll": true,
+      "extra_turn": 0,
+      "can_use_opportunity": true,
+      "occupation_record": {
+        "Amazon": 1
+      },
+      "_id": "dwb20221206",
+      "email": "dwbzen@gmail.com",
+      "number_opportunity_cards": 3,
+      "opportunity_cards": [
+        "16: GOLDEN  OPPORTUNITY to join the Company of your choice\nMeet Normal Requirements",
+        "22: SPECIAL OPPORTUNITY to buy needed padding! Advance to EXPERIENCE square and buy at least 1 and up to 3 EXPERIENCE cards.",
+        "24: OPPORTUNITY KNOCKS\nAdvance to the nearest OPPORTUNITY square and roll again"
+      ],
+      "number_experience_cards": 3,
+      "experience_cards": [
+        " 3: -2 spaces",
+        "10: two_die_wild",
+        "11: triple_wild"
+      ],
+      "number_of_degrees": 0,
+      "pending_actions": []
     },
     {
       "name": "Brian",
       "number": 1,
       "initials": "BDB",
       "successFormula": {
-        "cash": 40,
-        "fame": 20,
-        "happiness": 40
+        "money": 30,
+        "stars": 50,
+        "hearts": 20
       },
       "score": {
-        "cash": 2000,
-        "fame": 0,
-        "happiness": 0,
-        "is_insured": false
+        "cash": 14500,
+        "fame": 16,
+        "happiness": 10,
+        "total_points": 40
       },
       "loans": {},
       "board_location": {
-        "border_square_number": 32,
-        "border_square_name": "GambleInVegas",
-        "occupation_square_number": 0,
+        "border_square_number": 13,
+        "border_square_name": "Amazon",
+        "occupation_square_number": 10,
         "occupation_name": null
-      }
+      },
+      "is_insured": false,
+      "is_sick": false,
+      "is_unemployed": false,
+      "can_roll": false,
+      "extra_turn": 0,
+      "can_use_opportunity": true,
+      "occupation_record": {
+        "UF": 1
+      },
+      "_id": "bdb20221206",
+      "email": "brian.bacon01@gmail.com",
+      "number_opportunity_cards": 5,
+      "opportunity_cards": [
+        " 4: SPECIAL OPPORTUNITY to join SpaceX because of your technical brilliance.\nAll expenses paid and no prior experience required.",
+        "10: SPECIAL OPPORTUNITY to join Facebook  because of your problem solving skills.\nAll expenses paid and no prior experience required.",
+        "11: OPPORTUNITY to join ESPN\nMeet Normal Requirements",
+        "19: OPPORTUNITY to go on Spring Break!",
+        "26: Get out of Unemployment free\nPlay this card to immediately leave Unemployment."
+      ],
+      "number_experience_cards": 2,
+      "experience_cards": [
+        " 0: 1 spaces",
+        "11: triple_wild"
+      ],
+      "number_of_degrees": 1,
+      "degrees": {
+        "Journalism": 1
+      },
+      "pending_actions": []
     }
   ]
 }

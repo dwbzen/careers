@@ -1,0 +1,8 @@
+{
+	"salary": 8000, "cash": 14000, "fame": 14, "happiness": 16, "points": 44, 
+	"insured": false, "unemployed": false, "sick": false, "extra_turn": 0, "net_worth": 14000, 
+	"pending_actions": [
+		{"pending_action_type": "stay_or_move", "pending_amount": 0, "pending_dice": 0, "pending_game_square": "SpringBreak"}
+	],  
+	"money": 50, "stars": 40, "hearts": 10
+}
