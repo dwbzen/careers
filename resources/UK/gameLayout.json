@@ -65,7 +65,7 @@
 				"text" : "INCOME TAX DUE",
 				"action_text" : "If salary is: £3,000 or less pay 20%\n £3,001 to £10,000 pay 40%\n £10,001 to £20,000 pay 60%\n £20,001 or more pay 90%\n of 1 years salary",
 				"specialProcessing" : {
-					"type" : "payTax",
+					"type" : "pay_tax",
 					"amount" : "taxTable",
 					"of" : "salary",
 					"taxTable" : { "3000" : 0.2, "10000" : 0.4, "20000" : 0.6, "10000000" : 0.9}
@@ -79,7 +79,7 @@
 				"background_image" : "1200px-British_Rail_-_Flame_Red_logo.svg.png",
 				"text" : "",
 				"specialProcessing" : {
-					"type" : "travelBorder",
+					"type" : "travel_border",
 					"pending_action" : "choose_destination",
 					"choices" : "Leicester Square,Charing Cross",
 					"next_square" : 13
@@ -95,7 +95,7 @@
 				"text" : "AGRIVI",
 				"action_text" : "Must have: £1000 recruiting fee; or IT degree; or AGRIVI experience",
 				"specialProcessing" : {
-					"type" : "enterOccupation",
+					"type" : "enter_occupation",
 					"destinationOccupation" : "FMC"
 				}
 			},
@@ -116,7 +116,8 @@
 				"background_image" : "light blue action square.png",
 				"text" : "May spend up to 1 year's annual salary for the latest gaming system.\nScore 1 Heart for each £1000 spend,\nor lose 1 for 'just looking'",
 				"specialProcessing" : {
-					"type" : "buyHearts",
+					"type" : "buy_hearts",
+					"pending_action" : "buy_hearts",
 					"amount" : 1000,
 					"limit" : "salary",
 					"penalty" : 1
@@ -131,7 +132,7 @@
 				"text" : "Oxford",
 				"action_text" : "Must have £1000 for tuition.\nAvailable degrees: Engineering, IT, Sports Medicine, Law, History, Anthropology,Sales&Marketing, Journalism, Pharmacology",
 				"specialProcessing" : {
-					"type" : "enterCollege",
+					"type" : "enter_college",
 					"pending_action" : "select_degree",
 					"destinationOccupation" : "Oxford"
 				}
@@ -178,8 +179,8 @@
 				"background_image" : "danger_border_square.png",
 				"text" : "**DONATE NOW**",
 				"specialProcessing" : {
-					"type" : "cashLoss",
-					"dice" : 0,
+					"type" : "cash_loss",
+					"dice" : 1,
 					"amount" : 1000,
 					"of" : "cash"
 				}
@@ -192,7 +193,7 @@
 				"background_image" : "Underground logo.jpg",
 				"text" : "",
 				"specialProcessing" : {
-					"type" : "travelBorder",
+					"type" : "travel_border",
 					"pending_action" : "choose_destination",
 					"choices" : "Charing Cross,Pimlico",
 					"next_square" : 23
@@ -207,7 +208,7 @@
 				"text" : "Harrods",
 				"action_text" : "Must have: £1000 for Retail Sales training; or Sales & Marketing degree; or Harrods experience",
 				"specialProcessing" : {
-					"type" : "enterOccupation",
+					"type" : "enter_occupation",
 					"destinationOccupation" : "Harrods"
 				}
 			},
@@ -230,7 +231,7 @@
 				"text" : "Arsenal",
 				"action_text" : "",
 				"specialProcessing" : {
-					"type" : "enterOccupation",
+					"type" : "enter_occupation",
 					"destinationOccupation" : "Arsenal"
 				}
 			},
@@ -251,7 +252,7 @@
 				"text" : "CAR PAYMENT DUE",
 				"action_text" : "Pay ¼ your annual salary for car payment & maintenance",
 				"specialProcessing" : {
-					"type" : "cashLoss",
+					"type" : "cash_loss",
 					"percent" : 0.25,
 					"of" : "salary"
 				}
@@ -263,7 +264,7 @@
 				"text" : "Stonehenge",
 				"action_text" : "",
 				"specialProcessing" : {
-					"type" : "enterOccupation",
+					"type" : "enter_occupation",
 					"destinationOccupation" : "Stonehenge"
 				}
 			},
@@ -285,7 +286,7 @@
 				"text" : "EXPERIENCE",
 				"action_text" : "Who says you can't buy experience? Buy up to 3 EXPERIENCE cards or lose 1 card for being curious.",
 				"specialProcessing" : { 
-					"type" : "buyExperience",
+					"type" : "buy_experience",
 					"amount" : { "1" : 2000, "2" : 4000, "3" : 6000},
 					"limit" : "",
 					"penalty" : 1
@@ -314,7 +315,7 @@
 				"background_image" : "1200px-British_Rail_-_Flame_Red_logo.svg.png",
 				"text" : "",
 				"specialProcessing" : {
-					"type" : "travelBorder",
+					"type" : "travel_border",
 					"pending_action" : "choose_destination",
 					"choices" : "Pimlico,Victoria",
 					"next_square" : 36
@@ -327,7 +328,7 @@
 				"text" : "PAY RENT HERE",
 				"action_text" : "Pay ½ your annual salary for this years rent.",
 				"specialProcessing" : {
-					"type" : "cashLoss",
+					"type" : "cash_loss",
 					"percent" : 0.5,
 					"of" : "cash"
 				}
@@ -341,7 +342,7 @@
 				"text" : "Lister and Bacon Chambers",
 				"action_text" : "",
 				"specialProcessing" : {
-					"type" : "enterOccupation",
+					"type" : "enter_occupation",
 					"destinationOccupation" : "ListerAndBacon"
 				}
 			},
@@ -363,7 +364,7 @@
 				"text" : "ONLINE SHOPPING SPREE",
 				"action_text" : "Go wild on Black Friday! Throw 1 die to find out how wild. Pay number thrown times 10% of your cash-on-hand.",
 				"specialProcessing" : {
-					"type" : "cashLoss",
+					"type" : "cash_loss",
 					"dice" : 1,
 					"percent" : 0.1,
 					"of" : "cash"
@@ -371,15 +372,15 @@
 			},
 			{
 				"number" : 27,
-				"name" : "BBC News",
+				"name" : "BBCNews",
 				"type" : "occupation_entrance_square",
 				"background_image" : "occupation_entrance_square.png",
 				"image" : "facebook logo.jpg",
 				"text" : "BBC News",
 				"action_text" : "",
 				"specialProcessing" : {
-					"type" : "enterOccupation",
-					"destinationOccupation" : "BBC News"
+					"type" : "enter_occupation",
+					"destinationOccupation" : "BBCNews"
 				}
 			},
 			{
@@ -400,7 +401,9 @@
 				"text" : "Insurance Store",
 				"action_text" : "May purchase insurance to protect your cash,\nHappiness and Fame from catastrophic loss.\nCost of coverage is £5,000.",
 				"specialProcessing" : { 
-					"type" : "buy_insurance"
+					"type" : "buy_insurance",
+					"pending_action" : "buy_insurance",
+					"amount" : 5000
 				}
 			},
 			{
@@ -452,7 +455,7 @@
 				"text" : "Tower of London",
 				"action_text" : "",
 				"specialProcessing" : {
-					"type" : "enterOccupation",
+					"type" : "enter_occupation",
 					"destinationOccupation" : "TowerOfLondon"
 				}
 			},
@@ -474,7 +477,7 @@
 				"background_image" : "Underground logo.jpg",
 				"text" : "",
 				"specialProcessing" : {
-					"type" : "travelBorder",
+					"type" : "travel_border",
 					"pending_action" : "choose_destination",
 					"choices" : "Victoria,Leicester Square",
 					"next_square" : 4
@@ -489,7 +492,7 @@
 				"text" : "Pfizer UK",
 				"action_text" : "",
 				"specialProcessing" : {
-					"type" : "enterOccupation",
+					"type" : "enter_occupation",
 					"destinationOccupation" : "Pfizer"
 				}
 			},
@@ -511,7 +514,7 @@
 				"text" : "DIVORCE COURT",
 				"action_text" : "You and your partner split amicably. Throw 2 die to see how amicable. Pay numbers thrown times 10% of your annual salary.",
 				"specialProcessing" : {
-					"type" : "cashLoss",
+					"type" : "cash_loss",
 					"dice" : 2,
 					"percent" : 0.1,
 					"of" : "net_worth"
@@ -540,7 +543,7 @@
 				"text" : "Rolls-Royce",
 				"action_text" : "",
 				"specialProcessing" : {
-					"type" : "enterOccupation",
+					"type" : "enter_occupation",
 					"destinationOccupation" : "RollsRoyce"
 				}
 			},

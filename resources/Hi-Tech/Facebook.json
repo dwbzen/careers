@@ -70,7 +70,7 @@
 			"hearts" : 0,
 			"experience" : 0,
 			"opportunities" : 0,
-			"action_text" : "**Salary up** $1000",
+			"action_text" : "Salary up $1000",
 			"specialProcessing" : {
 				"type" : "salary_increase",
 				"amount" : 1000

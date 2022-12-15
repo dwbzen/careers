@@ -140,7 +140,7 @@
 		{
 			"number" : 9,
 			"background_image" : "occupation_square.png",
-			"text" : "May backstab a colleague",
+			"text" : "May backstab colleague(s)",
 			"type" : "action_square",
 			"stars" : 0,
 			"hearts" : -4,

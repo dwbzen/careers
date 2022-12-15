@@ -73,7 +73,7 @@
 		{
 			"number" : 4,
 			"background_image" : "occupation_square.png",
-			"text" : "May backstab a Cast Member",
+			"text" : "May backstab Cast Member(s)",
 			"type" : "action_square",
 			"stars" : 0,
 			"hearts" : -4,
