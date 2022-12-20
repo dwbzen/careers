@@ -7,7 +7,7 @@ from game.gameSquare import GameSquare, GameSquareClass
 from game.player import Player
 from game.commandResult import CommandResult
 from game.gameUtils import GameUtils
-from game.gameConstants import SpecialProcessingType
+from game.gameConstants import SpecialProcessingType, PendingActionType
 from enum import Enum
 import json, random
 from typing import Any
@@ -102,8 +102,8 @@ class OccupationSquare(GameSquare):
         amount = self.special_processing.amount
         percent = self.special_processing.percent
         cmd_result = CommandResult.SUCCESS
-        na = None
-        df = True
+        next_action = None
+        done_flag = True
                 
         match sptype:
             case SpecialProcessingType.BONUS:
@@ -152,16 +152,15 @@ class OccupationSquare(GameSquare):
                 #
                 if player.cash < amount:
                     message += f'\nInsufficient cash to cover amount: {amount}, you will be sent to Unemployment'
-                    na = 'goto unemployment'
-                    player.pending_action = None
+                    next_action = 'goto unemployment'
+                    player.pending_actions.remove(PendingActionType.CASH_LOSS_OR_UNEMPLOYMENT)
                 else:
-                    player.pending_action = sptype
-                    player.pending_amount = amount    # always a fixed amount
-                    df = False
+                    player.add_pending_action(PendingActionType.CASH_LOSS_OR_UNEMPLOYMENT, self, amount, dice)
+                    done_flag = False
                 
             case SpecialProcessingType.TRAVEL_BORDER:
                 destination = self.special_processing.next_square   # possible destinations: Unemployment and Hospital
-                na = f'goto {destination}'
+                next_action = f'goto {destination}'
                 message = f'Go to {destination}'
                 player.pending_action = None
             
@@ -186,18 +185,16 @@ class OccupationSquare(GameSquare):
                     message += f' Salary cut by {cutAmount}. Your new salary is {player.salary}'
                 
             case SpecialProcessingType.BACKSTAB:
-                player.pending_action = self.special_processing.pending_action
-                player.pending_amount = self.hearts     # this will be <0 as the player loses hearts
-                player.pending_dict = {self.special_processing.of, self.special_processing.amount}
-                # there is no additional message for this
+                player.add_pending_action(PendingActionType.BACKSTAB, game_square=self, amount=self.special_processing.get_amount())
+                return CommandResult(CommandResult.NEED_PLAYER_CHOICE, message, False)   # player needs to execute "resolve backstab"
             
             case SpecialProcessingType.GOTO:
                 #
                 # goto next_square
                 #
                 message = self.action_text     # could be blank
-                na = f'goto {self.special_processing.next_square}'
-                df = False
+                next_action = f'goto {self.special_processing.next_square}'
+                done_flag = False
             
             case SpecialProcessingType.FAME_LOSS:
                 if  percent > 0:
@@ -215,7 +212,7 @@ class OccupationSquare(GameSquare):
                 cmd_result = CommandResult.ERROR
                 message = f'New or unsupported SpecialProcessingType "{sptype}"'
                 
-        return CommandResult(cmd_result, message, df, next_action=na)
+        return CommandResult(cmd_result, message, done_flag, next_action=next_action)
     
     def to_JSON(self):
         txt = json.dumps(self.game_square_dict)

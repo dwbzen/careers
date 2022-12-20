@@ -36,7 +36,7 @@ class CareersGameEngine(object):
         command :: <roll> | <use> | <use insurance> | <update> | <retire> | <bump> | <bankrupt> | 
                    <list> | <status> | <info> | <quit> | <done> | <end game> |
                    <saved games> | <save> | <load> | <query> | <enter> | <goto> | <add> | <add degree> |
-                   <pay> | <transfer> | <game_status> | <create> | <start> | <buy> | <perform>
+                   <pay> | <transfer> | <game_status> | <create> | <start> | <buy> | <perform> | <log>
                    
         <use> :: "use"  <what> <card_number>
             <what> :: "opportunity" | "experience" | "roll"
@@ -80,6 +80,8 @@ class CareersGameEngine(object):
             <ndice> :: 0 | 1 | 2
         <resolve_pending> :: "resolve" choice [pending_amount]    ; resolve a pending action and amount. choice is the player's choice based on the game_square's "pending_action",
             <choice> :: * | <pending_action>                      ; * = the most recently added pending_action, else the pending_action to resolve such as "buy_hearts"
+        <log> :: "log_message" <text>    ; writes <text> to the log file
+        
     """
     
     
@@ -138,15 +140,24 @@ class CareersGameEngine(object):
     def careersGame(self):
         return self._careersGame
     
-    def log(self, message):
+    def log(self, *message):
         """Write message to the log file.
-            TODO - refactor to use python logging
+            
         """
-        msg = GameUtils.get_datetime() + f'  {message}\n'
+        txt = ""
+        for s in message:
+            txt += f' {s}'
+        msg = GameUtils.get_datetime() + f'  {txt}\n'
         if self.fp is not None:     # may be logging isn't initialized yet or logging option is False
             self.fp.write(msg)
         if self.trace:
             print(msg)
+            
+    def log_message(self, *message) -> CommandResult:
+        """The command version of log.
+        """
+        self.log(*message)
+        return CommandResult(CommandResult.SUCCESS, "", True)
 
     def execute_command(self, command:str, aplayer:Player, args:list=[]) -> CommandResult:
         """Executes a command for a given Player
@@ -171,7 +182,8 @@ class CareersGameEngine(object):
             cmd_result = self._evaluate(command, args)
             
             board_location = player.board_location    # current board location AFTER the command is executed
-            self.log(f'  {player.player_initials} results: {cmd_result.return_code} {cmd_result.message}\n{board_location}')
+            if command.lower() != "log_message":      # no need to log twice
+                self.log(f'  {player.player_initials} results: {cmd_result.return_code} {cmd_result.message}\n{board_location}')
             cmd_result.board_location = board_location
             messages += cmd_result.message + "\n"
         
@@ -834,7 +846,7 @@ class CareersGameEngine(object):
         player = self.game_state.current_player
         return self._buy(player, what, qty_str, amount_str)
     
-    def resolve(self, what:str, choice:int|str ):
+    def resolve(self, what:str, choice, **kwargs ) -> CommandResult:
         """Resolve a player's pending_action.
             Arguments:
                 what - the pending_action that needs resolution, for example "select_degree"
@@ -911,32 +923,40 @@ class CareersGameEngine(object):
                 else:
                     result = self.roll()
                     
-            elif what == PendingActionType.BACKSTAB_OR_NOT.value:
-                # resolve backstab_or_not   yes|no  <player_initials>
+            elif what == PendingActionType.BACKSTAB.value:
+                # resolve backstab_or_not   yes|no  <1 or more player_initials>
                 #
-                player_initials = choice
+                if 'player_initials' in kwargs:
+                    player_initials = kwargs['player_initials'].split()    # space delimited string of player's initials
+                else:
+                    player_initials = [choice]
                     # the named player must have completed the associated occupation
                     # or is currently in the occupation
                 if player_initials is None:
-                    result = CommandResult(CommandResult.ERROR, "You must specify the player to back stab", True)
-                elif player_initials == 'no':
+                    result = CommandResult(CommandResult.ERROR, "You must specify the player(s) to back stab", True)
+                elif 'no' in player_initials:
                     result = CommandResult(CommandResult.SUCCESS, 'You elect not to back stab another player. Good for you!', True)
                 else:
-                    other_player = self.get_player(player_initials)
-                    if other_player is None:
-                        result = CommandResult(CommandResult.ERROR, f'No such player: {player_initials}', True)
-                    else:
-                        occupation =self.careersGame.get_occupation(player.current_occupation_name())
-                        occupation_square = occupation.occupationSquares[player.board_location.occupation_square_number]
-                        can_backstab = self._gameEngineCommands.can_backstab_player(player, other_player, occupation)
-                        if not can_backstab:
-                            result = CommandResult(CommandResult.ERROR, f'You cannot back stab "{player_initials}"', True)
+                    message = ""
+                    for initials in player_initials:
+                        other_player = self.get_player(initials)
+                        if other_player is None:
+                            result = CommandResult(CommandResult.ERROR, f'No such player: {initials}', True)
                         else:
-                            player.add_hearts(occupation_square.hearts)    # this will be <0
-                            hearts_loss = occupation_square.special_processing.amount
-                            other_player.add_hearts(hearts_loss)    # this will be <0
-                            message = f'{player.player_initials} back stabs {other_player.player_initials} who loses {-hearts_loss} Hearts. You lose {-occupation_square.hearts} for regret.'
-                            result = CommandResult(CommandResult.SUCCESS, message, True)
+                            occupation =self.careersGame.get_occupation(player.current_occupation_name())
+                            occupation_square = occupation.occupationSquares[player.board_location.occupation_square_number]
+                            can_backstab = self._gameEngineCommands.can_backstab_player(player, other_player, occupation)
+                            if not can_backstab:
+                                result = CommandResult(CommandResult.ERROR, f'You cannot back stab "{initials}"', True)
+                            else:
+                                # player doing the backstabbing loses 4 hearts FOR EACH player he/she back stabs!
+                                #
+                                player.add_hearts(occupation_square.hearts)    # this will be <0
+                                hearts_loss = occupation_square.special_processing.amount
+                                other_player.add_hearts(hearts_loss)    # this will be <0
+                                message += \
+                            f'{player.player_initials} back stabs {other_player.player_initials} who loses {-hearts_loss} Hearts. You lose {-occupation_square.hearts}\n'
+                                result = CommandResult(CommandResult.SUCCESS, message, True)
 
                     
             elif what in PendingActionType.CASH_LOSS_OR_UNEMPLOYMENT.value:

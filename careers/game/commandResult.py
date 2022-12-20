@@ -17,6 +17,7 @@ class CommandResult(CareersObject):
     TERMINATE = 2       # terminate the game
     EXECUTE_NEXT = 3    # successful, and execute the next_action for the current player
     NEED_PLAYER_CHOICE = 4  # successful, but need player choice as to what to do next
+    
 
     def __init__(self, return_code:int, message:str, done_flag:bool, next_action:str=None, board_location:BoardLocation=None, exception:Exception=None, choices:List[str]=None):
         """Constructor, baby.

@@ -1,0 +1,57 @@
+# add 3 players
+add player Don DWB dwb20221206 dwbzen@gmail.com 40 10 50
+add player Brian BDB bdb20221206 brian.bacon01@gmail.com 50 20 30
+add player Cheryl CJL cjl20221206 Lister.Cheryl@gmail.com 10 50 40
+start
+# DWB
+goto 5
+next
+# BDB
+goto Google
+enter Google
+goto 11
+next
+# CJL
+goto Google
+enter Google
+goto 12
+next
+#DWB
+goto Google
+next
+#BDB
+goto 13
+next
+#CJL
+goto 13
+next
+#DWB
+enter Google
+goto 4
+next
+# BDB
+roll
+next
+# CJL
+roll
+next
+# DWB
+status
+status BDB
+status CJL
+goto 9
+resolve backstab BDB CJL
+status
+next
+# BDB
+roll
+status
+next
+# CJL
+roll
+status
+next
+# DWB
+game_status
+save
+end

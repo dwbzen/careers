@@ -149,18 +149,30 @@ class GameEngineCommands(object):
         command_args = txt.split()
             
         command = command_args[0]
+        cmd_arg = None if len(command_args) < 2 else command_args[1].lower()
         if not command in GameConstants.COMMANDS:
             return CommandResult(CommandResult.ERROR,  f'Invalid command: "{command}"',  False)
         if len(command_args) > 1:
             args = command_args[1:]
-            command = command + "("
-            for arg in args:
-                if arg.isdigit():
-                    command = command + arg + ","
-                else:
-                    command = command + f'"{arg}",'
-        
-            command = command[:-1]    # remove the trailing comma
+            if command.lower() == "resolve" and cmd_arg == "backstab":    # backstab + at least 1 player initials
+                #
+                # resolve backstab takes kwargs['player_initials']
+                #
+                player_initials = '"' if len(command_args) >= 3 else '""'
+                for s in command_args[2:]:
+                    player_initials += f'{s} '
+                command = f'resolve("backstab","",player_initials={player_initials[:-1]}" )'
+                return CommandResult(CommandResult.SUCCESS, command, True)
+                    
+            else:
+                command = command + "("
+                for arg in args:
+                    if arg.isdigit():
+                        command = command + arg + ","
+                    else:
+                        command = command + f'"{arg}",'
+            
+                command = command[:-1]    # remove the trailing comma
         else:
             command = command + "("
             

@@ -138,7 +138,7 @@
 			"action_text" : "You lose 4 Hearts\n They lose 12 Hearts",
 			"specialProcessing" : {
 				"type" : "backstab",
-				"pending_action" : "backstab_or_not",
+				"pending_action" : "backstab",
 				"amount" : -12,
 				"of" : "hearts"
 			}

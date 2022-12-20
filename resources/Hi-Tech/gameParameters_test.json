@@ -7,7 +7,7 @@
 	"date_format" : "yyyy-mm-dd",
 	"starting_experience_cards" : 2,
 	"starting_opportunity_cards" : 2,
-	"starting_hearts" : 10,
+	"starting_hearts" : 20,
 	"starting_stars" : 10,
 	"default_game_points" : 100,
 	"timed_game" : 0,

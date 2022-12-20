@@ -1,0 +1,17 @@
+# resolve buy_hearts and buy_experience
+add player Don DWB dwb20221206 dwbzen@gmail.com 40 10 50
+add player Brian BDB bdb20221206 brian.bacon01@gmail.com 50 20 30
+start
+# DWB
+goto 6
+resolve buy_hearts 2
+status
+next
+# BDB
+goto 20
+resolve * 2
+status
+next
+# DWB
+game_status
+end

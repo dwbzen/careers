@@ -7,7 +7,7 @@ Created on Aug 12, 2022
 from game.player import  Player
 from game.careersGameEngine import CareersGameEngine
 from game.commandResult import CommandResult
-import argparse
+import argparse, time
 
 class GameRunner(object):
     """A command-line text version of Careers game play used for testing and simulating web server operation.
@@ -68,7 +68,6 @@ class GameRunner(object):
         return result
     
     def run_game(self):
-
         game_over = False
         game_state = self.get_game_state()
         nplayers = game_state.number_of_players
@@ -93,6 +92,32 @@ class GameRunner(object):
         
         self.game_engine.end()
         
+    def run_script(self, filePath:str, delay:int):
+
+        turn_number = 1
+        game_state = self.get_game_state()
+        current_player = None
+        fp = open(filePath, "r")
+        scriptText = fp.readlines()
+        fp.close()
+        for line in scriptText:
+            if len(line) > 0:
+                cmd = line[:-1]   # drop the trailing \n
+                if cmd.startswith("#"):    # comment line
+                    result = self.execute_command(f'log_message {cmd}', current_player)
+                elif cmd.startswith("add player "):
+                    result = self.execute_command(cmd, None)
+                else:
+                    current_player = game_state.current_player
+                    result = self.execute_command(cmd, current_player)
+                    turn_number += 1
+                    
+                print(f'"{cmd}": {result.message}')
+                if result.return_code == CommandResult.TERMINATE:
+                    break
+                time.sleep(delay)
+                
+        self.game_engine.end()
 
 if __name__ == '__main__':
 
@@ -101,31 +126,40 @@ if __name__ == '__main__':
     parser.add_argument("--points", help="Total game points", type=int, choices=range(40, 10000), default=100)
     parser.add_argument("--params", help="Game parameters type: '_test', '_prod' or '' for default", type=str, default="")
     parser.add_argument("--gameid", help="Game ID", type=str, default=None)
+    parser.add_argument("--edition", help="Game edition: Hi-Tech or UK", type=str, choices=["Hi-Tech", "UK"], default="Hi-Tech")
+    parser.add_argument("--script", help="Execute script file", type=str, default=None)
+    parser.add_argument("--delay", "-d", help="Delay a specified number of seconds between script commands", type=int, default=0)
     args = parser.parse_args()
     
     total_points = args.points
-    edition = 'Hi-Tech'
+    edition = args.edition
     game_type = 'points'            # or 'timed'
-    installationId = 'ZenAlien2013'      # uniquely identifies 'me' as the game creator
+    installationId = 'ZenAlien2013' # uniquely identifies 'me' as the game creator
+    filePath = args.script         # complete file path
+    
     gameId = args.gameid
     game_parameters_type = args.params
     game_runner = GameRunner(edition, installationId, game_type, total_points)  # creates a CareersGameEngine
     game_runner.execute_command(f'create {edition} {installationId} {game_type} {total_points} {gameId} {game_parameters_type}', None)     # creates a CareersGame for points
-    #
-    # add players
-    #
-    nplayers = args.players
-    # name, initials=None, player_id=None, email=None, stars=0, hearts=0, cash=0
-    game_runner.execute_command("add player Don DWB dwb20221206 dwbzen@gmail.com 40 10 50", None)
-    if nplayers >= 2:
-        game_runner.execute_command("add player Brian BDB bdb20221206 brian.bacon01@gmail.com 50 20 30", None)    # use update command to add success_formula
-    if nplayers >= 3:
-        game_runner.execute_command("add player Beth Beth beth20221206 beth.bacon01@gmail.com 30 30 40", None)
-    if nplayers == 4:
-        game_runner.execute_command("add player Cheryl CJL cjl20221206 Lister.Cheryl@gmail.com 10 50 40", None)
-        
-    game_runner.execute_command("start", None)
     
-    game_runner.run_game()
+    if filePath is not None:
+        game_runner.run_script(filePath, args.delay)
+    else:
+        #
+        # add players
+        #
+        nplayers = args.players
+        # name, initials=None, player_id=None, email=None, stars=0, hearts=0, cash=0
+        game_runner.execute_command("add player Don DWB dwb20221206 dwbzen@gmail.com 40 10 50", None)
+        if nplayers >= 2:
+            game_runner.execute_command("add player Brian BDB bdb20221206 brian.bacon01@gmail.com 50 20 30", None)    # use update command to add success_formula
+        if nplayers >= 3:
+            game_runner.execute_command("add player Beth Beth beth20221206 beth.bacon01@gmail.com 30 30 40", None)
+        if nplayers == 4:
+            game_runner.execute_command("add player Cheryl CJL cjl20221206 Lister.Cheryl@gmail.com 10 50 40", None)
+            
+        game_runner.execute_command("start", None)
+    
+        game_runner.run_game()
     
     

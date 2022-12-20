@@ -1,0 +1,16 @@
+# add 2 players
+add player Don DWB dwb20221206 dwbzen@gmail.com 40 10 50
+add player Brian BDB bdb20221206 brian.bacon01@gmail.com 50 20 30
+start
+# DWB
+goto 5
+status
+info
+next
+# BDB
+goto UF
+next
+# DWB
+# end the game
+game_status
+end
