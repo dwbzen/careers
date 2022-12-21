@@ -49,7 +49,7 @@ class CareersGame(CareersObject):
         """
         self._installationId = installationId
         self._edition_name = edition_name
-        self._game_parameters_type = game_parameters_type      # can be "_test", "_prod" or "" for default
+        self._game_parameters_type = game_parameters_type      # can be "test", "prod" or "" for default
         self._env = Environment.get_environment()
         self._resource_folder = self._env.get_resource_folder()     # base resource folder
         self._game_parameters_filename = None
@@ -103,7 +103,10 @@ class CareersGame(CareersObject):
         """Loads the game parameters and occupations JSON files for this edition.
         
         """
-        self._game_parameters_filename = f'{self._resource_folder}/{self._edition_name}/gameParameters_{self._game_parameters_type}.json'
+        self._game_parameters_filename = \
+            f'{self._resource_folder}/{self._edition_name}/gameParameters_{self._game_parameters_type}.json' if len(self._game_parameters_type) > 0 \
+            else f'{self._resource_folder}/{self._edition_name}/gameParameters.json'
+            
         with open(self._game_parameters_filename, "r") as fp:
             jtxt = fp.read()
             self._game_parameters = GameParameters(json.loads(jtxt))

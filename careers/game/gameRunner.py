@@ -52,6 +52,10 @@ class GameRunner(object):
     def get_game_state(self):
         return self.game_engine.game_state
     
+    def create_game(self,  edition, installationId, game_type, points, game_id=None, game_parameters_type="") -> CommandResult:
+        result = self.game_engine.create(edition, installationId, game_type, points, game_id, game_parameters_type)
+        return result
+    
     def execute_command(self, cmd, aplayer:Player):
         """Command format is command name + optional arguments
             The command and arguments passed to the game engine for execution
@@ -125,12 +129,12 @@ class GameRunner(object):
                 
         self.game_engine.end()
 
-if __name__ == '__main__':
 
+def main():
     parser = argparse.ArgumentParser(description="Run a command-driven Careers Game for 1 to 4 players")
     parser.add_argument("--players", "-p", help="The number of players", type=int, choices=range(1,5), default=1)
     parser.add_argument("--points", help="Total game points", type=int, choices=range(40, 10000), default=100)
-    parser.add_argument("--params", help="Game parameters type: '_test', '_prod' or '' for default", type=str, default="")
+    parser.add_argument("--params", help="Game parameters type: 'test', 'prod' or '' for default", type=str, default="")
     parser.add_argument("--gameid", help="Game ID", type=str, default=None)
     parser.add_argument("--edition", help="Game edition: Hi-Tech or UK", type=str, choices=["Hi-Tech", "UK"], default="Hi-Tech")
     parser.add_argument("--script", help="Execute script file", type=str, default=None)
@@ -148,7 +152,8 @@ if __name__ == '__main__':
     gameId = args.gameid
     game_parameters_type = args.params
     game_runner = GameRunner(edition, installationId, game_type, total_points)  # creates a CareersGameEngine
-    game_runner.execute_command(f'create {edition} {installationId} {game_type} {total_points} {gameId} {game_parameters_type}', None)     # creates a CareersGame for points
+    # creates a CareersGame for points
+    game_runner.create_game(edition, installationId, game_type, total_points, gameId, game_parameters_type)   
     
     if filePath is not None:
         game_runner.run_script(filePath, args.delay, log_comments=log_comments)
@@ -162,12 +167,14 @@ if __name__ == '__main__':
         if nplayers >= 2:
             game_runner.execute_command("add player Brian BDB bdb20221206 brian.bacon01@gmail.com 50 20 30", None)    # use update command to add success_formula
         if nplayers >= 3:
-            game_runner.execute_command("add player Beth Beth beth20221206 beth.bacon01@gmail.com 30 30 40", None)
-        if nplayers == 4:
             game_runner.execute_command("add player Cheryl CJL cjl20221206 Lister.Cheryl@gmail.com 10 50 40", None)
+        if nplayers == 4:
+            game_runner.execute_command("add player Beth Beth beth20221206 beth.bacon01@gmail.com 30 30 40", None)
             
         game_runner.execute_command("start", None)
     
         game_runner.run_game()
     
+if __name__ == '__main__':
+    main()
     

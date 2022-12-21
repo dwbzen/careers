@@ -99,6 +99,7 @@ class CareersGameEngine(object):
         self._admin_player = Player(number=-1, name='Administrator', initials='admin')
         self._gameEngineCommands = None     # no CareersGame yet
         self.currency_symbol = None         # value set with create()
+        self._game_state = None             # set with create()
     
     @property
     def fp(self):
