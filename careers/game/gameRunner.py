@@ -92,7 +92,7 @@ class GameRunner(object):
         
         self.game_engine.end()
         
-    def run_script(self, filePath:str, delay:int):
+    def run_script(self, filePath:str, delay:int, log_comments=True):
 
         turn_number = 1
         game_state = self.get_game_state()
@@ -103,18 +103,24 @@ class GameRunner(object):
         for line in scriptText:
             if len(line) > 0:
                 cmd = line[:-1]   # drop the trailing \n
-                if cmd.startswith("#"):    # comment line
-                    result = self.execute_command(f'log_message {cmd}', current_player)
+                if len(cmd) == 0:
+                    continue
+                elif cmd.startswith("#"):    # comment line
+                    if log_comments:
+                        result = self.execute_command(f'log_message {cmd}', current_player)
+                    else:
+                        result = None
                 elif cmd.startswith("add player "):
                     result = self.execute_command(cmd, None)
                 else:
                     current_player = game_state.current_player
                     result = self.execute_command(cmd, current_player)
                     turn_number += 1
-                    
-                print(f'"{cmd}": {result.message}')
-                if result.return_code == CommandResult.TERMINATE:
-                    break
+                
+                if result is not None:    
+                    print(f'"{cmd}": {result.message}')
+                    if result.return_code == CommandResult.TERMINATE:
+                        break
                 time.sleep(delay)
                 
         self.game_engine.end()
@@ -129,6 +135,7 @@ if __name__ == '__main__':
     parser.add_argument("--edition", help="Game edition: Hi-Tech or UK", type=str, choices=["Hi-Tech", "UK"], default="Hi-Tech")
     parser.add_argument("--script", help="Execute script file", type=str, default=None)
     parser.add_argument("--delay", "-d", help="Delay a specified number of seconds between script commands", type=int, default=0)
+    parser.add_argument("--comments", "-c", help="Log comment lines when running a script", type=str, choices=['y','Y', 'n', 'N'], default='Y')
     args = parser.parse_args()
     
     total_points = args.points
@@ -136,6 +143,7 @@ if __name__ == '__main__':
     game_type = 'points'            # or 'timed'
     installationId = 'ZenAlien2013' # uniquely identifies 'me' as the game creator
     filePath = args.script         # complete file path
+    log_comments = args.comments.lower()=='y'
     
     gameId = args.gameid
     game_parameters_type = args.params
@@ -143,7 +151,7 @@ if __name__ == '__main__':
     game_runner.execute_command(f'create {edition} {installationId} {game_type} {total_points} {gameId} {game_parameters_type}', None)     # creates a CareersGame for points
     
     if filePath is not None:
-        game_runner.run_script(filePath, args.delay)
+        game_runner.run_script(filePath, args.delay, log_comments=log_comments)
     else:
         #
         # add players

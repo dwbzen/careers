@@ -1,4 +1,5 @@
-# backstab 2 players who have completed Google
+# backstab 2 players: a player who has completed Google (BDB),
+# and another player who is currently in (but not completed) Google (CJL)
 # Use the test game parameters (gameParameters_test.json) when running
 # as it starts players with 20 hearts
 # The backstabber loses 4 hearts for each backstabbed player
@@ -9,37 +10,45 @@ add player Brian BDB bdb20221206 brian.bacon01@gmail.com 50 20 30
 add player Cheryl CJL cjl20221206 Lister.Cheryl@gmail.com 10 50 40
 start
 # DWB
-goto 5
+goto Google
 next
+
 # BDB
 goto Google
 enter Google
 goto 11
 next
+
 # CJL
-goto Google
+goto 5
+next
+
+#DWB
 enter Google
+goto 0
+next
+
+#BDB
 goto 12
 next
-#DWB
+
+#CJL
 goto Google
 next
-#BDB
-goto 13
-next
-#CJL
-goto 13
-next
+
 #DWB
-enter Google
-goto 4
+goto 3
 next
+
 # BDB
 roll
 next
+
 # CJL
-roll
+enter Google
+goto 4
 next
+
 # DWB
 status
 status BDB
@@ -48,14 +57,17 @@ goto 9
 resolve backstab BDB CJL
 status
 next
+
 # BDB
 roll
 status
 next
+
 # CJL
-roll
+goto 5
 status
 next
+
 # DWB
 game_status
 save

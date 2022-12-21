@@ -7,11 +7,13 @@ goto 6
 resolve buy_hearts 2
 status
 next
+
 # BDB
 goto 20
 resolve * 2
 status
 next
+
 # DWB
 game_status
 end
