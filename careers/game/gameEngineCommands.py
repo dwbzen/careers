@@ -45,29 +45,33 @@ class GameEngineCommands(object):
     def trace(self, value):
         self._trace = value
         
-    def can_player_move(self, player:Player, dice:List[int]) -> Tuple[bool,CommandResult] :
+    def can_player_move(self, player:Player, dice:List[int] | None) -> Tuple[bool,CommandResult] :
         """Determine if a Player can move.
             A player cannot move if bankrupt (cash < 0) and can move from the Hospital or Unemployment
             only if the rolled dice meet the requirements for that game square.
             Arguments:
                 player - the current Player
                 dice - the player's roll as a List[int], for example [6,5] (I rolled an 11!)
+                       If None, return True
             Returns: a 2-element tupple consisting of a boolean (the player can move or not)
             and a CommandResult.
         """
-        if player.is_unemployed or player.is_sick:
-            bs_name = player.current_border_square_name()
-            # bs_number = player.current_border_square_number
-            game_square = self.careersGame.find_border_square(bs_name)
-            #
-            # let the square determine if the player can move or not
-            # as that's encoded in the specialProcessing
-            #
-            result = game_square.execute_special_processing(player, dice)
-        elif player.cash < 0:       # Can't move if bankrupt
-            result = CommandResult(CommandResult.NEED_PLAYER_CHOICE, f'You are bankrupt: {self.currency_symbol}{player.cash}, and must either borrow/trade for needed funds or declare Bankruptcy', False)
+        if dice is None:
+            result = CommandResult(CommandResult.SUCCESS, f'Player may move', True)
         else:
-            result = CommandResult(CommandResult.SUCCESS, f'Player may move {dice} spaces', True)
+            if player.is_unemployed or player.is_sick:
+                bs_name = player.current_border_square_name()
+                # bs_number = player.current_border_square_number
+                game_square = self.careersGame.find_border_square(bs_name)
+                #
+                # let the square determine if the player can move or not
+                # as that's encoded in the specialProcessing
+                #
+                result = game_square.execute_special_processing(player, dice)
+            elif player.cash < 0:       # Can't move if bankrupt
+                result = CommandResult(CommandResult.NEED_PLAYER_CHOICE, f'You are bankrupt: {self.currency_symbol}{player.cash}, and must either borrow/trade for needed funds or declare Bankruptcy', False)
+            else:
+                result = CommandResult(CommandResult.SUCCESS, f'Player may move {dice} spaces', True)
             
         can_move = result.is_successful()
         return can_move, result

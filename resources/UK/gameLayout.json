@@ -82,7 +82,7 @@
 					"type" : "travel_border",
 					"pending_action" : "choose_destination",
 					"choices" : "Leicester Square,Charing Cross",
-					"next_square" : 13
+					"next_square" : 12
 				}
 			}
 
@@ -196,7 +196,7 @@
 					"type" : "travel_border",
 					"pending_action" : "choose_destination",
 					"choices" : "Charing Cross,Pimlico",
-					"next_square" : 23
+					"next_square" : 22
 				}
 			},
 			{
@@ -318,7 +318,7 @@
 					"type" : "travel_border",
 					"pending_action" : "choose_destination",
 					"choices" : "Pimlico,Victoria",
-					"next_square" : 36
+					"next_square" : 35
 				}
 			}, 
 			{
@@ -480,7 +480,7 @@
 					"type" : "travel_border",
 					"pending_action" : "choose_destination",
 					"choices" : "Victoria,Leicester Square",
-					"next_square" : 4
+					"next_square" : 3
 				}
 			},
 			{

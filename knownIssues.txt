@@ -1,17 +1,16 @@
 
 Known Issues/Enhancements
 
+UK Game Board:
+	AGRIVI Occupation - "Lose 1/2 your cash"
+	TECH CONVENTION - change "loose" to "lose"
+	Oxford - "Lose next turn"
+	Stonehenge Occupation - 
+		"Lose next turn"
+	
+
 When resolving take_shortcut the player needs to roll or use an experience
 from the next_square. Currently it just goes to the next_square and executes it.
-
-Allow a player to resolve select_degree at any time after completing college.
-This will require pending_action to be a stack instead of a scalar.
-For example, you can roll out of college, hit the Travel square and
-advance to Buy Insurance on the automatic roll-again.
-buy_insurance is also a pending action, so we have a 2-element stack:
-select_degree, buy_insurance.
-select_degree can be resolved any time (until the next degree) but 
-buy_insurance needs to be resolved immediately. 
 
 Currently entering an occupation requires 2 commands, for example:
   goto Amazon

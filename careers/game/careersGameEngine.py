@@ -257,11 +257,16 @@ class CareersGameEngine(object):
             ndice = 1
         
         dice = random.choices(population=[i for i in range(1,7)], k=ndice)
-        return self._roll(player, dice)
+        num_spaces = sum(dice)
         
+        return self.advance(num_spaces, dice)
+            
         
     def _roll(self, player, dice:List[int]) -> CommandResult:
+        """Deprecated
+        """
         num_spaces = sum(dice)
+    
         next_square_number = self._get_next_square_number(player, num_spaces)
         message = f' {player.player_initials}  rolled {num_spaces} {dice}, next_square_number {next_square_number}'
         self.log(message)
@@ -293,6 +298,52 @@ class CareersGameEngine(object):
                 player.clear_pending()
                 result = self.goto(next_square_number)
         return result
+    
+    
+    def advance(self, num_spaces, dice:List[int]|None=None) -> CommandResult:
+        """Advance a given number of spaces
+            Arguments:
+                number_of_spaces - must be >= 0 and < 42
+                dice - optional dice roll as List[int], default is None
+        
+        """
+        assert(num_spaces >= 0 and num_spaces <42)
+        player = self.game_state.current_player
+
+        next_square_number = self._get_next_square_number(player, num_spaces)
+        message = f' {player.player_initials}  rolled {num_spaces} {dice}, next_square_number {next_square_number}' if dice is not None \
+            else f' {player.player_initials}  advances {num_spaces}, next_square_number {next_square_number}'
+        self.log(message)
+        #
+        # check if player is on a holiday
+        # 
+        if player.on_holiday:
+            game_square = self.get_player_game_square(player)    # HOLIDAY square
+            must_roll = game_square.special_processing.must_roll
+            if num_spaces in must_roll:    # player may remain
+                pending_action = player.pending_actions.get_pending_action(PendingActionType.STAY_OR_MOVE)    # there's a system problem if not found
+                pending_action.pending_dice = dice # if they choose to move, could be None
+                result = CommandResult(CommandResult.NEED_PLAYER_CHOICE, f'{message} and may remain on {game_square.name}', False)
+            else:
+                player.clear_pending(PendingActionType.SELECT_DEGREE)       # clear all except SELECT_DEGREE
+                result = self.goto(next_square_number)
+            
+        #
+        # check if the player is Unemployed or sick and if so, if the roll allows them to move
+        # If dice is None, can_player_move will return True
+        else:
+            canmove, result = self._gameEngineCommands.can_player_move(player, dice)
+            self.log(result.message)
+            if canmove:
+                #
+                # clear any pending action - use it or lose it!
+                # and place the player on the next_square_number
+                #
+                player.clear_pending()
+                result = self.goto(next_square_number)
+                
+        return result
+
     
     def update(self, who:str, nhearts:int, nstars:int, cash_amount:int) -> CommandResult:
         '''Update a player's success formula.
@@ -578,7 +629,14 @@ class CareersGameEngine(object):
         """Retire this player to the retirement corner square (Spring Break, Holiday)
         
         """
-        result = CommandResult(CommandResult.SUCCESS, "'retire' command not yet implemented", False)
+        player = self.game_state.current_player
+        if player.can_retire:
+            # all editions use the same name for Holiday, SpringBreak etc.
+            game_square = self._careersGame.find_border_square("Holiday")
+            next_square_number = game_square.number
+            result = self.goto(next_square_number)
+        else:
+            result = CommandResult(CommandResult.ERROR, "Sorry, you can't retire yet.", True)
         return result
     
     def bump(self, who:str) -> CommandResult:
@@ -865,6 +923,7 @@ class CareersGameEngine(object):
         message = f'{what}:{choice}'
         player = self.game_state.current_player
         game_square = self.get_player_game_square(player)
+        pending_action = None
         
         if what == "*" and player.pending_actions.size() > 0:    # resolve the most recently added PendingAction
             pending_action = player.pending_actions.get(-1)
@@ -874,20 +933,21 @@ class CareersGameEngine(object):
             pending_action = player.pending_actions.find(what)     # also removes from the pending actions list
             
         if pending_action is not None:
+            # TODO change to match(what): and case
             if what == PendingActionType.SELECT_DEGREE.value:  # the degree program chosen is the 'choice'
                 result = self.add_degree(player, choice)
                 result.message = f'{message}\n{result.message}'
 
-            elif what == PendingActionType.GAMBLE.value:
+            elif what ==  PendingActionType.GAMBLE.value:
                 #
                 # execute the special processing for the Gamble game square
                 #
                 result = pending_action.pending_game_square.execute_special_processing(player)
 
-            elif what == PendingActionType.BUY_HEARTS.value:
+            elif what ==  PendingActionType.BUY_HEARTS.value:
                 result = pending_action.pending_game_square.execute_special_processing(player, choice=choice, what='hearts')
-                
-            elif what == PendingActionType.BUY_EXPERIENCE.value:
+            
+            elif what ==  PendingActionType.BUY_EXPERIENCE.value:
                 amounts = pending_action.pending_game_square.special_processing.amount_dict
                 ncards = str(choice)
                 if ncards in amounts:
@@ -904,27 +964,27 @@ class CareersGameEngine(object):
                 else:
                     result = CommandResult(CommandResult.ERROR, f'{choice} is an invalid selection. Valid selections and costs are {amounts}', False)
                 
-            elif what == PendingActionType.BUY_STARS.value:
+            elif what ==   PendingActionType.BUY_STARS.value:
                 result = pending_action.pending_game_square.execute_special_processing(player, choice=choice, what='stars')
-                
-            elif what == PendingActionType.BUY_INSURANCE.value:    # assume 1 quantity, regardless of the qty specified
+            
+            elif what ==   PendingActionType.BUY_INSURANCE.value:    # assume 1 quantity, regardless of the qty specified
                 amount = game_square.special_processing.amount
                 result = self.buy(what, choice, amount)
-                
-            elif what == PendingActionType.STAY_OR_MOVE.value:
+            
+            elif what ==   PendingActionType.STAY_OR_MOVE.value:
                 if choice.lower() == "stay":
                     result = game_square.execute(player)
                 else:   # move off Holiday
                     player.on_holiday = False
                     result = self._roll(player, pending_action.pending_dice)
-                    
-            elif what == PendingActionType.TAKE_SHORTCUT.value:   # yes=take the shortcut - TODO
+                
+            elif what ==   PendingActionType.TAKE_SHORTCUT.value:   # yes=take the shortcut - TODO
                 if choice.lower() == "yes":
                     result = self._goto(pending_action.pending_amount, player)
                 else:
                     result = self.roll()
                     
-            elif what == PendingActionType.BACKSTAB.value:
+            elif what ==   PendingActionType.BACKSTAB.value:
                 # resolve backstab_or_not   yes|no  <1 or more player_initials>
                 #
                 if 'player_initials' in kwargs:
@@ -958,9 +1018,8 @@ class CareersGameEngine(object):
                                 message += \
                             f'{player.player_initials} back stabs {other_player.player_initials} who loses {-hearts_loss} Hearts. You lose {-occupation_square.hearts}\n'
                                 result = CommandResult(CommandResult.SUCCESS, message, True)
-
                     
-            elif what in PendingActionType.CASH_LOSS_OR_UNEMPLOYMENT.value:
+            elif what ==   PendingActionType.CASH_LOSS_OR_UNEMPLOYMENT.value:
                 #
                 # the player can afford the amount - question is what is their choice? 
                 # pay or go (to unemployment)
@@ -972,8 +1031,8 @@ class CareersGameEngine(object):
                     result = CommandResult(CommandResult.SUCCESS, f'You paid {amount} to avoid Unemployment', True)
                 else:    # go to Unemployment
                     result = self.goto("Unemployment")
-                    
-            elif what == PendingActionType.CHOOSE_OCCUPATION.value:
+
+            elif what ==   PendingActionType.CHOOSE_OCCUPATION.value:
                 # choice is the occupation name
                 game_square = self._careersGame.find_border_square(choice)
                 if game_square is None or game_square.square_type is not BorderSquareType.OCCUPATION_ENTRANCE_SQUARE:
@@ -996,8 +1055,11 @@ class CareersGameEngine(object):
                             result = CommandResult(CommandResult.SUCCESS, f'{result1.message}\n{result2.message}', True)
                         else:
                             result = CommandResult(CommandResult.ERROR, f'You can afford the {self.currency_symbol}{occupation.entry_fee} for {occupation.name}', False)
+
             else:
                 result = CommandResult(CommandResult.ERROR, f'Sorry {player.player_initials}, "{what}" is an invalid or unimplemented pending action!', False)
+
+
         else:
             result = CommandResult(CommandResult.ERROR, f'Nothing to resolve for {what}', False)
 
@@ -1007,7 +1069,8 @@ class CareersGameEngine(object):
         if result.is_successful() and not player.on_holiday:
             player.clear_pending(PendingActionType.SELECT_DEGREE)
         return result
-    
+        
+                    
     #####################################
     #
     # Game engine action implementations

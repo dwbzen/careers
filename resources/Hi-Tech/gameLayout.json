@@ -80,7 +80,7 @@
 				"text" : "",
 				"specialProcessing" : {
 					"type" : "travel_border",
-					"next_square" : 13
+					"next_square" : 12
 				}
 			},
 			{
@@ -193,7 +193,7 @@
 				"text" : "",
 				"specialProcessing" : {
 					"type" : "travel_border",
-					"next_square" : 23
+					"next_square" : 22
 				}
 			},
 			{
@@ -317,7 +317,7 @@
 				"text" : "",
 				"specialProcessing" : {
 					"type" : "travel_border",
-					"next_square" : 36
+					"next_square" : 35
 				}
 			}, 
 			{
@@ -326,7 +326,7 @@
 				"type" : "danger_square",
 				"background_image" : "danger_border_square.png",
 				"text" : "PAY RENT HERE",
-				"action_text" : "Pay ½ your annual salary for this years rent.",
+				"action_text" : "Pay half your annual salary for this years rent.",
 				"specialProcessing" : {
 					"type" : "cash_loss",
 					"percent" : 0.5,
@@ -408,7 +408,7 @@
 			},
 			{
 				"number" : 30,
-				"name" : "SpringBreak",
+				"name" : "Holiday",
 				"type" : "corner_square",
 				"background_image" : "corner_square.png",
 				"text" : "Spring Break",
@@ -478,7 +478,7 @@
 				"text" : "",
 				"specialProcessing" : {
 					"type" : "travel_border",
-					"next_square" : 4
+					"next_square" : 3
 				}
 			},
 			{

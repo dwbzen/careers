@@ -7,7 +7,7 @@ Created on Aug 12, 2022
 from game.gameSquare import GameSquare, GameSquareClass
 from game.player import Player
 from game.commandResult import CommandResult
-from game.gameConstants import SpecialProcessingType, PendingActionType
+from game.gameConstants import SpecialProcessingType
 from game.opportunityCard import OpportunityType
 
 from typing import  List

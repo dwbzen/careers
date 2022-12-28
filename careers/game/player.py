@@ -590,7 +590,8 @@ class Player(CareersObject):
         v = self.get_total_loans()
         net_worth = self.net_worth()
         info_dict = {"salary":self.salary, "cash":self.cash, "fame":self.fame, "happiness":self.happiness, "points":self.total_points()}
-        info_dict.update( {"insured":self.is_insured, "unemployed":self.is_unemployed, "sick":self.is_sick, "extra_turn":self.extra_turn, "net_worth":net_worth} )
+        info_dict.update( {"insured":self.is_insured, "unemployed":self.is_unemployed, "sick":self.is_sick, \
+                           "extra_turn":self.extra_turn, "can_retire":self.can_retire, "net_worth":net_worth} )
         info_dict.update( self._get_pending() )
         
         if self.pending_actions.size() == 0:
@@ -603,7 +604,7 @@ class Player(CareersObject):
           
         fstring = \
 f'''Salary:{self.salary}, Cash: {self.cash},  Fame: {self.fame}, Happiness: {self.happiness}, Points: {self.total_points()}
-Insured: {self.is_insured}, Unemployed: {self.is_unemployed}, Sick: {self.is_sick}, Net worth: {net_worth}
+Insured: {self.is_insured}, Unemployed: {self.is_unemployed}, Sick: {self.is_sick}, Can Retire: {self.can_retire}, Net worth: {net_worth}
 {pending_string}, Extra turn: {self.extra_turn} '''
 
         if self.cash < 0:

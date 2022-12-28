@@ -125,7 +125,7 @@
 			"background_image" : "occupation_square.png",
 			"text" : "You have a bad feeling about this...",
 			"type" : "action_square",
-			"stars" : 4,
+			"stars" : 0,
 			"hearts" : 0,
 			"experience" : 0,
 			"opportunities" : 0,
