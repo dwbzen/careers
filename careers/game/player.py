@@ -43,6 +43,8 @@ class Player(CareersObject):
         # player loan obligations are indexed by player_number: loans[player_number] = <loan amount>
         self._loans = {}    # Dict[int, int]:
         
+        self._command_history:List[str] = []    # a list of commands executed by a player
+        
         
     def _initialize(self):
         """Sets the starting values for all properties reset under bankruptcy rules.
@@ -50,7 +52,7 @@ class Player(CareersObject):
         
         self._set_starting_board_location() # always start on Payday corner square
         self._can_retire = False
-        self._is_insured = False
+        self._is_insured = True
         self._is_unemployed = False         # True when player lands on (or is sent to) Unemployment
         self._is_sick = False               # True when player lands on Hospital
         self._on_holiday = False            # True when the player lands on Holiday/Spring Break
@@ -73,6 +75,7 @@ class Player(CareersObject):
         self._happiness = [0]                # record of happiness (hearts) earned. Cumulative amounts, total is happiness[-1]
         self._fame = [0]                     # record of fame (stars) earned. Cumulative amounts, total is fame[-1]
         self._savings = 0                    # savings account - populated with "pay", draw funds with "withdraw"
+        self._point_losses = {"cash":5000,"hearts":10,"stars":10, "salary":2000}    # most recent point losses if any. Used by "use_insurance" command
     
     def has_success(self) -> bool:
         return self.happiness >= self.success_formula.hearts and \
@@ -170,7 +173,7 @@ class Player(CareersObject):
     @is_insured.setter
     def is_insured(self, value:bool):
         self._is_insured = value
-    
+        
     @property
     def happiness(self):
         return self._happiness[-1]
@@ -338,6 +341,25 @@ class Player(CareersObject):
     def withdraw(self, amount:int) ->int:
         amt = amount if amount <= self.savings else self.savings
         return amt
+    
+    @property
+    def point_losses(self) -> dict:
+        return self._point_losses
+    
+    def add_point_loss(self, key:str, value:int):
+        self._point_losses[key] = value
+    
+    def clear_point_losses(self):
+        self.point_losses["cash"] = 0
+        self.point_losses["hearts"] = 0
+        self.point_losses["stars"] = 0
+        self.point_losses["salary"] = 0
+        
+    def add_command(self, command:str):
+        self._command_history.append(command)
+    
+    def get_command(self, index:int=-1) ->str:
+        return self._command_history[index]
         
     def add_pending_action(self, action:PendingActionType, game_square=None, amount:SPECIAL_PROCESSING=None, dice:int | List[int]=0):
         self._pending_actions.add(PendingAction(action, game_square, amount, dice))
@@ -681,11 +703,14 @@ Insured: {self.is_insured}, Unemployed: {self.is_unemployed}, Sick: {self.is_sic
             if ndegrees > 0:
                 list_dict['degrees'] = self.my_degrees
         
-        if what.lower().startswith('occ'): # list occupations completed
+        if what.lower().startswith('occ') or listall: # list occupations completed
             noccupations = len(self.occupation_record)
             if noccupations > 0:
                 list_dict['occupations_completed'] = noccupations
                 list_dict['occupations'] = self.occupation_record
+                
+        if what.lower().startswith('command') or listall: # command history
+            list_dict["commands"] = self._command_history
 
         return list_dict
     

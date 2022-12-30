@@ -122,6 +122,7 @@ class OccupationSquare(GameSquare):
             
             case SpecialProcessingType.CASH_LOSS:      # could cause the player into bankruptcy
                 payment = self.special_processing.compute_cash_loss(player)
+                player.add_point_loss("cash", payment)    # cash loss covered by insurance
                 player.add_cash(-payment)       # this will set the bankrupt pending_action if cash is < 0 as a result
             
             case SpecialProcessingType.FAVORS:
@@ -177,11 +178,13 @@ class OccupationSquare(GameSquare):
                 #
                 if amount > 0:
                     player.add_to_salary(-amount)
+                    player.add_point_loss("salary", amount)
                     message += f' Salary cut by {amount}. Your new salary is {player.salary}'
                 elif percent > 0:
                     cutAmount = player.salary * percent
                     cutAmount = 1000 * int(cutAmount / 1000)
                     player.add_to_salary(-cutAmount)
+                    player.add_point_loss("salary", cutAmount)
                     message += f' Salary cut by {cutAmount}. Your new salary is {player.salary}'
                 
             case SpecialProcessingType.BACKSTAB:
@@ -200,12 +203,14 @@ class OccupationSquare(GameSquare):
                 if  percent > 0:
                     amount = int(player.fame * percent)
                 player.add_stars(-amount)
+                player.add_point_loss("stars", amount)
                 message = f'{player.player_initials} loses {amount} stars'
                 
             case SpecialProcessingType.HAPPINESS_LOSS:
                 if  percent > 0:
                     amount = int(player.happiness * percent)
                 player.add_hearts(-amount)
+                player.add_point_loss("hearts", amount)
                 message = f'{player.player_initials} loses {amount} hearts'
                 
             case _:

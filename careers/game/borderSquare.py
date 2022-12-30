@@ -132,7 +132,7 @@ class BorderSquare(GameSquare):
                         return CommandResult(CommandResult.NEED_PLAYER_CHOICE, message, False)   # player needs to buy insurance
                 
                     case SpecialProcessingType.GAMBLE: 
-                        player.add_pending_action(pending_action, game_square=self, dice=self.special_processing.dice)              # Roll 2 dice to gamble
+                        player.add_pending_action(pending_action, game_square=self, dice=self.special_processing.dice)  # Roll 2 dice to gamble
                         return CommandResult(CommandResult.NEED_PLAYER_CHOICE, message, False)   # player needs to indicate they intend to Gamble, then roll
                 
                     case _:
@@ -192,6 +192,7 @@ class BorderSquare(GameSquare):
                 sp_type = self.special_processing.processing_type    # special processing type independent of the square name
                 payment = self.special_processing.compute_cash_loss(player)
                 player.add_cash(-payment)       # this will set the bankrupt pending_action if cash is < 0 as a result
+                player.add_point_loss("cash", payment)    # covered by insurance
                 result =  CommandResult(CommandResult.SUCCESS, f'{self.action_text}\n Player {player.player_initials}  pays {payment}, remaining cash: {player.cash}', player.cash < 0)
             case _:
                 result = CommandResult(CommandResult.SUCCESS, f'{self.square_type} {self.name} execute not yet implemented', False)   #  TODO

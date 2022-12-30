@@ -188,7 +188,7 @@ class SpecialProcessing(CareersObject):
     def gamble(self, player) -> CommandResult:
         # amount computed from a roll of the dice
         # and could be negative (cash loss) or positive (cash gain)
-        #
+        # A cash loss is also insurable
         roll = sum(GameUtils.roll(self.amount_dice)) if self.amount_dice > 0 else 1
         amt = self.amount_dict[str(roll)]
         symbol = self.game_parameters.get_param("currency_symbol")
@@ -197,6 +197,7 @@ class SpecialProcessing(CareersObject):
         else:
             cash_loss = roll * amt
         if cash_loss <= 0:
+            player.add_point_loss("cast", -cash_loss)
             result = CommandResult(CommandResult.SUCCESS, f'{player.player_initials} rolls a {roll} on a gamble and loses {symbol}{-cash_loss}', True)
         else:
             result = CommandResult(CommandResult.SUCCESS, f'{player.player_initials} rolls a {roll} on a gamble and wins {symbol}{cash_loss}', True)
@@ -265,6 +266,7 @@ class SpecialProcessing(CareersObject):
                 cash_loss = self._compute_amount(player_net_worth)
             else:    
                 cash_loss = self._compute_amount(player_cash) if self.of=='cash' else self._compute_amount(player_salary)
+            player.add_point_loss("cash", cash_loss)    # cash loss is covered by insurance
             
         elif  self.processing_type is SpecialProcessingType.CASH_LOSS_OR_UNEMPLOYMENT.value:
             cash_loss = self._compute_amount(player_cash) if self.of=='cash' else self._compute_amount(player_salary)

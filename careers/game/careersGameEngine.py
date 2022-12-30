@@ -81,6 +81,7 @@ class CareersGameEngine(object):
         <resolve_pending> :: "resolve" choice [pending_amount]    ; resolve a pending action and amount. choice is the player's choice based on the game_square's "pending_action",
             <choice> :: * | <pending_action>                      ; * = the most recently added pending_action, else the pending_action to resolve such as "buy_hearts"
         <log> :: "log_message" <text>    ; writes <text> to the log file
+        <advance> :: "advance" <nspaces>     ; advance a given number of spaces from current position
         
     """
     
@@ -181,6 +182,7 @@ class CareersGameEngine(object):
             if command is None or len(command) == 0:
                 return CommandResult(CommandResult.SUCCESS, "", False)
             cmd_result = self._evaluate(command, args)
+            player.add_command(command)    # adds to player's command history
             
             board_location = player.board_location    # current board location AFTER the command is executed
             if command.lower() != "log_message":      # no need to log twice
@@ -440,10 +442,35 @@ class CareersGameEngine(object):
         """Use insurance, if you have it, to avoid paying a penalty or loosing hearts/stars/salary
             Returns: CommandMessage with return_code == SUCCESSFUL if okay, == ERROR if no insurance
                 or not applicable in this case.
+            A player uses insurance immediately after the loss. This will restore the amounts
+            or quantities lost. For example, say a player pays 4000 after landing on DivorceCourt.
+            After playing use_insurance that amount is restored. Hearts and Stars restored in the same way.
+            
         """
         player = self.game_state.current_player
         if player.is_insured:
-            result = CommandResult(CommandResult.SUCCESS, "'use_insurance' command not yet implemented", False)
+            message = ""
+            if player.point_losses["cash"] > 0:
+                amount = player.point_losses["cash"]
+                player.add_cash(amount)
+                message += f"cash amount {amount} restored\n"
+            if player.point_losses["hearts"] > 0:
+                amount = player.point_losses["hearts"]
+                player.add_hearts(amount)
+                message += f"{amount} happiness points restored\n"
+            if player.point_losses["stars"] > 0:
+                amount = player.point_losses["stars"]
+                player.add_stars(amount)
+                message += f"{amount} fame points restored\n"
+            if player.point_losses["salary"] > 0:
+                amount = player.point_losses["salary"]
+                player.add_to_salary(amount)
+                message += f"{player.salary} salary restored"
+            player.clear_point_losses()
+            player.is_insured = False    # lose insurance but can buy again immediately after use
+            game_square = self._careersGame.find_border_square("BuyInsurance")
+            player.add_pending_action(PendingActionType.BUY_INSURANCE, game_square=game_square, amount=game_square.special_processing.get_amount())
+            result = CommandResult(CommandResult.SUCCESS, message, False)
         else:
             result = CommandResult(CommandResult.ERROR, "You don't have insurance!", False)
         return result
@@ -530,8 +557,10 @@ class CareersGameEngine(object):
         cp = self.game_state.current_player
         ###################################################################################
         # is there a pending action for this player? This might include a pending penalty.
+        # clear any point losses for this turn
         ###################################################################################
         self._resolve_pending(cp)
+        cp.clear_point_losses()
 
         #
         # has this player won the game?
@@ -1028,6 +1057,7 @@ class CareersGameEngine(object):
                 if choice.lower() == 'pay':
                     amount = game_square.special_processing.amount
                     player.add_cash(-amount)
+                    player.add_point_loss("cash", amount)    # loss is insurable
                     result = CommandResult(CommandResult.SUCCESS, f'You paid {amount} to avoid Unemployment', True)
                 else:    # go to Unemployment
                     result = self.goto("Unemployment")
@@ -1092,7 +1122,8 @@ class CareersGameEngine(object):
                 qty - how many to buy (adds to the player's score or card deck). May be an int or str
                 amount - cash amount cost. May be an int or str
              The player must have the appropriate pending_action in order to be valid
-            and it must match the current location's special processing type value
+             and it must match the current location's special processing type value
+             (if the current board location HAS specialProcessing)
         """
         amount = int(amount_arg)
         qty = 1 if qty_arg is None else int(qty_arg)
@@ -1111,7 +1142,7 @@ class CareersGameEngine(object):
                 pending_action = player.pending_actions.get_pending_action(pa.pending_action_type, remove=True)
                 break
         
-        if pending_action is None or pa_string != sp_pending_action.value.lower():
+        if pending_action is None or (sp_pending_action is not None and pa_string != sp_pending_action.value.lower()):
             return CommandResult(CommandResult.ERROR, f'Cannot buy {qty} "{what}" here', False)
         
         player.add_cash(-amount)
