@@ -80,7 +80,7 @@ class CareersGame(CareersObject):
         # load the game board
         #
         self._game_board = self._create_game_board()   # GameBoard instance
-        self._game_type = game_type  # 'points' or 'timed' (which is not yet supported)
+        self._game_type = game_type  # 'points', 'timed' (which is not yet supported), or 'solo'
 
         #
         # if a gameId is not provided, create one

@@ -13,17 +13,17 @@ class GameRunner(object):
     """A command-line text version of Careers game play used for testing and simulating web server operation.
     """
 
-    def __init__(self, edition, master_id, game_type, total_points):
+    def __init__(self, edition, master_id, game_type, total_points, debug_flag):
         """
         Constructor
         """
         self._careersGame = None
         self.total_points = total_points
-        self._trace = True          # traces the action by describing each step
+        self._debug = debug_flag          # traces the action by describing each step
         self._edition = edition
         self._game_type = game_type
         self.game_engine = CareersGameEngine()
-        self.game_engine.trace = self._trace
+        self.game_engine.debug = self._debug
         self._master_id = master_id
 
     def add_player(self, name, initials, player_id=None, email=None, stars=0, hearts=0, cash=0):
@@ -131,27 +131,29 @@ class GameRunner(object):
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Run a command-driven Careers Game for 1 to 4 players")
-    parser.add_argument("--players", "-p", help="The number of players", type=int, choices=range(1,5), default=1)
+    parser = argparse.ArgumentParser(description="Run a command-driven Careers Game for 1 to 6 players")
+    parser.add_argument("--players", "-p", help="The number of players", type=int, choices=range(1,6), default=1)
     parser.add_argument("--points", help="Total game points", type=int, choices=range(40, 10000), default=100)
     parser.add_argument("--params", help="Game parameters type: 'test', 'prod' or '' for default", type=str, default="")
     parser.add_argument("--gameid", help="Game ID", type=str, default=None)
     parser.add_argument("--edition", help="Game edition: Hi-Tech or UK", type=str, choices=["Hi-Tech", "UK"], default="Hi-Tech")
     parser.add_argument("--script", help="Execute script file", type=str, default=None)
-    parser.add_argument("--delay", "-d", help="Delay a specified number of seconds between script commands", type=int, default=0)
+    parser.add_argument("--delay", help="Delay a specified number of seconds between script commands", type=int, default=0)
     parser.add_argument("--comments", "-c", help="Log comment lines when running a script", type=str, choices=['y','Y', 'n', 'N'], default='Y')
+    parser.add_argument("--debug", "-d", help="Run in debug mode, logging trace output",  action="store_true", default=False)
+    parser.add_argument("--type","-t", help="Game type: points, timed, solo", type=str, choices=["points", "timed", "solo"], default="points")
     args = parser.parse_args()
     
     total_points = args.points
     edition = args.edition
-    game_type = 'points'            # or 'timed'
-    installationId = 'ZenAlien2013' # uniquely identifies 'me' as the game creator
-    filePath = args.script         # complete file path
+    game_type = args.type            # 'points', 'timed' or 'solo'
+    installationId = 'ZenAlien2013'  # uniquely identifies 'me' as the game creator
+    filePath = args.script           # complete file path
     log_comments = args.comments.lower()=='y'
     
     gameId = args.gameid
     game_parameters_type = args.params
-    game_runner = GameRunner(edition, installationId, game_type, total_points)  # creates a CareersGameEngine
+    game_runner = GameRunner(edition, installationId, game_type, total_points, args.debug)  # creates a CareersGameEngine
     # creates a CareersGame for points
     game_runner.create_game(edition, installationId, game_type, total_points, gameId, game_parameters_type)   
     
@@ -161,11 +163,13 @@ def main():
         #
         # add players
         #
-        nplayers = args.players
+        nplayers = 1 if args.type=="solo" else  args.players
+        
         # name, initials=None, player_id=None, email=None, stars=0, hearts=0, cash=0
+        # use update command to add success_formula if not provided here
         game_runner.execute_command("add player Don DWB dwb20221206 dwbzen@gmail.com 40 10 50", None)
         if nplayers >= 2:
-            game_runner.execute_command("add player Brian BDB bdb20221206 brian.bacon01@gmail.com 50 20 30", None)    # use update command to add success_formula
+            game_runner.execute_command("add player Brian BDB bdb20221206 brian.bacon01@gmail.com 50 20 30", None)
         if nplayers >= 3:
             game_runner.execute_command("add player Cheryl CJL cjl20221206 Lister.Cheryl@gmail.com 10 50 40", None)
         if nplayers == 4:

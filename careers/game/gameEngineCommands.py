@@ -26,7 +26,7 @@ class GameEngineCommands(object):
         self._careersGame = thegame
         self._game_state = self._careersGame.game_state
         self.fp = logfile_pointer
-        self._trace = True          # traces the action by describing each step and logs to a file
+        self._debug = False          # traces the action by describing each step and logs to a file
         self.currency_symbol = self._careersGame.game_parameters.get_param("currency_symbol")
     
     @property 
@@ -38,12 +38,12 @@ class GameEngineCommands(object):
         self._careersGame = thegame
         
     @property
-    def trace(self):
-        return self._trace
+    def debug(self):
+        return self._debug
     
-    @trace.setter
-    def trace(self, value):
-        self._trace = value
+    @debug.setter
+    def debug(self, value):
+        self._debug = value
         
     def can_player_move(self, player:Player, dice:List[int] | None) -> Tuple[bool,CommandResult] :
         """Determine if a Player can move.
@@ -158,14 +158,19 @@ class GameEngineCommands(object):
             return CommandResult(CommandResult.ERROR,  f'Invalid command: "{command}"',  False)
         if len(command_args) > 1:
             args = command_args[1:]
-            if command.lower() == "resolve" and cmd_arg == "backstab":    # backstab + at least 1 player initials
-                #
-                # resolve backstab takes kwargs['player_initials']
-                #
-                player_initials = '"' if len(command_args) >= 3 else '""'
+            if command.lower() == "resolve":
+                kwargs = '"' if len(command_args) >= 3 else '""'
                 for s in command_args[2:]:
-                    player_initials += f'{s} '
-                command = f'resolve("backstab","",player_initials={player_initials[:-1]}" )'
+                        kwargs += f'{s} '
+                if cmd_arg == "backstab":    # backstab + at least 1 player initials
+                    #
+                    # resolve backstab takes kwargs['player_initials']
+                    #
+                    command = f'resolve("backstab","",player_initials={kwargs[:-1]}" )'
+                elif cmd_arg == "select_degree":
+                    command = f'resolve("select_degree",{kwargs[:-1]}" )'
+                elif cmd_arg == "*":
+                    command = f'resolve("*",{kwargs[:-1]}" )'
                 return CommandResult(CommandResult.SUCCESS, command, True)
                     
             else:
@@ -218,6 +223,7 @@ class GameEngineCommands(object):
             Returns:
                 A CommandResult. The message has the result of the operation in JSON format and is dependent on 'what'
                 For what == "roll", how = #dice, result message
+
             If the player has an pending_action that is dependent on a dice roll, that will be automatically resolved
             and the player's status updated accordingly.
             Currently the pending_actions supported are buy_hearts, buy_experience, buy_insurance and gamble.
@@ -232,7 +238,7 @@ class GameEngineCommands(object):
             message = json.dumps(result_dict)
             result = CommandResult(CommandResult.SUCCESS, message, False)
         else:
-            result = CommandResult(CommandResult.ERROR, f'No such operation: {what}', False)
+            result = CommandResult(CommandResult.ERROR, f'Operation: {what} is not supported', False)
         
         return result
         
@@ -391,6 +397,6 @@ class GameEngineCommands(object):
         msg = GameUtils.get_datetime() + f'  {message}\n'
         if self.fp is not None:     # may be logging isn't initialized yet or logging option is False
             self.fp.write(msg)
-        if self.trace:
+        if self.debug:
             print(msg)
     

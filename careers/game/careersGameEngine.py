@@ -48,8 +48,8 @@ class CareersGameEngine(object):
         <retire> :: "retire"                    ;immediate go to retirement square (Spring Break, Holiday)
         <bump> :: "bump" player_initials        ;bump another player, who must be on the same square as the bumper
         <bankrupt> :: "bankrupt"                ;declare bankruptcy
-        <list> :: "list"  <card_type> | "occupations"           ;list my opportunities or experience cards, or occupations completed
-            <card_type> :: "opportunity" | "experience"
+        <list> :: "list"  ["occupations" | "commands" | "all" | <card_type> ]  ;list occupations completed, command history
+            <card_type> :: "opportunity" | "experience"                        ;or my opportunities or experience cards
         <status> :: "status"                    ;display a player's cash, #hearts, #stars, salary, total points, and success formula, pending and loan info
         <info> :: "info"                        ;returns JSON-formatted player info
         <quit> :: "quit" player_initials        ;current player leaves the game, must include initials
@@ -85,14 +85,13 @@ class CareersGameEngine(object):
         
     """
     
-    
     def __init__(self):
         '''
         Constructor
         '''
         self._fp = None             # logging file pointer
         self._careersGame = None    # create a new CareersGame with create()
-        self._trace = True          # traces the action by describing each step and logs to a file
+        self._debug = False         # traces the action by describing each step and logs to a file
         self._start_date_time = datetime.now()
         self._gameId = None
         self._installationId = None      # provided by the UI
@@ -127,12 +126,12 @@ class CareersGameEngine(object):
         return self._installationId
     
     @property
-    def trace(self):
-        return self._trace
+    def debug(self):
+        return self._debug
     
-    @trace.setter
-    def trace(self, value):
-        self._trace = value
+    @debug.setter
+    def debug(self, value):
+        self._debug = value
         
     @property
     def game_state(self):
@@ -152,7 +151,7 @@ class CareersGameEngine(object):
         msg = GameUtils.get_datetime() + f'  {txt}\n'
         if self.fp is not None:     # may be logging isn't initialized yet or logging option is False
             self.fp.write(msg)
-        if self.trace:
+        if self.debug:
             print(msg)
             
     def log_message(self, *message) -> CommandResult:
@@ -870,8 +869,10 @@ class CareersGameEngine(object):
             Arguments:
                 edition - 'Hi-Tech' or 'UK' are the only editions currently supported
                 installationId - uniquely identifies the game's creator. It must have a length >= 5.
-                game_type - 'points' or 'timed'
+                game_type - 'points', 'timed', or 'solo'
                 game_id - if not None, the gameId to use to identify this game.
+                game_parameters_type - 'test', 'prod' or blank for the default. This maps to the appropriat
+                    gameParameters JSON file: gameParameters_prod.json, gameParameters_test.json, gameParameters.json
             Returns: 
                 CommandResult
                     message - JSON gameId, installationId if successful, else an error message: "error":<details>
@@ -907,7 +908,7 @@ class CareersGameEngine(object):
 
         self.fp = open(self._logfile_path, "w")   # log file open channel
         self._gameEngineCommands = GameEngineCommands(self._careersGame, self.fp)
-        self._gameEngineCommands.trace = self.trace
+        self._gameEngineCommands.debug = self.debug
         self.currency_symbol = self._careersGame.game_parameters.get_param("currency_symbol")
 
         message = f'{{"gameId":"{self._gameId}", "installationId":"{self._installationId}"}}'
@@ -962,7 +963,7 @@ class CareersGameEngine(object):
             pending_action = player.pending_actions.find(what)     # also removes from the pending actions list
             
         if pending_action is not None:
-            # TODO change to match(what): and case
+
             if what == PendingActionType.SELECT_DEGREE.value:  # the degree program chosen is the 'choice'
                 result = self.add_degree(player, choice)
                 result.message = f'{message}\n{result.message}'
