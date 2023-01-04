@@ -4,13 +4,13 @@
 ## Known Issues
 1. When resolving take_shortcut the player needs to roll or use an experience<br>
 from the next_square. Currently it just goes to the next_square and executes it.<br>
-Status: OPEN</p>
+Status: ACTIVE</p>
 
 2. The resolve select_degree command gets a syntax error on multi-word degree names:<br>
 Business Admin, Computer Science. <br>
 Change to single word: BusinessAdmin, ComputerScience OR concat the arguments into a single string.<br>
-Status: TESTING the change to parse_command_string which concats the resolve arguments
-into a single string.</p>
+Status: COMPLETE. Change to parse_command_string to concatenate the resolve arguments
+into a single string, for example:<br> `resolve("select_degree","Computer Science" )`</p>
 
 3. If player 1 enters an Occupation and rolls (so they're on the Occupation path),
 if player 2 lands on that occupation's entry square, the can_bump<br>
@@ -54,7 +54,7 @@ Status: OPEN
 	`enter Amazon`<br>
 Expand the **enter** command to go to the occupation first (if not there already)<br>
 **Note:** this should not be allowed when playing in solo production mode.<br>
-Status: OPEN</p>
+Status: ACTIVE. Change completed, but still need to restrict in solo production game mode.</p>
 
 2. If a player is currently on an occupation entry square, allow the **enter**
 command without an argument to enter that occupation.<br>

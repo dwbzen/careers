@@ -1010,9 +1010,10 @@ class CareersGameEngine(object):
                 
             elif what ==   PendingActionType.TAKE_SHORTCUT.value:   # yes=take the shortcut - TODO
                 if choice.lower() == "yes":
-                    result = self._goto(pending_action.pending_amount, player)
+                    result = CommandResult(CommandResult.SUCCESS, 'You elected to take the shortcut on your next move', True)
+                    #self._goto(pending_action.pending_amount, player)
                 else:
-                    result = self.roll()
+                    result = CommandResult(CommandResult.SUCCESS, 'You elected not to take the shortcut on your next move', True)
                     
             elif what ==   PendingActionType.BACKSTAB.value:
                 # resolve backstab_or_not   yes|no  <1 or more player_initials>

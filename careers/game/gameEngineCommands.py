@@ -162,15 +162,19 @@ class GameEngineCommands(object):
                 kwargs = '"' if len(command_args) >= 3 else '""'
                 for s in command_args[2:]:
                         kwargs += f'{s} '
-                if cmd_arg == "backstab":    # backstab + at least 1 player initials
-                    #
-                    # resolve backstab takes kwargs['player_initials']
-                    #
-                    command = f'resolve("backstab","",player_initials={kwargs[:-1]}" )'
-                elif cmd_arg == "select_degree":
-                    command = f'resolve("select_degree",{kwargs[:-1]}" )'
-                elif cmd_arg == "*":
-                    command = f'resolve("*",{kwargs[:-1]}" )'
+                match(cmd_arg):
+                    case "backstab":    # backstab + at least 1 player initials
+                        #
+                        # resolve backstab takes kwargs['player_initials']
+                        #
+                        command = f'resolve("backstab","",player_initials={kwargs[:-1]}" )'
+                                       
+                    case "*":
+                        command = f'resolve("*",{kwargs[:-1]}" )'
+                    
+                    case _:
+                        command = f'resolve("{cmd_arg}",{kwargs[:-1]}" )'
+                                         
                 return CommandResult(CommandResult.SUCCESS, command, True)
                     
             else:
