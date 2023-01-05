@@ -313,9 +313,10 @@ class CareersGameEngine(object):
         player = self.game_state.current_player
 
         next_square_number = self._get_next_square_number(player, num_spaces)
-        message = f' {player.player_initials}  rolled {num_spaces} {dice}, next_square_number {next_square_number}' if dice is not None \
-            else f' {player.player_initials}  advances {num_spaces}, next_square_number {next_square_number}'
+        message = f' {player.player_initials}  rolled {num_spaces} {dice}, next_square {next_square_number}' if dice is not None \
+            else f' {player.player_initials}  advances {num_spaces}, next_square {next_square_number}'
         self.log(message)
+        print(message)
         #
         # check if player is on a holiday
         # 
@@ -1317,7 +1318,7 @@ class CareersGameEngine(object):
         # Squares are numbered starting with 0
         # 
         if self.is_in_occupation(game_square, player):
-            if game_square.special_processing.next_square is not None:
+            if game_square.special_processing is not None and game_square.special_processing.next_square is not None:
                 next_square_number = game_square.special_processing.next_square + num_spaces - 1
             else:
                 next_square_number = board_location.occupation_square_number + num_spaces    # could be > size of the occupation, that's handled by goto()

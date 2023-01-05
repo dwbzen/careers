@@ -4,11 +4,12 @@
 ## Known Issues
 1. When resolving take_shortcut the player needs to roll or use an experience<br>
 from the next_square. Currently it just goes to the next_square and executes it.<br>
-Status: ACTIVE - "resolve take_shortcut yes" sets the player's board location to the space<br>
+Status: COMPLETE - "resolve take_shortcut yes" sets the player's board location to the space<br>
  BEFORE the next_square in the shortcut specialProcessing.<br>
- This works for UF but not for Pfizer because the square numbering is not consecutive.<br>
- When taking the shortcut the ordering is 1, 13, 14, 12, 15. <br>
- When not taking the shortcut the ordering is 1, 2, 3... 12, 15. </p>
+ This worked for UF but not for Pfizer because the square numbering is not consecutive.<br>
+ To fix this, and keep the logic the same as UF, I updated the Pfizer occupation JSON<br>
+ file in the Hi-Tech and UK versions. The Hi-Tech board image and Visio model also update
+ for Hi-Tech, but not for UK. See issue #9 below.</p>
 
 2. The resolve select_degree command gets a syntax error on multi-word degree names:<br>
 Business Admin, Computer Science. <br>
@@ -49,6 +50,9 @@ Unemployment, don't execute pass_payday </p>
 8. If a player gets an error when resolving choose_occupation (by specifying College instead of <br>
 an Occupation or specifying an Occupation that doesn't exist) the pending action<br>
 is cleared incorrectly.<br>
+Status: OPEN
+
+9. Update the UK version Visio model and board image with the revised Pfizer UK JSON.
 Status: OPEN
 
 ---
