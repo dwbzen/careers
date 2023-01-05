@@ -14,6 +14,7 @@ class User(BaseModel):
     email: str = Field(...)
     initials: str = Field(...)
     id: str = Field(alias="_id", default=None)
+    number: int = Field(default=0)
     createdDate: datetime = Field(default=datetime.now())
 
 class CareersUserManager(object):
@@ -33,3 +34,6 @@ class CareersUserManager(object):
     
     def getUserByUserId(self, userId: str) -> User:
         return self.collection.find_one({"_id": userId})
+
+    def updateUser(self, user: User):
+        self.collection.update_one({"_id": user['_id']}, {"$set": {'number': user["number"]}})
