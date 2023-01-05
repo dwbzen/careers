@@ -746,8 +746,8 @@ class CareersGameEngine(object):
                 card_list = self._careersGame.opportunities.draw_cards(starting_opportunities)
                 player.add_opportunity_card(card_list)
                 
-            message = f'Player "{name}" "{initials} number: {player.number}" added'
-            
+            message = player.to_JSON()
+
         else:    
             # adds a degree in the current (or named) player's degree programs
             # name is the name of the degree program

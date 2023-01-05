@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, Union
 from unicodedata import name
 from pydantic import BaseModel, Field
 import uvicorn
@@ -49,10 +49,9 @@ def startGame():
     pass
 
 @app.put('/game/{gameId}/player/{userId}/{money}/{hearts}/{stars}', status_code=201)
-def joinGame(gameId: str, userId: str, money: int, hearts: int, stars: int, 
-        gameInstance: CareersGameEngine=Depends(manager)):
-    user = manager.joinGame(gameId, userId)
-    return gameInstance.execute_command(f'add player {user["name"]} {user["initials"]} {money} {hearts} {stars}', None)
+def joinGame(gameId: str, userId: str = None, money: int = 0, hearts: int = 0, stars: int = 0, gameInstance: CareersGameEngine=Depends(manager)):
+    user = manager.joinGame(gameId, userId, gameInstance)
+    return user
 
 @app.get('/games/{userId}', status_code=200)
 def getGames(userId: str):
