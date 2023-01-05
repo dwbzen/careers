@@ -259,7 +259,7 @@ class CareersGameEngine(object):
         
         dice = random.choices(population=[i for i in range(1,7)], k=ndice)
         num_spaces = sum(dice)
-        
+        print(f' {player.player_initials}  rolled {num_spaces} {dice}')
         return self.advance(num_spaces, dice)
             
         
@@ -271,6 +271,7 @@ class CareersGameEngine(object):
         next_square_number = self._get_next_square_number(player, num_spaces)
         message = f' {player.player_initials}  rolled {num_spaces} {dice}, next_square_number {next_square_number}'
         self.log(message)
+        print(f' {player.player_initials}  rolled {num_spaces} {dice}')
         #
         # check if player is on a holiday
         # 
@@ -1010,6 +1011,11 @@ class CareersGameEngine(object):
                 
             elif what ==   PendingActionType.TAKE_SHORTCUT.value:   # yes=take the shortcut - TODO
                 if choice.lower() == "yes":
+                    #
+                    # place the player's board location to the space BEFORE the next_square in the
+                    # shortcut specialProcessing
+                    #
+                    player.board_location.occupation_square_number = game_square.special_processing.next_square - 1
                     result = CommandResult(CommandResult.SUCCESS, 'You elected to take the shortcut on your next move', True)
                     #self._goto(pending_action.pending_amount, player)
                 else:
@@ -1311,7 +1317,10 @@ class CareersGameEngine(object):
         # Squares are numbered starting with 0
         # 
         if self.is_in_occupation(game_square, player):
-            next_square_number = board_location.occupation_square_number + num_spaces    # could be > size of the occupation, that's handled by goto()
+            if game_square.special_processing.next_square is not None:
+                next_square_number = game_square.special_processing.next_square + num_spaces - 1
+            else:
+                next_square_number = board_location.occupation_square_number + num_spaces    # could be > size of the occupation, that's handled by goto()
         else:
             next_square_number = board_location.border_square_number + num_spaces        # could be > size of the board, that's also handled by goto()
             

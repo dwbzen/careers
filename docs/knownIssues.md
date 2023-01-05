@@ -4,7 +4,11 @@
 ## Known Issues
 1. When resolving take_shortcut the player needs to roll or use an experience<br>
 from the next_square. Currently it just goes to the next_square and executes it.<br>
-Status: ACTIVE</p>
+Status: ACTIVE - "resolve take_shortcut yes" sets the player's board location to the space<br>
+ BEFORE the next_square in the shortcut specialProcessing.<br>
+ This works for UF but not for Pfizer because the square numbering is not consecutive.<br>
+ When taking the shortcut the ordering is 1, 13, 14, 12, 15. <br>
+ When not taking the shortcut the ordering is 1, 2, 3... 12, 15. </p>
 
 2. The resolve select_degree command gets a syntax error on multi-word degree names:<br>
 Business Admin, Computer Science. <br>
@@ -19,7 +23,7 @@ See `CareersGameEngine.who_occupies_my_square()` to fix.<br>
 Status: OPEN</p>
 
 4. The following commands should not be allowed when playing in solo production mode:
-goto, advance, add degree<br>
+goto, advance, add degree, enter <occupation> when not on the target occupation entrance square<br>
 Status: OPEN</p>
 
 5. The perform command does not execute the perform string - the result

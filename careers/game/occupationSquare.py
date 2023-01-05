@@ -212,6 +212,9 @@ class OccupationSquare(GameSquare):
                 player.add_hearts(-amount)
                 player.add_point_loss("hearts", amount)
                 message = f'{player.player_initials} loses {amount} hearts'
+            
+            case SpecialProcessingType.NEXT_SQUARE:
+                message = f'Next square: {self.special_processing.next_square}'
                 
             case _:
                 cmd_result = CommandResult.ERROR

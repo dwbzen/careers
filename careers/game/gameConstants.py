@@ -43,6 +43,7 @@ class SpecialProcessingType(Enum):
     SHORTCUT = "shortcut"
     CASH_LOSS_OR_UNEMPLOYMENT = "cash_loss_or_unemployment"
     GOTO = "goto"
+    NEXT_SQUARE = "next_square"
     SALARY_INCREASE = "salary_increase"
     SALARY_CUT = "salary_cut"
     BONUS = "bonus"
