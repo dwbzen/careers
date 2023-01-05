@@ -80,9 +80,17 @@ class CareersGameManager(object):
         """
         return list(self.database["games"].find({"players": installationId}))
 
-    def joinGame(self, gameId: str, userId: str) -> User:
+    def joinGame(self, gameId: str, userId: str, gameInstance: CareersGameEngine) -> User:
+        """Joins a game and updates a users number in the db"""
         self.database["games"].update_one({"_id": gameId}, {'$push': {'players': userId}})
-        return self.userManager.getUserByUserId(userId)
+        user = self.userManager.getUserByUserId(userId)
+
+        """The player will join with an empty formula"""
+        updatedUser = json.loads(gameInstance.execute_command(f'add player {user["name"]} {user["initials"]}', None).json_message)
+        user['number'] = updatedUser['userMessage']['number']
+
+        self.userManager.updateUser(user)
+        return user
 
     def __call__(self, gameId: str = None) -> CareersGameEngine:
         """Create a new game engine for the user and return the instance"""
