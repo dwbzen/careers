@@ -90,7 +90,13 @@ class CareersGameManager(object):
         user['number'] = updatedUser['userMessage']['number']
 
         self.userManager.updateUser(user)
+        self.saveGame(gameInstance)
         return user
+
+    def saveGame(self, gameInstance: CareersGameEngine) -> None:
+        """Save the state of the game"""
+        self.database['games'].update_one({"_id": gameInstance.gameId}, 
+            {"$set": {'gameState': json.loads(gameInstance.careersGame.game_state.to_JSON())}})
 
     def __call__(self, gameId: str = None) -> CareersGameEngine:
         """Create a new game engine for the user and return the instance"""

@@ -48,7 +48,7 @@ def getGameDetails(joinCode: str):
 def startGame():
     pass
 
-@app.put('/game/{gameId}/player/{userId}/{money}/{hearts}/{stars}', status_code=201)
+@app.post('/game/{gameId}/player/{userId}/{money}/{hearts}/{stars}', status_code=201)
 def joinGame(gameId: str, userId: str = None, money: int = 0, hearts: int = 0, stars: int = 0, gameInstance: CareersGameEngine=Depends(manager)):
     user = manager.joinGame(gameId, userId, gameInstance)
     return user
