@@ -58,12 +58,21 @@ class SpecialProcessingType(Enum):
     EXTRA_TURN = "extra_turn"
     LOSE_NEXT_TURN = "lose_next_turn"
     
+class GameParametersType(Enum):  # A.K.A. game mode
+    TEST = "test"
+    PROD = "prod"
+    CUSTOM = "custom"
+
+class GameType(Enum):
+    TIMED = "timed"
+    POINTS = "points"
+    
 class GameConstants(object):
     '''
     Define global constants and Enums
     '''
     
-    COMMANDS = ['add', 'advance', 'bankrupt', 'bump', 'buy', 'create', 'done', 'end', 'enter', 
+    COMMANDS = ['add', 'add_degree', 'advance', 'bankrupt', 'bump', 'buy', 'create', 'done', 'end', 'enter', 
             'game_status', 'goto', 'info', 'list', 'load', 'log_message', 'next', 'pay', 'perform', 'quit', 'retire', 
             'roll', 'resolve', 'save', 'saved', 'start', 'status', 'transfer', 'update', 'use', 'use_insurance', 
             'where', 'who']

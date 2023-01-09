@@ -7,6 +7,7 @@ from datetime import datetime
 import json
 from game.player import Player
 from game.careersObject import CareersObject
+from game.gameConstants import GameType, GameParametersType
 
 class GameState(CareersObject):
     """Maintains the global state of a Careers game instance.
@@ -14,7 +15,7 @@ class GameState(CareersObject):
     """
 
 
-    def __init__(self, game_id, total_points, game_type='points'):
+    def __init__(self, game_id, total_points, game_type=GameType.POINTS, game_parameters_type=GameParametersType.PROD):
         """Create and initialize a Careers GameState
             The GameState encapsulates the following dynamic game state properties:
                 number_of_players
@@ -36,10 +37,10 @@ class GameState(CareersObject):
         self._total_points = total_points
         self._winning_player = None
         self._turns = 0
-        self._turn_number = 1
+        self._turn_number = 0
         self._game_start = datetime.now()
         self._game_complete = False
-        
+        self._game_parameters_type = game_parameters_type
         self._game_type = game_type
         self._seconds_remaining = 0 if game_type=='points' else total_points * 60
         self._gameId = game_id
@@ -89,8 +90,12 @@ class GameState(CareersObject):
         self._current_player_number = value
         
     @property
-    def game_type(self):
+    def game_type(self) -> GameType:
         return self._game_type
+    
+    @property
+    def game_parameters_type(self) -> GameParametersType:
+        return self._game_parameters_type
     
     @property
     def game_complete(self) -> bool:
@@ -148,11 +153,14 @@ class GameState(CareersObject):
             self.current_player = self.players[self.current_player_number]
             self.current_player.can_roll = True
             if npn == 0:
-                self.turns += 1
-                self.turn_number += 1
+                self.increment_turns()
 
         return self.current_player_number
     
+    def increment_turns(self):
+        self.turns += 1
+        self.turn_number += 1
+        
     def _get_next_player_number(self):
         p = self.current_player_number + 1
         if p >= self.number_of_players:
@@ -178,7 +186,8 @@ class GameState(CareersObject):
     
     def to_JSON(self):
         
-        gs = {"gameId" : self._gameId, "game_type" : self.game_type, "number_of_players" : self.number_of_players, "current_player_number" : self.current_player_number }
+        gs = {"gameId" : self._gameId, "game_type" : self.game_type.value, "game_parameters_type" : self.game_parameters_type.value, \
+              "number_of_players" : self.number_of_players, "current_player_number" : self.current_player_number }
         gs["turns"] = self.turns
         gs["turn_number"] = self.turn_number
         gs["total_points"] = self.total_points

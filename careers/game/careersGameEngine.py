@@ -23,7 +23,7 @@ from game.gameSquare import GameSquare, GameSquareClass
 from game.gameEngineCommands import GameEngineCommands
 from game.gameUtils import GameUtils
 from game.environment import Environment
-from game.gameConstants import PendingActionType, SpecialProcessingType
+from game.gameConstants import PendingActionType, SpecialProcessingType, GameType, GameParametersType
 
 from datetime import datetime
 import random
@@ -72,7 +72,7 @@ class CareersGameEngine(object):
         <transfer> :: "transfer" quantity ("cash" | "opportunity" | "experience) player_number
         <game_status> :: "game_status"
         <create> :: "create" <edition> <game_type> points  [id]      ;create a new CareersGame with specified total points or total time (in minutes) and optional gameId
-            <edition> :: "Hi-Tech"    ;supports multiple editions
+            <edition> :: "Hi-Tech" | "UK   ;supports multiple editions
             <game_type> ::  'points' | 'timed'
         <start> :: "start"                    ;starts a newly created CareersGame
         <buy>  :: "buy"  ( "hearts" | "stars" | "experience" | "insurance" | "opportunity" ) quantity cash_amount  ;buy some number of items for the cash_amount provided
@@ -246,6 +246,7 @@ class CareersGameEngine(object):
         """Roll 1 or 2 dice and advance that number of squares for current_player and execute the occupation or border square.
             A specific roll of no spaces can be forced by specifying number_of_dice=0.
             This will cause the player to stay where they are and will execute the current square again.
+            roll is implemented by the _advance(...) function.
         """
         player = self.game_state.current_player
         if not player.can_roll:
@@ -260,47 +261,8 @@ class CareersGameEngine(object):
         dice = random.choices(population=[i for i in range(1,7)], k=ndice)
         num_spaces = sum(dice)
         print(f' {player.player_initials}  rolled {num_spaces} {dice}')
-        return self.advance(num_spaces, dice)
+        return self._advance(num_spaces, dice)
             
-        
-    def _roll(self, player, dice:List[int]) -> CommandResult:
-        """Deprecated
-        """
-        num_spaces = sum(dice)
-    
-        next_square_number = self._get_next_square_number(player, num_spaces)
-        message = f' {player.player_initials}  rolled {num_spaces} {dice}, next_square_number {next_square_number}'
-        self.log(message)
-        print(f' {player.player_initials}  rolled {num_spaces} {dice}')
-        #
-        # check if player is on a holiday
-        # 
-        if player.on_holiday:
-            game_square = self.get_player_game_square(player)    # HOLIDAY square
-            must_roll = game_square.special_processing.must_roll
-            if num_spaces in must_roll:    # player may remain
-                pending_action = player.pending_actions.get_pending_action(PendingActionType.STAY_OR_MOVE)    # there's a system problem if not found
-                pending_action.pending_dice = dice # if they choose to move
-                result = CommandResult(CommandResult.NEED_PLAYER_CHOICE, f'{message} and may remain on {game_square.name}', False)
-            else:
-                player.clear_pending(PendingActionType.SELECT_DEGREE)       # clear all except SELECT_DEGREE
-                result = self.goto(next_square_number)
-            
-        #
-        # check if the player is Unemployed or sick and if so, if the roll allows them to move
-        #
-        else:
-            canmove, result = self._gameEngineCommands.can_player_move(player, dice)
-            self.log(result.message)
-            if canmove:
-                #
-                # clear any pending action - use it or lose it!
-                # and place the player on the next_square_number
-                #
-                player.clear_pending()
-                result = self.goto(next_square_number)
-        return result
-    
     
     def advance(self, num_spaces, dice:List[int]|None=None) -> CommandResult:
         """Advance a given number of spaces
@@ -309,6 +271,12 @@ class CareersGameEngine(object):
                 dice - optional dice roll as List[int], default is None
         
         """
+        if self._careersGame.game_parameters_type is GameParametersType.PROD:
+            return CommandResult(CommandResult.ERROR, "'advance' command not allowed in production mode", True)
+        else:
+            return self._advance(num_spaces, dice)
+        
+    def _advance(self, num_spaces, dice:List[int]|None=None) -> CommandResult:
         assert(num_spaces >= 0 and num_spaces <42)
         player = self.game_state.current_player
 
@@ -432,7 +400,7 @@ class CareersGameEngine(object):
             self.log(f'use roll {card_number}')
             diestr = card_number.lstrip(' [').rstrip('] ').split(",")
             die = [int(s) for s in diestr]
-            result = self._roll(player, die)
+            result = self.roll(player, die)
             
         else:
             result = CommandResult(CommandResult.ERROR, f"use can't use a '{what}' here ", False)
@@ -476,25 +444,6 @@ class CareersGameEngine(object):
             result = CommandResult(CommandResult.ERROR, "You don't have insurance!", False)
         return result
         
-    def goto(self, square_ref:int|str,  starting_square_number:int=0) -> CommandResult:
-        """Immediately place the designated player on the designated BorderSquare OR OccupationSquare and execute that square.
-            If the current player is in an occupation, this places the player on square_number of that Occupation.
-            Otherwise, the square_ref refers to a BorderSquare name or number.
-            NOTE that the border square number could be out of range. i.e. > game size. 
-            If so, the square number adjusted and then the pass_payday() action is executed.
-            
-            NOTE that when in an Occupation the designated square_number could be out of range. i.e. > the occupation exit_square_number.
-            If so, the player is advanced to the next BorderSquare and the exit occupation logic is executed.
-            
-        """
-        player = self.game_state.current_player
-        square_number = square_ref
-        if isinstance(square_ref, str):
-            bs = self._careersGame.find_border_square(square_ref, starting_square_number)
-            square_number = bs.number
-            player.board_location.occupation_name = None    # leaving the occupation (if in one) to go to a BorderSquare
-        return self._goto(square_number, player)
-    
     def enter(self, occupation_name:str) -> CommandResult:
         """Enter the named occupation at the designated square number and execute the occupation square.
             This checks if the player meets the entry conditions
@@ -507,20 +456,34 @@ class CareersGameEngine(object):
                 CommandResult
                 
             The player must either roll or use an experience card to actually enter the Occupation.
+            In production mode, the player must be on the occupation's entry square.
         """
         player = self.game_state.current_player
         if occupation_name in self._careersGame.occupation_names:
             occupation = self._careersGame.occupations[occupation_name]   # Occupation instance
             occupation_entrance_square = self._careersGame.get_occupation_entrance_squares()[occupation_name]    # BorderSquare instance
+            current_board_location = player.board_location
+            message = None
+            entry_ok = True
             #
             # if player used an Opportunity to get here, remove that from their deck and set their opportunity_card to None
             # also the player can immediately roll in to the Occupation
             #
             if player.opportunity_card is not None and player.opportunity_card.opportunity_type is OpportunityType.OCCUPATION and player.opportunity_card == occupation_name:
                 player.used_opportunity()
+            else:
+                if self._careersGame.game_parameters_type is GameParametersType.PROD and current_board_location.border_square_name != occupation_entrance_square.name:
+                    entry_ok = False
+                    message = "You must be on the Occupation entry square to use 'enter'"
                     
-            entry_ok, entry_fee, message = self._gameEngineCommands.can_enter(occupation, player)        # this also checks the Opportunity card used (if any)
-            if entry_ok:
+            meets_criteria, entry_fee, message = self._gameEngineCommands.can_enter(occupation, player)        # this also checks the Opportunity card used (if any)
+
+            if entry_ok and meets_criteria:
+                #
+                # in production mode a player must either be on the occupation's entry square
+                # or have used an Opportunity to get there
+                #
+                
                 player.cash = player.cash - entry_fee
                 player.board_location.border_square_number = occupation_entrance_square.number
                 player.board_location.border_square_name=occupation_entrance_square.name
@@ -866,15 +829,15 @@ class CareersGameEngine(object):
         
         return CommandResult(CommandResult.SUCCESS, message, True)
     
-    def create(self, edition, installationId, game_type, points, game_id=None, game_parameters_type="") -> CommandResult:
+    def create(self, edition, installationId, game_type, points, game_id=None, game_parameters_type="prod") -> CommandResult:
         """Create a new CareersGame.
             Arguments:
                 edition - 'Hi-Tech' or 'UK' are the only editions currently supported
                 installationId - uniquely identifies the game's creator. It must have a length >= 5.
                 game_type - 'points', 'timed', or 'solo'
                 game_id - if not None, the gameId to use to identify this game.
-                game_parameters_type - 'test', 'prod' or blank for the default. This maps to the appropriat
-                    gameParameters JSON file: gameParameters_prod.json, gameParameters_test.json, gameParameters.json
+                game_parameters_type - 'test', 'prod' or 'custom'. This maps to the appropriate
+                    gameParameters JSON file: gameParameters_prod.json, gameParameters_test.json
             Returns: 
                 CommandResult
                     message - JSON gameId, installationId if successful, else an error message: "error":<details>
@@ -1008,7 +971,7 @@ class CareersGameEngine(object):
                     result = game_square.execute(player)
                 else:   # move off Holiday
                     player.on_holiday = False
-                    result = self._roll(player, pending_action.pending_dice)
+                    result = self.roll(player, pending_action.pending_dice)
                 
             elif what ==   PendingActionType.TAKE_SHORTCUT.value:   # yes=take the shortcut - TODO
                 if choice.lower() == "yes":
@@ -1209,6 +1172,7 @@ class CareersGameEngine(object):
                          For ONE_DIE_WILD, this a string with numerical value from 1 to 6 inclusive,
                          for TWO_DIE_WILD this is a comma-delimited string representing the 2 die, for example "2,5"
                          for TRIPLE_WILD, this can be either depending on the player's board position.
+            Note - _execute_experience_card(...) is implemented by roll() which in turn is implemented by _advance().
             
         '''
         player.experience_card = experienceCard
@@ -1248,7 +1212,7 @@ class CareersGameEngine(object):
                     
         message = f'{player.player_initials} roll: {dice}, moving: {nspaces} spaces'
         self.log(message)
-        result = self._roll(player, dice)
+        result = self.roll(player, dice)
         #
         # remove the used experience from the player's deck
         #
@@ -1326,7 +1290,29 @@ class CareersGameEngine(object):
             next_square_number = board_location.border_square_number + num_spaces        # could be > size of the board, that's also handled by goto()
             
         return next_square_number
-    
+
+    def goto(self, square_ref:int|str,  starting_square_number:int=0) -> CommandResult:
+        """Immediately place the designated player on the designated BorderSquare OR OccupationSquare and execute that square.
+            If the current player is in an occupation, this places the player on square_number of that Occupation.
+            Otherwise, the square_ref refers to a BorderSquare name or number.
+            NOTE that the border square number could be out of range. i.e. > game size. 
+            If so, the square number adjusted and then the pass_payday() action is executed.
+            
+            NOTE that when in an Occupation the designated square_number could be out of range. i.e. > the occupation exit_square_number.
+            If so, the player is advanced to the next BorderSquare and the exit occupation logic is executed.
+            
+        """
+        player = self.game_state.current_player
+        square_number = square_ref
+        if isinstance(square_ref, str):
+            bs = self._careersGame.find_border_square(square_ref, starting_square_number)
+            if bs is None:
+                return CommandResult(CommandResult.ERROR, f"No such destination: '{square_ref}' ", True)
+
+            square_number = bs.number
+            player.board_location.occupation_name = None    # leaving the occupation (if in one) to go to a BorderSquare
+
+        return self._goto(square_number, player)    
 
     def _goto(self, square_number:int, player:Player) -> CommandResult:
         """Immediately place the designated player on the designated BorderSquare OR OccupationSquare and execute that square.
@@ -1396,22 +1382,31 @@ class CareersGameEngine(object):
             else:    # player passed or landed on Payday
                 if square_number >  board_location.border_square_number :
                     square_number = square_number - self._careersGame.game_board.game_board_size
-                border_square = self._careersGame.get_border_square(square_number)
-                board_location.border_square_number = square_number
-                board_location.border_square_name = border_square.name
-                payday_result = self.pass_payday(player)
-                #
-                # again, check travel arrangements
-                #
-                if border_square.square_type is BorderSquareType.TRAVEL_SQUARE and self.was_prior_travel(player):
-                    result = CommandResult(CommandResult.SUCCESS, "", True)
-                elif square_number > 0:
-                    result = self.execute_game_square(player, board_location)
-            
-                if result is None:
-                    result = payday_result
-                else:
-                    result.message = f'{payday_result.message}\n{result.message}'
+                if square_number >= board_size:
+                    result =  CommandResult(CommandResult.ERROR, f'{square_number} is not a valid destination', True)
+                else:    
+                    border_square = self._careersGame.get_border_square(square_number)
+                    board_location.border_square_number = square_number
+                    board_location.border_square_name = border_square.name
+                    #
+                    # do not pass Payday if the destination is Unemployment
+                    #
+                    if border_square.name.lower() == "unemployment":
+                        payday_result = CommandResult(CommandResult.SUCCESS, "Do not pass Payday. Go directly to Unemployment", True)
+                    else:
+                        payday_result = self.pass_payday(player)
+                    #
+                    # again, check travel arrangements
+                    #
+                    if border_square.square_type is BorderSquareType.TRAVEL_SQUARE and self.was_prior_travel(player):
+                        result = CommandResult(CommandResult.SUCCESS, "", True)
+                    elif square_number > 0:
+                        result = self.execute_game_square(player, board_location)
+                
+                    if result is None:
+                        result = payday_result
+                    else:
+                        result.message = f'{payday_result.message}\n{result.message}'
                 return result
         #
         # if another player is on that square AND the square is NOT Unemployment, they can be bumped
@@ -1519,12 +1514,19 @@ class CareersGameEngine(object):
             result = True
         return result
         
-    def add_degree(self, player, degree_program) -> CommandResult:
+    def add_degree(self, player:str|Player, degree_program) -> CommandResult:
         """Adds a degree to the player and adjusts the salary as needed.
             The maximum number of degrees a player can have in any degree program is "maxDegrees".
             Player's Salary is not adjusted if their number of degrees exceeds that.
             The player's pending_action is also reset if it's PendingActionType.SELECT_DEGREE
+              Arguments:
+                  player - a Player instance OR initials (str)
+                  degree_program - the name of the degree program for this game edition.
         """
+        thePlayer = player
+        if isinstance(player, str):
+            thePlayer = self._game_state.get_player_by_initials(player)
+        
         game_degrees = self._careersGame.college_degrees
         degree_names = game_degrees['degreeNames']
         degreeProgram = degree_program.title()   # case matters!
@@ -1533,26 +1535,26 @@ class CareersGameEngine(object):
         
         max_allowed = game_degrees['maxDegrees']
         salary_increases = game_degrees['salaryIncreases']
-        my_degrees = player.my_degrees
+        my_degrees = thePlayer.my_degrees
         ndegrees = 0
         salary_inc = 0
         if degreeProgram in my_degrees:
-            ndegrees = player.my_degrees[degreeProgram]
+            ndegrees = thePlayer.my_degrees[degreeProgram]
         
         if ndegrees == 0:
-            player.my_degrees[degreeProgram] = 1
+            thePlayer.my_degrees[degreeProgram] = 1
             salary_inc = salary_increases[0]
-            player.salary = player.salary + salary_inc   # automatically adds to salary_history
+            thePlayer.salary = thePlayer.salary + salary_inc   # automatically adds to salary_history
             
         elif ndegrees + 1 <= max_allowed:
             salary_inc = salary_increases[ndegrees]
-            player.my_degrees[degreeProgram] = ndegrees + 1
-            player.salary = player.salary + salary_inc
+            thePlayer.my_degrees[degreeProgram] = ndegrees + 1
+            thePlayer.salary = thePlayer.salary + salary_inc
         
         else:
             ndegrees = 3  # already maxed out
         
-        message = f'{player.player_initials} awarded {degree_names[ndegrees]} degree in {degreeProgram}'
+        message = f'{thePlayer.player_initials} awarded {degree_names[ndegrees]} degree in {degreeProgram}'
         if salary_inc > 0:
             symbol = self._careersGame.game_parameters.get_param('currency_symbol')
             message += f' and a Salary increase of {symbol}{salary_inc}'

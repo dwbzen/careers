@@ -7,13 +7,15 @@ Created on Aug 12, 2022
 from game.player import  Player
 from game.careersGameEngine import CareersGameEngine
 from game.commandResult import CommandResult
+from game.gameConstants import GameParametersType
 import argparse, time
 
 class GameRunner(object):
     """A command-line text version of Careers game play used for testing and simulating web server operation.
+    
     """
 
-    def __init__(self, edition, master_id, game_type, total_points, debug_flag):
+    def __init__(self, edition, master_id, game_type, total_points, debug_flag, game_mode):
         """
         Constructor
         """
@@ -25,6 +27,9 @@ class GameRunner(object):
         self.game_engine = CareersGameEngine()
         self.game_engine.debug = self._debug
         self._master_id = master_id
+        self._game_mode = game_mode
+        # these commands are not allowed in prod mode, but permitted in test, test_prod and custom modes
+        self._restricted_commands = ["goto", "add_degree", "advance"]
 
     def add_player(self, name, initials, player_id=None, email=None, stars=0, hearts=0, cash=0):
         self.game_engine.add(name, initials, player_id, email, stars, hearts, cash)
@@ -45,6 +50,9 @@ class GameRunner(object):
     def master_id(self):
         return self._master_id
     
+    @property
+    def game_mode(self)->str:
+        return self._game_mode
     
     def number_of_players(self):
         return self.game.game_state.number_of_players
@@ -52,8 +60,9 @@ class GameRunner(object):
     def get_game_state(self):
         return self.game_engine.game_state
     
-    def create_game(self,  edition, installationId, game_type, points, game_id=None, game_parameters_type="") -> CommandResult:
+    def create_game(self,  edition, installationId, game_type, points, game_id=None, game_parameters_type="prod") -> CommandResult:
         result = self.game_engine.create(edition, installationId, game_type, points, game_id, game_parameters_type)
+        self._careersGame = self.game_engine.careersGame
         return result
     
     def execute_command(self, cmd, aplayer:Player):
@@ -75,7 +84,7 @@ class GameRunner(object):
         game_over = False
         game_state = self.get_game_state()
         nplayers = game_state.number_of_players
-        turn_number = 1
+        
         while not game_over:
             for i in range(nplayers):
                 # 
@@ -83,8 +92,17 @@ class GameRunner(object):
                 pn = current_player.number
                 done = False
                 while not done:
+                    turn_number = game_state.turn_number
                     prompt = f'player {pn} {current_player.player_initials} ({turn_number}): '
                     cmd = input(prompt)
+                    if len(cmd) == 0: continue
+                    cmd_str = cmd.split(" ")
+                    
+                    if cmd_str[0] in self._restricted_commands \
+                      and self.game_mode != "test_prod" \
+                      and self._careersGame.game_parameters_type is GameParametersType.PROD:
+                        print( f"'{cmd_str[0]}' command not allowed in production mode")
+                        continue
                     result = self.execute_command(cmd, current_player)
                     print(result.message)
                     done = result.done_flag
@@ -92,7 +110,6 @@ class GameRunner(object):
                         game_over = True
                 if game_over:
                     break
-            turn_number += 1
         
         self.game_engine.end()
         
@@ -134,14 +151,15 @@ def main():
     parser = argparse.ArgumentParser(description="Run a command-driven Careers Game for 1 to 6 players")
     parser.add_argument("--players", "-p", help="The number of players", type=int, choices=range(1,6), default=1)
     parser.add_argument("--points", help="Total game points", type=int, choices=range(40, 10000), default=100)
-    parser.add_argument("--params", help="Game parameters type: 'test', 'prod' or '' for default", type=str, default="")
+    parser.add_argument("--params", help="Game parameters type: 'test', 'prod', 'test-prod' or 'custom' ", type=str, \
+                        choices=["test","prod","custom","test_prod"], default="test")
     parser.add_argument("--gameid", help="Game ID", type=str, default=None)
     parser.add_argument("--edition", help="Game edition: Hi-Tech or UK", type=str, choices=["Hi-Tech", "UK"], default="Hi-Tech")
     parser.add_argument("--script", help="Execute script file", type=str, default=None)
     parser.add_argument("--delay", help="Delay a specified number of seconds between script commands", type=int, default=0)
     parser.add_argument("--comments", "-c", help="Log comment lines when running a script", type=str, choices=['y','Y', 'n', 'N'], default='Y')
     parser.add_argument("--debug", "-d", help="Run in debug mode, logging trace output",  action="store_true", default=False)
-    parser.add_argument("--type","-t", help="Game type: points, timed, solo", type=str, choices=["points", "timed", "solo"], default="points")
+    parser.add_argument("--type","-t", help="Game type: points, timed, solo", type=str, choices=["points", "timed"], default="points")
     args = parser.parse_args()
     
     total_points = args.points
@@ -152,8 +170,11 @@ def main():
     log_comments = args.comments.lower()=='y'
     
     gameId = args.gameid
-    game_parameters_type = args.params
-    game_runner = GameRunner(edition, installationId, game_type, total_points, args.debug)  # creates a CareersGameEngine
+    #
+    # test_prod allows goto in production mode
+    #
+    game_parameters_type = "prod" if args.params=="test_prod" else args.params
+    game_runner = GameRunner(edition, installationId, game_type, total_points, args.debug, args.params)  # creates a CareersGameEngine
     # creates a CareersGame for points
     game_runner.create_game(edition, installationId, game_type, total_points, gameId, game_parameters_type)   
     

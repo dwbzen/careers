@@ -112,7 +112,7 @@ class PendingActions(CareersObject):
         return pa
 
     def remove(self, pendingActionType:PendingActionType)  -> PendingAction|None:
-        return(self.get(pendingActionType))
+        return(self.find(pendingActionType))
 
     def get_all(self)->List[PendingAction]:
         return self._pending_actions

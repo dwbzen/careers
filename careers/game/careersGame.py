@@ -23,7 +23,7 @@ from game.careersObject import CareersObject
 from threading import Lock
 from game.boardLocation import BoardLocation
 from game.gameParameters import GameParameters
-from game.gameConstants import GameConstants
+from game.gameConstants import GameConstants, GameParametersType, GameType
 
 
 class CareersGame(CareersObject):
@@ -35,7 +35,7 @@ class CareersGame(CareersObject):
     """
     _lock = Lock()
     
-    def __init__(self, edition_name:str,  installationId:str, total_points:int, game_id:str, game_type="points", game_parameters_type=""):
+    def __init__(self, edition_name:str,  installationId:str, total_points:int, game_id:str, game_type="points", game_parameters_type="prod"):
         """CareersGame Constructor
             Arguments:
                 installationId - An ID that uniquely identifies the game's creator - a.k.a the game master
@@ -49,7 +49,7 @@ class CareersGame(CareersObject):
         """
         self._installationId = installationId
         self._edition_name = edition_name
-        self._game_parameters_type = game_parameters_type      # can be "test", "prod" or "" for default
+        self._game_parameters_type = GameParametersType[game_parameters_type.upper()]      # can be "test" or "prod"
         self._env = Environment.get_environment()
         self._resource_folder = self._env.get_resource_folder()     # base resource folder
         self._game_parameters_filename = None
@@ -80,7 +80,7 @@ class CareersGame(CareersObject):
         # load the game board
         #
         self._game_board = self._create_game_board()   # GameBoard instance
-        self._game_type = game_type  # 'points', 'timed' (which is not yet supported), or 'solo'
+        self._game_type = GameType[game_type.upper()]  # 'points', 'timed' (which is not yet supported), or 'solo'
 
         #
         # if a gameId is not provided, create one
@@ -94,18 +94,18 @@ class CareersGame(CareersObject):
         #
         # create & initialize the GameState which includes a list of Players
         #
-        self._game_state = GameState(self._gameId, total_points, self._game_type)
+        self._game_state = GameState(self._gameId, total_points, self._game_type, self._game_parameters_type)
 
         self._game_constants = GameConstants({'edition':edition_name})
+        self._solo = None     # True if number of players == 1, set when adding players
 
         
     def _load_game_configuration(self):
         """Loads the game parameters and occupations JSON files for this edition.
         
         """
-        self._game_parameters_filename = \
-            f'{self._resource_folder}/{self._edition_name}/gameParameters_{self._game_parameters_type}.json' if len(self._game_parameters_type) > 0 \
-            else f'{self._resource_folder}/{self._edition_name}/gameParameters.json'
+        game_params_type = self._game_parameters_type.value
+        self._game_parameters_filename = f'{self._resource_folder}/{self._edition_name}/gameParameters_{game_params_type}.json'
             
         with open(self._game_parameters_filename, "r") as fp:
             jtxt = fp.read()
@@ -179,6 +179,14 @@ class CareersGame(CareersObject):
     @property
     def edition_name(self):
         return self._edition_name
+    
+    @property
+    def solo(self) -> bool | None:
+        return self._solo
+    
+    @solo.setter
+    def solo(self, value:bool):
+        self._solo = value
     
     @property
     def game_board(self) -> GameBoard:
@@ -281,8 +289,13 @@ class CareersGame(CareersObject):
     def game_constants(self) -> GameConstants:
         return self._game_constants
    
+    @property
+    def game_parameters_type(self) -> GameParametersType:
+        return self._game_parameters_type
+    
     def add_player(self, aplayer:Player):
         self.game_state.add_player(aplayer)
+        self._solo = self.game_state.number_of_players == 1
     
     def complete_player_move(self) -> Player | None:
         """Completes the move of the current player and determines if there's a winner and returns winning_player.
