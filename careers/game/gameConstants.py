@@ -73,7 +73,7 @@ class GameConstants(object):
     '''
     
     COMMANDS = ['add', 'add_degree', 'advance', 'bankrupt', 'bump', 'buy', 'create', 'done', 'end', 'enter', 
-            'game_status', 'goto', 'info', 'list', 'load', 'log_message', 'next', 'pay', 'perform', 'quit', 'retire', 
+            'game_status', 'goto', 'info', 'list', 'load', 'location', 'log_message', 'next', 'pay', 'perform', 'quit', 'retire', 
             'roll', 'resolve', 'save', 'saved', 'start', 'status', 'transfer', 'update', 'use', 'use_insurance', 
             'where', 'who']
 

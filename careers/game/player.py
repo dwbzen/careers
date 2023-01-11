@@ -203,6 +203,19 @@ class Player(CareersObject):
     def current_occupation_square_number(self):
         return self.board_location.occupation_square_number
     
+    def get_location(self) -> str:
+        """Encapsulates the player's board location as a JSON-formatted string.
+            Returns: the border and occupation name and square number as a JSON string
+                for example, {"border": {"FMC": 4}, "occupation": {"FMC": 2}} - player is on square 2 of FMC
+                {"border": {"Opportunity": 8}, "occupation": {"None": 0}}   - player is on border square 8
+        """
+        pdict_border =  {self.current_border_square_name():self.current_border_square_number()}
+        occupation_name = "None" if self.current_occupation_name() is None else self.current_occupation_name()
+        pdict_occupation = {occupation_name:0} if occupation_name=="None" else {occupation_name:self.current_occupation_square_number()}
+        pdict = {"border":pdict_border, "occupation":pdict_occupation}
+        
+        return json.dumps(pdict)
+    
     @property
     def my_opportunity_cards(self) -> List[OpportunityCard]:
         return self._my_opportunity_cards

@@ -589,6 +589,11 @@ class CareersGameEngine(object):
         """
         return self._gameEngineCommands.save_game(self._game_filename_base, self.gameId, how=how)
     
+    def location(self, who=None)->str:
+        player = self.game_state.current_player if who is None else self.get_player(who)
+        message =  player.get_location()
+        return CommandResult(CommandResult.SUCCESS, message, False)
+    
     def where(self, t1:str="am", t2:str="I") -> CommandResult:
         """where am I or where is <player>
         """
@@ -1346,10 +1351,10 @@ class CareersGameEngine(object):
                 
                 result = self.execute_game_square(player, board_location)
                 result.message = exit_result.message + "\n" + result.message
-                #return result
+
             else:    # next square is in this occupation
                 board_location.occupation_square_number = square_number
-                return self.execute_game_square(player, board_location)
+                result = self.execute_game_square(player, board_location)
                 
         else:   # goto designated border square. Possible that square_number == the player's current position
                 # in that case the player stays on that space. For example, on Holiday and they choose to stay put.
@@ -1378,7 +1383,7 @@ class CareersGameEngine(object):
                     result = CommandResult(CommandResult.SUCCESS, "", True)
                 else:
                     result = self.execute_game_square(player, board_location)
-                #return result
+
             else:    # player passed or landed on Payday
                 if square_number >  board_location.border_square_number :
                     square_number = square_number - self._careersGame.game_board.game_board_size
@@ -1407,7 +1412,6 @@ class CareersGameEngine(object):
                         result = payday_result
                     else:
                         result.message = f'{payday_result.message}\n{result.message}'
-                return result
         #
         # if another player is on that square AND the square is NOT Unemployment, they can be bumped
         #
@@ -1569,16 +1573,14 @@ class CareersGameEngine(object):
             Returns: a list of Player on the square occupied by player, or an empty list if none.
         """
         plist = []
-        occupation_name = player.current_occupation_name()      # could be None
+        #occupation_name = player.current_occupation_name()      # could be None
+        my_location = player.get_location()
         for ap in self._game_state.players:
             if player.number == ap.number:
                 continue    # it's me!
-            if occupation_name is None:     # player is on a border square
-                if player.current_border_square_number() == ap.current_border_square_number():
-                    plist.append(ap)
-            else:   # player is in an occupation
-                if ap.current_occupation_name() == occupation_name and ap.current_occupation_square_number() == ap.current_occupation_square_number():
-                    plist.append(ap)
+            ap_location = ap.get_location()
+            if ap_location == my_location:
+                plist.append(ap)
                 
         return plist
     
