@@ -1,5 +1,5 @@
 {
-	"description" : "Custom game parameters for testing",
+	"description" : "Custom Hi-Tech Edition game parameters for testing",
 	"starting_salary" : 5000,
 	"starting_cash" : 20000,
 	"currency" : "dollars",
@@ -7,11 +7,11 @@
 	"date_format" : "yyyy-mm-dd",
 	"starting_experience_cards" : 2,
 	"starting_opportunity_cards" : 2,
-	"starting_hearts" : 20,
 	"starting_stars" : 10,
-	"default_game_points" : 200,
+	"starting_hearts" : 20,
+	"default_game_points" : 100,
 	"timed_game" : 0,
-	"default_game_minutes" : 60,
+	"default_game_minutes" : 30,
 	"allow_negative_experience" : 1,
 	"interest_rate" : 2.5,
 	"early_withdrawal_penalty" : 5.0

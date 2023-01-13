@@ -1,0 +1,39 @@
+# add 2 players - 60 point game - stars  hearts  cash
+add player Don DWB dwb20230113 dwbzen@gmail.com 20 10 30
+add player Brian BDB bdb20230113 brian.bacon01@gmail.com 20 10 30
+start
+# set starting params for this test
+set DWB happiness 20
+set DWB fame 10
+set DWB money 40000
+set BDB happiness 20
+set BDB fame 10
+set BDB money 40000
+# DWB + 2 hearts
+enter UF
+goto 1
+next
+# BDB + 4 stars
+enter UF
+goto 3
+next
+# DWB + 2 stars, 4 hearts
+goto 6
+status
+next
+# BDB + 6 hearts
+goto 8
+status
+next
+# DWB
+goto 9
+status
+next
+# BDB + 6 stars, this should win it
+goto 10
+status
+next
+
+# end the game
+game_status
+end

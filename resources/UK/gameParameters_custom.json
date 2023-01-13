@@ -1,5 +1,5 @@
 {
-	"description" : "Default UV version game parameters",
+	"description" : "Custom UK Edition game parameters for testing",
 	"starting_salary" : 5000,
 	"starting_cash" : 10000,
 	"currency" : "Pounds",

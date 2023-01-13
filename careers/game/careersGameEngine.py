@@ -29,6 +29,7 @@ from datetime import datetime
 import random
 from typing import List
 import os
+from music21.features.jSymbolic import AmountOfArpeggiationFeature
 
 class CareersGameEngine(object):
     """CareersGameEngine executes the action(s) associated with each player's turn.
@@ -529,11 +530,12 @@ class CareersGameEngine(object):
         #
         # has this player won the game?
         #
-        if cp.total_points() >= self._careersGame.game_state.total_points and cp.has_success():
-            self._careersGame.game_state.winning_player = cp
-            self._careersGame.game_state.game_complete = True
+        if self.game_state.is_game_complete():    # somebody won!
+            winning_player = self.game_state.winning_player
             save_result = self.save()
-            message = f'The game is over, the winner is {cp.player_initials} with {cp.total_points()} points'
+            game_time = self.game_state.get_elapsed_time()
+            message = f'The game is over, the winner is {winning_player.player_initials} with {winning_player.total_points()} points.'
+            message += f'Game time: {game_time}'
             message += f'\nGame saved as: {save_result.message}'
             result = CommandResult(CommandResult.TERMINATE, message, True)
             return result
@@ -567,6 +569,7 @@ class CareersGameEngine(object):
         """Ends the game, saves the current state if specified, and exits.
         """
         self.log("Ending game: " + self.gameId)
+        self._careersGame.end_game()
         if save is not None and save.lower()=='save':    # save the game state first
             sg_result = self.save()
             result = CommandResult(CommandResult.TERMINATE, f'Game is complete and saved to file: {sg_result.message}', True)
@@ -674,6 +677,8 @@ class CareersGameEngine(object):
         else:
             player = self.get_player(who)
         player.bankrupt_me()
+        if self.game_state.number_of_players == 1:
+            player.can_roll = True
         result = CommandResult(CommandResult.SUCCESS, f'{player.player_initials} has declared bankruptcy', False)
         return result
     
@@ -755,18 +760,50 @@ class CareersGameEngine(object):
         player = self.game_state.current_player
         return GameEngineCommands.perform(player, what, how)
 
+    def set(self, who:str, what:str, amount:int):
+        """Sets number of hearts, stars or cash for a given player
+            This command is most useful in setting starting params in a script file
+            that is not dependent on the gameParameters file.
+            Arguments:
+                who - the player as identified by player_initials
+                what - "hearts" or "hapiness", "stars" or "fame", "cash" or "money", "salary"
+                amount - an integer
+            Note that the 'set' command is not allowed in production game mode, only test or test_prod
+        """
+        result = CommandResult.SUCCESS
+        message = f'who: {who}, what:{what}, amount:{amount}'
+        player = self.get_player(who)
+        if player is None:
+            message = f'No such player: {who}'
+            result = CommandResult.ERROR
+        else:
+            match(what):
+                case "happiness" | "hearts":
+                    player.happiness = amount
+                case "fame" | "stars":
+                    player.fame = amount
+                case "cash" | "money":
+                    player.cash = amount
+                case "salary":
+                    player.salary = amount
+                case _:
+                    result = CommandResult.ERROR
+                    message = f'Cannot set {what}. what must be one of "hearts", "stars", "cash" or "salary"'
+                    
+        return CommandResult(result, message, True)
+        
     def saved(self) -> CommandResult:
         """List the games saved by this installationId, if any
         
         """
-        result = CommandResult(CommandResult.SUCCESS, "'saved' command not yet implemented", False)
+        result = CommandResult(CommandResult.SUCCESS, "'saved' command not yet implemented, but soon!", False)
         return result    
 
     def load(self, gameid:str) -> CommandResult:
         """Load a previously saved game, identified by the game Id
         
         """
-        result = CommandResult(CommandResult.SUCCESS, "'load' command not yet implemented", False)
+        result = CommandResult(CommandResult.SUCCESS, "'load' command not yet implemented, any day now!", False)
         return result    
 
     def who(self, t1:str="am", t2:str="I") -> CommandResult:
@@ -800,6 +837,7 @@ class CareersGameEngine(object):
             player.set_starting_parameters(cash=self.careersGame.game_parameters.get_param('starting_cash'), salary=self._careersGame.game_parameters.get_param('starting_salary') )
             player.add_hearts(self.careersGame.game_parameters.get_param('starting_hearts'))
             player.add_stars(self.careersGame.game_parameters.get_param('starting_stars'))
+            player.game_type = self._careersGame.game_type
             
             self._careersGame.add_player(player)        # adds to GameState
             if player.number == 0:      # the first player can roll
@@ -1089,6 +1127,7 @@ class CareersGameEngine(object):
 
         self.log(message)
         self.game_state.set_next_player()    # sets the player number to 0 and the curent_player Player reference
+        self._careersGame.start_game()       # sets the start datetime
         return CommandResult(CommandResult.SUCCESS, message, True)
     
     def _buy(self, player:Player, what:str, qty_arg:int|str=1, amount_arg:int|str=1) -> CommandResult:

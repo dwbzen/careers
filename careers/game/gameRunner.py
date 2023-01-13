@@ -7,7 +7,7 @@ Created on Aug 12, 2022
 from game.player import  Player
 from game.careersGameEngine import CareersGameEngine
 from game.commandResult import CommandResult
-from game.gameConstants import GameParametersType
+from game.gameConstants import GameParametersType, GameType
 import argparse, time
 
 class GameRunner(object):
@@ -15,21 +15,23 @@ class GameRunner(object):
     
     """
 
-    def __init__(self, edition, master_id, game_type, total_points, debug_flag, game_mode):
+    def __init__(self, edition, installationId, game_type, total_points, game_duration, debug_flag, game_mode):
         """
         Constructor
         """
         self._careersGame = None
-        self.total_points = total_points
+        self.total_points = total_points      # applies to GameType.POINTS
+        self.game_duration = game_duration    # applies to GameType.TIMED
         self._debug = debug_flag          # traces the action by describing each step
         self._edition = edition
         self._game_type = game_type
         self.game_engine = CareersGameEngine()
         self.game_engine.debug = self._debug
-        self._master_id = master_id
-        self._game_mode = game_mode
+        self._installationId = installationId
+        self._game_mode = game_mode      # 'test', 'prod', 'test-prod' or 'custom'
         # these commands are not allowed in prod mode, but permitted in test, test_prod and custom modes
-        self._restricted_commands = ["goto", "add_degree", "advance"]
+        self._restricted_commands = ["goto", "add_degree", "advance", "set"]
+        self._action_commands = ["roll", "use", "bankrupt", "retire" ]    # increment turns for solo game
 
     def add_player(self, name, initials, player_id=None, email=None, stars=0, hearts=0, cash=0):
         self.game_engine.add(name, initials, player_id, email, stars, hearts, cash)
@@ -54,14 +56,19 @@ class GameRunner(object):
     def game_mode(self)->str:
         return self._game_mode
     
+    @property
+    def game_type(self)->GameType:
+        return self._game_type
+    
     def number_of_players(self):
         return self.game.game_state.number_of_players
     
     def get_game_state(self):
         return self.game_engine.game_state
     
-    def create_game(self,  edition, installationId, game_type, points, game_id=None, game_parameters_type="prod") -> CommandResult:
-        result = self.game_engine.create(edition, installationId, game_type, points, game_id, game_parameters_type)
+    def create_game(self, game_id=None, game_parameters_type="prod") -> CommandResult:
+        total_points = self.total_points if self.game_type is GameType.POINTS else self.game_duration
+        result = self.game_engine.create(self._edition, self._installationId, self.game_type, total_points, game_id, game_parameters_type)
         self._careersGame = self.game_engine.careersGame
         return result
     
@@ -108,6 +115,8 @@ class GameRunner(object):
                     done = result.done_flag
                     if result.return_code == CommandResult.TERMINATE:
                         game_over = True
+                    if nplayers == 1 and cmd_str[0] in self._action_commands:
+                        game_state.increment_turns()
                 if game_over:
                     break
         
@@ -150,7 +159,8 @@ class GameRunner(object):
 def main():
     parser = argparse.ArgumentParser(description="Run a command-driven Careers Game for 1 to 6 players")
     parser.add_argument("--players", "-p", help="The number of players", type=int, choices=range(1,6), default=1)
-    parser.add_argument("--points", help="Total game points", type=int, choices=range(40, 10000), default=100)
+    parser.add_argument("--points", help="Total game points", type=int, choices=range(30, 10000), default=100)
+    parser.add_argument("--time", help="For a timed game, the game duration in minutes", type=int, choices=range(5, 24*60), default=30)
     parser.add_argument("--params", help="Game parameters type: 'test', 'prod', 'test-prod' or 'custom' ", type=str, \
                         choices=["test","prod","custom","test_prod"], default="test")
     parser.add_argument("--gameid", help="Game ID", type=str, default=None)
@@ -159,24 +169,25 @@ def main():
     parser.add_argument("--delay", help="Delay a specified number of seconds between script commands", type=int, default=0)
     parser.add_argument("--comments", "-c", help="Log comment lines when running a script", type=str, choices=['y','Y', 'n', 'N'], default='Y')
     parser.add_argument("--debug", "-d", help="Run in debug mode, logging trace output",  action="store_true", default=False)
-    parser.add_argument("--type","-t", help="Game type: points, timed, solo", type=str, choices=["points", "timed"], default="points")
+    parser.add_argument("--type","-t", help="Game type: points, timed", type=str, choices=["points", "timed"], default="points")
     args = parser.parse_args()
     
     total_points = args.points
+    game_duration = args.time
     edition = args.edition
-    game_type = args.type            # 'points', 'timed' or 'solo'
+    game_type = args.type            # 'points' or 'timed'
     installationId = 'ZenAlien2013'  # uniquely identifies 'me' as the game creator
     filePath = args.script           # complete file path
     log_comments = args.comments.lower()=='y'
     
     gameId = args.gameid
     #
-    # test_prod allows goto in production mode
+    # test_prod allows goto and advance in production mode
     #
     game_parameters_type = "prod" if args.params=="test_prod" else args.params
-    game_runner = GameRunner(edition, installationId, game_type, total_points, args.debug, args.params)  # creates a CareersGameEngine
+    game_runner = GameRunner(edition, installationId, game_type, total_points, game_duration, args.debug, args.params)  # creates a CareersGameEngine
     # creates a CareersGame for points
-    game_runner.create_game(edition, installationId, game_type, total_points, gameId, game_parameters_type)   
+    game_runner.create_game(gameId, game_parameters_type)
     
     if filePath is not None:
         game_runner.run_script(filePath, args.delay, log_comments=log_comments)
@@ -184,7 +195,7 @@ def main():
         #
         # add players
         #
-        nplayers = 1 if args.type=="solo" else  args.players
+        nplayers = args.players
         
         # name, initials=None, player_id=None, email=None, stars=0, hearts=0, cash=0
         # use update command to add success_formula if not provided here

@@ -11,6 +11,7 @@ from game.experienceCard import ExperienceCard
 from game.gameConstants import PendingActionType
 from game.pendingAction import PendingAction
 from game.pendingActions import PendingActions
+from game.gameConstants import GameType
 from datetime import datetime
 from typing import Dict, List, Union
 import json
@@ -76,7 +77,8 @@ class Player(CareersObject):
         self._fame = [0]                     # record of fame (stars) earned. Cumulative amounts, total is fame[-1]
         self._savings = 0                    # savings account - populated with "pay", draw funds with "withdraw"
         self._point_losses = {"cash":5000,"hearts":10,"stars":10, "salary":2000}    # most recent point losses if any. Used by "use_insurance" command
-    
+        self._game_type = GameType.POINTS    # defaults to POINTS, can set to TIMED
+            
     def has_success(self) -> bool:
         return self.happiness >= self.success_formula.hearts and \
             self.fame >= self.success_formula.stars and \
@@ -178,9 +180,17 @@ class Player(CareersObject):
     def happiness(self):
         return self._happiness[-1]
     
+    @happiness.setter
+    def happiness(self, qty):
+        self._happiness = [qty]
+    
     @property   
     def fame(self):
         return self._fame[-1]
+    
+    @fame.setter
+    def fame(self, qty):
+        self._fame = [qty]
     
     @property
     def board_location(self) -> BoardLocation:
@@ -367,6 +377,14 @@ class Player(CareersObject):
         self.point_losses["hearts"] = 0
         self.point_losses["stars"] = 0
         self.point_losses["salary"] = 0
+        
+    @property
+    def game_type(self)->GameType:
+        return self._game_type
+    
+    @game_type.setter
+    def game_type(self, value:GameType):
+        self._game_type = value
         
     def add_command(self, command:str):
         self._command_history.append(command)
@@ -573,10 +591,15 @@ class Player(CareersObject):
         return self.savings + self.cash - self.get_total_loans()
     
     def is_complete(self):
-        """Returns True if this players's total points are >= game total points, False otherwise
+        """Returns True if this players has met or surpassed each success formula item:
+            happiness (hearts), fame (stars), money, False otherwise
     
         """
-        return  self.total_points() >= self.success_formula.total_points()
+        complete = self.happiness >= self.success_formula.hearts and \
+                   self.fame >= self.success_formula.stars and \
+                   self.cash_points() >= self.success_formula.money
+                       
+        return complete
 
     def save(self, gameId:str|None=None):
         """Persist this player's state to a JSON file.
@@ -624,7 +647,7 @@ class Player(CareersObject):
         '''
         v = self.get_total_loans()
         net_worth = self.net_worth()
-        info_dict = {"salary":self.salary, "cash":self.cash, "fame":self.fame, "happiness":self.happiness, "points":self.total_points()}
+        info_dict = {"player":self.player_initials,  "salary":self.salary, "cash":self.cash, "fame":self.fame, "happiness":self.happiness, "points":self.total_points()}
         info_dict.update( {"insured":self.is_insured, "unemployed":self.is_unemployed, "sick":self.is_sick, \
                            "extra_turn":self.extra_turn, "can_retire":self.can_retire, "net_worth":net_worth} )
         info_dict.update( self._get_pending() )
@@ -638,7 +661,7 @@ class Player(CareersObject):
             pending_string = pending_string[:len(pending_string)-2] + "}"
           
         fstring = \
-f'''Salary:{self.salary}, Cash: {self.cash},  Fame: {self.fame}, Happiness: {self.happiness}, Points: {self.total_points()}
+f'''Initials: {self.player_initials}: Salary:{self.salary}, Cash: {self.cash},  Fame: {self.fame}, Happiness: {self.happiness}, Points: {self.total_points()}
 Insured: {self.is_insured}, Unemployed: {self.is_unemployed}, Sick: {self.is_sick}, Can Retire: {self.can_retire}, Net worth: {net_worth}
 {pending_string}, Extra turn: {self.extra_turn} '''
 

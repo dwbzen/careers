@@ -3,7 +3,7 @@ Created on Aug 15, 2022
 
 @author: don_bacon
 '''
-from datetime import datetime
+from datetime import datetime, timedelta
 import json
 from game.player import Player
 from game.careersObject import CareersObject
@@ -35,14 +35,16 @@ class GameState(CareersObject):
         self._current_player_number = -1
         self._current_player = None
         self._total_points = total_points
+        self._total_minutes = 0 if game_type=='points' else total_points
         self._winning_player = None
         self._turns = 0
         self._turn_number = 0
-        self._game_start = datetime.now()
+        self._start_datetime:datetime = datetime.today()
+        self._end_datetime:datetime = None
         self._game_complete = False
         self._game_parameters_type = game_parameters_type
         self._game_type = game_type
-        self._seconds_remaining = 0 if game_type=='points' else total_points * 60
+        
         self._gameId = game_id
     
     @property
@@ -97,6 +99,39 @@ class GameState(CareersObject):
     def game_parameters_type(self) -> GameParametersType:
         return self._game_parameters_type
     
+    def is_game_complete(self) -> bool:
+        """Iterates over the players to see who, if anyone, has won.
+            Returns: True if there's are winner(s), else False.
+                    sets self.winning_player to the Player who won.
+                    sets game_complete to True if there is a winner
+            NOTE - returns the first winning player if there happens to be more than 1.
+            To prevent this from happening, this should be called at the end of each player's turn.
+        """
+        completed = False
+        if self.game_type is GameType.POINTS:
+            for p in self.players:
+                if p.is_complete():    # has the player achieved their success formula?
+                    self._winning_player = p
+                    completed = True
+                    break
+        elif self.game_type is GameType.TIMED:
+            completed = self.get_time_remaining() <= 0
+            #
+            # who has won? - the person with the most points
+            #
+            if completed:
+                winning_points = 0
+                winner = None
+                for p in self.players:
+                    if p.total_points() >= winning_points:
+                        winner = p
+                        winning_points = p.total_points()
+                
+                self._winning_player = winner
+        
+        self.game_complete = completed
+        return completed
+    
     @property
     def game_complete(self) -> bool:
         return self._game_complete
@@ -108,6 +143,10 @@ class GameState(CareersObject):
     @property
     def total_points(self):
         return self._total_points
+    
+    @property
+    def total_minutes(self)->int:
+        return self._total_minutes
     
     @property
     def turns(self):
@@ -126,8 +165,38 @@ class GameState(CareersObject):
         self._turn_number = value
     
     @property
-    def seconds_remaining(self):
-        return self._seconds_remaining
+    def start_datetime(self)->datetime:
+        return self._start_datetime
+    
+    @start_datetime.setter
+    def start_datetime(self, value:datetime):
+        self._start_datetime = value
+    
+    @property
+    def end_datetime(self)->datetime:
+        return self.end_datetime
+    
+    @end_datetime.setter
+    def end_datetime(self, value:datetime):
+        self._end_datetime = value    
+    
+    def get_elapsed_time(self) ->int:
+        """Gets the elapsed game time
+            Returns: the number minutes elapsed in the game
+        """
+        return self.get_gametime("minutes")
+            
+    def get_gametime(self, units="minutes") ->int:
+        delta = datetime.now() - self.start_datetime
+        gametime = delta.seconds//60 if units=="minutes" else delta.seconds
+        return gametime
+    
+    def get_time_remaining(self):
+        """Gets the total minutes remaining in a timed game
+            Returns: time remaining in minutes if GameType.TIMED, or 0 if a points game
+        """
+        minutes = 0 if self.game_type is GameType.POINTS else self.total_minutes - self.get_elapsed_time()
+        return minutes
 
     def set_next_player(self):
         """Returns the player number of the next player. And sets the value of current_player.
@@ -135,6 +204,8 @@ class GameState(CareersObject):
             after that player and their lose_turn flag is reset to False.
             If the current_player has extra_turn flag set, the next player IS the current_player
             and the extra_turn flag is reset.
+            If the current player is the first player (player number 0),
+            the number of turns is incremented.
         
         """
         if  self.current_player is not None and self.current_player.extra_turn > 0:
@@ -190,12 +261,16 @@ class GameState(CareersObject):
               "number_of_players" : self.number_of_players, "current_player_number" : self.current_player_number }
         gs["turns"] = self.turns
         gs["turn_number"] = self.turn_number
-        gs["total_points"] = self.total_points
-        gs["seconds_remaining"] = self.seconds_remaining
+
+        if self.game_type is GameType.TIMED:
+            gs["time_remaining"] = self.get_time_remaining()
+        elif self.game_type is GameType.POINTS:
+            gs["total_points"] = self.total_points
+
+        gs["elapsed_time"] = self.get_elapsed_time()
         if self.winning_player is not None:
             gs["winning_player"] = self.winning_player.player_initials
-        gs["game_complete"] = self.game_complete
-        #gs["players"] 
+        gs["game_complete"] = self.is_game_complete()
 
         players = []
         for player in self.players:

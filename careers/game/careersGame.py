@@ -7,7 +7,7 @@ Created on Aug 6, 2022
 from game.environment import Environment
 from game.player import Player
 import json, random
-from datetime import datetime
+from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Dict, List, Tuple, Union
 
@@ -98,6 +98,8 @@ class CareersGame(CareersObject):
 
         self._game_constants = GameConstants({'edition':edition_name})
         self._solo = None     # True if number of players == 1, set when adding players
+        self._start_datetime:datetime = None
+        self._end_datetime:datetime = None
 
         
     def _load_game_configuration(self):
@@ -262,7 +264,6 @@ class CareersGame(CareersObject):
         """Dictionary of Occupation instances keyed by occupation name
         """
         return self._occupations
-    
 
     def get_occupation_entrance_squares(self) -> dict:
         return self.game_board.occupation_entrance_squares
@@ -310,7 +311,6 @@ class CareersGame(CareersObject):
             self.next_player_number()
         return winner
             
-    
     def is_game_complete(self) -> bool:
         """Iterates over the players to see who, if anyone, has won.
             Returns: True if there's a winner, else False.
@@ -318,26 +318,17 @@ class CareersGame(CareersObject):
             NOTE - returns the first winning player if there happens to be more than 1.
             To prevent this from happening, this should be called at the end of each player's turn.
         """
-        completed = False
-        for p in self.players:
-            if p.is_complete():
-                self._winning_player = p
-                completed = True
-                break
-        return completed
+        return self.game_state.is_game_complete()
     
     def start_game(self):
         """
         Initializes game state and starts the game
-        TODO
         """
         pass
-    
-    def complete_turn(self):
-        """Completes the turn of the current_player
         
-        """
-        pass
+    def end_game(self)->int:
+        self.game_duration = self.game_state.get_elapsed_time()
+        return self.game_duration
     
     def find_next_border_square(self, current_square_number, atype:BorderSquareType, name:str=None) -> Tuple[int,BorderSquare]:
         """Find the next border square of a given type and optional name

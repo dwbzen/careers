@@ -23,7 +23,7 @@ into a single string, for example:<br> `resolve("select_degree","Computer Scienc
 if player 2 lands on that occupation's entry square, the can_bump<br>
 logic mistakenly adds player 1 to player 2's can_bump list.<br>
 See `CareersGameEngine.who_occupies_my_square()` to fix.<br>
-Status: **OPEN**</p>
+Status: **COMPLETE**</p>
 
 4. The following commands should not be allowed when playing in production mode:
 goto, advance, add_degree, enter <occupation> when not on the target occupation entrance square<br>
@@ -65,8 +65,10 @@ New template file: "Careers Template UK London 2.0"</p>
 
 10. The number of turns (for a player) should not be incremented for query commands,
 only roll, use experience and use opportunity.<br>
-Status: **OPEN**
+Status: **INVESTIGATING**
 
+11. The logic for determining a winner in a points or timed game is wrong.
+Status: **ACTIVE** Winner of a points game is done, need to address timed game.
 
 ---
 ## Future Enhancements
@@ -89,7 +91,7 @@ Status: **OPEN**</p>
 It can be specified in GameRunner with **--type timed** command line argument,<br>
 but the implementation is missing. Timer should start when the **start** command is executed,<br>
 and checked at the end of each players turn (on the next command).
-Status: **OPEN**</p>
+Status: **ACTIVE**</p>
 
 ---
 ## Technical TODOs
