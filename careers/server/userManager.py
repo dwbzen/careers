@@ -6,10 +6,11 @@ from uuid import uuid4
 
 import dotenv
 from pydantic import BaseModel, Field
+from pydantic.utils import GetterDict
 from pymongo import MongoClient
 
 
-class User(BaseModel):
+class User(BaseModel, object):
     name: str = Field(...)
     email: str = Field(...)
     initials: str = Field(...)
