@@ -9,7 +9,7 @@ from pydantic import BaseModel, Field
 from pymongo import MongoClient
 
 
-class User(BaseModel,):
+class User(BaseModel):
     name: str = Field(...)
     email: str = Field(...)
     initials: str = Field(...)
