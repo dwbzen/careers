@@ -22,6 +22,10 @@ def get(game: CareersGameManager=Depends(manager)):
 def getUserById(userId: str):
     return userManager.getUserByUserId(userId)
 
+@app.post('/ready/{userId}/{gameId}/{ready}')
+def userReadyToStart(userId: str, gameId: str, ready: bool, gameInstance: CareersGameManager=Depends(manager)):
+    manager.userReady(userId, ready, gameInstance)
+
 @app.put("/user", status_code=200)
 def createUser(user: User):
     return userManager.createUser(user)
@@ -30,6 +34,12 @@ def createUser(user: User):
 def createGame(userId: str, points: int):
     """Creates a new game and returns the game id"""
     return manager.create("Hi-Tech", userId, points)
+
+@app.get('/can-start/{gameId}')
+def readyToStart(gameInstance: CareersGameManager=Depends(manager)):
+    """Determines if the game is ready to start by checking
+    the number of players and the ready count"""
+    pass
 
 @app.get('/game/details/code/{joinCode}')
 def getGameDetails(joinCode: str):
@@ -45,10 +55,14 @@ def getGameDetails(joinCode: str):
     return game
 
 @app.put('/game/start/{gameId}')
-def startGame():
+def startGame(gameInstance: CareersGameManager=Depends(manager)):
     pass
 
-@app.put('/game/{gameId}/player/{userId}/{money}/{hearts}/{stars}', status_code=201)
+@app.get('/game/{gameId}/players')
+def getPlayers(gameId: str, gameInstance: CareersGameEngine=Depends(manager)):
+    return manager.getPlayers(gameInstance)
+
+@app.post('/game/{gameId}/player/{userId}/{money}/{hearts}/{stars}', status_code=201)
 def joinGame(gameId: str, userId: str = None, money: int = 0, hearts: int = 0, stars: int = 0, gameInstance: CareersGameEngine=Depends(manager)):
     user = manager.joinGame(gameId, userId, gameInstance)
     return user

@@ -68,13 +68,21 @@ class CareersGameManager(object):
 
         return game
 
+    def getPlayers(self, gameInstance: CareersGameEngine):
+        """Get all the players"""
+        return json.loads(gameInstance.game_state.to_JSON())    
+    
+    def userReady(self, userId: str, ready: bool, gameInstance: CareersGameEngine):
+        """Mark a user ready to start. All users must mark ready before game can begin"""
+        self.database['games'].update_one({"_id": gameInstance.gameId}, {'$addToSet': {'ready': userId}}, upsert=True)
+
     def getGameByJoinCode(self, joinCode: str):
         """
             Returns a game by join code
         """
         return self.database["games"].find_one({"joinCode": joinCode})
 
-    def getGames(self, installationId: str) -> Any:
+    def getGames(self, installationId: str) -> Any:         
         """
             Gets all of the games this user participates in
         """
@@ -90,7 +98,13 @@ class CareersGameManager(object):
         user['number'] = updatedUser['userMessage']['number']
 
         self.userManager.updateUser(user)
+        self.saveGame(gameInstance)
         return user
+
+    def saveGame(self, gameInstance: CareersGameEngine) -> None:
+        """Save the state of the game"""
+        self.database['games'].update_one({"_id": gameInstance.gameId}, 
+            {"$set": {'gameState': json.loads(gameInstance.careersGame.game_state.to_JSON())}})
 
     def __call__(self, gameId: str = None) -> CareersGameEngine:
         """Create a new game engine for the user and return the instance"""
