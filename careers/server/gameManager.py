@@ -33,6 +33,7 @@ class Game(BaseModel):
     joinCode: str = Field(...)
     gameParameters: Any = Field(...)
     gameState: Any = Field(...)
+    players: Any = Field(...)
 
 class CareersGameManager(object):
 
@@ -61,7 +62,8 @@ class CareersGameManager(object):
             createdDate=datetime.now(), 
             joinCode=''.join(random.choices(string.ascii_letters, k=5)),
             gameParameters = gameEngine.careersGame.game_parameters._game_parameters,
-            gameState= json.loads(gameEngine.careersGame.game_state.to_JSON()))
+            gameState= json.loads(gameEngine.careersGame.game_state.to_JSON()),
+            players=[userId])
 
         self.database["games"].insert_one(jsonable_encoder(game))
         self.games[gameId] = gameEngine
@@ -81,6 +83,10 @@ class CareersGameManager(object):
             Returns a game by join code
         """
         return self.database["games"].find_one({"joinCode": joinCode})
+
+    def getGameById(self, gameId: str):
+        """Gets a game details by id"""
+        return self.database["games"].find_one({"_id": gameId})
 
     def getGames(self, installationId: str) -> Any:         
         """

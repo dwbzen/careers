@@ -9,13 +9,12 @@ from careers.server.userManager import CareersUserManager, User
 from server.gameManager import CareersGameManager
 from game.careersGameEngine import CareersGameEngine
 
-gameEngine = CareersGameEngine()
 manager = CareersGameManager()    
 userManager = CareersUserManager()
 app = FastAPI()
 
 @app.get("/", status_code=200)
-def get(game: CareersGameManager=Depends(manager)):
+def get(game: CareersGameEngine=Depends(manager)):
     return {}
 
 @app.get('/user/{userId}')
@@ -23,7 +22,7 @@ def getUserById(userId: str):
     return userManager.getUserByUserId(userId)
 
 @app.post('/ready/{userId}/{gameId}/{ready}')
-def userReadyToStart(userId: str, gameId: str, ready: bool, gameInstance: CareersGameManager=Depends(manager)):
+def userReadyToStart(userId: str, gameId: str, ready: bool, gameInstance: CareersGameEngine=Depends(manager)):
     manager.userReady(userId, ready, gameInstance)
 
 @app.put("/user", status_code=200)
@@ -54,9 +53,9 @@ def getGameDetails(joinCode: str):
 
     return game
 
-@app.put('/game/start/{gameId}')
-def startGame(gameInstance: CareersGameManager=Depends(manager)):
-    pass
+@app.get('/game/{gameId}')
+def getGame(gameId: str):
+    return manager.getGameById(gameId)
 
 @app.get('/game/{gameId}/players')
 def getPlayers(gameId: str, gameInstance: CareersGameEngine=Depends(manager)):

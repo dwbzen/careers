@@ -29,7 +29,6 @@ from datetime import datetime
 import random
 from typing import List
 import os
-from music21.features.jSymbolic import AmountOfArpeggiationFeature
 
 class CareersGameEngine(object):
     """CareersGameEngine executes the action(s) associated with each player's turn.
