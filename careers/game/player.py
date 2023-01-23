@@ -45,6 +45,10 @@ class Player(CareersObject):
         self._loans = {}    # Dict[int, int]:
         
         self._command_history:List[str] = []    # a list of commands executed by a player
+        # minutes remaining in a timed game
+        # this must be set externally as Player does not have access to gameState
+        # 
+        self.time_remaining = -1
         
         
     def _initialize(self):
@@ -61,7 +65,7 @@ class Player(CareersObject):
         self._extra_turn = 0                # If >0 the player gets that number of additional turns. This is automatically decremented after that turn is taken.
         self._can_roll = False              # If True the player can roll or play an Experience card
         self._can_use_opportunity = True    # If True the play may use an Opportunity Card
-        self._opportunity_card = None       # the OpportunityCard instance of the card currently in play, or None otherwise
+        self._opportunity_card = None       # the OpportunityCard instance of the card last played, or None otherwise
         self._experience_card = None        # the ExperienceCard instance of the card currently in play, or None otherwise
 
         self._can_bump = []                 # the players I can currently Bump
@@ -191,6 +195,14 @@ class Player(CareersObject):
     @fame.setter
     def fame(self, qty):
         self._fame = [qty]
+        
+    @property
+    def time_remaining(self)->int:
+        return self._time_remaining
+    
+    @time_remaining.setter
+    def time_remaining(self, value):
+        self._time_remaining = value
     
     @property
     def board_location(self) -> BoardLocation:
@@ -410,7 +422,11 @@ class Player(CareersObject):
             Returns: True is so, False otherwise
         """
         return self._pending_actions.index_of(pending_action_type) >= 0
-    
+        
+    def clear_pending(self,  pending_action_type:PendingActionType=None):
+        self.clear_pending_actions(pending_action_type)    # clear all the PendingActions except for pending_action_type
+        self._on_holiday = False
+
     def clear_pending_actions(self, pending_action_type:PendingActionType=None):
         """Removes all PendingAction except a given PendingActionType from the player's PendingActions
         """
@@ -493,11 +509,10 @@ class Player(CareersObject):
         return cards_dict
     
     def used_opportunity(self):
-        """The player has used the saved Opportunity card. Set it to None and remove from their deck
+        """The player has used the saved Opportunity card, remove from their deck
         """
         if self.opportunity_card is not None:
             self.remove_opportunity_card(self._opportunity_card)
-            self._opportunity_card = None
     
     def remove_opportunity_card(self, card:OpportunityCard):
         self.my_opportunity_cards.remove(card)
@@ -593,11 +608,15 @@ class Player(CareersObject):
     def is_complete(self):
         """Returns True if this players has met or surpassed each success formula item:
             happiness (hearts), fame (stars), money, False otherwise
+            In a timed game, this returns True if time_remaining <= 0
     
         """
-        complete = self.happiness >= self.success_formula.hearts and \
-                   self.fame >= self.success_formula.stars and \
-                   self.cash_points() >= self.success_formula.money
+        if self.game_type is GameType.POINTS:
+            complete = self.happiness >= self.success_formula.hearts and \
+                       self.fame >= self.success_formula.stars and \
+                       self.cash_points() >= self.success_formula.money
+        else:
+            complete = self.time_remaining <= 0
                        
         return complete
 
@@ -668,9 +687,12 @@ Insured: {self.is_insured}, Unemployed: {self.is_unemployed}, Sick: {self.is_sic
         if self.cash < 0:
             fstring = f'{fstring}\nALERT: You have negative cash amount and must declare bankruptcy OR borrow the needed funds from another player!!'
             info_dict.update( {"is_bankrupt":True})
-        if include_successFormula:
+        if include_successFormula and self.game_type is GameType.POINTS:
             fstring = f'{fstring}\nSuccess Formula: {self.success_formula}'
             info_dict.update( self.success_formula.to_dict())
+        if self.game_type is GameType.TIMED:
+            fstring = f'{fstring}\nGame Time Remaining: {self.time_remaining} minutes'
+            info_dict.update({"time_remaining": self.time_remaining})
         if v > 0:
             fstring = f'{fstring}\nloans: {v}'
             info_dict.update( {"loans":self.loans})
@@ -752,10 +774,6 @@ Insured: {self.is_insured}, Unemployed: {self.is_unemployed}, Sick: {self.is_sic
     
     def _set_starting_board_location(self):
         self._board_location = BoardLocation(border_square_number=0, border_square_name="Payday", occupation_name=None, occupation_square_number=0 )
-        
-    def clear_pending(self,  pending_action_type:PendingActionType=None):
-        self.clear_pending_actions(pending_action_type)    # clear all the PendingActions except for pending_action_type
-        self._on_holiday = False
     
     def info(self):
         return  f' "name" : "{self.player_name}",  "number" : "{self.number}",  "initials" : "{self.player_initials}"'

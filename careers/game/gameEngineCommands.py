@@ -10,7 +10,7 @@ from game.player import Player
 from game.gameUtils import GameUtils
 from game.opportunityCard import OpportunityCard, OpportunityType, OpportunityActionType
 from game.occupation import Occupation
-from game.gameConstants import GameConstants, PendingActionType
+from game.gameConstants import GameConstants, PendingActionType, SpecialProcessingType
 
 from typing import Tuple, List
 import joblib
@@ -281,9 +281,16 @@ class GameEngineCommands(object):
                 result = CommandResult(CommandResult.NEED_PLAYER_CHOICE, message, False)
             else:
                 occupation = self.careersGame.get_occupation(dest)
-                if self.can_enter(occupation, player):    # okay to enter, so make it so
-                    next_square_number = occupation.entry_square_number
-                    next_action = f'goto {next_square_number};roll' 
+                game_square = self._careersGame.find_border_square(dest)
+                sp_type = game_square.special_processing.processing_type
+                if sp_type is SpecialProcessingType.ENTER_COLLEGE:
+                    result = CommandResult(CommandResult.ERROR, "You cannot choose College. Your choice must be an Occupation", False)
+                    # player keeps the card
+                    player.add_opportunity_card(opportunityCard)
+                        
+                elif self.can_enter(occupation, player):    # okay to enter, so make it so
+                    #next_square_number = occupation.entry_square_number
+                    next_action = f'_enter {occupation.name};roll' 
                     result = CommandResult(CommandResult.EXECUTE_NEXT, f'Advance to  {occupation.name}', False, next_action=next_action)
                 else:
                     result = CommandResult(CommandResult.ERROR, f'Cannot use {opportunity_type} to enter {occupation.name} now.', False)     
@@ -374,19 +381,18 @@ class GameEngineCommands(object):
         extension = 'pkl' if how=='pkl' else 'json'
         filename = f'{gamefile_base_name}.{extension}'      # folder/filename
         if how == 'json':
-            jstr = f'{{\n  "game_id" : "{game_id}",\n'
-            jstr += f'  "gameState" : '
-            jstr += self._careersGame.game_state.to_JSON()
-            jstr += "}\n"
+            game_dict = {"game_id":game_id, "installationId":self._careersGame.installationId, "edition_name":self._careersGame.edition_name}
+            game_dict["gameState"] = self._careersGame.game_state.to_dict()
 
             with open(filename, "w") as fp:
-                fp.write(jstr)
-            fp.close()
+                json.dump(game_dict, fp, indent=2)
+
         elif how == 'jsonpickle':
             jstr = self._careersGame.json_pickle()
             with open(filename, "w") as fp:
                 fp.write(jstr)
             fp.close()
+            
         else:
             result = joblib.dump(self._careersGame, filename)   # returns a list, as in  ['/data/games/ZenAlien2013_20220909-124721-555368-33134.pkl']
             filename = f'{result}'

@@ -133,7 +133,7 @@ class OpportunityCard(CareersObject):
         return self._pending_action
 
     def __str__(self):
-        return self.text
+        return f'{self.text} ({self.number})'
     
     def to_dict(self) ->dict:
         cd = {"card_type": self.opportunity_type.value}

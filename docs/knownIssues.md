@@ -49,10 +49,11 @@ is False resulting in all pending actions being cleared.</p>
 7. If a player lands on space 2 of Google (Pay $2000 OR go on Unemployment) and is unable to pay<br>
 or elects not to pay, the player is sent to Unemployment but in passing Payday, collects<br>
 their salary. This is wrong - the player should go directly to Unemployment and not go around the board to get there.<br>
+Same problem with landing on an occupation square that sends you to the Hospital.<br>
 Status: **COMPLETE**<br>
 This was also a problem in Lister & Bacon, square 0.<br>
 The CareersGameEngine._goto(...)  checks the destination border_square.name 
-and if == "Unemployment" does not execute pass_payday </p>
+and if Unemployment or Hosiptal does not execute pass_payday </p>
 
 8. If a player gets an error when resolving choose_occupation (by specifying College instead of <br>
 an Occupation or specifying an Occupation that doesn't exist) the pending action
@@ -68,7 +69,28 @@ only roll, use experience and use opportunity.<br>
 Status: **INVESTIGATING**
 
 11. The logic for determining a winner in a points or timed game is wrong.
-Status: **ACTIVE** Winner of a points game is done, need to address timed game.
+Status: **ACTIVE** Winner of a points game and timed game for multiple players is complete.<br>
+For single player timed game, the elapsed game time is not checked unless the player issues a "next" command.<br>
+The output format is "The game is over, the winner is DWB with 55 points.Game time: 11"<br>
+Should add the points for all the players and add "minutes" after the game time.
+
+12. The command for using opportunity card 16: GOLDEN  OPPORTUNITY to join the Company of your choice. Meet Normal Requirements<br>
+is "use opportunity 16 UF" for example, where UF here is the occupation of choice.<br>
+This takes the player to the chosen opportunity (via a goto command) but then immediately<br>
+goes to a different border square. In this case I got:</p>
+  Advance to  UF<br>
+  DWB landed on UF  (7)<br>
+  DWB landed on ESPN  (15)</p>
+The problem is it automatically does a "roll" which is correct,<br>
+but advances to a border square instead of an occupation square.<br>
+In this case it rolled an 8 which went to square 15 (ESPN).<br>
+It should have rolled a single dice instead of two. The boardLocation occupation_name is not getting set.<br>
+Status: **RESOLVED**</p>
+Resolution: This Opportunity card has "choose_destination" as a pending_action.<br>
+So there are two ways to play an occupation_choice Opportunity card:</p>
+  a. specify the choice in the command line as in the above<br>
+  b. resolve the choose_destination pending action in a second command</p>
+The resolve method works correctly. I fixed (a) by issuing a "enter" instead of a "goto"
 
 ---
 ## Future Enhancements

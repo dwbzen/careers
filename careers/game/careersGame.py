@@ -7,7 +7,7 @@ Created on Aug 6, 2022
 from game.environment import Environment
 from game.player import Player
 import json, random
-from datetime import datetime, timedelta
+from datetime import datetime
 from pathlib import Path
 from typing import Dict, List, Tuple, Union
 
@@ -398,4 +398,27 @@ class CareersGame(CareersObject):
 if __name__ == '__main__':
     print(CareersGame.__doc__)
     
+
+def restore_game(game_id:str, game_text:str=None) -> CareersGame|None:
+    print(f'restoring game "{game_id}"')
+    game_dict = None
+    if game_text is None:
+        env = Environment.get_environment()
+        games_folder = env.games_base
+        gamefile = f'{games_folder}/{game_id}_game.json'
+        with open(gamefile, "r") as fp:
+            game_dict = json.load(fp)
+    else:
+        game_dict = json.loads(game_text)
+    game_state_dict = game_dict["gameState"]
     
+    total_points = game_state_dict["total_points"]
+    game_type = game_state_dict["game_type"]
+    game_parameters_type = game_state_dict["game_parameters_type"]
+    
+    edition_name =  game_dict["edition_name"]
+    installationId =  game_dict["installationId"]
+    #  edition_name:str,  installationId:str, total_points:int, game_id:str, game_type="points", game_parameters_type="prod"):
+    careers_game = CareersGame(edition_name, installationId, total_points, game_id, game_type, game_parameters_type)
+    
+    return careers_game

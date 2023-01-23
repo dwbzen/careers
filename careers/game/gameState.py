@@ -3,7 +3,7 @@ Created on Aug 15, 2022
 
 @author: don_bacon
 '''
-from datetime import datetime, timedelta
+from datetime import datetime
 import json
 from game.player import Player
 from game.careersObject import CareersObject
@@ -256,7 +256,10 @@ class GameState(CareersObject):
         return player
     
     def to_JSON(self):
-        
+        gs = self.to_dict()
+        return json.dumps(gs, indent=2)
+    
+    def to_dict(self) -> dict:
         gs = {"gameId" : self._gameId, "game_type" : self.game_type.value, "game_parameters_type" : self.game_parameters_type.value, \
               "number_of_players" : self.number_of_players, "current_player_number" : self.current_player_number }
         gs["turns"] = self.turns
@@ -276,6 +279,7 @@ class GameState(CareersObject):
         for player in self.players:
             players.append(player.to_dict())
         gs["players"] = players
-
-        return json.dumps(gs, indent=2)
+        return gs
+    
+        
         

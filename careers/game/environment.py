@@ -13,6 +13,7 @@ class Environment(object):
         script_path = os.path.dirname(os.path.abspath(__file__))
     
         self.resource_base = os.path.join(script_path, '..', '..', 'resources')
+        self.games_base = os.path.join(script_path, '..', '..', 'games')
         self.package_base = os.path.join(script_path, '..', '..')
         self.name = package_name
         self.package_name = package_name

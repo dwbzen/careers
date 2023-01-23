@@ -29,7 +29,6 @@ from datetime import datetime
 import random
 from typing import List
 import os
-from music21.features.jSymbolic import AmountOfArpeggiationFeature
 
 class CareersGameEngine(object):
     """CareersGameEngine executes the action(s) associated with each player's turn.
@@ -444,8 +443,11 @@ class CareersGameEngine(object):
         else:
             result = CommandResult(CommandResult.ERROR, "You don't have insurance!", False)
         return result
+    
+    def _enter(self, occupation_name:str) -> CommandResult:
+        return self.enter(occupation_name, internal_use=True)
         
-    def enter(self, occupation_name:str) -> CommandResult:
+    def enter(self, occupation_name:str, internal_use=False) -> CommandResult:
         """Enter the named occupation at the designated square number and execute the occupation square.
             This checks if the player meets the entry conditions
             and if not, return an error with the appropriate message.
@@ -466,6 +468,7 @@ class CareersGameEngine(object):
             current_board_location = player.board_location
             message = None
             entry_ok = True
+            meets_criteria = False
             #
             # if player used an Opportunity to get here, remove that from their deck and set their opportunity_card to None
             # also the player can immediately roll in to the Occupation
@@ -473,11 +476,12 @@ class CareersGameEngine(object):
             if player.opportunity_card is not None and player.opportunity_card.opportunity_type is OpportunityType.OCCUPATION and player.opportunity_card == occupation_name:
                 player.used_opportunity()
             else:
-                if self._careersGame.game_parameters_type is GameParametersType.PROD and current_board_location.border_square_name != occupation_entrance_square.name:
+                if not internal_use and \
+                 (self._careersGame.game_parameters_type is GameParametersType.PROD and current_board_location.border_square_name != occupation_entrance_square.name):
                     entry_ok = False
                     message = "You must be on the Occupation entry square to use 'enter'"
-                    
-            meets_criteria, entry_fee, message = self._gameEngineCommands.can_enter(occupation, player)        # this also checks the Opportunity card used (if any)
+                else:
+                    meets_criteria, entry_fee, message = self._gameEngineCommands.can_enter(occupation, player)        # this also checks the Opportunity card used (if any)
 
             if entry_ok and meets_criteria:
                 #
@@ -500,7 +504,9 @@ class CareersGameEngine(object):
     
     def status(self, initials:str=None) -> CommandResult:
         player = self.game_state.current_player if initials is None else self.get_player(initials)
-        message = player.player_info(include_successFormula=True)
+        if self.game_state.game_type is GameType.TIMED:
+            player.time_remaining = self.game_state.get_time_remaining()
+        message = player.player_info(include_successFormula=True, as_json=False)
         result = CommandResult(CommandResult.SUCCESS,  message, True)
         return result
     
@@ -512,7 +518,10 @@ class CareersGameEngine(object):
                 CommandResult where the message is JSON-formatted player_info (same information returned by 'status') 
         '''
         player = self.game_state.current_player if initials is None else self.get_player(initials)
-        message = player.player_info(include_successFormula=True, as_json=True)
+        if self.game_state.game_type is GameType.TIMED:
+            player.time_remaining = self.game_state.get_time_remaining()
+        include_success_formula = self.game_state.game_type is GameType.POINTS
+        message = player.player_info(include_successFormula=include_success_formula, as_json=True)
         result = CommandResult(CommandResult.SUCCESS,  message, True)
         return result
     
@@ -534,8 +543,8 @@ class CareersGameEngine(object):
             winning_player = self.game_state.winning_player
             save_result = self.save()
             game_time = self.game_state.get_elapsed_time()
-            message = f'The game is over, the winner is {winning_player.player_initials} with {winning_player.total_points()} points.'
-            message += f'Game time: {game_time}'
+            message = f'The game is over, the winner is {winning_player.player_initials} with {winning_player.total_points()} points. '
+            message += f'Game time: {game_time} minutes'
             message += f'\nGame saved as: {save_result.message}'
             result = CommandResult(CommandResult.TERMINATE, message, True)
             return result
@@ -548,7 +557,7 @@ class CareersGameEngine(object):
         
         npn = self.game_state.set_next_player()    # sets current_player and returns the next player number (npn) and increments turns
         player = self.game_state.current_player
-        player.opportunity_card = None
+        #player.opportunity_card = None
         player.experience_card = None
         player.can_use_opportunity = True
         if cp.number != player.number:    # could be only 1 player if doing a solo game
@@ -1087,6 +1096,8 @@ class CareersGameEngine(object):
                     sp_type = game_square.special_processing.processing_type
                     if sp_type is SpecialProcessingType.ENTER_COLLEGE:
                         result = CommandResult(CommandResult.ERROR, "You cannot choose College. Your choice must be an Occupation", False)
+                        # player keeps the card
+                        player.add_opportunity_card(player.opportunity_card)
                     else:
                         occupation = self._careersGame.get_occupation(game_square.name)
                         can_enter = self._gameEngineCommands.can_enter(occupation, player)
@@ -1435,7 +1446,9 @@ class CareersGameEngine(object):
                     #
                     # do not pass Payday if the destination is Unemployment
                     #
-                    if border_square.name.lower() == "unemployment":
+                    if border_square.special_processing.processing_type is SpecialProcessingType.HOSPITAL:
+                        payday_result = CommandResult(CommandResult.SUCCESS, "Do not pass Payday. Go directly to the Hospital", True)
+                    elif border_square.special_processing.processing_type is SpecialProcessingType.UNEMPLOYMENT:
                         payday_result = CommandResult(CommandResult.SUCCESS, "Do not pass Payday. Go directly to Unemployment", True)
                     else:
                         payday_result = self.pass_payday(player)
