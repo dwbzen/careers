@@ -68,7 +68,7 @@ class Player(CareersObject):
         self._opportunity_card = None       # the OpportunityCard instance of the card last played, or None otherwise
         self._experience_card = None        # the ExperienceCard instance of the card currently in play, or None otherwise
 
-        self._can_bump = []                 # the players I can currently Bump
+        self._can_bump:List[str] = []       # initials of the players I can currently Bump
         
         # if a player has landed on an action_square, there is a pending action  which is the square's specialProcessing processing_type
         # there are currently 5: buy_hearts, buy_experience, buy_insurance, gamble, and cash_loss_or_unemployment
@@ -339,11 +339,11 @@ class Player(CareersObject):
         return self._loans
     
     @property
-    def can_bump(self):
+    def can_bump(self) -> List[str]:
         return self._can_bump       #a list of Player
     
     @can_bump.setter
-    def can_bump(self, other_players):
+    def can_bump(self, other_players:List[str]):
         self._can_bump = other_players    #a list of Player
         
     @property
@@ -769,6 +769,9 @@ Insured: {self.is_insured}, Unemployed: {self.is_unemployed}, Sick: {self.is_sic
                 
         if what.lower().startswith('command') or listall: # command history
             list_dict["commands"] = self._command_history
+        
+        if what.lower().startswith('can_bump') or listall:  # list the players this player can bump, by initials
+            list_dict["can_bump"] = self.can_bump
 
         return list_dict
     
@@ -798,7 +801,7 @@ Insured: {self.is_insured}, Unemployed: {self.is_unemployed}, Sick: {self.is_sic
         pdict['occupation_record'] = self.occupation_record
         pdict['_id'] = self.player_id
         pdict['email'] = self.player_email
-        pdict.update(self.list('all','cond'))
+        pdict.update(self.list('all','condensed'))
         pdict.update(self._get_pending())
         
         return pdict
@@ -806,6 +809,24 @@ Insured: {self.is_insured}, Unemployed: {self.is_unemployed}, Sick: {self.is_sic
     def to_JSON(self):
         return json.dumps(self.to_dict(), indent=2)
 
+    def _load(self, player_dict:dict):
+        """Loads game state player info from a previously saved CareersGame
+            TODO
+        """
+        self.player_name = player_dict["name"]
+        self.number = player_dict["number"]
+        self.player_initials = player_dict["initials"]
+        self.player_id = player_dict["_id"]
+        self.player_email = player_dict["email"]
+        self.is_insured = player_dict["is_insured"]
+        self.is_sick = player_dict["is_sick"]
+        self.is_unemployed = player_dict["is_unemployer"]
+        self.can_bump = player_dict.get("can_bump", False)
+        self.extra_turn = player_dict["extra_turn"]
+        self.can_roll = player_dict["can_roll"]
+        self.can_use_opportunity = player_dict["can_use_opportunity"]
+        
+        
     
 if __name__ == '__main__':
     print(Player.__doc__)

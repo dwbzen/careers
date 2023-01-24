@@ -26,7 +26,8 @@ class GameRunner(object):
             
     """
 
-    def __init__(self, edition, installationId, game_type, total_points, game_duration, debug_flag, game_mode, careers_game:CareersGame|None=None):
+    def __init__(self, edition:str, installationId:str, game_type:str, total_points:int, game_duration:int, debug_flag:bool,\
+                  game_mode:str, careers_game:CareersGame|None=None):
         """
         Constructor
         """
@@ -35,7 +36,7 @@ class GameRunner(object):
             self.total_points = total_points      # applies to GameType.POINTS
             self.game_duration = game_duration    # applies to GameType.TIMED
             self._edition = edition
-            self._game_type = game_type
+            self._game_type = GameType[game_type.upper()]
         else:
             self.total_points = careers_game.game_state.total_points      # applies to GameType.POINTS
             self.game_duration = careers_game.game_state.get_time_remaining()    # applies to GameType.TIMED
@@ -90,7 +91,7 @@ class GameRunner(object):
     
     def create_game(self, game_id=None, game_parameters_type="prod") -> CommandResult:
         total_points = self.total_points if self.game_type is GameType.POINTS else self.game_duration
-        result = self.game_engine.create(self._edition, self._installationId, self.game_type, total_points, game_id, game_parameters_type)
+        result = self.game_engine.create(self._edition, self._installationId, self.game_type.value, total_points, game_id, game_parameters_type)
         self._careersGame = self.game_engine.careersGame
         return result
     
@@ -192,7 +193,7 @@ def main():
     parser.add_argument("--comments", "-c", help="Log comment lines when running a script", type=str, choices=['y','Y', 'n', 'N'], default='Y')
     parser.add_argument("--debug", "-d", help="Run in debug mode, logging trace output",  action="store_true", default=False)
     parser.add_argument("--type","-t", help="Game type: points, timed", type=str, choices=["points", "timed"], default="points")
-    parser.add_argument("--restore", "-r", help="Restore game by gameid", type=bool, action="store_true", default=False)
+    parser.add_argument("--restore", "-r", help="Restore game by gameid", action="store_true", default=False)
     args = parser.parse_args()
     
     total_points = args.points

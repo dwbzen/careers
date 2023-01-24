@@ -129,7 +129,7 @@ class CareersGame(CareersObject):
         """
         CareersGame._lock.acquire()
         today = datetime.now()
-        gid = self.installationId +  '_{0:d}{1:02d}{2:02d}-{3:02d}{4:02d}{5:02d}-{6:06d}-{7:05d}'\
+        gid = self.installationId +  '_{0:d}{1:02d}{2:02d}_{3:02d}{4:02d}{5:02d}_{6:06d}_{7:05d}'\
             .format(today.year, today.month, today.day, today.hour, today.minute, today.second, today.microsecond, random.randint(10000,99999))
         CareersGame._lock.release()
         return gid
@@ -395,6 +395,22 @@ class CareersGame(CareersObject):
         """
         return CareersObject.json_pickle(self)
     
+    def _load(self, game_dict:dict):
+        """Loads a previously saved game.
+            Assumes the values for the following already set (when this instance was created):
+            edition_name, installationId, total_points, game_id, game_type, game_parameters_type
+        """
+        game_state_dict = game_dict["gameState"]
+        self.game_state.number_of_players = game_dict["number_of_players"]
+        self.game_state.current_player_number = game_dict["current_player_number"]
+        self.game_state.turns = game_dict["turns"]
+        self.game_state.turn_number = game_dict["turn_number"]
+        self.game_state.total_points = game_dict["total_points"]
+        self.game_state.game_complete = game_dict["game_complete"]
+        
+        # load players and other game info
+        self.game_state._load(game_state_dict)
+    
 if __name__ == '__main__':
     print(CareersGame.__doc__)
     
@@ -420,5 +436,6 @@ def restore_game(game_id:str, game_text:str=None) -> CareersGame|None:
     installationId =  game_dict["installationId"]
     #  edition_name:str,  installationId:str, total_points:int, game_id:str, game_type="points", game_parameters_type="prod"):
     careers_game = CareersGame(edition_name, installationId, total_points, game_id, game_type, game_parameters_type)
+    careers_game._load(game_dict)
     
     return careers_game

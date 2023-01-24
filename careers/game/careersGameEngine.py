@@ -1470,8 +1470,7 @@ class CareersGameEngine(object):
         other_players = self.who_occupies_my_square(player)
         if player.current_border_square_name() != "Unemployment":
             if len(other_players) > 0:
-                initials = [p.player_initials for p in other_players]
-                result.message = result.message + f'\n{player.player_initials} can bump {initials}'
+                result.message = result.message + f'\n{player.player_initials} can bump {other_players}'
         player.can_bump = other_players   # could be an empty list
         return result
 
@@ -1617,12 +1616,12 @@ class CareersGameEngine(object):
 
         return CommandResult(CommandResult.SUCCESS, message, True)
         
-    def who_occupies_my_square(self, player) -> List[Player]:
+    def who_occupies_my_square(self, player) -> List[str]:
         """If the game square currently occupied by player is also occupied by another player(s), return those players.
             The player landing on an occupied square may bump that player to Unemployment.
             Arguments: 
                 player - the Player landing on the designated square
-            Returns: a list of Player on the square occupied by player, or an empty list if none.
+            Returns: a list of Player initials on the square occupied by player, or an empty list if none.
         """
         plist = []
         #occupation_name = player.current_occupation_name()      # could be None
@@ -1632,7 +1631,7 @@ class CareersGameEngine(object):
                 continue    # it's me!
             ap_location = ap.get_location()
             if ap_location == my_location:
-                plist.append(ap)
+                plist.append(ap.player_initials)
                 
         return plist
     

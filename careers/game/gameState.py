@@ -43,7 +43,7 @@ class GameState(CareersObject):
         self._end_datetime:datetime = None
         self._game_complete = False
         self._game_parameters_type = game_parameters_type
-        self._game_type = game_type
+        self._game_type:GameType = game_type
         
         self._gameId = game_id
     
@@ -94,6 +94,10 @@ class GameState(CareersObject):
     @property
     def game_type(self) -> GameType:
         return self._game_type
+    
+    @game_type.setter
+    def game_type(self, value:GameType):
+        self._game_type = value
     
     @property
     def game_parameters_type(self) -> GameParametersType:
@@ -254,6 +258,13 @@ class GameState(CareersObject):
                 player = p
                 break
         return player
+    
+    def _load(self, game_state_dict:dict):
+        """Loads player info from a GameState of a previously saved CareersGame.
+        """
+        for player_dict in game_state_dict["players"]:
+            player = Player()    # defaults all okay as player._load() sets all the player info
+            player._load(player_dict)
     
     def to_JSON(self):
         gs = self.to_dict()

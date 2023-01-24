@@ -1,0 +1,26 @@
+# add 2 players - 60 point game - stars  hearts  cash
+add player Don DWB dwb20230113 dwbzen@gmail.com 20 10 30
+add player Brian BDB bdb20230113 brian.bacon01@gmail.com 20 10 30
+start
+# DWB
+enter FMC
+goto 9
+goto 11
+advance 1
+next
+# BDB
+enter UF
+goto 6
+advance 4
+advance 3
+resolve * Computer Science
+next
+# DWB - goto Hospital
+advance 4
+next
+# BDB
+goto Holiday
+next
+# DWB
+save
+end
