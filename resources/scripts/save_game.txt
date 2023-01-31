@@ -1,12 +1,13 @@
-# add 2 players - 60 point game - stars  hearts  cash
-add player Don DWB dwb20230113 dwbzen@gmail.com 20 10 30
-add player Brian BDB bdb20230113 brian.bacon01@gmail.com 20 10 30
+# add 2 players - 100 point game - stars  hearts  cash
+add player Don DWB dwb20230113 dwbzen@gmail.com 50 20 30
+add player Brian BDB bdb20230113 brian.bacon01@gmail.com 40 20 40
 start
 # DWB
-enter FMC
-goto 9
-goto 11
-advance 1
+enter UF
+goto 6
+goto 10
+advance 3
+resolve * Marketing
 next
 # BDB
 enter UF
@@ -15,12 +16,24 @@ advance 4
 advance 3
 resolve * Computer Science
 next
-# DWB - goto Hospital
-advance 4
+# DWB
+enter Amazon
+goto 1
+goto 4
+goto 12
 next
 # BDB
-goto Holiday
+enter ESPN
+goto 10
 next
 # DWB
+advance 1
+goto Holiday
+status
+next
+# BDB
+advance 1
+goto Holiday
+status
 save
 end

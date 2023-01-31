@@ -179,16 +179,25 @@
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
 			"text" : "OPPORTUNITY to join Lister & Bacon\nMeet Normal Requirements",
-			"quantity" : 3
+			"quantity" : 2
 		},
 		{
 			"number" : 16,
+			"card_type" : "occupation",
+			"destination" : "ListerAndBacon",
+			"expenses_paid" : 1,
+			"double_happiness" : 0,
+			"text" : "SPECIAL OPPORTUNITY to join Lister & Bacon because of your legal reputation\nAll expenses paid.",
+			"quantity" : 1
+		},
+		{
+			"number" : 17,
 			"card_type" : "occupation_choice",
 			"destination" : "",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
 			"text" : "GOLDEN  OPPORTUNITY to join the Company of your choice\nMeet Normal Requirements",
-			"quantity" : 20,
+			"quantity" : 2,
 			"special_processing" : {
 				"type" : "choose_occupation",
 				"pending_action" : "choose_occupation",
@@ -196,7 +205,7 @@
 			}
 		},
 		{
-			"number" : 17,
+			"number" : 18,
 			"card_type" : "border_square_choice",
 			"destination" : "",
 			"expenses_paid" : 0,
@@ -210,7 +219,7 @@
 			}			
 		},
 		{
-			"number" : 18,
+			"number" : 19,
 			"card_type" : "border_square",
 			"destination" : "BuyInsurance",
 			"expenses_paid" : 0,
@@ -222,7 +231,7 @@
 			}
 		},
 		{
-			"number" : 19,
+			"number" : 20,
 			"card_type" : "border_square",
 			"destination" : "SpringBreak",
 			"expenses_paid" : 0,
@@ -231,7 +240,7 @@
 			"quantity" : 4
 		},
 		{
-			"number" : 20,
+			"number" : 21,
 			"card_type" : "border_square",
 			"destination" : "Payday",
 			"expenses_paid" : 0,
@@ -240,7 +249,7 @@
 			"quantity" : 3
 		},
 		{
-			"number" : 21,
+			"number" : 22,
 			"card_type" : "border_square",
 			"destination" : "GambleInVegas",
 			"expenses_paid" : 0,
@@ -249,7 +258,7 @@
 			"quantity" : 3
 		},
 		{
-			"number" : 22,
+			"number" : 23,
 			"card_type" : "border_square",
 			"destination" : "BuyExperience",
 			"expenses_paid" : 0,
@@ -258,7 +267,7 @@
 			"quantity" : 2
 		},
 		{
-			"number" : 23,
+			"number" : 24,
 			"card_type" : "travel",
 			"destination" : "Amtrak",
 			"expenses_paid" : 0,
@@ -267,7 +276,7 @@
 			"quantity" : 4
 		},
 		{
-			"number" : 24,
+			"number" : 25,
 			"card_type" : "opportunity",
 			"destination" : "Opportunity",
 			"expenses_paid" : 0,
@@ -276,30 +285,30 @@
 			"quantity" : 3
 		},
 		{
-			"number" : 25,
+			"number" : 26,
 			"card_type" : "action", 
 			"action_type" : "collect_experience",
 			"destination" : "",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
 			"text" : "SPECIAL OPPORTUNITY to gain EXPERIENCE!\nCollect one randomly selected EXPERIENCE card from each player.",
-			"quantity" : 4,
+			"quantity" : 2,
 			"special_processing" : {
 				"type" : "select_experience"
 			}
 		},
 		{
-			"number" : 26,
+			"number" : 27,
 			"card_type" : "action",
 			"action_type" : "leave_unemployment",
 			"destination" : "",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
 			"text" : "Get out of Unemployment free\nPlay this card to immediately leave Unemployment.",
-			"quantity" : 10
+			"quantity" : 4
 		},
 		{
-			"number" : 27,
+			"number" : 28,
 			"card_type" : "action", 
 			"action_type" : "extra_turn",
 			"destination" : "",

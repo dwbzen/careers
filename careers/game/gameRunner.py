@@ -208,36 +208,38 @@ def main():
     gameId = args.gameid
     if args.restore:
         careers_game = restore_game(gameId)
-    #
-    # test_prod allows goto and advance in production mode
-    #
-    game_parameters_type = "prod" if args.params=="test_prod" else args.params    # not used if restoring a previously saved CareersGame
+        game_runner = GameRunner(edition, installationId, game_type, total_points, game_duration, args.debug, args.params, careers_game=careers_game)  # creates a CareersGameEngine
     
-    game_runner = GameRunner(edition, installationId, game_type, total_points, game_duration, args.debug, args.params, careers_game=careers_game)  # creates a CareersGameEngine
-    # creates a CareersGame for points
-    game_runner.create_game(gameId, game_parameters_type)
-    
-    if filePath is not None:
-        game_runner.run_script(filePath, args.delay, log_comments=log_comments)
     else:
         #
-        # add players
+        # test_prod allows goto and advance in production mode
         #
-        nplayers = args.players
-        
-        # name, initials=None, player_id=None, email=None, stars=0, hearts=0, cash=0
-        # use update command to add success_formula if not provided here
-        game_runner.execute_command("add player Don DWB dwb20221206 dwbzen@gmail.com 40 10 50", None)
-        if nplayers >= 2:
-            game_runner.execute_command("add player Brian BDB bdb20221206 brian.bacon01@gmail.com 50 20 30", None)
-        if nplayers >= 3:
-            game_runner.execute_command("add player Cheryl CJL cjl20221206 Lister.Cheryl@gmail.com 10 50 40", None)
-        if nplayers == 4:
-            game_runner.execute_command("add player Beth Beth beth20221206 beth.bacon01@gmail.com 30 30 40", None)
-            
-        game_runner.execute_command("start", None)
+        game_parameters_type = "prod" if args.params=="test_prod" else args.params    # not used if restoring a previously saved CareersGame
+        game_runner = GameRunner(edition, installationId, game_type, total_points, game_duration, args.debug, args.params)  # creates a CareersGameEngine
     
-        game_runner.run_game()
+        # creates a CareersGame for points
+        game_runner.create_game(gameId, game_parameters_type)
+        
+        if filePath is not None:
+            game_runner.run_script(filePath, args.delay, log_comments=log_comments)
+        else:
+            #
+            # add players
+            #
+            nplayers = args.players
+            
+            # name, initials=None, player_id=None, email=None, stars=0, hearts=0, cash=0
+            # use update command to add success_formula if not provided here
+            game_runner.execute_command("add player Don DWB dwb20221206 dwbzen@gmail.com 40 10 50", None)
+            if nplayers >= 2:
+                game_runner.execute_command("add player Brian BDB bdb20221206 brian.bacon01@gmail.com 50 20 30", None)
+            if nplayers >= 3:
+                game_runner.execute_command("add player Cheryl CJL cjl20221206 Lister.Cheryl@gmail.com 10 50 40", None)
+            if nplayers == 4:
+                game_runner.execute_command("add player Scott SFP scott20230125 scotty121382@yahoo.com 30 30 40", None)
+            
+    game_runner.execute_command("start", None)
+    game_runner.run_game()
     
 if __name__ == '__main__':
     main()

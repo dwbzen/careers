@@ -384,6 +384,11 @@ class GameEngineCommands(object):
             game_dict = {"game_id":game_id, "installationId":self._careersGame.installationId, "edition_name":self._careersGame.edition_name}
             game_dict["gameState"] = self._careersGame.game_state.to_dict()
 
+            opportunity_deck = {"next_index":self.careersGame.opportunities.next_index, "cards_index":self.careersGame.opportunities.cards_index}
+            experience_deck = {"next_index":self.careersGame.experience_cards.next_index, "cards_index":self.careersGame.experience_cards.cards_index}
+            game_dict["opportunity_deck"] = opportunity_deck
+            game_dict["experience_deck"] = experience_deck
+            
             with open(filename, "w") as fp:
                 json.dump(game_dict, fp, indent=2)
 

@@ -145,8 +145,12 @@ class GameState(CareersObject):
         self._game_complete = value
     
     @property
-    def total_points(self):
+    def total_points(self) ->int :
         return self._total_points
+    
+    @total_points.setter
+    def total_points(self, value:int):
+        self._total_points = value
     
     @property
     def total_minutes(self)->int:
@@ -263,8 +267,9 @@ class GameState(CareersObject):
         """Loads player info from a GameState of a previously saved CareersGame.
         """
         for player_dict in game_state_dict["players"]:
-            player = Player()    # defaults all okay as player._load() sets all the player info
-            player._load(player_dict)
+            aplayer = Player()    # defaults all okay as player._load() sets all the player info
+            aplayer._load(player_dict)
+            self.add_player(aplayer)
     
     def to_JSON(self):
         gs = self.to_dict()

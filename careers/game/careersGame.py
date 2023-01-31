@@ -401,16 +401,46 @@ class CareersGame(CareersObject):
             edition_name, installationId, total_points, game_id, game_type, game_parameters_type
         """
         game_state_dict = game_dict["gameState"]
-        self.game_state.number_of_players = game_dict["number_of_players"]
-        self.game_state.current_player_number = game_dict["current_player_number"]
-        self.game_state.turns = game_dict["turns"]
-        self.game_state.turn_number = game_dict["turn_number"]
-        self.game_state.total_points = game_dict["total_points"]
-        self.game_state.game_complete = game_dict["game_complete"]
+        self.game_state.number_of_players = game_state_dict["number_of_players"]
+        self.game_state.current_player_number = game_state_dict["current_player_number"]
+        self.game_state.turns = game_state_dict["turns"]
+        self.game_state.turn_number = game_state_dict["turn_number"]
+        self.game_state.total_points = game_state_dict["total_points"]
+        self.game_state.game_complete = game_state_dict["game_complete"]
         
         # load players and other game info
         self.game_state._load(game_state_dict)
-    
+        
+        #load Opportunity and Experience card decks
+        opportunity_deck = game_dict["opportunity_deck"]
+        experience_deck = game_dict["experience_deck"]
+        self.opportunities.next_index = opportunity_deck["next_index"]
+        self.opportunities.cards_index = opportunity_deck["cards_index"]
+        self.experience_cards.next_index = experience_deck["next_index"]
+        self.experience_cards.cards_index = experience_deck["cards_index"]
+        
+        # load player Opportunity and Experience cards
+        players = game_state_dict["players"]
+        for player_dict in players:
+            initials = player_dict["initials"]
+            player:Player = self.game_state.get_player_by_initials(initials)
+            opportunity_cards = player_dict["opportunity_cards"]    # List[str], format "<Opportunity card_number>:<card_text>"
+            experience_cards = player_dict["experience_cards"]      # List[str], format "<Experience card_number>:card_type or text <n> spaces"
+            
+            for card in opportunity_cards:
+                clist = card.split(":")
+                card_number = int(clist[0])
+                thecard = self.opportunities.deck[card_number]
+                player.add_opportunity_card(thecard)
+            
+            for card in experience_cards:
+                clist = card.split(":")
+                card_number = int(clist[0])
+                thecard = self.experience_cards.deck[card_number]
+                player.add_experience_card(thecard)
+            
+            print(f'{player.player_initials} loaded')
+        
 if __name__ == '__main__':
     print(CareersGame.__doc__)
     

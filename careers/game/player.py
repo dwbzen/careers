@@ -23,8 +23,11 @@ class Player(CareersObject):
     def __init__(self, number=0, name="Player", player_id="", email="", salary=2000, cash=2000, initials="XXX"):
         self._player_name = name
         self._player_initials = initials            # unique initials - no player can have the same initials
-        self._salary_history = [salary]             # list of salaries the player has attained
-        self.set_starting_parameters(cash, salary)
+        self._salary_history = [salary]             # List[int] of salaries the player has attained
+        self._starting_cash = cash
+        self._starting_salary = salary
+        self._cash = cash
+        self._salary = salary
         self._success_formula = None         # my SuccessFormula
         self._player_id = player_id
         self._player_email = email
@@ -82,7 +85,13 @@ class Player(CareersObject):
         self._savings = 0                    # savings account - populated with "pay", draw funds with "withdraw"
         self._point_losses = {"cash":5000,"hearts":10,"stars":10, "salary":2000}    # most recent point losses if any. Used by "use_insurance" command
         self._game_type = GameType.POINTS    # defaults to POINTS, can set to TIMED
-            
+    
+    def set_starting_parameters(self, cash=2000, salary=2000):
+        self._starting_cash = cash
+        self._starting_salary = salary
+        self._cash = cash
+        self._salary = salary     
+    
     def has_success(self) -> bool:
         return self.happiness >= self.success_formula.hearts and \
             self.fame >= self.success_formula.stars and \
@@ -97,12 +106,12 @@ class Player(CareersObject):
         self._player_id = value
 
     @property
-    def player_email(self):
+    def player_email(self) ->str:
         return self._player_email
 
     @player_email.setter
-    def player_email(self, value):
-        self.player_email = value
+    def player_email(self, value:str):
+        self._player_email = value
 
     @property
     def player_name(self):
@@ -114,20 +123,26 @@ class Player(CareersObject):
         self._player_name = value
         
     @property
-    def player_initials(self):
+    def player_initials(self) ->str:
         return self._player_initials
+    
+    @player_initials.setter
+    def player_initials(self, value:str):
+        self._player_initials = value
     
     @property
     def salary(self):
         return self._salary
     
     @salary.setter
-    def salary(self, newSalary):
-        self._salary = newSalary
-        self._salary_history.append(newSalary)
+    def salary(self, newSalary:int):
+        if self._salary != newSalary:
+            # print(f'*** {self._player_initials}  old salary: {self._salary}  newSalary: {newSalary} ***')
+            self._salary = newSalary
+            self._salary_history.append(newSalary)
         
     @property
-    def salary_history(self):
+    def salary_history(self) ->List[int]:
         return self._salary_history
     
     @property
@@ -453,12 +468,6 @@ class Player(CareersObject):
     
     def _get_pending(self) ->dict:
         return self._pending_actions.to_dict()
-        
-    def set_starting_parameters(self, cash:int, salary:int):
-        self._starting_cash = cash
-        self._starting_salary = salary
-        self.cash = cash
-        self.salary = salary
     
     def get_total_loans(self):
         total = 0
@@ -787,7 +796,7 @@ Insured: {self.is_insured}, Unemployed: {self.is_unemployed}, Sick: {self.is_sic
     
     def to_dict(self):
         pdict = {"name" : self.player_name, "number" : self.number, "initials" : self.player_initials}
-        pdict['successFormula'] = self._success_formula.to_dict()
+        pdict['success_formula'] = self._success_formula.to_dict()
         points = self.total_points()
         pdict['score'] = {"cash":self.cash, "fame":self.fame, "happiness":self.happiness, "total_points":points}
         pdict['loans'] = self.loans 
@@ -801,6 +810,7 @@ Insured: {self.is_insured}, Unemployed: {self.is_unemployed}, Sick: {self.is_sic
         pdict['occupation_record'] = self.occupation_record
         pdict['_id'] = self.player_id
         pdict['email'] = self.player_email
+        pdict["salary_history"] = self.salary_history
         pdict.update(self.list('all','condensed'))
         pdict.update(self._get_pending())
         
@@ -820,13 +830,39 @@ Insured: {self.is_insured}, Unemployed: {self.is_unemployed}, Sick: {self.is_sic
         self.player_email = player_dict["email"]
         self.is_insured = player_dict["is_insured"]
         self.is_sick = player_dict["is_sick"]
-        self.is_unemployed = player_dict["is_unemployer"]
+        self.is_unemployed = player_dict["is_unemployed"]
         self.can_bump = player_dict.get("can_bump", False)
         self.extra_turn = player_dict["extra_turn"]
         self.can_roll = player_dict["can_roll"]
         self.can_use_opportunity = player_dict["can_use_opportunity"]
+        success_formula = player_dict["success_formula"]
+        self.success_formula = SuccessFormula(stars=success_formula["stars"], hearts=success_formula["hearts"], money=success_formula["money"])
         
+        board_location = player_dict["board_location"]
+        self.board_location = BoardLocation(board_location["border_square_number"], board_location["border_square_name"],
+                                            board_location["occupation_name"], board_location["occupation_square_number"])
         
+        occupations = player_dict["occupations"]    # Dict[str, int]:
+        if len(occupations)>0:
+            for occupation_name in occupations.keys():
+                self._occupation_record[occupation_name] = occupations[occupation_name]
+            
+        command_history = player_dict["commands"]               # List[str]
+        for command in command_history: self.add_command(command)
+        
+        score = player_dict["score"]                            # {"cash":self.cash, "fame":self.fame, "happiness":self.happiness, "total_points":points}
+        self.cash = score["cash"]
+        self.fame = score["fame"]
+        self.happiness = score["happiness"]
+        self.points = score["total_points"]
+        
+        salary_history = player_dict["salary_history"]          # List[int]
+        for money in salary_history: self.salary = money
+        
+        pending_actions = player_dict["pending_actions"]        # List[PendingAction]  TODO
+
+        
+        print(f'player {self.player_initials} loaded')
     
 if __name__ == '__main__':
     print(Player.__doc__)

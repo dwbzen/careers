@@ -408,7 +408,7 @@
 			},
 			{
 				"number" : 30,
-				"name" : "Holiday",
+				"name" : "SpringBreak",
 				"type" : "corner_square",
 				"background_image" : "corner_square.png",
 				"text" : "Spring Break",

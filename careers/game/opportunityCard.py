@@ -38,13 +38,18 @@ class OpportunityCard(CareersObject):
     def __init__(self, opportunity_type:str, number:int, ncard:int, destination:str=None, text="", expenses_paid=False, double_happiness=False, action_type=None, special_processing=None):
         """Constructor
             Arguments:
-                opportunity_type - the OpportunityType of this card
-                number - the unique number identifying this card
-                ncard - the ordinal of this type of card (from 0 to quantity-1)
-                destination - the "name" of the corresponding border square if there is a destination, otherwise None
-                text - the Opportunity card text
-                expenses_paid - Applies to OpportunityType.OCCUPATION: True if the player can enter for free.
-                double_happiness - Applies to OpportunityType.OCCUPATION: True if happiness point values are doubled.
+                opportunity_type - the OpportunityType of this card. key: "card_type"
+                number - the unique number identifying this card. key: "number"
+                ncard - the ordinal of this type of card (from 0 to quantity-1). key:
+                destination - the "name" of the corresponding border square if there is a destination, otherwise None. key: "destination"
+                text - the Opportunity card text. key: "text"
+                expenses_paid - Applies to OpportunityType.OCCUPATION: True if the player can enter for free. key: "expenses_paid"
+                double_happiness - Applies to OpportunityType.OCCUPATION: True if happiness point values are doubled. key: "double_happiness"
+                action_type - OpportunityActionType or None. key: "action_type"
+                special_processing - the special_processing associated with this card or None. key: "special_processing"
+                    If present, consists of a OpportunitySpecialProcessingType (key: "type" as a string)
+                    PendingActionType (key: "pending_action" as a string)
+                
         """
         self._opportunity_type = OpportunityType[opportunity_type.upper()]
         self._action_type = None if action_type is None else OpportunityActionType[action_type.upper()]

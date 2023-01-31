@@ -48,6 +48,26 @@ class CardDeck(object):
     def next_index(self, value):
         self._next_index = value
     
+    @property
+    def cards_index(self):
+        return self._cards_index
+    
+    @cards_index.setter
+    def cards_index(self, value):
+        self._cards_index = value
+    
+    @property
+    def cards(self):
+        return self._cards
+    
+    @property
+    def deck(self):
+        return self._deck
+    
+    @property
+    def deck_name(self):
+        return self._deck_name
+
     def draw(self):
         """Draw a card from the deck. If no cards remaining, re-shuffle and reset the next_index
         
