@@ -9,6 +9,7 @@ from game.careersGameEngine import CareersGameEngine
 from game.commandResult import CommandResult
 from game.gameConstants import GameParametersType, GameType
 from game.careersGame import CareersGame, restore_game
+from game.gameState import GameState
 import argparse, time
 
 class GameRunner(object):
@@ -21,31 +22,39 @@ class GameRunner(object):
             game_duration - total game duration if a timed game
             debug_flag - set to True for debugging output
             game_mode - 'test', 'prod', 'test-prod' or 'custom'
+            gameid - the game ID of a previously saved game (in JSON format)
+            restore - if True, restore a previously saved game 
+            script - a script file to execute
             careers_game - a CareersGame instance. If not None, all previous parameters except debug_flag
               are set from careers_game
             
     """
 
     def __init__(self, edition:str, installationId:str, game_type:str, total_points:int, game_duration:int, debug_flag:bool,\
-                  game_mode:str, careers_game:CareersGame|None=None):
+                  game_mode:str, careers_game:CareersGame|None=None, game_id:str|None=None):
         """
         Constructor
         """
         self._careersGame = careers_game
-        if careers_game is None:
+        self.game_engine = CareersGameEngine(careers_game=careers_game, game_id=game_id)
+        self._debug = debug_flag          # traces the action by describing each step
+        self.game_engine.debug = debug_flag
+        
+        if careers_game is None:    # new game
             self.total_points = total_points      # applies to GameType.POINTS
             self.game_duration = game_duration    # applies to GameType.TIMED
             self._edition = edition
             self._game_type = GameType[game_type.upper()]
-        else:
-            self.total_points = careers_game.game_state.total_points      # applies to GameType.POINTS
+        else:    # restored game
+            self.total_points = careers_game.game_state.total_points             # applies to GameType.POINTS
             self.game_duration = careers_game.game_state.get_time_remaining()    # applies to GameType.TIMED
             self._edition = careers_game.edition_name
             self._game_type = careers_game.game_state.game_type
+            # initialize CareersGameEngine with restored values
+            self.game_engine.game_state = careers_game.game_state
+            self.game_engine.careersGame = careers_game
+            self.game_engine.gameId = game_id
         
-        self._debug = debug_flag          # traces the action by describing each step
-        self.game_engine = CareersGameEngine()
-        self.game_engine.debug = self._debug
         self._installationId = installationId
         self._game_mode = game_mode      # 'test', 'prod', 'test-prod' or 'custom'
         # these commands are not allowed in prod mode, but permitted in test, test_prod and custom modes
@@ -86,8 +95,8 @@ class GameRunner(object):
     def number_of_players(self):
         return self.game.game_state.number_of_players
     
-    def get_game_state(self):
-        return self.game_engine.game_state
+    def get_game_state(self) -> GameState:
+        return self.careersGame.game_state
     
     def create_game(self, game_id=None, game_parameters_type="prod") -> CommandResult:
         total_points = self.total_points if self.game_type is GameType.POINTS else self.game_duration
@@ -206,16 +215,18 @@ def main():
     careers_game = None
     
     gameId = args.gameid
+    current_player = None
     if args.restore:
         careers_game = restore_game(gameId)
-        game_runner = GameRunner(edition, installationId, game_type, total_points, game_duration, args.debug, args.params, careers_game=careers_game)  # creates a CareersGameEngine
-    
+        nplayers = careers_game.game_state.number_of_players
+        game_runner = GameRunner(edition, installationId, game_type, total_points, game_duration, args.debug, args.params, careers_game=careers_game, game_id=gameId)
+        current_player = game_runner.get_game_state().current_player
     else:
         #
         # test_prod allows goto and advance in production mode
         #
         game_parameters_type = "prod" if args.params=="test_prod" else args.params    # not used if restoring a previously saved CareersGame
-        game_runner = GameRunner(edition, installationId, game_type, total_points, game_duration, args.debug, args.params)  # creates a CareersGameEngine
+        game_runner = GameRunner(edition, installationId, game_type, total_points, game_duration, args.debug, args.params)
     
         # creates a CareersGame for points
         game_runner.create_game(gameId, game_parameters_type)
@@ -237,8 +248,8 @@ def main():
                 game_runner.execute_command("add player Cheryl CJL cjl20221206 Lister.Cheryl@gmail.com 10 50 40", None)
             if nplayers == 4:
                 game_runner.execute_command("add player Scott SFP scott20230125 scotty121382@yahoo.com 30 30 40", None)
-            
-    game_runner.execute_command("start", None)
+    
+    game_runner.execute_command("start", current_player)
     game_runner.run_game()
     
 if __name__ == '__main__':

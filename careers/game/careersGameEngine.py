@@ -23,6 +23,7 @@ from game.gameSquare import GameSquare, GameSquareClass
 from game.gameEngineCommands import GameEngineCommands
 from game.gameUtils import GameUtils
 from game.environment import Environment
+from game.gameState import GameState
 from game.gameConstants import PendingActionType, SpecialProcessingType, GameType, GameParametersType
 
 from datetime import datetime
@@ -85,21 +86,53 @@ class CareersGameEngine(object):
         
     """
     
-    def __init__(self):
+    def __init__(self, careers_game:CareersGame=None, game_id:str=None):
         '''
         Constructor
         '''
-        self._fp = None             # logging file pointer
-        self._careersGame = None    # create a new CareersGame with create()
-        self._debug = False         # traces the action by describing each step and logs to a file
+        self._careersGame = careers_game    # create a new CareersGame with create()
+        self._gameId = game_id
+        self._fp = None                     # logging file pointer
+        self._debug = False                 # traces the action by describing each step and logs to a file
         self._start_date_time = datetime.now()
-        self._gameId = None
         self._installationId = None      # provided by the UI
         self._current_player = None
         self._admin_player = Player(number=-1, name='Administrator', initials='admin')
         self._gameEngineCommands = None     # no CareersGame yet
         self.currency_symbol = None         # value set with create()
         self._game_state = None             # set with create()
+        
+        if careers_game is not None and game_id is not None:
+            self._init_logging()
+            self._init_game_engine_commands()
+    
+    def _init_logging(self):
+        
+        self._logfile_filename = f'{self.gameId}_{self._careersGame.edition_name}'
+        
+        self._dataRoot = Environment.get_environment().package_base
+
+        self._logfile_folder = os.path.join(self._dataRoot, 'log')   # TODO put in Environment
+        self._gamefile_folder = os.path.join(self._dataRoot, 'games')
+        self._logfile_path = os.path.join(self._logfile_folder, self._logfile_filename + ".log")
+        self._game_filename_base = os.path.join(f'{self._gamefile_folder}', f'{self.gameId}_game')
+        
+        if(not os.path.exists(self._logfile_folder)):
+            os.mkdir(self._logfile_folder)
+        
+        if(not os.path.exists(self._gamefile_folder)):
+            os.mkdir(self._gamefile_folder)
+
+        self.fp = open(self._logfile_path, "w")   # log file open channel
+        self.currency_symbol = self._careersGame.game_parameters.get_param("currency_symbol")
+    
+    def _init_game_engine_commands(self):
+        self._gameEngineCommands = GameEngineCommands(self._careersGame, self.fp)
+        self._gameEngineCommands.debug = self.debug
+    
+    @property
+    def dataRoot(self) ->str:
+        return self._dataRoot
     
     @property
     def fp(self):
@@ -121,25 +154,37 @@ class CareersGameEngine(object):
     def gameId(self):
         return self._gameId
     
+    @gameId.setter
+    def gameId(self, value):
+        self._gameId = value
+    
     @property
     def installationId(self):
         return self._installationId
     
     @property
-    def debug(self):
+    def debug(self) -> bool:
         return self._debug
     
     @debug.setter
-    def debug(self, value):
+    def debug(self, value:bool):
         self._debug = value
         
     @property
-    def game_state(self):
+    def game_state(self) -> GameState:
         return self._game_state
     
+    @game_state.setter
+    def game_state(self, value:GameState):
+        self._game_state = value
+    
     @property
-    def careersGame(self):
+    def careersGame(self) -> CareersGame:
         return self._careersGame
+    
+    @careersGame.setter
+    def careersGame(self, value:CareersGame):
+        self._careersGame = value
     
     def log(self, *message):
         """Write message to the log file.
@@ -659,9 +704,9 @@ class CareersGameEngine(object):
         """
         player = self.game_state.current_player
         bumped_player = None
-        for p in player.can_bump:
-            if p.player_initials == who:
-                bumped_player = p
+        for player_initials in player.can_bump:
+            if player_initials == who:
+                bumped_player = self.game_state.get_player_by_initials(player_initials)
         
         if bumped_player is None:
             result = CommandResult(CommandResult.ERROR, f'Player {who} cannot be Bumped')
@@ -908,25 +953,9 @@ class CareersGameEngine(object):
         
         self._game_state = self._careersGame.game_state
         self._gameId = self._careersGame.gameId         # the gameId includes the installationId
-        self._logfile_filename = f'{self.gameId}_{self._careersGame.edition_name}'
         
-        dataRoot = Environment.get_environment().package_base
-
-        self._logfile_folder = os.path.join(dataRoot, 'log')   # TODO put in Environment
-        self._gamefile_folder = os.path.join(dataRoot, 'games')
-        self._logfile_path = os.path.join(self._logfile_folder, self._logfile_filename + ".log")
-        self._game_filename_base = os.path.join(f'{self._gamefile_folder}', f'{self.gameId}_game')
-        
-        if(not os.path.exists(self._logfile_folder)):
-            os.mkdir(self._logfile_folder)
-        
-        if(not os.path.exists(self._gamefile_folder)):
-            os.mkdir(self._gamefile_folder)
-
-        self.fp = open(self._logfile_path, "w")   # log file open channel
-        self._gameEngineCommands = GameEngineCommands(self._careersGame, self.fp)
-        self._gameEngineCommands.debug = self.debug
-        self.currency_symbol = self._careersGame.game_parameters.get_param("currency_symbol")
+        self._init_logging()
+        self._init_game_engine_commands()
 
         message = f'{{"gameId":"{self._gameId}", "installationId":"{self._installationId}"}}'
         self.log(message)

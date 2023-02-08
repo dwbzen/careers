@@ -401,12 +401,13 @@ class CareersGame(CareersObject):
             edition_name, installationId, total_points, game_id, game_type, game_parameters_type
         """
         game_state_dict = game_dict["gameState"]
-        self.game_state.number_of_players = game_state_dict["number_of_players"]
+        #self.game_state.number_of_players = game_state_dict["number_of_players"]
         self.game_state.current_player_number = game_state_dict["current_player_number"]
         self.game_state.turns = game_state_dict["turns"]
         self.game_state.turn_number = game_state_dict["turn_number"]
         self.game_state.total_points = game_state_dict["total_points"]
         self.game_state.game_complete = game_state_dict["game_complete"]
+        self.game_state.restored = True
         
         # load players and other game info
         self.game_state._load(game_state_dict)
@@ -424,6 +425,8 @@ class CareersGame(CareersObject):
         for player_dict in players:
             initials = player_dict["initials"]
             player:Player = self.game_state.get_player_by_initials(initials)
+            if player.number == self.game_state.current_player_number:
+                self.game_state.current_player = player
             opportunity_cards = player_dict["opportunity_cards"]    # List[str], format "<Opportunity card_number>:<card_text>"
             experience_cards = player_dict["experience_cards"]      # List[str], format "<Experience card_number>:card_type or text <n> spaces"
             

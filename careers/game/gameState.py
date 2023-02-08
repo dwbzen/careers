@@ -44,6 +44,7 @@ class GameState(CareersObject):
         self._game_complete = False
         self._game_parameters_type = game_parameters_type
         self._game_type:GameType = game_type
+        self._restored = False    # True if this is a restored game
         
         self._gameId = game_id
     
@@ -173,6 +174,14 @@ class GameState(CareersObject):
         self._turn_number = value
     
     @property
+    def restored(self)->bool:
+        return self._restored
+    
+    @restored.setter
+    def restored(self, value:bool):
+        self._restored = value
+    
+    @property
     def start_datetime(self)->datetime:
         return self._start_datetime
     
@@ -216,7 +225,7 @@ class GameState(CareersObject):
             the number of turns is incremented.
         
         """
-        if  self.current_player is not None and self.current_player.extra_turn > 0:
+        if self.current_player is not None and self.current_player.extra_turn > 0:
             #
             # the current player doesn't change
             #
@@ -266,10 +275,13 @@ class GameState(CareersObject):
     def _load(self, game_state_dict:dict):
         """Loads player info from a GameState of a previously saved CareersGame.
         """
+        current_player_number = game_state_dict["current_player_number"]
         for player_dict in game_state_dict["players"]:
             aplayer = Player()    # defaults all okay as player._load() sets all the player info
             aplayer._load(player_dict)
             self.add_player(aplayer)
+            if aplayer.number == current_player_number:
+                self.current_player = aplayer
     
     def to_JSON(self):
         gs = self.to_dict()

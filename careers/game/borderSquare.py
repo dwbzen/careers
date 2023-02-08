@@ -150,12 +150,14 @@ class BorderSquare(GameSquare):
                         player.is_unemployed = True
                         self.update_board_location(player)
                         player.can_use_opportunity = False
+                        player.clear_pending()
                         result = CommandResult(CommandResult.SUCCESS, f'Player {player.player_initials}: {self.action_text}', True)
                     
                     case SpecialProcessingType.HOSPITAL:
                         player.is_sick = True
                         self.update_board_location(player)
                         player.can_use_opportunity = False
+                        player.clear_pending()
                         result = CommandResult(CommandResult.SUCCESS, f'Player {player.player_initials}: {self.action_text}', True)
                                       
                     case SpecialProcessingType.PAYDAY:

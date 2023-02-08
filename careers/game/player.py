@@ -60,7 +60,7 @@ class Player(CareersObject):
         
         self._set_starting_board_location() # always start on Payday corner square
         self._can_retire = False
-        self._is_insured = True
+        self._is_insured = False
         self._is_unemployed = False         # True when player lands on (or is sent to) Unemployment
         self._is_sick = False               # True when player lands on Hospital
         self._on_holiday = False            # True when the player lands on Holiday/Spring Break
@@ -860,6 +860,9 @@ Insured: {self.is_insured}, Unemployed: {self.is_unemployed}, Sick: {self.is_sic
         for money in salary_history: self.salary = money
         
         pending_actions = player_dict["pending_actions"]        # List[PendingAction]  TODO
+        for pa in pending_actions:
+            pending_action_type = PendingActionType(pa["stay_or_move"].upper())
+            #pending_action = PendingAction(pending_action_type, )
 
         
         print(f'player {self.player_initials} loaded')
