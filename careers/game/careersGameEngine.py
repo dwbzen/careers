@@ -483,7 +483,7 @@ class CareersGameEngine(object):
             player.clear_point_losses()
             player.is_insured = False    # lose insurance but can buy again immediately after use
             game_square = self._careersGame.find_border_square("BuyInsurance")
-            player.add_pending_action(PendingActionType.BUY_INSURANCE, game_square=game_square, amount=game_square.special_processing.get_amount())
+            player.add_pending_action(PendingActionType.BUY_INSURANCE, game_square_name=game_square.name, amount=game_square.special_processing.get_amount())
             result = CommandResult(CommandResult.SUCCESS, message, False)
         else:
             result = CommandResult(CommandResult.ERROR, "You don't have insurance!", False)
@@ -713,7 +713,7 @@ class CareersGameEngine(object):
         else:
             #
             # find the Unemployment square and place the bumped_player there
-            # and also set the is_unemployed flag
+            # also set the is_unemployed flag and clear any pending actions
             #
             border_square = self._careersGame.find_border_square("Unemployment")
             result = border_square.execute(bumped_player)
@@ -1009,7 +1009,9 @@ class CareersGameEngine(object):
             pending_action = player.pending_actions.find(what)     # also removes from the pending actions list
             
         if pending_action is not None:
-
+            pending_game_square_name = pending_action.pending_game_square_name
+            pending_game_square = None if pending_game_square_name is None else self.careersGame.find_border_square(pending_game_square_name)
+            
             if what == PendingActionType.SELECT_DEGREE.value:  # the degree program chosen is the 'choice'
                 result = self.add_degree(player, choice)
                 result.message = f'{message}\n{result.message}'
@@ -1018,13 +1020,13 @@ class CareersGameEngine(object):
                 #
                 # execute the special processing for the Gamble game square
                 #
-                result = pending_action.pending_game_square.execute_special_processing(player)
+                result = pending_game_square.execute_special_processing(player)
 
             elif what ==  PendingActionType.BUY_HEARTS.value:
-                result = pending_action.pending_game_square.execute_special_processing(player, choice=choice, what='hearts')
+                result = pending_game_square.execute_special_processing(player, choice=choice, what='hearts')
             
             elif what ==  PendingActionType.BUY_EXPERIENCE.value:
-                amounts = pending_action.pending_game_square.special_processing.amount_dict
+                amounts = pending_game_square.special_processing.amount_dict
                 ncards = str(choice)
                 if ncards in amounts:
                     cost = amounts[ncards]
@@ -1149,7 +1151,7 @@ class CareersGameEngine(object):
             result = CommandResult(CommandResult.ERROR, f'Nothing to resolve for {what}', False)
 
         #
-        # reset pending_action and pending_game_square if result is SUCCESS
+        # reset pending_action if result is SUCCESS
         #            
         if result.is_successful() and not player.on_holiday:
             player.clear_pending(PendingActionType.SELECT_DEGREE)
@@ -1556,7 +1558,7 @@ class CareersGameEngine(object):
             # special_processing.processing_type == SpecialProcessingType.ENTER_COLLEGE
             # player must choose a degree program
             # salary increase is dependent on the # of degrees earned in that degree program
-            player.add_pending_action(PendingActionType.SELECT_DEGREE, game_square=game_square)
+            player.add_pending_action(PendingActionType.SELECT_DEGREE, game_square_name=game_square.name)
             choices = self._careersGame.college_degrees["degreePrograms"]
             message = f'{player.player_initials} Leaving {board_location.occupation_name}, pending_action: {PendingActionType.SELECT_DEGREE.value}'
         

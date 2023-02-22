@@ -143,7 +143,7 @@ class OccupationSquare(GameSquare):
 
             case SpecialProcessingType.SHORTCUT:    # pending action amount is the square# to goto if the shortcut is taken
                 next_square = self.special_processing.next_square
-                player.add_pending_action(self.special_processing.pending_action, self, amount=next_square)
+                player.add_pending_action(self.special_processing.pending_action, game_square_name=self.name, amount=next_square)
                 message = f'{player.player_initials} may take a shortcut to square {next_square}'
             
             case SpecialProcessingType.CASH_LOSS_OR_UNEMPLOYMENT:
@@ -156,7 +156,7 @@ class OccupationSquare(GameSquare):
                     next_action = 'goto unemployment'
                     player.pending_actions.remove(PendingActionType.CASH_LOSS_OR_UNEMPLOYMENT)
                 else:
-                    player.add_pending_action(PendingActionType.CASH_LOSS_OR_UNEMPLOYMENT, self, amount, dice)
+                    player.add_pending_action(PendingActionType.CASH_LOSS_OR_UNEMPLOYMENT, self.name, amount, dice)
                     done_flag = False
                 
             case SpecialProcessingType.TRAVEL_BORDER:
@@ -188,7 +188,7 @@ class OccupationSquare(GameSquare):
                     message += f' Salary cut by {cutAmount}. Your new salary is {player.salary}'
                 
             case SpecialProcessingType.BACKSTAB:
-                player.add_pending_action(PendingActionType.BACKSTAB, game_square=self, amount=self.special_processing.get_amount())
+                player.add_pending_action(PendingActionType.BACKSTAB, game_square_name=self.name, amount=self.special_processing.get_amount())
                 return CommandResult(CommandResult.NEED_PLAYER_CHOICE, message, False)   # player needs to execute "resolve backstab"
             
             case SpecialProcessingType.GOTO:

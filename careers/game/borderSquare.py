@@ -120,19 +120,19 @@ class BorderSquare(GameSquare):
                 message = f'{self.text}\n{self.action_text}'
                 match(sp_type):
                     case SpecialProcessingType.BUY_HEARTS | SpecialProcessingType.BUY_STARS:
-                        player.add_pending_action(pending_action, game_square=self, amount=self.special_processing.get_amount())
+                        player.add_pending_action(pending_action, game_square_name=self.name, amount=self.special_processing.get_amount())
                         return CommandResult(CommandResult.NEED_PLAYER_CHOICE, message, False)   # player needs to execute a 'buy hearts' or 'buy stars'
                 
                     case SpecialProcessingType.BUY_EXPERIENCE:
-                        player.add_pending_action(pending_action, game_square=self, amount=self.special_processing.get_amount())
+                        player.add_pending_action(pending_action, game_square_name=self.name, amount=self.special_processing.get_amount())
                         return CommandResult(CommandResult.NEED_PLAYER_CHOICE, message, False)   # player needs to execute a 'buy experience' 
                 
                     case SpecialProcessingType.BUY_INSURANCE:
-                        player.add_pending_action(pending_action, game_square=self, amount=self.special_processing.get_amount())
+                        player.add_pending_action(pending_action, game_square_name=self.name, amount=self.special_processing.get_amount())
                         return CommandResult(CommandResult.NEED_PLAYER_CHOICE, message, False)   # player needs to buy insurance
                 
                     case SpecialProcessingType.GAMBLE: 
-                        player.add_pending_action(pending_action, game_square=self, dice=self.special_processing.dice)  # Roll 2 dice to gamble
+                        player.add_pending_action(pending_action, game_square_name=self.name, dice=self.special_processing.dice)  # Roll 2 dice to gamble
                         return CommandResult(CommandResult.NEED_PLAYER_CHOICE, message, False)   # player needs to indicate they intend to Gamble, then roll
                 
                     case _:
@@ -180,7 +180,7 @@ class BorderSquare(GameSquare):
                         nhearts = self.special_processing.hearts[0] if player.on_holiday else self.special_processing.hearts[1]
                         player.add_hearts(nhearts)
                         player.on_holiday = True
-                        player.add_pending_action(self.special_processing.pending_action, game_square=self, amount=0)
+                        player.add_pending_action(self.special_processing.pending_action, game_square_name=self.name, amount=0)
                         result = CommandResult(CommandResult.SUCCESS, f'Player {player.player_initials} {self.action_text}\n collect {nhearts} hearts', True)
                     
                     case SpecialProcessingType.BUY_INSURANCE:

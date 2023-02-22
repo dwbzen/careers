@@ -92,6 +92,9 @@ So there are two ways to play an occupation_choice Opportunity card:</p>
   b. resolve the choose_destination pending action in a second command</p>
 The resolve method works correctly. I fixed (a) by issuing a "enter" instead of a "goto"
 
+13. The "end" command should declare a winner.
+Status: **OPEN**
+
 ---
 ## Future Enhancements
 1. Currently entering an occupation requires 2 commands, for example:<br>

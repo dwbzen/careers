@@ -16,13 +16,13 @@ class PendingAction(CareersObject):
 
     SPECIAL_PROCESSING = Dict[str, Union[str, List[int], int, float, Dict[str, int]]]
     
-    def __init__(self, pending_action_type:PendingActionType,  pending_game_square=None, pending_amount:int=0,pending_dice:int=0, pending_dict:dict={}):
+    def __init__(self, pending_action_type:PendingActionType,  pending_game_square_name:str=None, pending_amount:int=0,pending_dice:int=0, pending_dict:dict={}):
         '''
         Constructor
         '''
         self._pending_action_type = pending_action_type     # 
         self._pending_amount = pending_amount               # value depends on PendingActionType
-        self._pending_game_square = pending_game_square     # reference to the BorderSquare or OccupationSquare associated with this pending_action
+        self._pending_game_square_name = pending_game_square_name     # name of the GameSquare associated with this pending_action
         self._pending_dice = pending_dice                   # the number of dice to use or 0 if N/A
         self._pending_dict = pending_dict                   # content depends on the game square
         
@@ -44,12 +44,12 @@ class PendingAction(CareersObject):
         self._pending_amount = value
         
     @property
-    def pending_game_square(self):
-        return self._pending_game_square    # a GameSquare reference
+    def pending_game_square_name(self) ->str|None:
+        return self._pending_game_square_name    # a GameSquare reference
     
-    @pending_game_square.setter
-    def pending_game_square(self, value):
-        self._pending_game_square = value
+    @pending_game_square_name.setter
+    def pending_game_square_name(self, value:str):
+        self._pending_game_square_name = value
         
     @property
     def pending_dice(self) ->int | List[int]:
@@ -74,15 +74,15 @@ class PendingAction(CareersObject):
     def clear(self):
         self._pending_action = None
         self._pending_amount = 0
-        self._pending_game_square = None
+        self._pending_game_square_name = None
         self._pending_dice = 0
 
     def to_dict(self)->dict:
         pact =  self.pending_action_type.value if self.pending_action_type is not None else "None"
        
         pending_dict = {"pending_action_type":pact, "pending_amount":self.pending_amount, "pending_dice":self.pending_dice}
-        if self.pending_game_square is not None:
-            pending_dict.update({ "pending_game_square" : self.pending_game_square.name} )
+        if self.pending_game_square_name is not None:
+            pending_dict.update({ "pending_game_square_name" : self.pending_game_square_name} )
         return pending_dict
     
     def to_JSON(self):

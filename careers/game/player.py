@@ -419,8 +419,8 @@ class Player(CareersObject):
     def get_command(self, index:int=-1) ->str:
         return self._command_history[index]
         
-    def add_pending_action(self, action:PendingActionType, game_square=None, amount:SPECIAL_PROCESSING=None, dice:int | List[int]=0):
-        self._pending_actions.add(PendingAction(action, game_square, amount, dice))
+    def add_pending_action(self, action:PendingActionType, game_square_name:str=None, amount:SPECIAL_PROCESSING=None, dice:int | List[int]=0):
+        self._pending_actions.add(PendingAction(action, game_square_name, amount, dice))
         
     def get_pending_action(self, index=-1) -> PendingAction:
         """Gets the PendingAction at the index requested
@@ -444,15 +444,16 @@ class Player(CareersObject):
 
     def clear_pending_actions(self, pending_action_type:PendingActionType=None):
         """Removes all PendingAction except a given PendingActionType from the player's PendingActions
+            If pending_action_type is None, all pending actions are removed.
         """
         if self._pending_actions.size() > 0:
-            new_pending_actions = PendingActions()
             for ind in range(self._pending_actions.size()):
                 pa = self._pending_actions.get(ind, remove=False)
-                if pending_action_type is None or ( pa.pending_action_type is pending_action_type ):
-                    new_pending_actions.add(pa)
-            self._pending_actions = new_pending_actions
-    
+                if pa.pending_action_type is pending_action_type:
+                    continue;
+                else:
+                    self._pending_actions.get(ind, remove=True)
+                    
     @property
     def pending_actions(self) -> PendingActions:
         return self._pending_actions
@@ -861,10 +862,9 @@ Insured: {self.is_insured}, Unemployed: {self.is_unemployed}, Sick: {self.is_sic
         
         pending_actions = player_dict["pending_actions"]        # List[PendingAction]  TODO
         for pa in pending_actions:
-            pending_action_type = PendingActionType(pa["stay_or_move"].upper())
-            #pending_action = PendingAction(pending_action_type, )
+            pending_action_type = PendingActionType[pa["pending_action_type"].upper()]
+            self.add_pending_action(pending_action_type, pa["pending_game_square_name"], pa["pending_amount"], pa["pending_dice"])
 
-        
         print(f'player {self.player_initials} loaded')
     
 if __name__ == '__main__':
