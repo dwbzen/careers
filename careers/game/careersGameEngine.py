@@ -276,7 +276,7 @@ class CareersGameEngine(object):
             players = self.game_state.players
             lc_pid = pid.lower()
             for p in players:
-                if p.player_initials.lower() == lc_pid or p.player_name.lower() == lc_pid:
+                if p.player_initials.lower() == lc_pid or p.player_id  == lc_pid:
                     player = p
                     break
         return player
