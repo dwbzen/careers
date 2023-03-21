@@ -1,0 +1,568 @@
+{
+	"Help" : "Board layout for the Jazz Age version.",
+	"types_list" : [
+		"corner_square", "opportunity_square", "danger_square", "travel_square", "occupation_entrance_square", "action_square"
+	],
+	"types" : [
+		{
+			"type" : "corner_square",
+			"Help" : "Payday, Hospital, Unemployment and ConeyIsland are the corner squares."
+		},
+	    {
+			"type" : "opportunity_square",
+			"Help" : "Collect an Opportunity Card."
+		},
+	    {
+			"type" : "danger_square",
+			"Help" : "A square where the player can expect to lose points (cash, fame or happiness) or a salary cut."
+		},
+	    {
+			"type" : "travel_square",
+			"Help" : "Travel by rail on the Union Pacific Railroad or NY Central."
+		},
+	    {
+			"type" : "occupation_entrance_square",
+			"Help" : "A player may enter an occupation after meeting the requirments."
+		},
+	    {
+			"type" : "action_square",
+			"Help" : "Perform a non-movement action."
+		}		
+	],
+	"dimensions" : {
+		"size" : 42,
+		"sides" : [10, 13, 10, 13]
+	},
+	"layout" : [
+			{
+				"number" : 0,
+				"name" : "Payday",
+				"type" : "corner_square",
+				"background_image" : "corner_square.png",
+				"image" : "startHereAndArrow.jpg",
+				"text" : "PAYDAY",
+				"action_text" : "Collect Salary as you pass PAYDAY\n Collect DOUBLE if you land here",
+				"specialProcessing" : {
+					"type" : "payday",
+					"amount" : "salary"
+				}
+			},
+			{
+				"number" : 1,
+				"name" : "Opportunity",
+				"type" : "opportunity_square",
+				"background_image" : "opportunity.png",
+				"text" : "OPPORTUNITY KNOCKS",
+				"specialProcessing" : {
+					"type" : "opportunity"
+				}
+			},
+			{
+				"number" : 2,
+				"name" : "IncomeTax",
+				"type" : "danger_square",
+				"background_image" : "danger_border_square.png",
+				"text" : "INCOME TAX DUE",
+				"action_text" : "If salary is: $3,000 or less no tax\n $3,001 to $10,000 pay 15%\n $10,001 to $200,000 pay 50%\n $200,001 or more pay 90%\n of 1 years salary",
+				"specialProcessing" : {
+					"type" : "pay_tax",
+					"amount" : "taxTable",
+					"of" : "salary",
+					"taxTable" : { "3000" : 0.0, "10000" : 0.15, "200000" : 0.5, "100000000" : 0.9}
+				}
+			},
+			{
+				"number" :3,
+				"name" : "UnionPacific",
+				"type" : "travel_square",
+				"travel_class" : "rail",
+				"background_image" : "800px-Union_pacific_railroad_logo.png",
+				"text" : "",
+				"specialProcessing" : {
+					"type" : "travel_border",
+					"next_square" : 12
+				}
+			},
+			{
+				"number" : 4,
+				"name" : "Bootlegger",
+				"type" : "occupation_entrance_square",
+				"background_image" : "occupation_entrance_square.png",
+				"image" : "black_and_white_photograph_of_bootleggers.png",
+				"text" : "Bootlegger",
+				"action_text" : "Must have:\n$1000 to make vehicle modifications; or Bootlegging experience",
+				"specialProcessing" : {
+					"type" : "enter_occupation",
+					"destinationOccupation" : "Bootlegger"
+				}
+			},
+			{
+				"number" : 5,
+				"name" : "Opportunity",
+				"type" : "opportunity_square",
+				"background_image" : "opportunity.png",
+				"text" : "OPPORTUNITY KNOCKS",
+				"specialProcessing" : {
+					"type" : "opportunity"
+				}
+			},
+			{
+				"number" : 6,
+				"name" : "ShopWoolworths",
+				"type" : "action_square",
+				"background_image" : "light blue action square.png",
+				"text" : "Shop at Woolworth's",
+				"action_text" : "May spend up to 1 year's annual salary for the latest Crossley Radio.\nScore 1 Heart for each $1000 spend,\nor lose 1 for 'just looking'",
+				"specialProcessing" : {
+					"type" : "buy_hearts",
+					"pending_action" : "buy_hearts",
+					"amount" : 1000,
+					"limit" : "salary",
+					"penalty" : 1
+				}
+			},
+			{
+				"number" : 7,
+				"name" : "UC",
+				"background_image" : "occupation_entrance_square.png",
+				"image" : "university-of-chicago-logo.jpg",
+				"type" : "occupation_entrance_square"  
+				"text" : "University of Chicago",
+				"action_text" : "Must have $500 tuition. Degrees available:\n Business Admin, Dance, Engineering, Government, Law Enforcement, Medicine, Music, Theatre",
+				"specialProcessing" : {
+					"type" : "enter_college",
+					"pending_action" : "select_degree",
+					"destinationOccupation" : "UC"
+				}
+			},
+			{
+				"number" : 8,
+				"name" : "Opportunity",
+				"type" : "opportunity_square",
+				"background_image" : "opportunity.png",
+				"text" : "OPPORTUNITY KNOCKS",
+				"specialProcessing" : {
+					"type" : "opportunity"
+				}
+			},
+			{
+				"number" : 9,
+				"name" : "Hospital",
+				"type" : "corner_square",
+				"background_image" : "corner_square.png",
+				"text" : "HOSPITAL",
+				"action_text" : "You are LAID UP until you throw 5 or less\nor pay the Doctor/Paymaster 1/2 your salary for treatment.",
+				"specialProcessing" : { 
+					"type" : "hospital",
+					"must_roll" : [2, 3, 4, 5],
+					"require_doubles" : 0,
+					"percent" : 0.5,
+					"of" : "salary"
+				}
+			},
+			{
+				"number" : 10,
+				"name" : "Opportunity",
+				"type" : "opportunity_square",
+				"background_image" : "opportunity.png",
+				"text" : "OPPORTUNITY KNOCKS",
+				"specialProcessing" : {
+					"type" : "opportunity"
+				}
+			},
+			{
+				"number" : 11,
+				"name" : "DonateNow",
+				"type" : "danger_square",
+				"background_image" : "danger_border_square.png",
+				"text" : "**DONATE NOW**",
+				"action_text" : "The Class of 1929 is having a fund drive and call on you to donate your fair share. Throw 1 die to find out how fair. Pay the number thrown time $1,000 OR go to the Hospital if you can't or refuse to contribute.",
+				"specialProcessing" : {
+					"type" : "cash_loss",
+					"dice" : 1,
+					"amount" : 1000,
+					"of" : "cash",
+					"alternative" : "Hospital"
+				}
+			},
+			{
+				"number" : 12,
+				"name" : "NYCentral",
+				"type" : "travel_square",
+				"travel_class" : "rail",
+				"background_image" : "New_York_Central_Herald.png",
+				"text" : "",
+				"specialProcessing" : {
+					"type" : "travel_border",
+					"next_square" : 22
+				}
+			},
+			{
+				"number" : 13,
+				"name" : "Columbia Phonograph Company",
+				"type" : "occupation_entrance_square",
+				"background_image" : "occupation_entrance_square.png",
+				"image" : "amazon logo.jpg",
+				"text" : "Amazon",
+				"action_text" : "Must have $1000 for AWS training; or Computer Science Degree; or Amazon experience",
+				"specialProcessing" : {
+					"type" : "enter_occupation",
+					"destinationOccupation" : "Amazon"
+				}
+			},
+			{
+				"number" : 14,
+				"name" : "Opportunity",
+				"type" : "opportunity_square",
+				"background_image" : "opportunity.png",
+				"text" : "OPPORTUNITY KNOCKS",
+				"specialProcessing" : {
+					"type" : "opportunity"
+				}
+			},
+			{
+				"number" : 15,
+				"name" : "ESPN",
+				"type" : "occupation_entrance_square",
+				"background_image" : "occupation_entrance_square.png",
+				"image" : "ESPN logo.jpg",
+				"text" : "ESPN",
+				"action_text" : "Must have: $500 for sports training; or Journalism degree; or ESPN experience",
+				"specialProcessing" : {
+					"type" : "enter_occupation",
+					"destinationOccupation" : "ESPN"
+				}
+			},
+			{
+				"number" : 16,
+				"name" : "Opportunity",
+				"type" : "opportunity_square",
+				"background_image" : "opportunity.png",
+				"text" : "OPPORTUNITY KNOCKS",
+				"specialProcessing" : {
+					"type" : "opportunity"
+				}
+			},
+			{
+				"number" : 17,
+				"name" : "CarPayment",
+				"type" : "danger_square",
+				"background_image" : "danger_border_square.png",
+				"text" : "CAR PAYMENT DUE",
+				"action_text" : "Pay 1/4 your annual salary for car payment & maintenance",
+				"specialProcessing" : {
+					"type" : "cash_loss",
+					"percent" : 0.25,
+					"of" : "salary"
+				}
+			},
+			{
+				"number" : 18,
+				"name" : "Disney",
+				"type" : "occupation_entrance_square",
+				"background_image" : "occupation_entrance_square.png",
+				"image" : "Disney logo.jpg",
+				"text" : "Disney",
+				"action_text" : "Must have: $500 for Magic coach; or a Hospitality degree; or Magic Kingdom experience",
+				"specialProcessing" : {
+					"type" : "enter_occupation",
+					"destinationOccupation" : "Disney"
+				}				
+			},
+			{
+				"number" : 19,
+				"name" : "Opportunity",
+				"type" : "opportunity_square",
+				"background_image" : "opportunity.png",
+				"text" : "OPPORTUNITY KNOCKS",
+				"specialProcessing" : {
+					"type" : "opportunity"
+				}
+			},
+			{
+				"number" : 20,
+				"name" : "buy_experience",
+				"type" : "action_square",
+				"background_image" : "light blue action square.png",
+				"text" : "EXPERIENCE",
+				"action_text" : "Who says you can't buy experience? Buy up to 3 EXPERIENCE cards or lose 1 card for being curious.\nCost of Experience: 1 - $3,000; 2 - $6,000; 3 - $9,000; 4 - $12,000",
+				"specialProcessing" : { 
+					"type" : "buy_experience",
+					"pending_action" : "buy_experience",
+					"amount" : { "1" : 3000, "2" : 6000, "3" : 9000, "4" : 12000},
+					"limit" : "",
+					"penalty" : 1
+				}
+			},
+			{
+				"number" : 21,
+				"name" : "Unemployment",
+				"type" : "corner_square",
+				"background_image" : "corner_square.png",
+				"text" : "UNEMPLOYMENT",
+				"action_text" : "You were LAID OFF and must throw 7, 11, or doubles to move on.\nOR pay 1 year's Salary for additional training.",
+				"specialProcessing" : {
+					"type" : "unemployment",
+					"must_roll" : [7, 11],
+					"require_doubles" : 1,
+					"percent" : 1.0,
+					"of" : "salary"
+				}
+			},
+			{
+				"number" : 22,
+				"name" : "UnionPacific",
+				"type" : "travel_square",
+				"travel_class" : "rail",
+				"background_image" : "800px-Union_pacific_railroad_logo.png",
+				"text" : "",
+				"specialProcessing" : {
+					"type" : "travel_border",
+					"next_square" : 35
+				}
+			}, 
+			{
+				"number" : 23,
+				"name" : "PayRent",
+				"type" : "danger_square",
+				"background_image" : "danger_border_square.png",
+				"text" : "PAY RENT HERE",
+				"action_text" : "Pay half your annual salary for this years rent OR go to Unemployment if you can't afford the rent or refuse to pay.",
+				"specialProcessing" : {
+					"type" : "cash_loss",
+					"percent" : 0.5,
+					"of" : "cash",
+					"alternative" : "Unemployment"
+				}
+			},
+			{
+				"number" : 24,
+				"name" : "ListerAndBacon",
+				"type" : "occupation_entrance_square",
+				"background_image" : "occupation_entrance_square.png",
+				"image" : "Lister and Bacon.jpg",
+				"text" : "Lister and Bacon, LLC",
+				"action_text" : "Must have: $8,000 for bar exam; or Law Board Certification; or Law Firm experience",
+				"specialProcessing" : {
+					"type" : "enter_occupation",
+					"destinationOccupation" : "ListerAndBacon"
+				}
+			},
+			{
+				"number" : 25,
+				"name" : "Opportunity",
+				"type" : "opportunity_square",
+				"background_image" : "opportunity.png",
+				"text" : "OPPORTUNITY KNOCKS",
+				"specialProcessing" : {
+					"type" : "opportunity"
+				}
+			},
+			{
+				"number" : 26,
+				"name" : "BeatProhibition",
+				"type" : "danger_square",
+				"background_image" : "danger_border_square.png",
+				"text" : "BEAT PROHIBITION",
+				"action_text" : "Beat the Prohibition deadline by stocking up now on your favorite booze! Throw 1 die to find out how much booze. Pay number thrown times 10% of your cash-on-hand.",
+				"specialProcessing" : {
+					"type" : "cash_loss",
+					"dice" : 1,
+					"percent" : 0.1,
+					"of" : "cash"
+				}
+			},
+			{
+				"number" : 27,
+				"name" : "Facebook",
+				"type" : "occupation_entrance_square",
+				"background_image" : "occupation_entrance_square.png",
+				"image" : "facebook logo.jpg",
+				"text" : "Facebook",
+				"action_text" : "Must have: $2000 for new laptop; or a Business Admin. degree; or Facebook  experience",
+				"specialProcessing" : {
+					"type" : "enter_occupation",
+					"destinationOccupation" : "Facebook"
+				}
+			},
+			{
+				"number" : 28,
+				"name" : "Opportunity",
+				"type" : "opportunity_square",
+				"background_image" : "opportunity.png",
+				"text" : "OPPORTUNITY KNOCKS",
+				"specialProcessing" : {
+					"type" : "opportunity"
+				}
+			},
+			{
+				"number" : 29,
+				"name" : "BuyProtection",
+				"type" : "action_square",
+				"background_image" : "light blue action square.png",
+				"text" : "Mob Protection",
+				"action_text" : "Spend $5,000 to by protection from the Chicago Outfit for your cash, Happiness and Fame.",
+				"specialProcessing" : { 
+					"type" : "buy_insurance",
+					"pending_action" : "buy_insurance",
+					"amount" : 5000
+				}
+			},
+			{
+				"number" : 30,
+				"name" : "ConeyIsland",
+				"type" : "corner_square",
+				"background_image" : "corner_square.png",
+				"text" : "Coney Island",
+				"action_text" : "You vacation to Coney Island! Collect 6 Hearts for landing here and 3 each time you stay with a roll of 7 or less",
+				"specialProcessing" : {
+					"type": "holiday",
+					"pending_action": "stay_or_move",
+					"must_roll" : [2, 3, 4, 5, 6, 7],
+					"hearts" : [3, 6]
+				}
+			},
+			{
+				"number" : 31,
+				"name" : "Opportunity",
+				"type" : "opportunity_square",
+				"background_image" : "opportunity.png",
+				"text" : "OPPORTUNITY KNOCKS",
+				"specialProcessing" : {
+					"type" : "opportunity"
+				}
+			},
+			{
+				"number" : 32,
+				"name" : "BetOnRaces",
+				"type" : "action_square",
+				"background_image" : "light blue action square.png",
+				"image" : "Las Vegas.jpg",
+				"text" : "Bet on the Ponies",
+				"action_text" : "Roll 2 dice to start gambling.\n6 or less - lose $1000 x roll of 1 die\n7 - Jackpot! Collect $10,000\n8 or more - collect $1000 x roll of 1 die",
+				"specialProcessing" : {
+					"type" : "gamble",
+					"pending_action" : "gamble",
+					"dice" : 2,
+					"amount_dice" : 1,
+					"amount" : {"1": -1000, "2": -1000, "3": -1000, "4": -1000, "5": -1000, "6": -1000, "7": "10000", "8": 1000, "9": 1000, "10": 1000, "11": 1000, "12": 1000}
+				}
+			},
+			{
+				"number" : 33,
+				"name" : "Google",
+				"type" : "occupation_entrance_square",
+				"background_image" : "occupation_entrance_square.png",
+				"image" : "google logo.jpg",
+				"text" : "Google",
+				"action_text" : "Must have: $4000 for Cloud training; or a Marketing degree; or Google experience.",
+				"specialProcessing" : {
+					"type" : "enter_occupation",
+					"destinationOccupation" : "Google"
+				}
+			},
+			{
+				"number" : 34,
+				"name" : "Opportunity",
+				"type" : "opportunity_square",
+				"background_image" : "opportunity.png",
+				"text" : "OPPORTUNITY KNOCKS",
+				"specialProcessing" : {
+					"type" : "opportunity"
+				}
+			},
+			{
+				"number" : 35,
+				"name" : "NYCentral",
+				"type" : "travel_square",
+				"travel_class" : "rail",
+				"background_image" : "New_York_Central_Herald.png",
+				"text" : "",
+				"specialProcessing" : {
+					"type" : "travel_border",
+					"next_square" : 3
+				}
+			},
+			{
+				"number" : 36,
+				"name" : "Pfizer",
+				"type" : "occupation_entrance_square",
+				"background_image" : "occupation_entrance_square.png",
+				"image" : "pfizer logo.jpg",
+				"text" : "Pfizer",
+				"action_text" : "Must have: $10,000 for special training; or Pharmacy Board Certification; or Pfizer experience",
+				"specialProcessing" : {
+					"type" : "enter_occupation",
+					"destinationOccupation" : "Pfizer"
+				}
+			},
+			{
+				"number" : 37,
+				"name" : "Opportunity",
+				"type" : "opportunity_square",
+				"background_image" : "opportunity.png",
+				"text" : "OPPORTUNITY KNOCKS",
+				"specialProcessing" : {
+					"type" : "opportunity"
+				}
+			},
+			{
+				"number" : 38,
+				"name" : "DivorceCourt",
+				"type" : "danger_square",
+				"background_image" : "danger_border_square.png",
+				"image" : "divorce icon.jpg",
+				"text" : "DIVORCE COURT",
+				"action_text" : "You and your partner split amicably. Throw 2 die to see how amicable. Pay numbers thrown times 10% of your net worth.",
+				"specialProcessing" : {
+					"type" : "cash_loss",
+					"dice" : 2,
+					"percent" : 0.1,
+					"of" : "net_worth"
+				}
+			},
+			{
+				"number" : 39,
+				"name" : "JazzRecords",
+				"type" : "action_square",
+				"background_image" : "light blue action square.png",
+				"text" : "JAZZ RECORDS",
+				"action_text" : "Jazz recordings for sale. Score Happiness points as follows:\n4 Hearts - $2,000; 8 Hearts - $8,000; 12 Hearts - $16,000",
+				"specialProcessing" : {
+					"type" : "buy_hearts",
+					"pending_action" : "buy_hearts",
+					"amount" : {"4" : 2000, "8" : 8000, "12" : 16000},
+					"limit" : "",
+					"penalty" : 0
+				}
+			},
+			{
+				"number" : 40,
+				"name" : "SpaceX",
+				"type" : "occupation_entrance_square",
+				"background_image" : "occupation_entrance_square.png",
+				"image" : "SpaceX logo.jpg",
+				"text" : "SpaceX",
+				"action_text" : "Must have: $5000 recruiting fee; or Aerospace Engineering Degree; or SpaceX experience",
+				"specialProcessing" : {
+					"type" : "enter_occupation",
+					"destinationOccupation" : "SpaceX"
+				}
+			},
+			{
+				"number" : 41,
+				"name" : "Publicity",
+				"type" : "action_square",
+				"background_image" : "light blue action square.png",
+				"text" : "PUBLICITY",
+				"action_text" : "May hire Walter Winchell to give you good publicity. Score Fame points as follows:\n4 Stars - $4,000; 10 Stars - $8,000; 16 stars - $12,000; 22 Stars - $16,000 ",
+				"specialProcessing" : {
+					"type" : "buy_stars",
+					"pending_action" : "buy_stars",
+					"amount" : {"4" : 4000, "10" : 8000, "16" : 12000, "22" : 16000},
+					"limit" : "",
+					"penalty" : 0
+				}
+			}
+	]
+}

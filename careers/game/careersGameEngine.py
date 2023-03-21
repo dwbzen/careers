@@ -1151,10 +1151,13 @@ class CareersGameEngine(object):
             result = CommandResult(CommandResult.ERROR, f'Nothing to resolve for {what}', False)
 
         #
-        # reset pending_action if result is SUCCESS
+        # clear pending_action for all except SELECT_DEGREE if result is SUCCESS
         #            
         if result.is_successful() and not player.on_holiday:
-            player.clear_pending(PendingActionType.SELECT_DEGREE)
+            if pending_action.pending_action_type is PendingActionType.SELECT_DEGREE:
+                player.clear_pending()
+            else:
+                player.clear_pending(PendingActionType.SELECT_DEGREE)
         return result
         
                     

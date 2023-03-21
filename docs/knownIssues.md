@@ -41,10 +41,13 @@ Status: **OPEN**</p>
 
 6. Resolving select_degree with a missing or invalid degree program<br>
 incorrectly clears the PendingActionType.SELECT_DEGREE pending action.<br>
-Status: **INVESTIGATING**<br>
+Status: **RESOLVED**<br>
 Problem is add_degree returns an error so the statement<br>
 `if result.is_successful() and not player.on_holiday:`<br>
 is False resulting in all pending actions being cleared.</p>
+Resolution: The update for #13 below was one change necessary.
+The second change is in the resolve conditions in careersGameEngine.resolve().
+It needed to check if the pendingAction is SELECT_DEGREE.
 
 7. If a player lands on space 2 of Google (Pay $2000 OR go on Unemployment) and is unable to pay<br>
 or elects not to pay, the player is sent to Unemployment but in passing Payday, collects<br>
@@ -92,8 +95,14 @@ So there are two ways to play an occupation_choice Opportunity card:</p>
   b. resolve the choose_destination pending action in a second command</p>
 The resolve method works correctly. I fixed (a) by issuing a "enter" instead of a "goto"
 
-13. The "end" command should declare a winner.
-Status: **OPEN**
+13. A player is on Tech Convention and resolves buy_hearts specifying an invalid number
+(a number > the player's salary). The error is displayed, for example "You can only buy up to 2 here."
+but the pending action is cleared incorrectly. It should only clear a pending action
+if the command executed without an error.<br>
+Status: **RESOLVED**</p>
+Resolution: PendingActions.get by default was removing the pendingAction from the list.
+So in the case of an error the pendingAction was removed incorrectly.
+Changed get(remove) default to False.
 
 ---
 ## Future Enhancements
@@ -117,6 +126,9 @@ It can be specified in GameRunner with **--type timed** command line argument,<b
 but the implementation is missing. Timer should start when the **start** command is executed,<br>
 and checked at the end of each players turn (on the next command).
 Status: **ACTIVE**</p>
+
+4. The "end" command should declare a winner.
+Status: **OPEN**
 
 ---
 ## Technical TODOs

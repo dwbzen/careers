@@ -32,5 +32,21 @@
 					"starting_salary" : 2000,
 					"initial_cash" : 2500
 			}	
-	}
+	},
+	"JazzAge" : {
+			"version" : "0.0.1",
+			"full_name" : "Jazz Age Edition",
+			"Help" : "Rule Book - Jazz Age.pdf",
+			"Game Parameters" : "gameParameters.json",
+			"Opportunity Cards" : "opportunityCards.json",
+			"Experience Cards" : "experienceCards.json",
+			"Occupations" : "occupations.json",
+			"Players" : "players.json",
+			"Layout" : "gameLayout.json",
+			"Rules" : "rules.json",
+			"configuration" : {
+					"starting_salary" : 1000,
+					"initial_cash" : 1000
+			}	
+	}	
 }

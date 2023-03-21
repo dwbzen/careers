@@ -86,13 +86,13 @@ class PendingActions(CareersObject):
                 pending_action = self._pending_actions[index]
         return pending_action
     
-    def get(self, index:int=-1, remove:bool=True) -> PendingAction:
+    def get(self, index:int=-1, remove:bool=False) -> PendingAction:
         """Gets the PendingAction at the specified index
             Arguments:
                 index - the index to get. Must satisfy -1 <= index < self.size()
                 remove - if True pop the pending_actions list at the specified index, removing it from the list.
                         If false, return the PendingAction without removal.
-                        Default is True
+                        Default is False
         """
         assert(index >= -1 and index < self.size())
         if remove:
