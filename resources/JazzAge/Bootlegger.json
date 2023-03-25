@@ -1,0 +1,173 @@
+{
+	"name" : "Bootlegger",
+	"configuration" : {
+		"occupationClass" : "occupation",
+		"fullName" : "Bootlegger",
+		"background_image" : "occupation_entrance.png",
+		"image" : "black_and_white_photograph_of_bootleggers.png",
+		"entry_fee" : 1000,
+		"size" : 12,
+		"entrance_square_number" : 4,
+		"exit_square_number" : 5,
+		"text" : "Must have: $1000 to make vehicle modifications; or Bootlegging experience",
+		"degreeRequirements" : { }
+	},
+	"occupationSquares" : [
+		{
+			"number" : 0,
+			"background_image" : "occupation_square.png",
+			"text" : "New still is working well",
+			"stars" : 0,
+			"hearts" : 2,
+			"bonus" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 1,
+			"background_image" : "occupation_square.png",
+			"text" : "Outrun pursuing revenuers",
+			"stars" : 0,
+			"hearts" : 0,
+			"bonus" : 0,
+			"experience" : 1,
+			"opportunities" : 0,
+			"action_text" : "Draw 1 EXPERIENCE CARD",
+			"specialProcessing" : {}
+		},		
+		{
+			"number" : 2,
+			"background_image" : "occupation_square.png",
+			"text" : "Meet future spouse delivering bootleg beer",
+			"stars" : 0,
+			"hearts" : 3,
+			"bonus" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 3,
+			"background_image" : "occupation_square.png",
+			"text" : "Strike a deal with Krazy Kat Club speakeasy",
+			"stars" : 4,
+			"hearts" : 2,
+			"bonus" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 4,
+			"background_image" : "occupation_square.png",
+			"text" : "Gamble on the ponies",
+			"stars" : 0,
+			"hearts" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "Collect $1000 x roll of 1 die",
+			"specialProcessing" : {
+				"type" : "bonus",
+				"dice" : 1,
+				"amount" : 1000
+			}
+		},
+		{
+			"number" : 5,
+			"background_image" : "occupation_square.png",
+			"text" : "Prohibition agents closing in",
+			"type" : "action_square",
+			"stars" : 0,
+			"hearts" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "CALL IN FAVORS",
+			"specialProcessing" : {
+				"type" : "favors"
+			}
+		},
+		{
+			"number" : 6,
+			"background_image" : "occupation_square.png",
+			"text" : "Al Capone loves your beer",
+			"stars" : 0,
+			"hearts" : 4,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 7,
+			"background_image" : "occupation_square.png",
+			"text" : "Business meal with Big Jim Colosimo",
+			"stars" : 0,
+			"hearts" : 0,
+			"experience" : 0,
+			"opportunities" : 1,
+			"action_text" : "Draw 1 OPPORTUNITY CARD",
+			"specialProcessing" : {}
+		},		
+		{
+			"number" : 8,
+			"background_image" : "occupation_square.png",
+			"text" : "Big order from Chicago Jazz Club",
+			"stars" : 0,
+			"hearts" : 0, 
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "Collect bonus $5000",
+			"specialProcessing" : {
+				"type" : "bonus",
+				"amount" : 5000
+			}
+		},
+		{
+			"number" : 9,
+			"background_image" : "occupation_square.png",
+			"text" : "Help Johnny Torrio enter into Chicago bootlegging",
+			"stars" : 0,
+			"hearts" : 6,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 10,
+			"background_image" : "danger_occupation_square.png",
+			"text" : "Agents destroy your still",
+			"type" : "danger_square",
+			"stars" : 0,
+			"hearts" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "Lose 1/2 your cash",
+			"specialProcessing" : {
+				"type" : "cash_loss",
+				"amount" : 0,
+				"percent" : 0.5,
+				"of" : "cash"
+			}
+		},
+		{
+			"number" : 11,
+			"background_image" : "occupation_square.png",
+			"text" : "Underboss is impressed",
+			"type" : "action_square",
+			"stars" : 2,
+			"hearts" : 4,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "Salary up $1000",
+			"specialProcessing" : {
+				"type" : "salary_increase",
+				"amount" : 1000
+			}
+		}
+	]
+}

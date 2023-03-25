@@ -151,7 +151,7 @@
 				"type" : "corner_square",
 				"background_image" : "corner_square.png",
 				"text" : "HOSPITAL",
-				"action_text" : "You are LAID UP until you throw 5 or less\nor pay the Doctor/Paymaster 1/2 your salary for treatment.",
+				"action_text" : "You are LAID UP until you throw 5 or less\nor pay the Doctor/Paymaster 1/2 your salary for experimental drugs",
 				"specialProcessing" : { 
 					"type" : "hospital",
 					"must_roll" : [2, 3, 4, 5],
@@ -199,15 +199,15 @@
 			},
 			{
 				"number" : 13,
-				"name" : "Columbia Phonograph Company",
+				"name" : "ColumbiaPhonographCompany",
 				"type" : "occupation_entrance_square",
 				"background_image" : "occupation_entrance_square.png",
-				"image" : "amazon logo.jpg",
-				"text" : "Amazon",
-				"action_text" : "Must have $1000 for AWS training; or Computer Science Degree; or Amazon experience",
+				"image" : "Columbia Phonograph company.png",
+				"text" : "Columbia Phonograph Company",
+				"action_text" : "Must have $1000 for internship; or Business Admin Degree; or prior experience",
 				"specialProcessing" : {
 					"type" : "enter_occupation",
-					"destinationOccupation" : "Amazon"
+					"destinationOccupation" : "ColumbiaPhonographCompany"
 				}
 			},
 			{
@@ -222,15 +222,15 @@
 			},
 			{
 				"number" : 15,
-				"name" : "ESPN",
+				"name" : "NewYorkYankees",
 				"type" : "occupation_entrance_square",
 				"background_image" : "occupation_entrance_square.png",
-				"image" : "ESPN logo.jpg",
-				"text" : "ESPN",
-				"action_text" : "Must have: $500 for sports training; or Journalism degree; or ESPN experience",
+				"image" : "NewYorkYankees_PrimaryLogo.svg.png",
+				"text" : "New York Yankees",
+				"action_text" : "Must have: $500 for batting coach; or Yankees experience",
 				"specialProcessing" : {
 					"type" : "enter_occupation",
-					"destinationOccupation" : "ESPN"
+					"destinationOccupation" : "NewYorkYankees"
 				}
 			},
 			{
@@ -249,7 +249,7 @@
 				"type" : "danger_square",
 				"background_image" : "danger_border_square.png",
 				"text" : "CAR PAYMENT DUE",
-				"action_text" : "Pay 1/4 your annual salary for car payment & maintenance",
+				"action_text" : "Pay 1/4 your annual salary for car payment and maintenance",
 				"specialProcessing" : {
 					"type" : "cash_loss",
 					"percent" : 0.25,
@@ -258,15 +258,15 @@
 			},
 			{
 				"number" : 18,
-				"name" : "Disney",
+				"name" : "PaulWhitemansOrchestra",
 				"type" : "occupation_entrance_square",
 				"background_image" : "occupation_entrance_square.png",
-				"image" : "Disney logo.jpg",
-				"text" : "Disney",
-				"action_text" : "Must have: $500 for Magic coach; or a Hospitality degree; or Magic Kingdom experience",
+				"image" : "Paul Whiteman.jpg",
+				"text" : "Paul Whiteman's Orchestra",
+				"action_text" : "Must have: $500 to perfect Stride Jazz Piano; or a Music degree; or prior band experience",
 				"specialProcessing" : {
 					"type" : "enter_occupation",
-					"destinationOccupation" : "Disney"
+					"destinationOccupation" : "PaulWhitemansOrchestra"
 				}				
 			},
 			{
@@ -285,7 +285,7 @@
 				"type" : "action_square",
 				"background_image" : "light blue action square.png",
 				"text" : "EXPERIENCE",
-				"action_text" : "Who says you can't buy experience? Buy up to 3 EXPERIENCE cards or lose 1 card for being curious.\nCost of Experience: 1 - $3,000; 2 - $6,000; 3 - $9,000; 4 - $12,000",
+				"action_text" : "It's the Depression and experience is hard to come by: 1 - $3,000; 2 - $6,000; 3 - $9,000; 4 - $12,000",
 				"specialProcessing" : { 
 					"type" : "buy_experience",
 					"pending_action" : "buy_experience",
@@ -300,7 +300,7 @@
 				"type" : "corner_square",
 				"background_image" : "corner_square.png",
 				"text" : "UNEMPLOYMENT",
-				"action_text" : "You were LAID OFF and must throw 7, 11, or doubles to move on.\nOR pay 1 year's Salary for additional training.",
+				"action_text" : "You LOST YOUR JOB and must throw 7, 11, or doubles to move on.\nOR pay 1 year's Salary for additional training.",
 				"specialProcessing" : {
 					"type" : "unemployment",
 					"must_roll" : [7, 11],
@@ -337,15 +337,15 @@
 			},
 			{
 				"number" : 24,
-				"name" : "ListerAndBacon",
+				"name" : "TheUntouchables",
 				"type" : "occupation_entrance_square",
 				"background_image" : "occupation_entrance_square.png",
-				"image" : "Lister and Bacon.jpg",
-				"text" : "Lister and Bacon, LLC",
-				"action_text" : "Must have: $8,000 for bar exam; or Law Board Certification; or Law Firm experience",
+				"image" : "The_Untouchables_oil_painting.png",
+				"text" : "The Untouchables",
+				"action_text" : "Must have: $8,000 for special training; or Law Enforcement degree; or prior experience",
 				"specialProcessing" : {
 					"type" : "enter_occupation",
-					"destinationOccupation" : "ListerAndBacon"
+					"destinationOccupation" : "TheUntouchables"
 				}
 			},
 			{
@@ -374,15 +374,15 @@
 			},
 			{
 				"number" : 27,
-				"name" : "Facebook",
+				"name" : "CottonClub",
 				"type" : "occupation_entrance_square",
 				"background_image" : "occupation_entrance_square.png",
-				"image" : "facebook logo.jpg",
+				"image" : "cotton club.png",
 				"text" : "Facebook",
-				"action_text" : "Must have: $2000 for new laptop; or a Business Admin. degree; or Facebook  experience",
+				"action_text" : "Must have: $1000 for dance lessons; or a dance degree; or Cotton Club experience",
 				"specialProcessing" : {
 					"type" : "enter_occupation",
-					"destinationOccupation" : "Facebook"
+					"destinationOccupation" : "CottonClub"
 				}
 			},
 			{
@@ -434,12 +434,12 @@
 			},
 			{
 				"number" : 32,
-				"name" : "BetOnRaces",
+				"name" : "Horseracing",
 				"type" : "action_square",
 				"background_image" : "light blue action square.png",
-				"image" : "Las Vegas.jpg",
-				"text" : "Bet on the Ponies",
-				"action_text" : "Roll 2 dice to start gambling.\n6 or less - lose $1000 x roll of 1 die\n7 - Jackpot! Collect $10,000\n8 or more - collect $1000 x roll of 1 die",
+				"image" : "",
+				"text" : "Horseracing at Pimlico",
+				"action_text" : "Roll 2 dice to bet on the trifecta at Pimlico.\n6 or less - lose $1000 x roll of 1 die\n7 - Collect $10,000\n8 or more - collect $1000 x roll of 1 die",
 				"specialProcessing" : {
 					"type" : "gamble",
 					"pending_action" : "gamble",
@@ -450,15 +450,15 @@
 			},
 			{
 				"number" : 33,
-				"name" : "Google",
+				"name" : "ChicagoOutfit",
 				"type" : "occupation_entrance_square",
 				"background_image" : "occupation_entrance_square.png",
-				"image" : "google logo.jpg",
-				"text" : "Google",
-				"action_text" : "Must have: $4000 for Cloud training; or a Marketing degree; or Google experience.",
+				"image" : "ChicagoMob.png",
+				"text" : "The Chicago Outfit",
+				"action_text" : "Must have: $4000 to bribe the local boss; or Mob experience.",
 				"specialProcessing" : {
 					"type" : "enter_occupation",
-					"destinationOccupation" : "Google"
+					"destinationOccupation" : "ChicagoOutfit"
 				}
 			},
 			{
@@ -485,12 +485,12 @@
 			},
 			{
 				"number" : 36,
-				"name" : "Pfizer",
+				"name" : "StorkClub",
 				"type" : "occupation_entrance_square",
 				"background_image" : "occupation_entrance_square.png",
-				"image" : "pfizer logo.jpg",
-				"text" : "Pfizer",
-				"action_text" : "Must have: $10,000 for special training; or Pharmacy Board Certification; or Pfizer experience",
+				"image" : "Stork_Club_logo.jpg",
+				"text" : "The Stork Club",
+				"action_text" : "Must have: A Member Card; or $10,000 for a new Member Card; or a Theatre degree",
 				"specialProcessing" : {
 					"type" : "enter_occupation",
 					"destinationOccupation" : "Pfizer"
@@ -513,7 +513,7 @@
 				"background_image" : "danger_border_square.png",
 				"image" : "divorce icon.jpg",
 				"text" : "DIVORCE COURT",
-				"action_text" : "You and your partner split amicably. Throw 2 die to see how amicable. Pay numbers thrown times 10% of your net worth.",
+				"action_text" : "You and your partner split amicably. Throw 1 die to see how amicably. Pay number thrown times 10% of your annual salary",
 				"specialProcessing" : {
 					"type" : "cash_loss",
 					"dice" : 2,
@@ -538,15 +538,15 @@
 			},
 			{
 				"number" : 40,
-				"name" : "SpaceX",
+				"name" : "RCA",
 				"type" : "occupation_entrance_square",
 				"background_image" : "occupation_entrance_square.png",
-				"image" : "SpaceX logo.jpg",
-				"text" : "SpaceX",
-				"action_text" : "Must have: $5000 recruiting fee; or Aerospace Engineering Degree; or SpaceX experience",
+				"image" : "RCA logo.jpg",
+				"text" : "Radio Corporation of America",
+				"action_text" : "Must have: $5000 for technical training; or an Engineering Degree; or RCA experience",
 				"specialProcessing" : {
 					"type" : "enter_occupation",
-					"destinationOccupation" : "SpaceX"
+					"destinationOccupation" : "RCA"
 				}
 			},
 			{
@@ -555,7 +555,7 @@
 				"type" : "action_square",
 				"background_image" : "light blue action square.png",
 				"text" : "PUBLICITY",
-				"action_text" : "May hire Walter Winchell to give you good publicity. Score Fame points as follows:\n4 Stars - $4,000; 10 Stars - $8,000; 16 stars - $12,000; 22 Stars - $16,000 ",
+				"action_text" : "May hire Walter Winchell for good publicity. Score Fame points as follows:\n4 Stars - $4,000; 10 Stars - $8,000; 16 stars - $12,000; 22 Stars - $16,000 ",
 				"specialProcessing" : {
 					"type" : "buy_stars",
 					"pending_action" : "buy_stars",

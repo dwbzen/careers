@@ -1,7 +1,7 @@
 {
 	"description" : "Game parameters for production",
-	"starting_salary" : 2000,
-	"starting_cash" : 2000,
+	"starting_salary" : 1000,
+	"starting_cash" : 1000,
 	"currency" : "dollars",
 	"currency_symbol" : "\u0024",
 	"date_format" : "yyyy-mm-dd",

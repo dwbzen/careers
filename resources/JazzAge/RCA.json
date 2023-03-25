@@ -1,0 +1,195 @@
+{
+	"name" : "SpaceX",
+	"configuration" : {
+		"occupationClass" : "occupation",
+		"fullName" : "SpaceX",
+		"background_image" : "occupation_entrance.png",
+		"image" : "spacex logo.jpg",
+		"entry_fee" : 5000,
+		"size" : 13,
+		"entrance_square_number" : 40,
+		"exit_square_number" : 1,
+		"text" : "Must have: $5000 recruiting fee; or Aerospace Engineering degree; or SpaceX experience",
+		"degreeRequirements" : { 
+			"degreeName" : "Aerospace",
+			"numberRequired" : 1
+		}
+	},
+	"occupationSquares" : [
+		{
+			"number" : 0,
+			"background_image" : "occupation_square.png",
+			"text" : "Cape Canaveral is beautiful",
+			"stars" : 0,
+			"hearts" : 2,
+			"bonus" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 1,
+			"background_image" : "occupation_square.png",
+			"text" : "Successful Falcon Heavy take-off",
+			"stars" : 6,
+			"hearts" : 0,
+			"bonus" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 2,
+			"background_image" : "danger_occupation_square.png",
+			"text" : "Dragon docking fails",
+			"type" : "danger_square",
+			"stars" : 0,
+			"hearts" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "Lose ALL your Fame",
+			"specialProcessing" : {
+				"type" : "fame_loss",
+				"amount" : 0,
+				"percent" : 1.0,
+				"of" : "fame"
+			}
+		},
+		{
+			"number" : 3,
+			"background_image" : "danger_occupation_square.png",
+			"text" : "Falcon 9 explodes on the launch pad",
+			"type" : "danger_square",
+			"stars" : 0,
+			"hearts" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "Lose ALL your Cash",
+			"specialProcessing" : {
+				"type" : "cash_loss",
+				"amount" : 0,
+				"percent" : 1.0,
+				"of" : "cash"
+			}
+		},
+		{
+			"number" : 4,
+			"background_image" : "occupation_square.png",
+			"text" : "Enhance Draco thruster test facility",
+			"stars" : 2,
+			"hearts" : 4,
+			"bonus" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 5,
+			"background_image" : "occupation_square.png",
+			"text" : "Mars Mission Starship design",
+			"stars" : 0,
+			"hearts" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "Salary up $2000",
+			"specialProcessing" : {
+				"type" : "salary_increase",
+				"amount" : 2000
+			}
+		},
+		{
+			"number" : 6,
+			"background_image" : "occupation_square.png",
+			"text" : "Grueling avionics project",
+			"stars" : 0,
+			"hearts" : 0,
+			"bonus" : 0,
+			"experience" : 2,
+			"opportunities" : 0,
+			"action_text" : "Draw 2 EXPERIENCE CARDS",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 7,
+			"background_image" : "occupation_square.png",
+			"text" : "Selected for first Mars Mission Crew",
+			"stars" : 16,
+			"hearts" : 0,
+			"bonus" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 8,
+			"background_image" : "occupation_square.png",
+			"text" : "Lunch with Elon Musk",
+			"stars" : 2,
+			"hearts" : 10,
+			"bonus" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 9,
+			"background_image" : "occupation_square.png",
+			"text" : "Advance for new Mars Mission book",
+			"stars" : 0,
+			"hearts" : 0, 
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "Collect Bonus $10,000",
+			"specialProcessing" : {
+				"type" : "bonus",
+				"amount" : 10000
+			}
+		},
+		{
+			"number" : 10,
+			"background_image" : "danger_occupation_square.png",
+			"text" : "Exhausted from conference keynote address",
+			"type" : "danger_square",
+			"stars" : 10,
+			"hearts" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "But go to Hospital",
+			"specialProcessing" : {
+				"type" : "travel_border",
+				"next_square" : "Hospital"
+			}
+		},
+		{
+			"number" : 11,
+			"background_image" : "occupation_square.png",
+			"text" : "Survive Falcon Heavy launch",
+			"stars" : 6,
+			"hearts" : 4,
+			"bonus" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 12,
+			"background_image" : "occupation_square.png",
+			"text" : "Employee of the year",
+			"stars" : 10,
+			"hearts" : 0, 
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "Collect Bonus $5000",
+			"specialProcessing" : {
+				"type" : "bonus",
+				"amount" : 5000
+			}
+		}
+	]
+}

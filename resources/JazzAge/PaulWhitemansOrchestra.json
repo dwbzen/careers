@@ -1,17 +1,17 @@
 {
-	"name" : "Disney",
+	"name" : "PaulWhitemansOrchestra",
 	"configuration" : {
 		"occupationClass" : "occupation",
-		"fullName" : "Disney",
+		"fullName" : "Paul Whiteman's Orchestra",
 		"background_image" : "occupation_entrance.png",
-		"image" : "disney logo.jpg",
+		"image" : "Paul Whiteman.jpg",
 		"entry_fee" : 500,
 		"size" : 11,
 		"entrance_square_number" : 18,
 		"exit_square_number" : 19,
-		"text" : "Must have: $500 for Magic Coach; or a Hospitality degree; or Magic Kingdom experience",
+		"text" : "Must have: $500 to perfect Jazz Stride piano; or a Music degree; or band experience",
 		"degreeRequirements" : { 
-			"degreeName" : "Hospitality",
+			"degreeName" : "Music",
 			"numberRequired" : 1
 		}
 	},
@@ -19,7 +19,7 @@
 		{
 			"number" : 0,
 			"background_image" : "danger_occupation_square.png",
-			"text" : "Get the flu first day at work",
+			"text" : "Get drunk and fall off the stage",
 			"type" : "danger_square",
 			"stars" : 0,
 			"hearts" : 0,
@@ -34,7 +34,7 @@
 		{
 			"number" : 1,
 			"background_image" : "occupation_square.png",
-			"text" : "Visit Epcot - Guardians of the Galaxy",
+			"text" : "Rehearse Ferde Grofe's Grand Canyon Suite",
 			"stars" : 0,
 			"hearts" : 2,
 			"bonus" : 0,
@@ -46,7 +46,7 @@
 		{
 			"number" : 2,
 			"background_image" : "occupation_square.png",
-			"text" : "Zoom call with Imagineering CTO",
+			"text" : "Star in NBC radio's The Victory Hour",
 			"stars" : 0,
 			"hearts" : 0,
 			"experience" : 0,
@@ -60,7 +60,7 @@
 			"text" : "Fast Track!",
 			"type" : "travel_square",
 			"stars" : 0,
-			"hearts" : 2,
+			"hearts" : 3,
 			"bonus" : 0,
 			"experience" : 0,
 			"opportunities" : 0,
@@ -73,7 +73,7 @@
 		{
 			"number" : 4,
 			"background_image" : "occupation_square.png",
-			"text" : "May backstab fellow Cast Member(s)",
+			"text" : "May backstab fellow musician(s)",
 			"type" : "action_square",
 			"stars" : 0,
 			"hearts" : -4,
@@ -91,7 +91,7 @@
 		{
 			"number" : 5,
 			"background_image" : "occupation_square.png",
-			"text" : "Hurricane watch!",
+			"text" : "Recording session with Bix Beiderbecke",
 			"stars" : 0,
 			"hearts" : 0,
 			"bonus" : 0,
@@ -103,7 +103,7 @@
 		{
 			"number" : 6,
 			"background_image" : "occupation_square.png",
-			"text" : "Bonus from Mickey",
+			"text" : "Take part in weekly radio show for Old Gold cigarettes (1929)",
 			"stars" : 0,
 			"hearts" : 0,
 			"experience" : 0,
@@ -118,7 +118,7 @@
 		{
 			"number" : 7,
 			"background_image" : "occupation_square.png",
-			"text" : "Visit Disneyland",
+			"text" : "Visit Al Jolson in New Orleans",
 			"stars" : 0,
 			"hearts" : 4,
 			"bonus" : 0,
@@ -130,7 +130,7 @@
 		{
 			"number" : 8,
 			"background_image" : "occupation_square.png",
-			"text" : "Spend the night in Cinderella's Castle",
+			"text" : "Premier of Rhapsody in Blue",
 			"stars" : 0,
 			"hearts" : 6,
 			"bonus" : 0,
@@ -142,11 +142,11 @@
 		{
 			"number" : 9,
 			"background_image" : "occupation_square.png",
-			"text" : "Lead a tour group",
+			"text" : "Sign with Columbia Records (1928 - 1930)",
 			"stars" : 0,
 			"hearts" : 0,
 			"bonus" : 0,
-			"experience" : 2,
+			"experience" : 1,
 			"opportunities" : 0,
 			"action_text" : "Draw 1 EXPERIENCE CARD",
 			"specialProcessing" : {}
@@ -154,7 +154,7 @@
 		{
 			"number" : 10,
 			"background_image" : "occupation_square.png",
-			"text" :  "Scaring the kids again",
+			"text" :  "Miss return ship back to NY after Vienna tour",
 			"image" : "frown_emoji.png",
 			"stars" : 0,
 			"hearts" : 0,
@@ -169,16 +169,13 @@
 		{
 			"number" : 10,
 			"background_image" : "occupation_square.png",
-			"text" : "Cast Member of the year",
-			"stars" : 2,
+			"text" : "Recording of Jose Padillas 'Valencia' tops the charts (1926)",
+			"stars" : 0,
 			"hearts" : 8, 
 			"experience" : 0,
 			"opportunities" : 0,
 			"action_text" : "Salary up $1000",
-			"specialProcessing" : {
-				"type" : "salary_increase",
-				"amount" : 1000
-			}
+			"specialProcessing" : { }
 		}
 	]
 }

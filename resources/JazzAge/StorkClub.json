@@ -1,0 +1,284 @@
+{
+	"name" : "StorkClub",
+	"configuration" : {
+		"occupationClass" : "occupation",
+		"fullName" : "The Stork Club",
+		"background_image" : "occupation_entrance.png",
+		"image" : "Stork_Club_logo.jpg",
+		"entry_fee" : 5000,
+		"size" : 19,
+		"entrance_square_number" : 36,
+		"exit_square_number" : 37,
+		"text" : "Must have: A member card, or $5,000 for a new member card or a Theatre degree",
+		"degreeRequirements" : { 
+			"degreeName" : "Theatre",
+			"numberRequired" : 1
+		}
+	},
+	"occupationSquares" : [
+		{
+			"number" : 0,
+			"background_image" : "occupation_square.png",
+			"text" : "Lunch with Walter Winchell",
+			"stars" : 0,
+			"hearts" : 0,
+			"bonus" : 0,
+			"experience" : 0,
+			"opportunities" : 1,
+			"action_text" : "Draw 1 OPPORTUNITY CARD",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 1,
+			"background_image" : "occupation_square.png",
+			"text" : "You pick 'Stork Club' as the name for the new club",
+			"stars" : 0,
+			"hearts" : 6,
+			"bonus" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 2,
+			"background_image" : "occupation_square.png",
+			"text" : "You have a fast car. May take shortcut",
+			"type" : "shortcut_square",
+			"image" : "shortcut-1.jpg",
+			"stars" : 0,
+			"hearts" : 0,
+			"bonus" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : {
+				"type" : "shortcut",
+				"pending_action" : "take_shortcut",
+				"next_square" : 17,
+				"next_square_text" : "Ernest Hemmingway visits the Stork Club"
+			}
+		},
+		{
+			"number" : 3,
+			"background_image" : "occupation_square.png",
+			"text" : "Stork Club opens on West 58th Street",
+			"stars" : 4,
+			"hearts" : 4,
+			"bonus" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : {}
+		},		
+		{
+			"number" : 4,
+			"background_image" : "occupation_square.png",
+			"text" : "Actress Helen Morgan holds a cast party at the club",
+			"stars" : 0,
+			"hearts" : 0,
+			"bonus" : 0,
+			"experience" : 2,
+			"opportunities" : 0,
+			"action_text" : "Draw 2 EXPERIENCE CARDS",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 5,
+			"background_image" : "occupation_square.png",
+			"text" : "Extravagant gifts from owner Billingsley",
+			"stars" : 0,
+			"hearts" : 0, 
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "Collect bonus $4,000",
+			"specialProcessing" : {
+				"type" : "bonus",
+				"amount" : 4000
+			}
+		},		
+		{
+			"number" : 6,
+			"background_image" : "occupation_square.png",
+			"text" : "Open 'Blessed Event' room for private parties",
+			"stars" : 2,
+			"hearts" : 3,
+			"bonus" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 7,
+			"background_image" : "danger_occupation_square.png",
+			"text" : "Kidnapped and held for ransom by Mad Dog Col",
+			"type" : "danger_square",
+			"stars" : 0,
+			"hearts" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "Go to Hospital",
+			"specialProcessing" : {
+				"type" : "travel_border",
+				"next_square" : "Hospital"
+			}
+		},		
+		{
+			"number" : 8,
+			"background_image" : "occupation_square.png",
+			"text" : "Club moves to 3 East 53rd Street",
+			"stars" : 6,
+			"hearts" : 4,
+			"bonus" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 9,
+			"background_image" : "occupation_square.png",
+			"text" : "Hired to light Ethyl Merman's cigarettes",
+			"stars" : 0,
+			"hearts" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "Salary up $1,000",
+			"specialProcessing" : {
+				"type" : "salary_increase",
+				"amount" : 1000
+			}
+		},
+		{
+			"number" : 10,
+			"background_image" : "occupation_square.png",
+			"text" : "Walter Winchell becomes a Club regular",
+			"stars" : 4,
+			"hearts" : 4,
+			"bonus" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 11,
+			"background_image" : "occupation_square.png",
+			"text" : "Rumor is the FBI has the Club bugged",
+			"type" : "action_square",
+			"stars" : 0,
+			"hearts" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "CALL IN FAVORS",
+			"specialProcessing" : {
+				"type" : "favors"
+			}
+		},
+		{
+			"number" : 12,
+			"background_image" : "danger_occupation_square.png",
+			"text" : "Prohibition Agents raid the Club",
+			"type" : "danger_square",
+			"stars" : 0,
+			"hearts" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "Lose ALL your Happiness",
+			"specialProcessing" : {
+				"type" : "happiness_loss",
+				"amount" : 0,
+				"percent" : 1.0,
+				"of" : "happiness"
+			}
+		},
+		{
+			"number" : 13,
+			"background_image" : "occupation_square.png",
+			"text" : "Club's private limousine whisks you to the Theatre District",
+			"stars" : 0,
+			"hearts" : 4,
+			"bonus" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 14,
+			"background_image" : "occupation_square.png",
+			"text" : "May backstab fellow club member(s)",
+			"type" : "action_square",
+			"stars" : 0,
+			"hearts" : -4,
+			"bonus" : 0,
+			"experience" : 2,
+			"opportunities" : 0,
+			"action_text" : "You lose 4 Hearts. They lose 12 Hearts",
+			"specialProcessing" : {
+				"type" : "backstab",
+				"pending_action" : "backstab",
+				"amount" : -12,
+				"of" : "hearts"
+			}
+		},		
+		{
+			"number" : 15,
+			"background_image" : "occupation_square.png",
+			"text" : "Stork Club grosses $1 million for the 1st time",
+			"stars" : 0,
+			"hearts" : 0, 
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "Collect bonus $5,000",
+			"specialProcessing" : {
+				"type" : "bonus",
+				"amount" : 5000
+			}
+		},
+		{
+			"number" : 16,
+			"background_image" : "danger_occupation_square.png",
+			"text" : "Accused of discrimination",
+			"type" : "danger_square",
+			"stars" : 0,
+			"hearts" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "Spend 1/2 your cash for legal expenses",
+			"specialProcessing" : {
+				"type" : "cash_loss",
+				"amount" : 0,
+				"percent" : 0.5,
+				"of" : "cash"
+			}
+		},
+		{
+			"number" : 17,
+			"background_image" : "occupation_square.png",
+			"text" : "Ernest Hemmingway visits the Stork Club",
+			"stars" : 0,
+			"hearts" : 6,
+			"bonus" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : { }
+		},
+		{
+			"number" : 18,
+			"background_image" : "occupation_square.png",
+			"text" : "Publish club newsletter",
+			"stars" : 0,
+			"hearts" : 8, 
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "Salary up $5,000",
+			"specialProcessing" : {
+				"type" : "salary_increase",
+				"amount" : 3000
+			}
+		}
+	]
+}

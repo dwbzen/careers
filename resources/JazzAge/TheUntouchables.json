@@ -1,0 +1,179 @@
+{
+	"name" : "TheUntouchables",
+	"configuration" : {
+		"occupationClass" : "occupation",
+		"fullName" : "The Untouchables",
+		"background_image" : "occupation_entrance.png",
+		"image" : "The_Untouchables_oil_painting.png",
+		"entry_fee" : 8000,
+		"size" : 12,
+		"entrance_square_number" : 24,
+		"exit_square_number" : 25,
+		"text" : "Must have: $8,000 for special training; or Law Enforcement degree; or prior experience",
+		"degreeRequirements" : { 
+			"degreeName" : "Law Enforcement",
+			"numberRequired" : 2
+		}
+	},
+	"occupationSquares" : [
+		{
+			"number" : 0,
+			"background_image" : "danger_occupation_square.png",
+			"text" : "Hit by stray bullet during a raid",
+			"type" : "danger_square",
+			"stars" : 0,
+			"hearts" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "Go to Unemployment",
+			"specialProcessing" : {
+				"type" : "travel_border",
+				"next_square" : "Unemployment"
+			}
+		},
+		{
+			"number" : 1,
+			"background_image" : "occupation_square.png",
+			"text" : "Interview with Elliot Ness",
+			"stars" : 0,
+			"hearts" : 0,
+			"experience" : 0,
+			"opportunities" : 2,
+			"action_text" : "Draw 2 OPPORTUNITY CARDS",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 2,
+			"background_image" : "occupation_square.png",
+			"text" : "Join the Untouchables core 10 members",
+			"stars" : 4,
+			"hearts" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 3,
+			"background_image" : "occupation_square.png",
+			"text" : "Expert driver with specialty of tailing",
+			"stars" : 0,
+			"hearts" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "Salary up $2000",
+			"specialProcessing" : {
+				"type" : "salary_increase",
+				"amount" : 2000
+			}
+		},
+		{
+			"number" : 4,
+			"background_image" : "occupation_square.png",
+			"text" : "Raid Capone's distilleries in Chicago (1931)",
+			"stars" : 0,
+			"hearts" : 0,
+			"bonus" : 0,
+			"experience" : 2,
+			"opportunities" : 0,
+			"action_text" : "Draw 2 EXPERIENCE CARDS",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 5,
+			"background_image" : "occupation_square.png",
+			"text" : "Hoover's AG recommends you to Ness",
+			"stars" : 4,
+			"hearts" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 6,
+			"background_image" : "occupation_square.png",
+			"text" : "Capone's mob fails to bribe or intimidate you",
+			"stars" : 2,
+			"hearts" : 4,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 7,
+			"background_image" : "occupation_square.png",
+			"text" : "May backstab fellow cop(s)",
+			"type" : "action_square",
+			"stars" : 0,
+			"hearts" : -4,
+			"bonus" : 0,
+			"experience" : 2,
+			"opportunities" : 0,
+			"action_text" : "You lose 4 Hearts\n They lose 12 Hearts",
+			"specialProcessing" : {
+				"type" : "backstab",
+				"pending_action" : "backstab",
+				"amount" : -12,
+				"of" : "hearts"
+			}
+		},
+		{
+			"number" : 8,
+			"background_image" : "occupation_square.png",
+			"text" : "Continue to attack The Outfit's beer and liquor empire during Capone's 1931 trial",
+			"stars" : 6,
+			"hearts" : 5,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 9,
+			"background_image" : "occupation_square.png",
+			"text" : "Destroy bootlegging operations worth $500,000",
+			"stars" : 4,
+			"hearts" : 0, 
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "Collect bonus $5000",
+			"specialProcessing" : {
+				"type" : "bonus",
+				"amount" : 5000
+			}
+		},
+		{
+			"number" : 10,
+			"background_image" : "danger_occupation_square.png",
+			"text" : "Leave the squad after failing to qualify for civil service",
+			"type" : "danger_square",
+			"stars" : 0,
+			"hearts" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "Lose 1/2 your fame",
+			"specialProcessing" : {
+				"type" : "fame_loss",
+				"amount" : 0,
+				"percent" : 0.5,
+				"of" : "fame"
+			}
+		},
+		{
+			"number" : 11,
+			"background_image" : "occupation_square.png",
+			"text" : "Promoted to Chief Investigator, Prohibition Bureau of Chicago (1932)",
+			"stars" : 10,
+			"hearts" : 0, 
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "Salary up $4000",
+			"specialProcessing" : {
+				"type" : "salary_increase",
+				"amount" : 4000
+			}
+		}
+	]
+}
