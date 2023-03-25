@@ -20,20 +20,22 @@ from pydantic import BaseModel, Field
 from pymongo import MongoClient
 import pymongo
 from careers.server.userManager import CareersUserManager, User
-from game.careersGame import CareersGame
+from game.careersGame import CareersGame, restore_game
 from game.careersGameEngine import CareersGameEngine
 from game.gameParameters import GameParameters
 from game.player import Player
 
 class Game(BaseModel):
     id: str = Field(alias="_id", default=None)
-    createdBy: str = Field(...)
+    gameId: str = Field(alias="game_id", default=None)
+    createdBy: str = Field(alias="installationId", default=None)
     createdDate: datetime = Field(...)
-    edition: str = Field(default="Hi-Tech")
-    joinCode: str = Field(...)
-    gameParameters: Any = Field(...)
-    gameState: Any = Field(...)
-    players: Any = Field(...)
+    edition: str = Field(alias="edition_name", default="Hi-Tech")
+    joinCode: str = Field(alias="join_code", default=None)
+    gameState: Any = Field(default=None)
+    opportunityDeck: Any = Field(alias="opportunity_deck", default=None)
+    experienceDeck: Any = Field(alias="experience_deck", default=None)
+    players: Any = Field(default=None)
 
 class CareersGameManager(object):
 
@@ -51,24 +53,42 @@ class CareersGameManager(object):
             but also stores it in mongo for later lookups
         """
         gameEngine = CareersGameEngine()
-        gameId = json.loads(gameEngine.create(edition, userId, 'points', points).message)['gameId']
+        newGame = gameEngine.create(edition, userId, 'points', points).message
+        gameId = json.loads(newGame)['gameId']
 
         "Add the creator as a player"
         user = self.userManager.getUserByUserId(userId)
-        gameEngine.execute_command(f'add player {user["name"]} {user["initials"]} {userId} {user["email"]}', None)
+        gameEngine.execute_command(f'add player {user["name"]} {user["initials"]} {userId} {user["email"]} 0 0 0', None)
+
+        gameDict = self.getGameDictionary(gameId, userId, "Hi-Tech", gameEngine)
 
         game = Game(_id=gameId, 
-            createdBy=userId, 
             createdDate=datetime.now(), 
-            joinCode=''.join(random.choices(string.ascii_letters, k=5)),
-            gameParameters = gameEngine.careersGame.game_parameters._game_parameters,
-            gameState= json.loads(gameEngine.careersGame.game_state.to_JSON()),
+            gameState = gameDict["gameState"],
             players=[userId])
+
+        game.joinCode = ''.join(random.choices(string.ascii_letters, k=5))
+        game.gameId = gameId
+        game.createdBy = userId
+        game.experienceDeck = gameDict["experience_deck"]
+        game.opportunityDeck = gameDict["opportunity_deck"]
 
         self.database["games"].insert_one(jsonable_encoder(game))
         self.games[gameId] = gameEngine
 
         return game
+
+    def getGameDictionary(self, gameId: str, userId: str, edition: str, gameEngine: CareersGameEngine)  -> dict[str, any]:
+        """Create a savable dictionary from the game (copied from careersengine.save())"""
+        game_dict = {"game_id":gameId, "installationId": userId, "edition_name":edition}
+        game_dict["gameState"] = gameEngine.careersGame.game_state.to_dict()
+        
+        opportunity_deck = {"next_index":gameEngine.careersGame.opportunities.next_index, "cards_index":gameEngine.careersGame.opportunities.cards_index}
+        experience_deck = {"next_index":gameEngine.careersGame.experience_cards.next_index, "cards_index":gameEngine.careersGame.experience_cards.cards_index}
+        game_dict["opportunity_deck"] = opportunity_deck
+        game_dict["experience_deck"] = experience_deck
+        
+        return game_dict
 
     def getPlayers(self, gameInstance: CareersGameEngine):
         """Get all the players"""
@@ -84,7 +104,7 @@ class CareersGameManager(object):
         """
         return self.database["games"].find_one({"joinCode": joinCode})
 
-    def getGameById(self, gameId: str):
+    def getGameById(self, gameId: str) -> Game:
         """Gets a game details by id"""
         return self.database["games"].find_one({"_id": gameId})
 
@@ -93,6 +113,13 @@ class CareersGameManager(object):
             Gets all of the games this user participates in
         """
         return list(self.database["games"].find({"players": installationId}))
+    
+    def updatePlayerFormula(self, userId: str, hearts:int, stars: int, money: int, gameInstance: CareersGameEngine):
+        """Updates the specified users formula"""
+        user = gameInstance.get_player(userId)
+
+        gameInstance.execute_command(f"update {userId} {hearts} {stars} {money}", user)
+        #self.saveGame(gameInstance)
 
     def joinGame(self, gameId: str, userId: str, gameInstance: CareersGameEngine) -> User:
         """Joins a game and updates a users number in the db"""
@@ -100,17 +127,26 @@ class CareersGameManager(object):
         user = self.userManager.getUserByUserId(userId)
 
         """The player will join with an empty formula"""
-        updatedUser = json.loads(gameInstance.execute_command(f'add player {user["name"]} {user["initials"]}', None).json_message)
+        updatedUser = json.loads(gameInstance.execute_command(f'add player {user["name"]} {user["initials"]} 0 0 0', None).json_message)
         user['number'] = updatedUser['userMessage']['number']
 
         self.userManager.updateUser(user)
-        self.saveGame(gameInstance)
+        self.saveGame(gameId, userId, gameInstance)
         return user
 
-    def saveGame(self, gameInstance: CareersGameEngine) -> None:
+    def saveGame(self, gameId: str, userId: str, gameInstance: CareersGameEngine) -> None:
         """Save the state of the game"""
+
+        game = self.getGameDictionary(gameId, userId, "Hi-Tech", gameInstance.careersGame)
+
         self.database['games'].update_one({"_id": gameInstance.gameId}, 
-            {"$set": {'gameState': json.loads(gameInstance.careersGame.game_state.to_JSON())}})
+            {"$set": 
+                {
+                    'gameState': game["gameState"],
+                    'opportunity_deck': game["opportunity_deck"],
+                    'experience_deck': game['experience_deck']
+                }
+            })
 
     def __call__(self, gameId: str = None) -> CareersGameEngine:
         """Create a new game engine for the user and return the instance"""
@@ -120,7 +156,13 @@ class CareersGameManager(object):
         if(gameId in self.games):
             return self.games[gameId]
         else: 
+            dbGame = self.getGameById(gameId)
+            game = restore_game(gameId, json.dumps(dbGame))
+
             # Create a new GameEngine from this game id
-            self.games[gameId] = CareersGameEngine()
-            self.games[gameId].load(gameId)
+            engine = CareersGameEngine(game, gameId)
+            engine.game_state = game.game_state
+            self.games[gameId] = engine
+
+            #self.games[gameId].execute_command(f"load {gameId}", None)
             return self.games[gameId]

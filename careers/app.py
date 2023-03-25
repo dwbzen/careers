@@ -21,7 +21,12 @@ def get(game: CareersGameEngine=Depends(manager)):
 def getUserById(userId: str):
     return userManager.getUserByUserId(userId)
 
-@app.post('/ready/{userId}/{gameId}/{ready}')
+@app.put('/game/{gameId}/user/{userId}/formula/{hearts}/{stars}/{money}', status_code=200)
+def updatePlayerFormula(userId: str, gameId: str, hearts: int, stars: int, money: int, 
+                      gameInstance: CareersGameEngine=Depends(manager)):
+    manager.updatePlayerFormula(userId, hearts, stars, money, gameInstance)
+
+@app.put('/ready/game/{gameId}/user/{userId}/{ready}')
 def userReadyToStart(userId: str, gameId: str, ready: bool, gameInstance: CareersGameEngine=Depends(manager)):
     manager.userReady(userId, ready, gameInstance)
 
@@ -55,6 +60,10 @@ def getGameDetails(joinCode: str):
 
 @app.get('/game/{gameId}')
 def getGame(gameId: str):
+    return manager.getGameById(gameId)
+
+@app.get('/game/restore/{gameId}')
+def restoreGame(gameId: str, gameInstance: CareersGameEngine=Depends(manager)):
     return manager.getGameById(gameId)
 
 @app.get('/game/{gameId}/players')
