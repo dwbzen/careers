@@ -755,6 +755,8 @@ Insured: {self.is_insured}, Unemployed: {self.is_unemployed}, Sick: {self.is_sic
                     list_dict['opportunity_cards'] = [cd.to_dict() for cd in self.my_opportunity_cards]
                 elif how.startswith('cond'):
                     list_dict['opportunity_cards'] = sorted([f'{cd.number:>2}: {cd.text}' for cd in self.my_opportunity_cards])
+            else:
+                list_dict["opportunity_cards"] = []
                     
         if what.lower().startswith('exp') or listall:    # list experience cards
             ncards = len(self.my_experience_cards)
@@ -764,6 +766,8 @@ Insured: {self.is_insured}, Unemployed: {self.is_unemployed}, Sick: {self.is_sic
                     list_dict['experience_cards'] = [cd.to_dict(include_range=False) for cd in self.my_experience_cards]
                 elif how.startswith('cond'):
                     list_dict['experience_cards'] = sorted([f'{cd.number:>2}: {str(cd)}'  for cd in self.my_experience_cards])
+            else:
+                list_dict["experience_cards"] = []
                 
         if what.lower().startswith('degree') or listall:    # list degrees completed
             ndegrees = len(self.my_degrees)
@@ -776,7 +780,10 @@ Insured: {self.is_insured}, Unemployed: {self.is_unemployed}, Sick: {self.is_sic
             if noccupations > 0:
                 list_dict['occupations_completed'] = noccupations
                 list_dict['occupations'] = self.occupation_record
-                
+            else:
+                list_dict["occupations"] = []
+                list_dict["occupations_completed"] = []
+
         if what.lower().startswith('command') or listall: # command history
             list_dict["commands"] = self._command_history
         
