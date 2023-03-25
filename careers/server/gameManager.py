@@ -160,7 +160,9 @@ class CareersGameManager(object):
             game = restore_game(gameId, json.dumps(dbGame))
 
             # Create a new GameEngine from this game id
-            self.games[gameId] = CareersGameEngine(game, gameId)
+            engine = CareersGameEngine(game, gameId)
+            engine.game_state = game.game_state
+            self.games[gameId] = engine
 
             #self.games[gameId].execute_command(f"load {gameId}", None)
             return self.games[gameId]
