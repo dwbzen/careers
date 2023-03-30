@@ -60,7 +60,7 @@ class CareersGameManager(object):
         user = self.userManager.getUserByUserId(userId)
         gameEngine.execute_command(f'add player {user["name"]} {user["initials"]} {userId} {user["email"]} 0 0 0', None)
 
-        gameDict = self.getGameDictionary(gameId, userId, "Hi-Tech", gameEngine)
+        gameDict = self.getGameDictionary(gameId, userId, "Hi-Tech", gameEngine.careersGame)
 
         game = Game(_id=gameId, 
             createdDate=datetime.now(), 
@@ -78,25 +78,31 @@ class CareersGameManager(object):
 
         return game
 
-    def getGameDictionary(self, gameId: str, userId: str, edition: str, gameEngine: CareersGameEngine)  -> dict[str, any]:
+    def getGameDictionary(self, gameId: str, userId: str, edition: str, gameInstance: CareersGame)  -> dict[str, any]:
         """Create a savable dictionary from the game (copied from careersengine.save())"""
         game_dict = {"game_id":gameId, "installationId": userId, "edition_name":edition}
-        game_dict["gameState"] = gameEngine.careersGame.game_state.to_dict()
+        game_dict["gameState"] = gameInstance.game_state.to_dict()
         
-        opportunity_deck = {"next_index":gameEngine.careersGame.opportunities.next_index, "cards_index":gameEngine.careersGame.opportunities.cards_index}
-        experience_deck = {"next_index":gameEngine.careersGame.experience_cards.next_index, "cards_index":gameEngine.careersGame.experience_cards.cards_index}
+        opportunity_deck = {"next_index":gameInstance.opportunities.next_index, "cards_index":gameInstance.opportunities.cards_index}
+        experience_deck = {"next_index":gameInstance.experience_cards.next_index, "cards_index":gameInstance.experience_cards.cards_index}
         game_dict["opportunity_deck"] = opportunity_deck
         game_dict["experience_deck"] = experience_deck
         
         return game_dict
 
-    def getPlayers(self, gameInstance: CareersGameEngine):
+    def getPlayers(self, gameEngine: CareersGameEngine):
         """Get all the players"""
-        return json.loads(gameInstance.game_state.to_JSON())    
+        #return json.loads(gameEngine.game_state.to_JSON())    
+        game = self.getGameById(gameEngine.gameId)
+        return game
     
-    def userReady(self, userId: str, ready: bool, gameInstance: CareersGameEngine):
+    def userReady(self, userId: str, ready: bool, gameEngine: CareersGameEngine):
         """Mark a user ready to start. All users must mark ready before game can begin"""
-        self.database['games'].update_one({"_id": gameInstance.gameId}, {'$addToSet': {'ready': userId}}, upsert=True)
+
+        if(ready == True):
+            self.database['games'].update_one({"_id": gameEngine.gameId}, {'$addToSet': {'ready': userId}}, upsert=True)
+        else:
+            self.database['games'].update_one({"_id": gameEngine.gameId}, {'$pull': {'ready': userId}})
 
     def getGameByJoinCode(self, joinCode: str):
         """
@@ -114,32 +120,32 @@ class CareersGameManager(object):
         """
         return list(self.database["games"].find({"players": installationId}))
     
-    def updatePlayerFormula(self, userId: str, hearts:int, stars: int, money: int, gameInstance: CareersGameEngine):
+    def updatePlayerFormula(self, userId: str, hearts:int, stars: int, money: int, gameEngine: CareersGameEngine):
         """Updates the specified users formula"""
-        user = gameInstance.get_player(userId)
+        user = gameEngine.get_player(userId)
 
-        gameInstance.execute_command(f"update {userId} {hearts} {stars} {money}", user)
-        #self.saveGame(gameInstance)
+        gameEngine.execute_command(f"update {userId} {hearts} {stars} {money}", user)
+        self.saveGame(gameEngine.gameId, userId, gameEngine)
 
-    def joinGame(self, gameId: str, userId: str, gameInstance: CareersGameEngine) -> User:
+    def joinGame(self, gameId: str, userId: str, gameEngine: CareersGameEngine) -> User:
         """Joins a game and updates a users number in the db"""
         self.database["games"].update_one({"_id": gameId}, {'$push': {'players': userId}})
         user = self.userManager.getUserByUserId(userId)
 
         """The player will join with an empty formula"""
-        updatedUser = json.loads(gameInstance.execute_command(f'add player {user["name"]} {user["initials"]} 0 0 0', None).json_message)
+        updatedUser = json.loads(gameEngine.execute_command(f'add player {user["name"]} {user["initials"]} {userId} {user["email"]} 0 0 0', None).json_message)
         user['number'] = updatedUser['userMessage']['number']
 
         self.userManager.updateUser(user)
-        self.saveGame(gameId, userId, gameInstance)
+        self.saveGame(gameId, userId, gameEngine)
         return user
 
-    def saveGame(self, gameId: str, userId: str, gameInstance: CareersGameEngine) -> None:
+    def saveGame(self, gameId: str, userId: str, gameEngine: CareersGameEngine) -> None:
         """Save the state of the game"""
 
-        game = self.getGameDictionary(gameId, userId, "Hi-Tech", gameInstance.careersGame)
+        game = self.getGameDictionary(gameId, userId, "Hi-Tech", gameEngine.careersGame)
 
-        self.database['games'].update_one({"_id": gameInstance.gameId}, 
+        self.database['games'].update_one({"_id": gameEngine.gameId}, 
             {"$set": 
                 {
                     'gameState': game["gameState"],
