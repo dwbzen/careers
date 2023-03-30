@@ -133,11 +133,11 @@ class CareersGameManager(object):
         user = self.userManager.getUserByUserId(userId)
 
         """The player will join with an empty formula"""
-        updatedUser = json.loads(gameEngine.execute_command(f'add player {user["name"]} {user["initials"]} 0 0 0', None).json_message)
+        updatedUser = json.loads(gameEngine.execute_command(f'add player {user["name"]} {user["initials"]} {userId} {user["email"]} 0 0 0', None).json_message)
         user['number'] = updatedUser['userMessage']['number']
 
         self.userManager.updateUser(user)
-        self.saveGame(gameId, userId, gameEngine.careersGame)
+        self.saveGame(gameId, userId, gameEngine)
         return user
 
     def saveGame(self, gameId: str, userId: str, gameEngine: CareersGameEngine) -> None:
