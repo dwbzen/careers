@@ -1,17 +1,17 @@
 {
-	"name" : "SpaceX",
+	"name" : "RCA",
 	"configuration" : {
 		"occupationClass" : "occupation",
-		"fullName" : "SpaceX",
+		"fullName" : "Radio Corporation of America",
 		"background_image" : "occupation_entrance.png",
-		"image" : "spacex logo.jpg",
+		"image" : "RCA logo.jpg",
 		"entry_fee" : 5000,
 		"size" : 13,
 		"entrance_square_number" : 40,
 		"exit_square_number" : 1,
-		"text" : "Must have: $5000 recruiting fee; or Aerospace Engineering degree; or SpaceX experience",
+		"text" : "Must have: $5000 for technical training, or an Engineering degree, or RCA experience",
 		"degreeRequirements" : { 
-			"degreeName" : "Aerospace",
+			"degreeName" : "Engineering",
 			"numberRequired" : 1
 		}
 	},
@@ -19,8 +19,8 @@
 		{
 			"number" : 0,
 			"background_image" : "occupation_square.png",
-			"text" : "Cape Canaveral is beautiful",
-			"stars" : 0,
+			"text" : "Marconi Wireless Telegraph reorganized as RCA (1919)",
+			"stars" : 2,
 			"hearts" : 2,
 			"bonus" : 0,
 			"experience" : 0,
@@ -31,8 +31,8 @@
 		{
 			"number" : 1,
 			"background_image" : "occupation_square.png",
-			"text" : "Successful Falcon Heavy take-off",
-			"stars" : 6,
+			"text" : "Small number of stations begin operation (1920)",
+			"stars" : 4,
 			"hearts" : 0,
 			"bonus" : 0,
 			"experience" : 0,
@@ -42,14 +42,41 @@
 		},
 		{
 			"number" : 2,
+			"background_image" : "occupation_square.png",
+			"text" : "Create WJY to broadcast Dempsey-Carpentier fight (1921)",
+			"stars" : 0,
+			"hearts" : 0,
+			"bonus" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : {
+				"type" : "bonus",
+				"amount" : 5000
+			}
+		},
+		{
+			"number" : 3,
+			"background_image" : "occupation_square.png",
+			"text" : "Fight commentary with David Sarnoff",
+			"stars" : 0,
+			"hearts" : 0,
+			"bonus" : 0,
+			"experience" : 2,
+			"opportunities" : 0,
+			"action_text" : "Draw 2 EXPERIENCE CARDS",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 4,
 			"background_image" : "danger_occupation_square.png",
-			"text" : "Dragon docking fails",
+			"text" : "Lose your NBC radio show",
 			"type" : "danger_square",
 			"stars" : 0,
 			"hearts" : 0,
 			"experience" : 0,
 			"opportunities" : 0,
-			"action_text" : "Lose ALL your Fame",
+			"action_text" : "And ALL your Fame",
 			"specialProcessing" : {
 				"type" : "fame_loss",
 				"amount" : 0,
@@ -58,38 +85,46 @@
 			}
 		},
 		{
-			"number" : 3,
+			"number" : 5,
 			"background_image" : "danger_occupation_square.png",
-			"text" : "Falcon 9 explodes on the launch pad",
+			"text" : "Dow Jones drops to a low of 41 points (1932)",
 			"type" : "danger_square",
 			"stars" : 0,
 			"hearts" : 0,
 			"experience" : 0,
 			"opportunities" : 0,
-			"action_text" : "Lose ALL your Cash",
+			"action_text" : "Lose ALL your Cash and go to Unemployment",
 			"specialProcessing" : {
-				"type" : "cash_loss",
-				"amount" : 0,
-				"percent" : 1.0,
-				"of" : "cash"
+				[
+					"type" : "cash_loss",
+					"amount" : 0,
+					"percent" : 1.0,
+					"of" : "cash"
+				],
+				[
+					"type" : "travel_border",
+					"next_square" : "Unemployment"
+				]
 			}
 		},
 		{
-			"number" : 4,
+			"number" : 6,
 			"background_image" : "occupation_square.png",
-			"text" : "Enhance Draco thruster test facility",
-			"stars" : 2,
-			"hearts" : 4,
-			"bonus" : 0,
+			"text" : "Buy Victor Talking Machine Company (1929)",
+			"stars" : 0,
+			"hearts" : 0, 
 			"experience" : 0,
 			"opportunities" : 0,
-			"action_text" : "",
-			"specialProcessing" : {}
-		},
+			"action_text" : "Collect Bonus $10,000",
+			"specialProcessing" : {
+				"type" : "bonus",
+				"amount" : 10000
+			}
+		},	
 		{
-			"number" : 5,
+			"number" : 7,
 			"background_image" : "occupation_square.png",
-			"text" : "Mars Mission Starship design",
+			"text" : "Promoted to recording sound engineer",
 			"stars" : 0,
 			"hearts" : 0,
 			"experience" : 0,
@@ -101,35 +136,11 @@
 			}
 		},
 		{
-			"number" : 6,
-			"background_image" : "occupation_square.png",
-			"text" : "Grueling avionics project",
-			"stars" : 0,
-			"hearts" : 0,
-			"bonus" : 0,
-			"experience" : 2,
-			"opportunities" : 0,
-			"action_text" : "Draw 2 EXPERIENCE CARDS",
-			"specialProcessing" : {}
-		},
-		{
-			"number" : 7,
-			"background_image" : "occupation_square.png",
-			"text" : "Selected for first Mars Mission Crew",
-			"stars" : 16,
-			"hearts" : 0,
-			"bonus" : 0,
-			"experience" : 0,
-			"opportunities" : 0,
-			"action_text" : "",
-			"specialProcessing" : {}
-		},
-		{
 			"number" : 8,
 			"background_image" : "occupation_square.png",
-			"text" : "Lunch with Elon Musk",
-			"stars" : 2,
-			"hearts" : 10,
+			"text" : "Clyde McCoy records 'Sugar Blues'",
+			"stars" : 4,
+			"hearts" : 2,
 			"bonus" : 0,
 			"experience" : 0,
 			"opportunities" : 0,
@@ -138,20 +149,6 @@
 		},
 		{
 			"number" : 9,
-			"background_image" : "occupation_square.png",
-			"text" : "Advance for new Mars Mission book",
-			"stars" : 0,
-			"hearts" : 0, 
-			"experience" : 0,
-			"opportunities" : 0,
-			"action_text" : "Collect Bonus $10,000",
-			"specialProcessing" : {
-				"type" : "bonus",
-				"amount" : 10000
-			}
-		},
-		{
-			"number" : 10,
 			"background_image" : "danger_occupation_square.png",
 			"text" : "Exhausted from conference keynote address",
 			"type" : "danger_square",
@@ -166,9 +163,9 @@
 			}
 		},
 		{
-			"number" : 11,
+			"number" : 10,
 			"background_image" : "occupation_square.png",
-			"text" : "Survive Falcon Heavy launch",
+			"text" : "RCA buys radio stations from AT&T (1926)",
 			"stars" : 6,
 			"hearts" : 4,
 			"bonus" : 0,
@@ -178,18 +175,27 @@
 			"specialProcessing" : {}
 		},
 		{
+			"number" : 11,
+			"background_image" : "occupation_square.png",
+			"text" : "RCA Victor starts selling first all-electric Victrola (1930)",
+			"stars" : 2,
+			"hearts" : 10,
+			"bonus" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : {}
+		},
+		{
 			"number" : 12,
 			"background_image" : "occupation_square.png",
-			"text" : "Employee of the year",
-			"stars" : 10,
+			"text" : "Demonstrates black-and-white television (1939)",
+			"stars" : 16,
 			"hearts" : 0, 
 			"experience" : 0,
 			"opportunities" : 0,
-			"action_text" : "Collect Bonus $5000",
-			"specialProcessing" : {
-				"type" : "bonus",
-				"amount" : 5000
-			}
+			"action_text" : "",
+			"specialProcessing" : { }
 		}
 	]
 }

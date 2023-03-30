@@ -130,6 +130,11 @@ Status: **ACTIVE**</p>
 4. The "end" command should declare a winner.
 Status: **OPEN**
 
+5. Jazz Age edition requires support for more than one specialProcessing entry.
+RCA.json square #5 has two: lose all your cash, and go to Unemployment.
+Changes to GameSquare and OccupationSquare.
+Status: **OPEN**</p>
+
 ---
 ## Technical TODOs
 1. Make game_type ('points', 'timed') an Enum; add to GameConstants.<br>
