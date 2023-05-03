@@ -39,11 +39,13 @@ def createGame(userId: str, points: int):
     """Creates a new game and returns the game id"""
     return manager.create("Hi-Tech", userId, points)
 
-@app.get('/can-start/{gameId}')
-def readyToStart(gameInstance: CareersGameManager=Depends(manager)):
-    """Determines if the game is ready to start by checking
-    the number of players and the ready count"""
-    pass
+@app.post('/start/{gameId}')
+def start(gameId: str, gameInstance: CareersGameManager=Depends(manager)):
+    """Starts the game"""
+    try:
+        return manager.startGame(gameInstance)
+    except:
+        return 409
 
 @app.get('/game/details/code/{joinCode}')
 def getGameDetails(joinCode: str):
