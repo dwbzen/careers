@@ -3,7 +3,7 @@
 	"starting_salary" : 2000,
 	"starting_cash" : 2500,
 	"currency" : "Pounds",
-	"currency_symbol" : "u\00A3",
+	"currency_symbol" : "\u00A3",
 	"date_format" : "yyyy-dd-mm",
 	"starting_experience_cards" : 0,
 	"starting_opportunity_cards" : 0,

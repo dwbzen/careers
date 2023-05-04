@@ -1,5 +1,5 @@
 {
-	"degreePrograms" : ["IT", "Sales & Marketing", "Athletic Training", "Anthropology", "Law", "Journalism", "History", "Pharmacology", "Engineering"],
+	"degreePrograms" : ["IT", "Sales & Marketing", "Anthropology", "Law", "Journalism", "History", "Pharmacology", "Sports Medicine", "Engineering"],
 	"maxDegrees" : 4,
 	"salaryIncreases" : [2000, 3000, 4000, 5000],
 	"degreeNames" : ["Bachelors", "Masters", "PhD", "Post-Doc"]
