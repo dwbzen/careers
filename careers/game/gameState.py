@@ -45,7 +45,7 @@ class GameState(CareersObject):
         self._game_parameters_type = game_parameters_type
         self._game_type:GameType = game_type
         self._restored = False    # True if this is a restored game
-        
+        self._started = False
         self._gameId = game_id
     
     @property
@@ -113,26 +113,27 @@ class GameState(CareersObject):
             To prevent this from happening, this should be called at the end of each player's turn.
         """
         completed = False
-        if self.game_type is GameType.POINTS:
-            for p in self.players:
-                if p.is_complete():    # has the player achieved their success formula?
-                    self._winning_player = p
-                    completed = True
-                    break
-        elif self.game_type is GameType.TIMED:
-            completed = self.get_time_remaining() <= 0
-            #
-            # who has won? - the person with the most points
-            #
-            if completed:
-                winning_points = 0
-                winner = None
+        if self.started:
+            if self.game_type is GameType.POINTS:
                 for p in self.players:
-                    if p.total_points() >= winning_points:
-                        winner = p
-                        winning_points = p.total_points()
-                
-                self._winning_player = winner
+                    if p.is_complete():    # has the player achieved their success formula?
+                        self._winning_player = p
+                        completed = True
+                        break
+            elif self.game_type is GameType.TIMED:
+                completed = self.get_time_remaining() <= 0
+                #
+                # who has won? - the person with the most points
+                #
+                if completed:
+                    winning_points = 0
+                    winner = None
+                    for p in self.players:
+                        if p.total_points() >= winning_points:
+                            winner = p
+                            winning_points = p.total_points()
+                    
+                    self._winning_player = winner
         
         self.game_complete = completed
         return completed
@@ -144,6 +145,14 @@ class GameState(CareersObject):
     @game_complete.setter
     def game_complete(self, value:bool):
         self._game_complete = value
+        
+    @property
+    def started(self) -> bool:
+        return self._started
+    
+    @started.setter
+    def started(self, value:bool):
+        self._started = value
     
     @property
     def total_points(self) ->int :

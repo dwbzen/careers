@@ -619,6 +619,7 @@ class Player(CareersObject):
         """Returns True if this players has met or surpassed each success formula item:
             happiness (hearts), fame (stars), money, False otherwise
             In a timed game, this returns True if time_remaining <= 0
+            Note the result is only valid if the game has started (game_state.started is True)
     
         """
         if self.game_type is GameType.POINTS:
