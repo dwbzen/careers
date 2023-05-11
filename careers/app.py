@@ -5,7 +5,7 @@ import uvicorn
 from fastapi import FastAPI, Depends, status, Form
 from datetime import date, datetime
 from fastapi.responses import JSONResponse
-from careers.server.userManager import CareersUserManager, User
+from server.userManager import CareersUserManager, User
 from server.gameManager import CareersGameManager
 from game.careersGameEngine import CareersGameEngine
 
