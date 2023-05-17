@@ -59,11 +59,10 @@ The CareersGameEngine._goto(...)  checks the destination border_square.name
 and if Unemployment or Hosiptal does not execute pass_payday </p>
 
 8. If a player gets an error when resolving choose_occupation (by specifying College instead of <br>
-an Occupation or specifying an Occupation that doesn't exist) the pending action
-is cleared incorrectly.<br>
+an Occupation or specifying an Occupation that doesn't exist) the pending action is cleared incorrectly.<br>
 The same applies to resolving buy_hearts (Tech Convention). The pending action is cleared
 incorrectly if there's an error - for example specifying more hearts than you can afford.<br>
-Status: **OPEN**</p>
+Status: **COMPLETE**</p>
 
 9. Update the UK version Visio model and board image with the revised Pfizer UK JSON.<br>
 Status: **COMPLETE**<br>
@@ -101,11 +100,10 @@ The resolve method works correctly. I fixed (a) by issuing a "enter" instead of 
 (a number > the player's salary). The error is displayed, for example "You can only buy up to 2 here."
 but the pending action is cleared incorrectly. It should only clear a pending action
 if the command executed without an error.<br>
-Status: **OPEN**</p>
-Resolution: PendingActions.get by default was removing the pendingAction from the list.
+Status: **COMPLETE**</p>
+Resolution: PendingActions.get (and find)  by default was removing the pendingAction from the list.
 So in the case of an error the pendingAction was removed incorrectly.
-Changed get(remove) default to False.<br>
-See also #8 above. This is still a problem.</p>
+Changed get(remove) default to False. Also fixed same problem with buy_insurance: added remove=False to find method.</p>
 
 ---
 ## Future Enhancements

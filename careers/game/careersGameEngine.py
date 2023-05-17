@@ -447,6 +447,9 @@ class CareersGameEngine(object):
             die = [int(s) for s in diestr]
             result = self.roll(player, die)
             
+        elif what.lower() == "insurance":
+            result = self.use_insurance()
+            
         else:
             result = CommandResult(CommandResult.ERROR, f"use can't use a '{what}' here ", False)
             
@@ -1004,11 +1007,11 @@ class CareersGameEngine(object):
         pending_action = None
         
         if what == "*" and player.pending_actions.size() > 0:    # resolve the most recently added PendingAction
-            pending_action = player.pending_actions.get(-1)
+            pending_action = player.pending_actions.get(-1)      # does not remove from the player's pending actions list
             what = pending_action.pending_action_type.value
             
         else:
-            pending_action = player.pending_actions.find(what)     # also removes from the pending actions list
+            pending_action = player.pending_actions.find(what)     # does not remove from the player's pending actions list
             
         if pending_action is not None:
             pending_game_square_name = pending_action.pending_game_square_name
@@ -1049,7 +1052,7 @@ class CareersGameEngine(object):
             
             elif what ==   PendingActionType.BUY_INSURANCE.value:    # assume 1 quantity, regardless of the qty specified
                 amount = game_square.special_processing.amount
-                result = self.buy(what, choice, amount)
+                result = self.buy("insurance", choice, amount)
             
             elif what ==   PendingActionType.STAY_OR_MOVE.value:
                 if choice.lower() == "stay":

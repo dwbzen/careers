@@ -100,15 +100,23 @@ class PendingActions(CareersObject):
         else:
             return self._pending_actions[index]
     
-    def find(self, pendingActionType:PendingActionType) -> PendingAction|None:
+    def find(self, pendingActionType:PendingActionType, remove:bool=False) -> PendingAction|None:
         """Gets the PendingAction of a given type and removes it from the list
+            Arguments:
+                pendingActionType - the PendingActionType to find
+                remove - if True pop the pending_actions list at the specified index, removing it from the list.
+                        If false, return the PendingAction without removal.
+                        Default is False
             Returns:
                 The requested PendingAction if found, None otherwise
         """
         pa = None
         index = self.index_of(pendingActionType)
         if index >= 0:
-            pa = self._pending_actions.pop(index)
+            if remove:
+                pa = self._pending_actions.pop(index)
+            else:
+                pa = self._pending_actions[index]
         return pa
 
     def remove(self, pendingActionType:PendingActionType)  -> PendingAction|None:
