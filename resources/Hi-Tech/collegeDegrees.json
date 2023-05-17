@@ -1,5 +1,5 @@
 {
-	"degreePrograms" : ["Aerospace", "Agronomy", "Business Admin", "Computer Science", "Hospitality", "Journalism", "Law", "Marketing", "Pharmacy"],
+	"degreePrograms" : ["Aerospace", "Animation", "Business Admin", "Computer Science", "Engineering", "Journalism", "Law", "Marketing", "Pharmacy"],
 	"maxDegrees" : 4,
 	"salaryIncreases" : [2000, 3000, 4000, 5000],
 	"degreeNames" : ["Bachelors", "Masters", "PhD", "Post-Doc"]

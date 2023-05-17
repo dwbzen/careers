@@ -1,0 +1,183 @@
+{
+	"name" : "Pixar",
+	"configuration" : {
+		"occupationClass" : "occupation",
+		"fullName" : "Pixar",
+		"background_image" : "occupation_entrance.png",
+		"image" : "Pixar.jpg",
+		"entry_fee" : 500,
+		"size" : 11,
+		"entrance_square_number" : 18,
+		"exit_square_number" : 19,
+		"text" : "Must have: $500 for Digital desigh coach, or an Animation degree; or Pixar experience",
+		"degreeRequirements" : { 
+			"degreeName" : "Animation",
+			"numberRequired" : 1
+		}
+	},
+	"occupationSquares" : [
+		{
+			"number" : 0,
+			"background_image" : "danger_occupation_square.png",
+			"text" : "Contract COVID first day at work",
+			"type" : "danger_square",
+			"stars" : 0,
+			"hearts" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "Go to Hospital",
+			"specialProcessing" : {
+				"type" : "travel_border",
+				"next_square" : "Hospital"
+			}
+		},
+		{
+			"number" : 1,
+			"background_image" : "occupation_square.png",
+			"text" : "Day 1 as Pixar Undergraduate Program intern",
+			"stars" : 0,
+			"hearts" : 2,
+			"bonus" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 2,
+			"background_image" : "occupation_square.png",
+			"text" : "Lunch meeting with Chief Creative Officer (CCO)",
+			"stars" : 0,
+			"hearts" : 0,
+			"experience" : 0,
+			"opportunities" : 3,
+			"action_text" : "Draw 2 OPPORTUNITY CARDS",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 3,
+			"background_image" : "occupation_square.png",
+			"text" : "Fast Track!",
+			"type" : "travel_square",
+			"stars" : 0,
+			"hearts" : 2,
+			"bonus" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "Move ahead 5 squares",
+			"specialProcessing" : {
+				"type" : "goto",
+				"next_square" : 8
+			}
+		},
+		{
+			"number" : 4,
+			"background_image" : "occupation_square.png",
+			"text" : "May backstab untalented colleague(s)",
+			"type" : "action_square",
+			"stars" : 0,
+			"hearts" : -4,
+			"bonus" : 0,
+			"experience" : 2,
+			"opportunities" : 0,
+			"action_text" : "You lose 4 Hearts\n They lose 12 Hearts",
+			"specialProcessing" : {
+				"type" : "backstab",
+				"pending_action" : "backstab",
+				"amount" : -12,
+				"of" : "hearts"
+			}
+		},
+		{
+			"number" : 5,
+			"background_image" : "occupation_square.png",
+			"text" : "Character animator on new SparkShorts film",
+			"stars" : 0,
+			"hearts" : 0,
+			"bonus" : 0,
+			"experience" : 1,
+			"opportunities" : 0,
+			"action_text" : "Draw 1 EXPERIENCE CARD",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 6,
+			"background_image" : "occupation_square.png",
+			"text" : "Work on Elemental wraps up - bonuses for all!",
+			"stars" : 0,
+			"hearts" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "Collect $1000 x roll of 1 die",
+			"specialProcessing" : {
+				"type" : "bonus",
+				"dice" : 1,
+				"amount" : 1000
+			}
+		},
+		{
+			"number" : 7,
+			"background_image" : "occupation_square.png",
+			"text" : "Move to Steve Jobs building for new assignment",
+			"stars" : 0,
+			"hearts" : 4,
+			"bonus" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 8,
+			"background_image" : "occupation_square.png",
+			"text" : "Attend Elemental premier at Graumans Chinese IMAX theatre",
+			"stars" : 0,
+			"hearts" : 6,
+			"bonus" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 9,
+			"background_image" : "occupation_square.png",
+			"text" : "Sr. Software Engineer, Tools Characters & Crowds",
+			"stars" : 0,
+			"hearts" : 0,
+			"bonus" : 0,
+			"experience" : 2,
+			"opportunities" : 0,
+			"action_text" : "Draw 1 EXPERIENCE CARD",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 10,
+			"background_image" : "occupation_square.png",
+			"text" :  "Multi-car pileup on the Mac Arthur Freeway",
+			"stars" : 0,
+			"hearts" : 0,
+			"bonus" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "Lose next turn",
+			"specialProcessing" :  {
+				"type" : "lose_next_turn"
+			}
+		},
+		{
+			"number" : 10,
+			"background_image" : "occupation_square.png",
+			"text" : "Named Lead Software Engineer, Presto Execution Engine",
+			"stars" : 2,
+			"hearts" : 8, 
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "Salary up $1000",
+			"specialProcessing" : {
+				"type" : "salary_increase",
+				"amount" : 1000
+			}
+		}
+	]
+}

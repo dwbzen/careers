@@ -11,7 +11,7 @@ from game.experienceCard import ExperienceCard
 from game.gameConstants import PendingActionType
 from game.pendingAction import PendingAction
 from game.pendingActions import PendingActions
-from game.gameConstants import GameType
+from game.gameConstants import GameType, PlayerType
 from datetime import datetime
 from typing import Dict, List, Union
 import json
@@ -20,7 +20,7 @@ class Player(CareersObject):
     
     SPECIAL_PROCESSING = Dict[str, Union[str, List[int], int, float, Dict[str, int]]]
     
-    def __init__(self, number=0, name="Player", player_id="", email="", salary=2000, cash=2000, initials="XXX"):
+    def __init__(self, number=0, name="Player", player_id="", email="", salary=2000, cash=2000, initials="XXX", playerType:PlayerType=PlayerType.HUMAN):
         self._player_name = name
         self._player_initials = initials            # unique initials - no player can have the same initials
         self._salary_history = [salary]             # List[int] of salaries the player has attained
@@ -31,6 +31,7 @@ class Player(CareersObject):
         self._success_formula = None         # my SuccessFormula
         self._player_id = player_id
         self._player_email = email
+        self._player_type = playerType
         
         self._number = number               # my player number, values 0 to #players-1
         self._laps = 0                      # the number of times player has passed or landed on Payday
@@ -412,6 +413,14 @@ class Player(CareersObject):
     @game_type.setter
     def game_type(self, value:GameType):
         self._game_type = value
+        
+    @property
+    def player_type(self) ->PlayerType:
+        return self._player_type
+    
+    @player_type.setter
+    def player_type(self, value:PlayerType):
+        self._player_type = value
         
     def add_command(self, command:str):
         self._command_history.append(command)

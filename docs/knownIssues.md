@@ -61,6 +61,8 @@ and if Unemployment or Hosiptal does not execute pass_payday </p>
 8. If a player gets an error when resolving choose_occupation (by specifying College instead of <br>
 an Occupation or specifying an Occupation that doesn't exist) the pending action
 is cleared incorrectly.<br>
+The same applies to resolving buy_hearts (Tech Convention). The pending action is cleared
+incorrectly if there's an error - for example specifying more hearts than you can afford.<br>
 Status: **OPEN**</p>
 
 9. Update the UK version Visio model and board image with the revised Pfizer UK JSON.<br>
@@ -69,13 +71,13 @@ New template file: "Careers Template UK London 2.0"</p>
 
 10. The number of turns (for a player) should not be incremented for query commands,
 only roll, use experience and use opportunity.<br>
-Status: **INVESTIGATING**
+Status: **INVESTIGATING**</p>
 
 11. The logic for determining a winner in a points or timed game is wrong.
 Status: **ACTIVE** Winner of a points game and timed game for multiple players is complete.<br>
 For single player timed game, the elapsed game time is not checked unless the player issues a "next" command.<br>
 The output format is "The game is over, the winner is DWB with 55 points.Game time: 11"<br>
-Should add the points for all the players and add "minutes" after the game time.
+Should add the points for all the players and add "minutes" after the game time.</p>
 
 12. The command for using opportunity card 16: GOLDEN  OPPORTUNITY to join the Company of your choice. Meet Normal Requirements<br>
 is "use opportunity 16 UF" for example, where UF here is the occupation of choice.<br>
@@ -99,10 +101,11 @@ The resolve method works correctly. I fixed (a) by issuing a "enter" instead of 
 (a number > the player's salary). The error is displayed, for example "You can only buy up to 2 here."
 but the pending action is cleared incorrectly. It should only clear a pending action
 if the command executed without an error.<br>
-Status: **RESOLVED**</p>
+Status: **OPEN**</p>
 Resolution: PendingActions.get by default was removing the pendingAction from the list.
 So in the case of an error the pendingAction was removed incorrectly.
-Changed get(remove) default to False.
+Changed get(remove) default to False.<br>
+See also #8 above. This is still a problem.</p>
 
 ---
 ## Future Enhancements
@@ -127,13 +130,32 @@ but the implementation is missing. Timer should start when the **start** command
 and checked at the end of each players turn (on the next command).
 Status: **ACTIVE**</p>
 
-4. The "end" command should declare a winner.
-Status: **OPEN**
+4. The "end" command should declare a winner.<br>
+Status: **OPEN**</p>
 
 5. Jazz Age edition requires support for more than one specialProcessing entry.
 RCA.json square #5 has two: lose all your cash, and go to Unemployment.
 Changes to GameSquare and OccupationSquare.
 Status: **OPEN**</p>
+
+6. Add a player attribute that indicates the type of player: computer or human.<br>
+The end goal is to use AI (neural network) to create a "smart" computer player<br>
+by running thousands of games and feeding the results to the neural network.<br>
+Status: **OPEN**</p>
+
+7. Add Air Travel transportation squares.<br>
+In Hi-Tech version change 2 of the Amtrak squares 12 and 35 to Airlines: LAX and ATL respectively.<br>
+The rules are:<br>
+Players landing on an Amtrak square advances to the next Amtrak station OR the closest Airline.<br>
+Players landing on LAX advances to the nearest Amtrak station (square#22) OR to a connecting flight at ATL (square #35).<br>
+Players landing on ATL advances to the nearest Amtrak station (square#3) OR to a connecting flight at LAX (square #12).<br>
+The player rolls again after reaching their destination.<br>
+Status: **OPEN** </p>
+
+8. Implement bonus all. The bonus amount is applied to the player landing on the bonus square,<br>
+and any players that are currently on  or have completed the associated career path.<br>
+The current specialProcessing type is "bonus". Need to added a new type like "bonus_all".<br>
+Status: **OPEN** </p>
 
 ---
 ## Technical TODOs

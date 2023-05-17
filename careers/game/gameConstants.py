@@ -66,6 +66,10 @@ class GameParametersType(Enum):  # A.K.A. game mode
 class GameType(Enum):
     TIMED = "timed"
     POINTS = "points"
+
+class PlayerType(Enum):
+    COMPUTER = "computer"
+    HUMAN = "human"
     
 class GameConstants(object):
     '''

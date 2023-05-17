@@ -1,5 +1,5 @@
 {
-	"Help" : "Board layout for the Hi-Tech version.",
+	"Help" : "Board layout for the original Hi-Tech version.",
 	"types_list" : [
 		"corner_square", "opportunity_square", "danger_square", "travel_square", "occupation_entrance_square", "action_square"
 	],
@@ -85,15 +85,15 @@
 			},
 			{
 				"number" : 4,
-				"name" : "FMC",
+				"name" : "NVDIA",
 				"type" : "occupation_entrance_square",
 				"background_image" : "occupation_entrance_square.png",
-				"image" : "fmc-logo small.jpg",
-				"text" : "FMC",
-				"action_text" : "Must have:\n$1000 recruiting fee; or Agronomy degree; or FMC experience",
+				"image" : "NVDIA.jpg",
+				"text" : "NVDIA",
+				"action_text" : "Must have: $1,000 for special training, or an Engineering degree, or NVDIA experience",
 				"specialProcessing" : {
 					"type" : "enter_occupation",
-					"destinationOccupation" : "FMC"
+					"destinationOccupation" : "NVDIA"
 				}
 			},
 			{
@@ -123,16 +123,16 @@
 			},
 			{
 				"number" : 7,
-				"name" : "UF",
+				"name" : "MIT",
 				"background_image" : "occupation_entrance_square.png",
-				"image" : "UF logo.jpg",
+				"image" : "MIT_Logo.jpg",
 				"type" : "occupation_entrance_square",
-				"text" : "University of Florida",
-				"action_text" : "Must have $500 tuition. Degrees available:\n Aerospace, Agronomy, Business Admin,\n Computer Science, Hospitality, Journalism, Law,\n Marketing, and Pharmacy",
+				"text" : "Massachusetts Instutite of Technology",
+				"action_text" : "Must have $500 tuition. Degrees available:\n Aerospace, Animation, Business Admin,\n Computer Science, Enginering, Journalism, Law,\n Marketing, and Pharmacy",
 				"specialProcessing" : {
 					"type" : "enter_college",
 					"pending_action" : "select_degree",
-					"destinationOccupation" : "UF"
+					"destinationOccupation" : "MIT"
 				}
 			},
 			{
@@ -176,7 +176,7 @@
 				"type" : "danger_square",
 				"background_image" : "danger_border_square.png",
 				"text" : "**DONATE NOW**",
-				"action_text" : "The Class of 2014 is having a fund drive and call on you to donate your fair share. Throw 1 die to find out how fair. Pay the number thrown time $1,000.",
+				"action_text" : "The MIT Class of 2018 is having a fund drive and call on you to donate your fair share. Throw 1 die to find out how fair. Pay the number thrown time $1,000, or go to UNEMPLOYMENT if you can't or refuse to contribute",
 				"specialProcessing" : {
 					"type" : "cash_loss",
 					"dice" : 1,
@@ -203,7 +203,7 @@
 				"background_image" : "occupation_entrance_square.png",
 				"image" : "amazon logo.jpg",
 				"text" : "Amazon",
-				"action_text" : "Must have $1000 for AWS training; or Computer Science Degree; or Amazon experience",
+				"action_text" : "Must have $1000 for AWS training, or Computer Science Degree, or Amazon experience",
 				"specialProcessing" : {
 					"type" : "enter_occupation",
 					"destinationOccupation" : "Amazon"
@@ -226,7 +226,7 @@
 				"background_image" : "occupation_entrance_square.png",
 				"image" : "ESPN logo.jpg",
 				"text" : "ESPN",
-				"action_text" : "Must have: $500 for sports training; or Journalism degree; or ESPN experience",
+				"action_text" : "Must have: $500 for sports training, or Journalism degree, or ESPN experience",
 				"specialProcessing" : {
 					"type" : "enter_occupation",
 					"destinationOccupation" : "ESPN"
@@ -257,15 +257,15 @@
 			},
 			{
 				"number" : 18,
-				"name" : "Disney",
+				"name" : "Pixar",
 				"type" : "occupation_entrance_square",
 				"background_image" : "occupation_entrance_square.png",
-				"image" : "Disney logo.jpg",
-				"text" : "Disney",
-				"action_text" : "Must have: $500 for Magic coach; or a Hospitality degree; or Magic Kingdom experience",
+				"image" : "Pixar.jpg",
+				"text" : "Pixar",
+				"action_text" : "Must have: $500 for Digital desigh coach, or an Animation degree; or Pixar experience",
 				"specialProcessing" : {
 					"type" : "enter_occupation",
-					"destinationOccupation" : "Disney"
+					"destinationOccupation" : "Pixar"
 				}				
 			},
 			{
@@ -284,11 +284,11 @@
 				"type" : "action_square",
 				"background_image" : "light blue action square.png",
 				"text" : "EXPERIENCE",
-				"action_text" : "Who says you can't buy experience? Buy up to 3 EXPERIENCE cards or lose 1 card for being curious.\nCost of Experience: 1 - $2,000; 2 - $4,000; 3 - $6,000",
+				"action_text" : "Who says you can't buy experience? Buy up to 4 EXPERIENCE cards or lose 1 card for being curious.\nCost of Experience: 1 - $2,000; 2 - $4,000; 3 - $6,000; 4 - $8,000",
 				"specialProcessing" : { 
 					"type" : "buy_experience",
 					"pending_action" : "buy_experience",
-					"amount" : { "1" : 2000, "2" : 4000, "3" : 6000},
+					"amount" : { "1" : 2000, "2" : 4000, "3" : 6000, "4" : 8000},
 					"limit" : "",
 					"penalty" : 1
 				}
@@ -340,7 +340,7 @@
 				"background_image" : "occupation_entrance_square.png",
 				"image" : "Lister and Bacon.jpg",
 				"text" : "Lister and Bacon, LLC",
-				"action_text" : "Must have: $8,000 for bar exam; or Law Board Certification; or Law Firm experience",
+				"action_text" : "Must have: $8,000 for bar exam, or Law Board Certification, or Law Firm experience",
 				"specialProcessing" : {
 					"type" : "enter_occupation",
 					"destinationOccupation" : "ListerAndBacon"
@@ -372,15 +372,15 @@
 			},
 			{
 				"number" : 27,
-				"name" : "Facebook",
+				"name" : "Meta",
 				"type" : "occupation_entrance_square",
 				"background_image" : "occupation_entrance_square.png",
-				"image" : "facebook logo.jpg",
-				"text" : "Facebook",
-				"action_text" : "Must have: $2000 for new laptop; or a Business Admin. degree; or Facebook  experience",
+				"image" : "Meta-Logo.jpg",
+				"text" : "Meta",
+				"action_text" : "Must have: $2000 for new laptop, or a Business Admin. degree, or Meta experience",
 				"specialProcessing" : {
 					"type" : "enter_occupation",
-					"destinationOccupation" : "Facebook"
+					"destinationOccupation" : "Meta"
 				}
 			},
 			{
@@ -398,6 +398,7 @@
 				"name" : "BuyInsurance",
 				"type" : "action_square",
 				"background_image" : "light blue action square.png",
+				"image" : "Insurance1.jpg",
 				"text" : "Insurance Store",
 				"action_text" : "May purchase insurance to protect your cash,\nHappiness and Fame from catastrophic loss.\nCost of coverage is $5,000.",
 				"specialProcessing" : { 
@@ -410,7 +411,7 @@
 				"number" : 30,
 				"name" : "SpringBreak",
 				"type" : "corner_square",
-				"background_image" : "corner_square.png",
+				"background_image" : "DWBZen_Photo_of_Clearwater_Beach_Florida_small.png",
 				"text" : "Spring Break",
 				"action_text" : "You are on Spring Break! Collect 6 Hearts for landing here and 3 each time you stay with a roll of 7 or less",
 				"specialProcessing" : {
@@ -448,15 +449,15 @@
 			},
 			{
 				"number" : 33,
-				"name" : "Google",
+				"name" : "Alphabet",
 				"type" : "occupation_entrance_square",
 				"background_image" : "occupation_entrance_square.png",
-				"image" : "google logo.jpg",
-				"text" : "Google",
-				"action_text" : "Must have: $4000 for Cloud training; or a Marketing degree; or Google experience.",
+				"image" : "alphabet logo_small.jpg",
+				"text" : "Alphabet",
+				"action_text" : "Must have: $4000 for Cloud training, or a Marketing degree, or Alphabet experience.",
 				"specialProcessing" : {
 					"type" : "enter_occupation",
-					"destinationOccupation" : "Google"
+					"destinationOccupation" : "Alphabet"
 				}
 			},
 			{
@@ -488,7 +489,7 @@
 				"background_image" : "occupation_entrance_square.png",
 				"image" : "pfizer logo.jpg",
 				"text" : "Pfizer",
-				"action_text" : "Must have: $10,000 for special training; or Pharmacy Board Certification; or Pfizer experience",
+				"action_text" : "Must have: $10,000 for special training, or Pharmacy Board Certification, or Pfizer experience",
 				"specialProcessing" : {
 					"type" : "enter_occupation",
 					"destinationOccupation" : "Pfizer"
@@ -511,7 +512,7 @@
 				"background_image" : "danger_border_square.png",
 				"image" : "divorce icon.jpg",
 				"text" : "DIVORCE COURT",
-				"action_text" : "You and your partner split amicably. Throw 2 die to see how amicable. Pay numbers thrown times 10% of your net worth.",
+				"action_text" : "You and your partner split amicably. Throw 2 die to see how amicably. Pay numbers thrown times 10% of your annual salary.",
 				"specialProcessing" : {
 					"type" : "cash_loss",
 					"dice" : 2,
@@ -541,7 +542,7 @@
 				"background_image" : "occupation_entrance_square.png",
 				"image" : "SpaceX logo.jpg",
 				"text" : "SpaceX",
-				"action_text" : "Must have: $5000 recruiting fee; or Aerospace Engineering Degree; or SpaceX experience",
+				"action_text" : "Must have: $5000 recruiting fee, or Aerospace Engineering Degree, or SpaceX experience",
 				"specialProcessing" : {
 					"type" : "enter_occupation",
 					"destinationOccupation" : "SpaceX"

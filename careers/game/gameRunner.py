@@ -189,8 +189,9 @@ class GameRunner(object):
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Run a command-driven Careers Game for 1 to 6 players")
-    parser.add_argument("--players", "-p", help="The number of players", type=int, choices=range(1,6), default=1)
+    parser = argparse.ArgumentParser(description="Run a command-driven Careers Game for 1 to 6 players, 0 to 2 computer players")
+    parser.add_argument("--players", "-p", help="The number of human players", type=int, choices=range(1,6), default=1)
+    parser.add_argument("--cp", help="The number of computer players", type=int, choices=range(0,3), default=0)
     parser.add_argument("--points", help="Total game points", type=int, choices=range(30, 10000), default=100)
     parser.add_argument("--time", help="For a timed game, the game duration in minutes", type=int, choices=range(5, 24*60), default=30)
     parser.add_argument("--params", help="Game parameters type: 'test', 'prod', 'test-prod' or 'custom' ", type=str, \
@@ -238,8 +239,9 @@ def main():
             # add players
             #
             nplayers = args.players
+            ncomputerPlayers = args.cp      # 0, 1 or 2 computer players
             
-            # name, initials=None, player_id=None, email=None, stars=0, hearts=0, cash=0
+            # name, initials=None, player_id=None, email=None, cash=0, stars=0, hearts=0
             # use update command to add success_formula if not provided here
             game_runner.execute_command("add player Don DWB dwb20221206 dwbzen@gmail.com 40 10 50", None)
             if nplayers >= 2:
@@ -248,6 +250,13 @@ def main():
                 game_runner.execute_command("add player Cheryl CJL cjl20221206 Lister.Cheryl@gmail.com 10 50 40", None)
             if nplayers == 4:
                 game_runner.execute_command("add player Scott SFP scott20230125 scotty121382@yahoo.com 30 30 40", None)
+            
+            if ncomputerPlayers > 0:
+                for i in range(ncomputerPlayers):
+                    name = f"CP_{i+1}"
+                    add_cmd = f"add player {name} {name} {name}20230516 dwbzen@gmail.com 20 40 40 computer"
+                    game_runner.execute_command(add_cmd, None)
+                    print(name)
     
     game_runner.execute_command("start", current_player)
     game_runner.run_game()

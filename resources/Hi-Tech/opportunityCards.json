@@ -40,10 +40,10 @@
 		{
 			"number" : 0,
 			"card_type" : "occupation",
-			"destination" : "FMC",
+			"destination" : "NVDIA",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
-			"text" : "OPPORTUNITY to join FMC\nMeet Normal Requirements",
+			"text" : "OPPORTUNITY to join NVDIA\nMeet Normal Requirements",
 			"quantity" : 3
 		},
 		{
@@ -85,16 +85,16 @@
 		{
 			"number" : 5,
 			"card_type" : "occupation",
-			"destination" : "Disney",
+			"destination" : "Pixar",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
-			"text" : "OPPORTUNITY to join Disney\nMeet Normal Requirements",
+			"text" : "OPPORTUNITY to join Pixar\nMeet Normal Requirements",
 			"quantity" : 2
 		},
 		{
 			"number" : 6,
 			"card_type" : "occupation",
-			"destination" : "Disney",
+			"destination" : "Pixar",
 			"expenses_paid" : 0,
 			"double_happiness" : 1,
 			"text" : "SPECIAL OPPORTUNITY to join Disney because of your Magic touch.\nDOUBLE all Happiness earned\nMeet Normal Requirements",
@@ -103,37 +103,37 @@
 		{
 			"number" : 7,
 			"card_type" : "occupation",
-			"destination" : "Google",
+			"destination" : "Alphabet",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
-			"text" : "OPPORTUNITY to join Google\nMeet Normal Requirements",
+			"text" : "OPPORTUNITY to join Alphabet\nMeet Normal Requirements",
 			"quantity" : 2
 		},
 		{
 			"number" : 8,
 			"card_type" : "occupation",
-			"destination" : "Google",
+			"destination" : "Alphabet",
 			"expenses_paid" : 1,
 			"double_happiness" : 0,
-			"text" : "SPECIAL OPPORTUNITY to join Google because of your technical brilliance. \nAll expenses paid and no prior experience required.",
+			"text" : "SPECIAL OPPORTUNITY to join Alphabet because of your technical brilliance. \nAll expenses paid and no prior experience required.",
 			"quantity" :1			
 		},
 		{
 			"number" : 9,
 			"card_type" : "occupation",
-			"destination" : "Facebook",
+			"destination" : "Meta",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
-			"text" : "OPPORTUNITY to join Facebook\nMeet Normal Requirements",
+			"text" : "OPPORTUNITY to join Meta\nMeet Normal Requirements",
 			"quantity" : 2
 		},
 		{
 			"number" : 10,
 			"card_type" : "occupation",
-			"destination" : "Facebook",
+			"destination" : "Meta",
 			"expenses_paid" : 1,
 			"double_happiness" : 0,
-			"text" : "SPECIAL OPPORTUNITY to join Facebook  because of your problem solving skills.\nAll expenses paid and no prior experience required.",
+			"text" : "SPECIAL OPPORTUNITY to join Meta  because of your problem solving skills.\nAll expenses paid and no prior experience required.",
 			"quantity" : 1		
 		},
 		{
@@ -157,10 +157,10 @@
 		{
 			"number" : 13,
 			"card_type" : "occupation",
-			"destination" : "UF",
+			"destination" : "MIT",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
-			"text" : "OPPORTUNITY to enter the University of Florida\nMeet Normal Requirements",
+			"text" : "OPPORTUNITY to enter the Massachusetts Institute of Technology\nMeet Normal Requirements",
 			"quantity" : 3
 		},
 		{
@@ -169,7 +169,7 @@
 			"destination" : "UF",
 			"expenses_paid" : 1,
 			"double_happiness" : 0,
-			"text" : "SPECIAL OPPORTUNITY to enter College on Scholarship, all expenses paid.",
+			"text" : "SPECIAL OPPORTUNITY to enter MIT on Scholarship, all expenses paid.",
 			"quantity" : 2
 		},
 		{

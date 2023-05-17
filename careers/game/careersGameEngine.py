@@ -24,7 +24,7 @@ from game.gameEngineCommands import GameEngineCommands
 from game.gameUtils import GameUtils
 from game.environment import Environment
 from game.gameState import GameState
-from game.gameConstants import PendingActionType, SpecialProcessingType, GameType, GameParametersType
+from game.gameConstants import PendingActionType, SpecialProcessingType, GameType, GameParametersType, PlayerType
 
 from datetime import datetime
 import random
@@ -880,13 +880,15 @@ class CareersGameEngine(object):
             
         return CommandResult(result, message, True)
     
-    def add(self, what, name, initials=None, player_id=None, email=None, stars=0, hearts=0, cash=0) -> CommandResult:
+    def add(self, what, name, initials=None, player_id=None, email=None, cash=0, stars=0, hearts=0, playerType:str="human") -> CommandResult:
         """Add a new player to the Game OR add a degree to the current player or the player whose initials are provided.
     
         """
         if what == 'player':
             sf = SuccessFormula(stars=stars, hearts=hearts, money=cash)
-            player = Player(name=name, initials=initials, player_id=player_id, email=email)
+            player_type = PlayerType[playerType.upper()]    # HUMAN or COMPUTER
+            player = Player(name=name, initials=initials, player_id=player_id, email=email, playerType=player_type)
+            
             player.success_formula = sf
             player.set_starting_parameters(cash=self.careersGame.game_parameters.get_param('starting_cash'), salary=self._careersGame.game_parameters.get_param('starting_salary') )
             player.add_hearts(self.careersGame.game_parameters.get_param('starting_hearts'))

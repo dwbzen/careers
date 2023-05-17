@@ -1,0 +1,176 @@
+{
+	"name" : "FMC",
+	"configuration" : {
+		"occupationClass" : "occupation",
+		"fullName" : "FMC",
+		"background_image" : "occupation_entrance.png",
+		"image" : "FMC logo.jpg",
+		"entry_fee" : 1000,
+		"size" : 12,
+		"entrance_square_number" : 4,
+		"exit_square_number" : 5,
+		"text" : "Must have: $1000 recruiting fee; or Agronomy degree; or FMC experience",
+		"degreeRequirements" : { 
+			"degreeName" : "Agronomy",
+			"numberRequired" : 1
+		}
+	},
+	"occupationSquares" : [
+		{
+			"number" : 0,
+			"background_image" : "occupation_square.png",
+			"text" : "Happy Hour Monday to Thursday, 4 to 7 PM",
+			"stars" : 0,
+			"hearts" : 2,
+			"bonus" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 1,
+			"background_image" : "occupation_square.png",
+			"text" : "Introducing NVDIA DGX - an AI Factory in the Cloud",
+			"stars" : 0,
+			"hearts" : 0,
+			"bonus" : 0,
+			"experience" : 1,
+			"opportunities" : 0,
+			"action_text" : "Draw 1 EXPERIENCE CARD",
+			"specialProcessing" : {}
+		},		
+		{
+			"number" : 2,
+			"background_image" : "occupation_square.png",
+			"text" : "Santa Clara HQ is beautiful",
+			"stars" : 0,
+			"hearts" : 3,
+			"bonus" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 3,
+			"background_image" : "occupation_square.png",
+			"text" : "NVIDIA H100 and L4 GPUs top the latest MLPerf benchmarks",
+			"stars" : 4,
+			"hearts" : 2,
+			"bonus" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 4,
+			"background_image" : "occupation_square.png",
+			"text" : "Achieve Safety Milestones With DRIVE Hyperion Autonomous Vehicle Platform",
+			"stars" : 0,
+			"hearts" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "Collect $1000 x roll of 1 die",
+			"specialProcessing" : {
+				"type" : "bonus",
+				"dice" : 1,
+				"amount" : 1000
+			}
+		},
+		{
+			"number" : 5,
+			"background_image" : "occupation_square.png",
+			"text" : "Your creativity takes a nosedive",
+			"type" : "action_square",
+			"stars" : 0,
+			"hearts" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "CALL IN FAVORS",
+			"specialProcessing" : {
+				"type" : "favors"
+			}
+		},
+		{
+			"number" : 6,
+			"background_image" : "occupation_square.png",
+			"text" : "Conduct Deep Learning seminar at GPU Technology Conference ",
+			"stars" : 2,
+			"hearts" : 4,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 7,
+			"background_image" : "occupation_square.png",
+			"text" : "Lunch with CEO Jensen Huang",
+			"stars" : 0,
+			"hearts" : 0,
+			"experience" : 0,
+			"opportunities" : 1,
+			"action_text" : "Draw 1 OPPORTUNITY CARD",
+			"specialProcessing" : {}
+		},		
+		{
+			"number" : 8,
+			"background_image" : "occupation_square.png",
+			"text" : "Create Foundation Model for Sentiment Analysis",
+			"stars" : 0,
+			"hearts" : 0, 
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "Collect bonus $5000",
+			"specialProcessing" : {
+				"type" : "bonus",
+				"amount" : 5000
+			}
+		},
+		{
+			"number" : 9,
+			"background_image" : "occupation_square.png",
+			"text" : "Introduce new RTXTM Ada Lovelace architecture GPU",
+			"stars" : 2,
+			"hearts" : 6,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 10,
+			"background_image" : "danger_occupation_square.png",
+			"text" : "Side investment in competitor generative AI platform doesn’t pan out",
+			"type" : "danger_square",
+			"stars" : 0,
+			"hearts" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "Lose 1/2 your cash",
+			"specialProcessing" : {
+				"type" : "cash_loss",
+				"amount" : 0,
+				"percent" : 0.5,
+				"of" : "cash"
+			}
+		},
+		{
+			"number" : 11,
+			"background_image" : "occupation_square.png",
+			"text" : "Promoted to Lead Engineer for RTX GPUs",
+			"type" : "action_square",
+			"stars" : 2,
+			"hearts" : 4,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "Salary up $2000",
+			"specialProcessing" : {
+				"type" : "salary_increase",
+				"amount" : 2000
+			}
+		}
+	]
+}

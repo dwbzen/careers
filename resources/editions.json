@@ -1,5 +1,5 @@
 {
-	"editions" : [ "Hi-Tech", "UK"],
+	"editions" : [ "Hi-Tech", "UK", "JazzAge"],
 	
 	"Hi-Tech" : {
 			"version" : "0.1.4",

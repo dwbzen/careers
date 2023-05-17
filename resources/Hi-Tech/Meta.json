@@ -1,0 +1,167 @@
+{
+	"name" : "Facebook",
+	"configuration" : {
+		"occupationClass" : "occupation",
+		"fullName" : "Facebook",
+		"background_image" : "occupation_entrance.png",
+		"image" : "facebook logo.jpg",
+		"entry_fee" : 500,
+		"size" : 11,
+		"entrance_square_number" : 27,
+		"exit_square_number" : 31,
+		"text" : "Must have: $2000 for a new laptop; or Business Admin degree; or Facebook experience",
+		"degreeRequirements" : { 
+			"degreeName" : "Business Admin",
+			"numberRequired" : 1
+		}
+	},
+	"occupationSquares" : [
+		{
+			"number" : 0,
+			"background_image" : "occupation_square.png",
+			"text" : "Write fake news filter",
+			"stars" : 2,
+			"hearts" : 0,
+			"bonus" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 1,
+			"background_image" : "occupation_square.png",
+			"text" : "Extra web site training",
+			"stars" : 0,
+			"hearts" : 0,
+			"bonus" : 0,
+			"experience" : 1,
+			"opportunities" : 0,
+			"action_text" : "Draw 1 EXPERIENCE CARD",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 2,
+			"background_image" : "occupation_square.png",
+			"text" : "Lunch with Mark Zuckerberg",
+			"stars" : 0,
+			"hearts" : 0,
+			"experience" : 0,
+			"opportunities" : 2,
+			"action_text" : "Draw 2 OPPORTUNITY CARDS",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 3,
+			"background_image" : "occupation_square.png",
+			"text" : "Switch CDN service provider",
+			"stars" : 6,
+			"hearts" : 2,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 4,
+			"background_image" : "occupation_square.png",
+			"text" : "Update livestream video",
+			"stars" : 0,
+			"hearts" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "Salary up $1000",
+			"specialProcessing" : {
+				"type" : "salary_increase",
+				"amount" : 1000
+			}
+		},
+		{
+			"number" : 5,
+			"background_image" : "occupation_square.png",
+			"text" : "Attend Tech Conference in Zurich",
+			"stars" : 0,
+			"hearts" : 4,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 6,
+			"background_image" : "danger_occupation_square.png",
+			"text" : "Your fancy new search algorithm bombs",
+			"type" : "danger_square",
+			"stars" : 0,
+			"hearts" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "Cut salary by 1/2",
+			"specialProcessing" : {
+				"type" : "salary_cut",
+				"amount" : 0,
+				"percent" : 0.5
+			}
+		},
+		{
+			"number" : 7,
+			"background_image" : "danger_occupation_square.png",
+			"text" : "Testify before Congress",
+			"type" : "danger_square",
+			"stars" : 10,
+			"hearts" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "But lose ALL your Happiness",
+			"specialProcessing" : {
+				"type" : "happiness_loss",
+				"amount" : 0,
+				"percent" : 1.0,
+				"of" : "happiness"
+			}
+		},
+		{
+			"number" : 8,
+			"background_image" : "occupation_square.png",
+			"text" : "You have a bad feeling about this...",
+			"type" : "action_square",
+			"stars" : 0,
+			"hearts" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "CALL IN FAVORS",
+			"specialProcessing" : {
+				"type" : "favors"
+			}
+		},
+		{
+			"number" : 9,
+			"background_image" : "occupation_square.png",
+			"text" : "Promoted to Manager",
+			"stars" : 0,
+			"hearts" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "Salary up $1000 x roll of 1 die",
+			"specialProcessing" : {
+				"type" : "salary_increase",
+				"dice" : 1,
+				"amount" : 1000
+			}
+		},
+		{
+			"number" : 10,
+			"background_image" : "occupation_square.png",
+			"text" : "Employee of the year",
+			"stars" : 12,
+			"hearts" : 0, 
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "Collect Bonus",
+			"specialProcessing" : {
+				"type" : "bonus",
+				"amount" : 4000
+			}
+		}
+	]
+}
