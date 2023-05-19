@@ -1,4 +1,4 @@
-# Known Issues and Future Enhancements
+# Known Issues
 
 ---
 ## Known Issues
@@ -105,55 +105,6 @@ Resolution: PendingActions.get (and find)  by default was removing the pendingAc
 So in the case of an error the pendingAction was removed incorrectly.
 Changed get(remove) default to False. Also fixed same problem with buy_insurance: added remove=False to find method.</p>
 
----
-## Future Enhancements
-1. Currently entering an occupation requires 2 commands, for example:<br>
-	`goto Amazon`<br>
-	`enter Amazon`<br>
-Expand the **enter** command to go to the occupation first (if not there already)<br>
-**Note:** this should not be allowed when playing in production mode.<br>
-Status: **ACTIVE**<br>
-Change completed, but still need to restrict in production game mode.</p>
-
-2. If a player is currently on an occupation entry square, allow the **enter**
-command without an argument to enter that occupation.<br>
-For example if I'm on square 13 (Amazon occupation entry) I can issue
-`enter` instead of `enter Amazon`<br>
-If the player is not on an Occupation entry square, return an error.<br>
-Status: **OPEN**</p>
-
-3. Implement a timed game type (i.e. a game that lasts a set number of minutes).<br>
-It can be specified in GameRunner with **--type timed** command line argument,<br>
-but the implementation is missing. Timer should start when the **start** command is executed,<br>
-and checked at the end of each players turn (on the next command).
-Status: **ACTIVE**</p>
-
-4. The "end" command should declare a winner.<br>
-Status: **OPEN**</p>
-
-5. Jazz Age edition requires support for more than one specialProcessing entry.
-RCA.json square #5 has two: lose all your cash, and go to Unemployment.
-Changes to GameSquare and OccupationSquare.
-Status: **OPEN**</p>
-
-6. Add a player attribute that indicates the type of player: computer or human.<br>
-The end goal is to use AI (neural network) to create a "smart" computer player<br>
-by running thousands of games and feeding the results to the neural network.<br>
-Status: **OPEN**</p>
-
-7. Add Air Travel transportation squares.<br>
-In Hi-Tech version change 2 of the Amtrak squares 12 and 35 to Airlines: LAX and ATL respectively.<br>
-The rules are:<br>
-Players landing on an Amtrak square advances to the next Amtrak station OR the closest Airline.<br>
-Players landing on LAX advances to the nearest Amtrak station (square#22) OR to a connecting flight at ATL (square #35).<br>
-Players landing on ATL advances to the nearest Amtrak station (square#3) OR to a connecting flight at LAX (square #12).<br>
-The player rolls again after reaching their destination.<br>
-Status: **OPEN** </p>
-
-8. Implement bonus all. The bonus amount is applied to the player landing on the bonus square,<br>
-and any players that are currently on  or have completed the associated career path.<br>
-The current specialProcessing type is "bonus". Need to added a new type like "bonus_all".<br>
-Status: **OPEN** </p>
 
 ---
 ## Technical TODOs
@@ -170,5 +121,4 @@ Status: **OPEN**</p>
 3. GameEngineCommands.execute_opportunity_card(...) - change the if(opportunity_type)...elif statements<br>
 to match(opportunity_type): case OpportunityType.<whatever>.
 Status: **OPEN**</p>
-
 

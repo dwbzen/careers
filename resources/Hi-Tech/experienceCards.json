@@ -6,19 +6,23 @@
 	"types" : [
 		{
 			"card_type" : "fixed",
-			"Help" : "Advance a fixed number of spaces as indicated by 'spaces'. Range is 1 to 7."
+			"Help" : "Advance a fixed number of spaces as indicated by 'spaces'. Range is 1 to 7.",
+			"value" : 1
 		},
 		{
 			"card_type" : "one_die_wild",
-			"Help" : "Advance the number of spaces chosen by the player. Can be used only when on an occupation path. Range is 1 to 6."
+			"Help" : "Advance the number of spaces chosen by the player. Can be used only when on an occupation path. Range is 1 to 6.",
+			"value" : 2
 		},
 		{
 			"card_type" : "two_die_wild",
-			"Help" : "Advance the number of spaces chosen by the player. Can be used only on border squares. Range is 2 to 12."
+			"Help" : "Advance the number of spaces chosen by the player. Can be used only on border squares. Range is 2 to 12.",
+			"value" : 3
 		},
 		{
 			"card_type" : "triple_wild",
-			"Help" : "Can be used as a 1- or 2- die wild card. Range is 1 to 6 on an occupation path, 2 to 12 on a border square."
+			"Help" : "Can be used as a 1- or 2- die wild card. Range is 1 to 6 on an occupation path, 2 to 12 on a border square.",
+			"value" : 4
 		}
 	],
 	"cards" : [

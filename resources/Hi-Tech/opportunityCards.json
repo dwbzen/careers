@@ -9,31 +9,38 @@
 	"types" : [
 		{
 			"card_type" : "occupation",
-			"Help" : "Advance to the occupation named as 'destination'. Player enters immediately."
+			"Help" : "Advance to the occupation named as 'destination'. Player enters immediately.",
+			"value" : 1
 		},
 		{
 			"card_type" : "occupation_choice",
 			"Help" : "Advance to the occupation chosen by the player. Player enters immediately."
+			"value" : 2
 		},
 		{
 			"card_type" : "border_square",
-			"Help" : "Advance to the border square named as 'destination'. Subsequent player action depends on the landing square."
+			"Help" : "Advance to the border square named as 'destination'. Subsequent player action depends on the landing square.",
+			"value" : 3
 		},
 		{
 			"card_type" : "border_square_choice",
-			"Help" : "Advance to any border square chosen by the player. Subsequent player action depends on the landing square."
+			"Help" : "Advance to any border square chosen by the player. Subsequent player action depends on the landing square.",
+			"value" : 4
 		},
 		{
 			"card_type" : "action",
-			"Help" : "Non-movement player action. There are three action types: extra_turn, leave_unemployment, collect_experience."
+			"Help" : "Non-movement player action. There are three action types: extra_turn, leave_unemployment, collect_experience.",
+			"value" : 2
 		},
 		{
 			"card_type" : "travel",
-			"Help" : "Advance to the nearest Amtrak station and roll again."
+			"Help" : "Advance to the nearest Amtrak station and roll again.",
+			"value" : 2
 		},
 		{
 			"card_type" : "opportunity",
-			"Help" : "Advance to the nearest Opportunity space and roll again."
+			"Help" : "Advance to the nearest Opportunity space and roll again.",
+			"value" : 1
 		}
 	],
 	"cards" : [
