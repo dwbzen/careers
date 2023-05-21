@@ -48,11 +48,22 @@ and any players that are currently on  or have completed the associated career p
 The current specialProcessing type is "bonus". Need to added a new type like "bonus_all".<br>
 Status: **OPEN** </p>
 
+9. Implement turn outcome (described below).  
+Also keep a history of turns and outcomes. A player's command history is already implemented as command_history.  
+This is simply a List[str]. A turn however may have more than one command.  
+For example using an Opportunity to enter a career path requires 2 commands:  
+use Opportunity, followed by a roll or use experience.  
+Turn history should also include the player's status before and after the turn.  
+Also provide an API for serializing the turn history in JSON.  This could be used as input to AI training a computer player.  
+Status: **OPEN** </p>
+
 ---
-## Turn Outcome
+# Computer Player
+
+### Turn Outcome
 There needs to be a metric for assessing the outcome or quality of a player's turn.<br>
-This is needed for future training an ANN for a computer player.<br>
-The outcome then is a function of several different factors:
+This is needed in order to train a computer player ANN (Artificial Neural Network).<br>
+The outcome then is a function of the following factors:
 - Net point change
 - Opportunity cards gained/lost
 - Experience cards gained/lost
@@ -61,22 +72,21 @@ The outcome then is a function of several different factors:
 - Degrees gained (1 or 0)
 - Occupations completed (1 or 0)
 
-Net point change is the number of points gained or lost in the turn and is the sum of<br>
+**Net point change** is the number of points gained or lost in the turn and is the sum of<br>
 delta cash (in 000's), delta Stars and delta Hearts.<br>
 
-Cards gained/lost. The number of Experience/Opportunity cards gained or lost because  
+**Cards gained/lost** The number of Experience/Opportunity cards gained or lost because  
 of some penalty. For example, when another player calls in favors  
 or when landing on "Buy Experience" and lose a card for "just looking."
 
-Hospital/Unemployment stay. A net loss of 1 when a player is sent to the Hospital or Unemployment  
+**Hospital/Unemployment** stay. A net loss of 1 when a player is sent to the Hospital or Unemployment  
 and each time the player remains there.  
 
-Goal fulfillment. Has a value of -1, 0 or 1 for each goal component.  
+**Goal fulfillment** has a value of -1, 0 or 1 for each goal component (cash, stars, hearts).  
 A value of -1 if a previously fulfilled goal becomes short because of some loss (like half your cash).  
 0 if no net change. 1 if the goal is fulfilled.
 
-Defensive strategy. There are some defensive or strategic actions that contribute to the overall quality (outcome) of a turn.  
-These include: 
+**Defensive strategy**  There are defensive or strategic actions that contribute to the overall quality (outcome) of a turn including:    
 - bumping another player, 
 - backstabbing other player(s), 
 - buying insurance to avoid penalties
@@ -91,39 +101,20 @@ is included in the opportunityCards.json file.
 The same argument can be made for Experience cards. Clearly a triple-wild card is more valuable than a fixed number of spaces card.  
 The relative of each type of Experience card (there are 4 types) is included in the experienceCards.json file.
 
-Occupation points is simply the sum of possible points available. That is, cash bonus in thousands + #stars + #hearts.  
-This is set in the configuration section of the Occupation's/Career's JSON file.  
-For example in the Software Engineering career possible points are $4,000 bonus (4 points), 22 Stars, 6 Hearts, total = 32 points  
-Also there are 2 salary increases for $2,000 and times the roll of 1 die (avg. $3,000) for 5 points.
-
-The value of this Career is relative to the players individual success formula. This career is then  
-valuable for a player going for Stars, okay going for cash, and not so good if Hearts is your goal.  
-
-Scenario 1: Formula = $40,000, 40 Stars, 20 Hearts = 100 total  
-goal points/total points:                (0.4,   0.4,    0.2)
-occupation ratios: (4/32, 22/32, 6/32) = (0.125, 0.6875, 0.1875)
-differences: (-0.275, 0.2875, -0.0125)
-
-Scenario 2: Formula = 40,000, 10 Stars, 50 Hearts  
-goals/total points: (40/100, 10/100, 50/100) = (0.4, 0.1, 0.5)
-differences: (-0.275, 0.5875, -0.3125)
-
-
-Each of the above measures is multiplied by a weight that indicates its relative importance.<br>
+Each of the above metrics is multiplied by a weight that indicates its relative importance.<br>
 
 So the outcome = <br>
 (w1 x dPoints) + (w2 x dOpportunities) + (w3 x dExperiences) + <br>
 (w4 x Hospital) + (w5 x Unemployment) + (w6 x degrees) + (w7 x occupations) + <br>
 (w8 x net salary increase/decrease in thousands) + <br>
 (w9 x ( cash goal fulfilled + Stars goal + Hearts goal) ) + <br>
-(w10 x Opportunity card value) + (w11 x Experience card value) + <br>
-(w12 x occupation points)
+(w10 x sum(Opportunity card values)) + (w11 x sum(Experience card values))
 
 Cash points are measured in thousands of dollars. So $22,000 = 22 points.  
 The weights are globally configurable by Edition in the rules.json file.  
 Initial defaults are w1=2, w2,w3=1, w4,w5=4, w6,w7=2, w8=2, w9=3, w10,w11=1
 
-**Sample turns**
+**Outcomes of Sample Turns**
 Using Hi-Tech edition. Assume the player has $10,000 cash, 10 Stars, 20 Hearts and a $5,000 annual salary.  
 1. Player lands on danger square in Aerospace Engineering (10 Stars but go to Hospital):  
 outcome = 2 x 10 + 4 x -1 = 20 - 4 = 16</p>
@@ -135,8 +126,38 @@ outcome = (2 x 4) + (2 * 12) = 8 + 24 = 32</p>
 The player's salary/2 is $2,500 which is rounded up to $3,000 for a net loss of $2,000.  
 outcome = 2 x -2 = -4 </p>
 
+## Player Strategy
+Strategy Components:
+* Maximize turn outcome
+* Select best Occupation/Career
+* Defensive Play
+
 Obviously the player's goal - computer or human - is to maximize the outcome of each turn.  
 The computer player's strategy is to determine the outcome of each possible move  
-and select the one with the highest outcome.  
+and select the one with the highest outcome AND best matches their point needs.  
+
+A player often has a choice, usually in the form of Opportunity cards, of what occupation to choose at the start of a turn.  
+The value of a given Career/Occupation is relative to a *player's progress in fulfilling their success formula*.  
+Software Engineering is a good choice for a player needing Stars, okay going for cash, and not so good if you need Hearts.  
+
+**Occupation points** is simply the sum of possible points available on a given career/occupation path.  
+That is, cash bonus in thousands + #stars + #hearts.  
+This is set in the configuration section of the Occupation's/Career's JSON file.  
+For example in the Software Engineering career possible points are $4,000 bonus (4 points), 22 Stars, 6 Hearts, total = 32 points  
+Also there are 2 salary increases for $2,000 and times the roll of 1 die (avg. $3,000) for 2 points  
+(each salary increase is 1 point). Here's the JSON:
+
+	"points" : {
+		"cash" : 4,
+		"stars" : 22,
+		"hearts" : 6,
+		"salary" : 2,
+		"totalPoints" : 34
+	}
+
+Scenario 1: Formula = $40,000, 40 Stars, 20 Hearts, current status = $10,000 cash, 4 Stars, 2 Hearts  
+
+
+Scenario 2: Formula = 40,000, 10 Stars, 50 Hearts, current status = $5,000 cash, 0 Stars, 10 Hearts  
 
 

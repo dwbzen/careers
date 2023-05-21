@@ -105,6 +105,14 @@ Resolution: PendingActions.get (and find)  by default was removing the pendingAc
 So in the case of an error the pendingAction was removed incorrectly.
 Changed get(remove) default to False. Also fixed same problem with buy_insurance: added remove=False to find method.</p>
 
+14. Missing number tag.  
+Each Rectangle in the Hi-Tech_Edition_layout_v2 InDesign file has a numeric index that is viewable/settable  
+by right-clicking the object and selecting "Object Export Options..." and selecting "Alt Text Source: Custom"  
+The alt-text is "number=xx" where xx follows the standard square number in the gameLayout and occupation resource files.  
+For example, Payday is "number=0" The number can also be viewed in the exported idml file, "Spread_uce.xml"</p>
+There are 169 game squares. The bug is only 168 have the "number=" alt text exported, so 1 square is missing.  
+Unfortunately there is no quick way of finding the rogue game square - the export option of each rectangle must be checked manually.  <br>
+Status: **COMPLETE**</p>
 
 ---
 ## Technical TODOs
