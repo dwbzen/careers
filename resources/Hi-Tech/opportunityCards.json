@@ -14,7 +14,7 @@
 		},
 		{
 			"card_type" : "occupation_choice",
-			"Help" : "Advance to the occupation chosen by the player. Player enters immediately."
+			"Help" : "Advance to the occupation chosen by the player. Player enters immediately.",
 			"value" : 2
 		},
 		{

@@ -13,6 +13,13 @@
 		"degreeRequirements" : { 
 			"degreeName" : "Business Admin",
 			"numberRequired" : 1
+		},
+		"points" : {
+			"cash" : 4,
+			"stars" : 22,
+			"hearts" : 6,
+			"salary" : 2,
+			"totalPoints" : 34
 		}
 	},
 	"occupationSquares" : [

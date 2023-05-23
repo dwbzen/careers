@@ -24,7 +24,7 @@ from threading import Lock
 from game.boardLocation import BoardLocation
 from game.gameParameters import GameParameters
 from game.gameConstants import GameConstants, GameParametersType, GameType
-
+from game.turnHistory import TurnHistory, Turn
 
 class CareersGame(CareersObject):
     """
@@ -121,6 +121,13 @@ class CareersGame(CareersObject):
         
         # load the individual occupation files
         self._occupations = self.load_occupations()     # dictionary of Occupation instances keyed by name
+        
+        self._turn_outcome_parameters_filename = f'{self._resource_folder}/{self._edition_name}/turnOutcomeParameters.json'
+        with open(self._turn_outcome_parameters_filename, "r") as fp:
+            jtxt = fp.read()
+            turn_outcome_dict = json.loads(jtxt)
+            self._turn_outcome_parameters = turn_outcome_dict['turn_outcome_parameters']
+   
 
     def _create_game_id(self) ->str :
         """Create a unique game id (guid) for this game.
@@ -294,8 +301,24 @@ class CareersGame(CareersObject):
     def game_parameters_type(self) -> GameParametersType:
         return self._game_parameters_type
     
+    @property
+    def turn_outcome_parameters(self) -> dict:
+        return self._turn_outcome_parameters
+    
     def add_player(self, aplayer:Player):
+        """Adds a new Player to the game.
+            This also creates a TurnHistory for the Player, and adds an initial Turn object and before player_info
+        """
         self.game_state.add_player(aplayer)
+        #
+        # create a TurnHistory
+        #
+        turn_history = TurnHistory(aplayer.number, self._turn_outcome_parameters)
+        turn_number = 0
+        turn = Turn(aplayer.number, turn_number)
+        turn_history.add_turn(turn)
+        turn_history.add_player_info(turn_number, TurnHistory.BEFORE_KEY, aplayer.player_info(include_successFormula=True, outputFormat="dict" ))
+        aplayer.turn_history = turn_history
         self._solo = self.game_state.number_of_players == 1
     
     def complete_player_move(self) -> Player | None:

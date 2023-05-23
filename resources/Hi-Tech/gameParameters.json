@@ -14,5 +14,5 @@
 	"default_game_minutes" : 60,
 	"allow_negative_experience" : 1,
 	"interest_rate" : 2.5,
-	"early_withdrawal_penalty" : 5.0
+	"early_withdrawal_penalty" : 5.0,
 }

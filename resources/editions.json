@@ -17,6 +17,22 @@
 					"initial_cash" : 2000
 			}
 	},
+	"Hi-Tech_Careers": {
+			"version" : "0.1",
+			"full_name" : "Hi-Tech Careers Edition",
+			"Help" : "Hig-Tech Edition Rule Book_v2.pdf",
+			"Game Parameters" : "gameParameters.json",
+			"Opportunity Cards" : "opportunityCards.json",
+			"Experience Cards" : "experienceCards.json",
+			"Occupations" : "occupations.json",
+			"Players" : "players.json",
+			"Layout" : "gameLayout.json",
+			"Rules" : "rules.json",
+			"configuration" : {
+					"starting_salary" : 2000,
+					"initial_cash" : 2000
+			}
+	},
 	"UK" : {
 			"version" : "0.0.2",
 			"full_name" : "UK Edition: Destination London",

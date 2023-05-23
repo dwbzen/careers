@@ -132,7 +132,7 @@ class GameRunner(object):
                 done = False
                 while not done:
                     turn_number = game_state.turn_number
-                    prompt = f'player {pn} {current_player.player_initials} ({turn_number}): '
+                    prompt = f'player {pn}, {current_player.player_initials}, turn={turn_number}: '
                     cmd = input(prompt)
                     if len(cmd) == 0: continue
                     cmd_str = cmd.split(" ")

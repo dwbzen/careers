@@ -25,11 +25,13 @@ from game.gameUtils import GameUtils
 from game.environment import Environment
 from game.gameState import GameState
 from game.gameConstants import PendingActionType, SpecialProcessingType, GameType, GameParametersType, PlayerType
+from game.turnHistory import TurnHistory
 
 from datetime import datetime
 import random
 from typing import List
 import os
+
 
 class CareersGameEngine(object):
     """CareersGameEngine executes the action(s) associated with each player's turn.
@@ -37,7 +39,7 @@ class CareersGameEngine(object):
         command :: <roll> | <use> | <use insurance> | <update> | <retire> | <bump> | <bankrupt> | 
                    <list> | <status> | <info> | <quit> | <done> | <end game> |
                    <saved games> | <save> | <load> | <query> | <enter> | <goto> | <add> | <add degree> |
-                   <pay> | <transfer> | <game_status> | <create> | <start> | <buy> | <perform> | <log>
+                   <pay> | <transfer> | <game_status> | <create> | <start> | <buy> | <perform> | <log> | <turn_history>
                    
         <use> :: "use"  <what> <card_number>
             <what> :: "opportunity" | "experience" | "roll"
@@ -83,6 +85,7 @@ class CareersGameEngine(object):
             <choice> :: * | <pending_action>                      ; * = the most recently added pending_action, else the pending_action to resolve such as "buy_hearts"
         <log> :: "log_message" <text>    ; writes <text> to the log file
         <advance> :: "advance" <nspaces>     ; advance a given number of spaces from current position
+        <turn_history> ::  "turn_history"    ; displays the current player's complete TurnHistory in JSON format
         
     """
     
@@ -206,7 +209,8 @@ class CareersGameEngine(object):
         return CommandResult(CommandResult.SUCCESS, "", True)
 
     def execute_command(self, command:str, aplayer:Player, args:list=[]) -> CommandResult:
-        """Executes a command for a given Player
+        """Executes a command for a given Player.
+            This also updates Turn.commands.
             Arguments:
                 command - the command name, for example "roll".
                 args - a possibly empty list of additional string arguments
@@ -214,6 +218,7 @@ class CareersGameEngine(object):
             Returns: a CommandResult object. The player's current board_location is always returned in the CommandResult
             See game.CommandResult for details
         
+            
         """
         player = aplayer
         if aplayer is None:
@@ -554,36 +559,58 @@ class CareersGameEngine(object):
         player = self.game_state.current_player if initials is None else self.get_player(initials)
         if self.game_state.game_type is GameType.TIMED:
             player.time_remaining = self.game_state.get_time_remaining()
-        message = player.player_info(include_successFormula=True, as_json=False)
+        message = player.player_info(include_successFormula=True, outputFormat='text')
         result = CommandResult(CommandResult.SUCCESS,  message, True)
         return result
     
     def info(self, initials:str=None) -> CommandResult:
-        '''Gets player info in JSON format.
+        """Gets player info in JSON format.
             Arguments:
                 initials - optional player player_initials, default if not specified is the current player
             Returns:
                 CommandResult where the message is JSON-formatted player_info (same information returned by 'status') 
-        '''
+        """
         player = self.game_state.current_player if initials is None else self.get_player(initials)
         if self.game_state.game_type is GameType.TIMED:
             player.time_remaining = self.game_state.get_time_remaining()
         include_success_formula = self.game_state.game_type is GameType.POINTS
-        message = player.player_info(include_successFormula=include_success_formula, as_json=True)
+        message = player.player_info(include_successFormula=include_success_formula, outputFormat='json')
         result = CommandResult(CommandResult.SUCCESS,  message, True)
         return result
     
-    def done(self) -> CommandResult:
-        """End my turn and go to the next player
+    def turn_history(self, initials:str=None) ->CommandResult:
+        """turn_history command
         """
-        cp = self.game_state.current_player
+        player:Player = self.game_state.current_player if initials is None else self.get_player(initials)
+        message = player.turn_history.to_JSON()
+        result = CommandResult(CommandResult.SUCCESS,  message, True)
+        return result       
+    
+    def done(self) -> CommandResult:
+        """End my turn, update turn history, and go to the next player
+        """
+        current_player = self.game_state.current_player
         ###################################################################################
         # is there a pending action for this player? This might include a pending penalty.
         # clear any point losses for this turn
         ###################################################################################
-        self._resolve_pending(cp)
-        cp.clear_point_losses()
-
+        self._resolve_pending(current_player)
+        current_player.clear_point_losses()
+        #
+        # Update the AFTER of this turn; create a new Turn and calculate the outcome
+        #
+        turn_history = current_player.turn_history
+        next_turn_number = turn_history.next_turn_number()
+        player_info = current_player.player_info(include_successFormula=True, outputFormat="dict" )
+        turn_number = self.game_state.turn_number
+        current_player.turn_history.add_player_info(turn_number, TurnHistory.AFTER_KEY, player_info)
+        current_player.turn_history.create_turn(turn_number)
+        
+        # The AFTER of this turn is now the BEFORE of the player's next turn
+        current_player.turn_history.turn_number = next_turn_number
+        current_player.turn_history.add_player_info(next_turn_number, TurnHistory.BEFORE_KEY, player_info)
+        
+        
         #
         # has this player won the game?
         #
@@ -597,7 +624,7 @@ class CareersGameEngine(object):
             result = CommandResult(CommandResult.TERMINATE, message, True)
             return result
     
-        cp.board_location.reset_prior()            # this player's prior board position no longer relevant
+        current_player.board_location.reset_prior()            # this player's prior board position no longer relevant
         #
         # SELECT_DEGREE can carry over - remove all the others
         #
@@ -608,13 +635,13 @@ class CareersGameEngine(object):
         #player.opportunity_card = None
         player.experience_card = None
         player.can_use_opportunity = True
-        if cp.number != player.number:    # could be only 1 player if doing a solo game
-            cp.can_roll = False
+        if current_player.number != player.number:    # could be only 1 player if doing a solo game
+            current_player.can_roll = False
         #
         # save the Game on change of turns
         #
         self._gameEngineCommands.save_game(self._game_filename_base, self.gameId, how='pkl')
-        result = CommandResult(CommandResult.SUCCESS,  f"{cp.player_initials} Turn is complete, {player.player_initials}'s ({npn}) turn " , True)
+        result = CommandResult(CommandResult.SUCCESS,  f"{current_player.player_initials} Turn is complete, {player.player_initials}'s ({npn}) turn " , True)
         return result
     
     def next(self) -> CommandResult:

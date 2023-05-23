@@ -3,14 +3,14 @@ add player Don DWB dwb20230113 dwbzen@gmail.com 50 20 30
 add player Brian BDB bdb20230113 brian.bacon01@gmail.com 40 20 40
 start
 # DWB
-enter UF
+enter MIT
 goto 6
 goto 10
 advance 3
 resolve * Marketing
 next
 # BDB
-enter UF
+enter MIT
 goto 6
 advance 4
 advance 3
@@ -30,11 +30,14 @@ next
 advance 1
 goto SpringBreak
 status
+turn_history
 next
 # BDB - bump DWB
 advance 1
 goto SpringBreak
 bump DWB
 status
+turn_history
 save
+end
 end

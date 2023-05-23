@@ -12,6 +12,7 @@ from game.gameConstants import PendingActionType
 from game.pendingAction import PendingAction
 from game.pendingActions import PendingActions
 from game.gameConstants import GameType, PlayerType
+from game.turnHistory import TurnHistory
 from datetime import datetime
 from typing import Dict, List, Union
 import json
@@ -49,6 +50,8 @@ class Player(CareersObject):
         self._loans = {}    # Dict[int, int]:
         
         self._command_history:List[str] = []    # a list of commands executed by a player
+        self._turn_history:TurnHistory = None   # turn command(s) and outcomes
+        
         # minutes remaining in a timed game
         # this must be set externally as Player does not have access to gameState
         # 
@@ -421,7 +424,15 @@ class Player(CareersObject):
     @player_type.setter
     def player_type(self, value:PlayerType):
         self._player_type = value
-        
+    
+    @property
+    def turn_history(self) ->TurnHistory:
+        return self._turn_history
+    
+    @turn_history.setter
+    def turn_history(self, value):
+        self._turn_history = value
+
     def add_command(self, command:str):
         self._command_history.append(command)
     
@@ -678,15 +689,16 @@ class Player(CareersObject):
         self._salary_history = [self.salary]
         self._initialize()
     
-    def player_info(self, include_successFormula:bool=False, as_json:bool=False) ->str:
-        '''Returns key player information.
+    def player_info(self, include_successFormula:bool=False, outputFormat:str='text') ->str:
+        '''Returns key player information in the desired format.
             Arguments:
                 include_successFormula - if True, include the player's success formula
-                as_json - if True, return player info as a JSON-formatted string
+                outputFormat - 'json', 'dict' or 'text'. Default is 'text'
         '''
         v = self.get_total_loans()
         net_worth = self.net_worth()
-        info_dict = {"player":self.player_initials,  "salary":self.salary, "cash":self.cash, "fame":self.fame, "happiness":self.happiness, "points":self.total_points()}
+        progress =  {"cash":self.cash, "stars":self.fame, "hearts":self.happiness, "points":self.total_points()}
+        info_dict = {"player":self.player_initials,  "salary":self.salary, 'progress' : progress }
         info_dict.update( {"insured":self.is_insured, "unemployed":self.is_unemployed, "sick":self.is_sick, \
                            "extra_turn":self.extra_turn, "can_retire":self.can_retire, "net_worth":net_worth} )
         info_dict.update( self._get_pending() )
@@ -709,15 +721,20 @@ Insured: {self.is_insured}, Unemployed: {self.is_unemployed}, Sick: {self.is_sic
             info_dict.update( {"is_bankrupt":True})
         if include_successFormula and self.game_type is GameType.POINTS:
             fstring = f'{fstring}\nSuccess Formula: {self.success_formula}'
-            info_dict.update( self.success_formula.to_dict())
+            sf = {'success_formula' : self.success_formula.to_dict()}
+            info_dict.update( sf)
         if self.game_type is GameType.TIMED:
             fstring = f'{fstring}\nGame Time Remaining: {self.time_remaining} minutes'
             info_dict.update({"time_remaining": self.time_remaining})
         if v > 0:
             fstring = f'{fstring}\nloans: {v}'
             info_dict.update( {"loans":self.loans})
-        
-        return json.dumps(info_dict) if as_json else fstring
+        outval = fstring
+        if outputFormat=='json':
+            outval = json.dumps(info_dict)
+        elif outputFormat=='dict':
+            outval = info_dict 
+        return outval
     
     def get_current_location(self) -> BoardLocation:
         """Gets the location of this player on the board.

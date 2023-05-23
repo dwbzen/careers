@@ -78,7 +78,7 @@ class GameConstants(object):
     
     COMMANDS = ['add', 'add_degree', 'advance', 'bankrupt', 'bump', 'buy', 'create', 'done', 'end', 'enter', '_enter',
             'game_status', 'goto', 'info', 'list', 'load', 'location', 'log_message', 'next', 'pay', 'perform', 'quit', 'retire', 
-            'roll', 'resolve', 'save', 'saved', 'set', 'start', 'status', 'transfer', 'update', 'use', 'use_insurance', 
+            'roll', 'resolve', 'save', 'saved', 'set', 'start', 'status', 'transfer','turn_history', 'update', 'use', 'use_insurance', 
             'where', 'who']
 
     def __init__(self, params:dict):

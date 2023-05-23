@@ -38,7 +38,7 @@ class GameState(CareersObject):
         self._total_minutes = 0 if game_type=='points' else total_points
         self._winning_player = None
         self._turns = 0
-        self._turn_number = 0
+        self._turn_number = -1
         self._start_datetime:datetime = datetime.today()
         self._end_datetime:datetime = None
         self._game_complete = False

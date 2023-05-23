@@ -48,7 +48,12 @@ and any players that are currently on  or have completed the associated career p
 The current specialProcessing type is "bonus". Need to added a new type like "bonus_all".<br>
 Status: **OPEN** </p>
 
-9. Implement turn outcome (described below).  
+9. Refactor messaging logging.  
+Currently this is a method in CareersGameEngine. Some other classes cannot use this  
+because it would create circular dependencies.
+Status: **OPEN**  Make this a service so all classes can log.</p>
+
+10. Implement turn outcome (described below).  
 Also keep a history of turns and outcomes. A player's command history is already implemented as command_history.  
 This is simply a List[str]. A turn however may have more than one command.  
 For example using an Opportunity to enter a career path requires 2 commands:  
@@ -79,8 +84,7 @@ delta cash (in 000's), delta Stars and delta Hearts.<br>
 of some penalty. For example, when another player calls in favors  
 or when landing on "Buy Experience" and lose a card for "just looking."
 
-**Hospital/Unemployment** stay. A net loss of 1 when a player is sent to the Hospital or Unemployment  
-and each time the player remains there.  
+**Hospital/Unemployment**  -1 if a player is in the Hospital/Unemployment at the end of the Turn, 0 otherwise.  
 
 **Goal fulfillment** has a value of -1, 0 or 1 for each goal component (cash, stars, hearts).  
 A value of -1 if a previously fulfilled goal becomes short because of some loss (like half your cash).  

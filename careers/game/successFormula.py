@@ -42,10 +42,10 @@ class SuccessFormula(CareersObject):
         self._money = value
     
     def __str__(self):
-        return f'Money: ${self.money},000  stars: {self.stars}  hearts: {self.hearts}'
+        return f'cash: ${self.money},000  stars: {self.stars}  hearts: {self.hearts}  points: {self.total_points} '
     
     def to_dict(self):
-        return { "money" : self.money, "stars" : self.stars, "hearts" : self.hearts}
+        return { "cash" : self.money, "stars" : self.stars, "hearts" : self.hearts, "points" : self.total_points}
 
     def to_JSON(self):
         """Returns the JSON serialization of SuccessFormula.
