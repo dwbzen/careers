@@ -1,0 +1,26 @@
+# add 2 players - 100 point game - stars  hearts  cash
+add player Don DWB dwb20230113 dwbzen@gmail.com 50 26 24
+add player Brian BDB bdb20230113 brian.bacon01@gmail.com 40 20 40
+start
+# DWB
+enter MIT
+goto 10
+advance 4
+resolve * Engineering
+next
+# BDB
+enter MIT
+goto 10
+advance 4
+resolve * Aerospace
+next
+# DWB
+goto Hospital
+next
+# BDB
+goto Unemployment
+info
+next
+# DWB
+info
+end save

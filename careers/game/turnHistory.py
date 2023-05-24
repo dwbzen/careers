@@ -24,8 +24,8 @@ class Turn():
     points:int=0            # number of points gained or lost
     opportunities:int=0     # number of Opportunity cards gained or lost
     experiences:int=0       # number of Experience cards gained or lost
-    hospital:int=0          # -1 if a player is in the Hospital at the end of the Turn, 0 otherwise
-    unemployment:int=0      # -1 if a player is in the Unemployment at the end of the Turn, 0 otherwise
+    sick:int=0              # -1 if a player is in the Hospital at the end of the Turn, 0 otherwise
+    unemployed:int=0      # -1 if a player is in the Unemployment at the end of the Turn, 0 otherwise
     degrees:int=0           # number of degrees earned this Turn
     occupations:int=0       # number of occupations/careers completed
     salary:int=0            # Sum of salary increases and decreases as points (so $3000 salary bump = 3)
@@ -34,8 +34,8 @@ class Turn():
     cash:int=0              # net gain/loss in cash on hand
     stars:int=0             # net gain/loss in Fame points (stars)
     hearts:int=0            # net gain/loss in Happiness points (hearts)
-    # Goal fulfillment has a value of -1, 0 or 1 for each goal component (cash, stars, hearts).  
-    # A value of -1 if a previously fulfilled goal becomes short because of some loss (like half your cash).  
+    can_retire:int=0        # 1=yes, 0 = not yet or already retired
+    # Goal fulfillment has a value of 0 or 1 for each goal component (cash, stars, hearts).  
     # 0 if no net change. 1 if the goal is fulfilled.
     cash_goal:int=0
     hearts_goal:int=0
@@ -46,11 +46,11 @@ class Turn():
                     "commands" : self.commands, \
                     "outcome": self.outcome, "points" : self.points, \
                     "opportunities" : self.opportunities, "experiences" : self.experiences, \
-                    "hospital" : self.hospital, "unemployment" : self.unemployment, "degrees" : self.degrees, \
+                    "sick" : self.sick, "unemployed" : self.unemployed, "degrees" : self.degrees, \
                     "occupations" : self.occupations, "salary" : self.salary, \
                     "opportunity_card_value" : self.opportunity_card_value, \
                     "experience_card_value" : self.experience_card_value, \
-                    "cash" : self.cash, "stars" : self.stars, "hearts" : self.hearts, \
+                    "cash" : self.cash, "stars" : self.stars, "hearts" : self.hearts, "can_retire" : self.can_retire, \
                     "cash_goal" : self.cash_goal, "stars_goal" : self.stars_goal, "hearts_goal" : self.hearts_goal } }
         return turn_dict
     
@@ -64,12 +64,12 @@ class Turn():
     
     def __eq__(self, other):
         if isinstance(other, Turn):
-            return (self.points, self.opportunities, self.experiences, self.hospital, self.unemployment, \
+            return (self.points, self.opportunities, self.experiences, self.sick, self.unemployed, \
                     self.degrees, self.occupations, self.salary, \
-                    self.opportunity_card_value, self.experience_card_value, self.cash, self.stars, self.hearts) == \
-                    (other.points, other.opportunities, other.experiences, other.hospital, other.unemployment, \
+                    self.opportunity_card_value, self.experience_card_value, self.cash, self.stars, self.hearts, self.can_retire) == \
+                    (other.points, other.opportunities, other.experiences, other.sick, other.unemployed, \
                      other.degrees, other.occupations, other.salary, \
-                    other.opportunity_card_value, other.experience_card_value, other.cash, other.stars, other.hearts)
+                    other.opportunity_card_value, other.experience_card_value, other.cash, other.stars, other.hearts, other.can_retire)
         
         return NotImplemented
 
@@ -150,7 +150,8 @@ class TurnHistory(CareersObject):
         before_info = self._player_info[turn_number][TurnHistory.BEFORE_KEY]
         after_info = self._player_info[turn_number][TurnHistory.AFTER_KEY]
         turn = Turn(self._player_number, turn_number)
-        
+        outcome = self._turn_outcome(turn, before_info, after_info)
+        turn.outcome = outcome
         self.add_turn(turn)
         return turn
     
@@ -164,12 +165,89 @@ class TurnHistory(CareersObject):
     def get_turn(self, index:int=-1) ->Turn :
         return self._turns[index]
 
-    def turn_outcome(self) -> int:
+    def _turn_outcome(self, turn, before_info, after_info) -> int:
         """
-            Compute and save the value of a turn
+            Compute and save the outcome of a turn
         """
-        return 0
+        outcome = 0
+        info_diff = self.diff_info(before_info, after_info)
+        for key in info_diff.keys():
+            diff = info_diff[key]
+            outcome += self._turn_outcome_parameters[key] * diff
+            exec_string = f"turn.{key} = {diff}"
+            print(f"exec: {exec_string}")
+            exec(exec_string)
+        
+        return outcome
     
+    def diff_info(self, before_info:Dict, after_info:Dict) ->Dict:
+        '''Essentially after_info - before_info for each info dictionary key. Sample info:
+            {"player": "DWB", "salary": 6000, 
+             "progress": {"cash": 9000, "stars": 14, "hearts": 2, "points": 25}, 
+             "insured": false, "unemployed": false, "sick": false, "extra_turn": 0, "can_retire": false, "net_worth": 9000, "pending_actions": [], 
+             "success_formula": {"cash": 40, "stars": 10, "hearts": 50, "points": 100}, 
+             "degrees": {"number_of_degrees": 2, "degrees": {"Law": 1, "Marketing": 1}}}
+
+        '''
+        info_diff = {}
+        if after_info["salary"] != before_info["salary"]:
+            diff =  int((after_info["salary"] - before_info["salary"])/1000)
+            info_diff.update({"salary" : diff})
+            
+        points_before = before_info["progress"]["points"]
+        points_after = after_info["progress"]["points"]
+        if points_after != points_before:
+            diff = points_after - points_before
+            info_diff.update({"points" : diff})
+            
+        sick_before = before_info["sick"]
+        sick_after = after_info["sick"]
+        if sick_before != sick_after:
+            diff =  sick_after - sick_before
+            info_diff.update({"sick":diff})
+            
+        unemployed_before = before_info["unemployed"]
+        unemployed_after = after_info["unemployed"]
+        if unemployed_before != unemployed_after:
+            diff =  unemployed_after - unemployed_before
+            info_diff.update({"unemployed":diff}) 
+            
+        # check success formula goals (cash, stars, hearts) that have been completed this turn
+        cash_before = before_info["progress"]["cash"]
+        stars_before = before_info["progress"]["stars"]
+        hearts_before = before_info["progress"]["hearts"]
+        cash_after = after_info["progress"]["cash"]
+        stars_after = after_info["progress"]["stars"]
+        hearts_after = after_info["progress"]["hearts"]
+        if cash_before != cash_after:
+            diff = int((cash_after -  cash_before)/1000)
+            info_diff.update({"cash_goal":diff})
+        if stars_before != stars_after:
+            diff = stars_after - stars_before
+            info_diff.update({"stars_goal":diff})
+        if hearts_before != hearts_after:
+            diff =  hearts_after - hearts_before
+            info_diff.update({"stars_goal":diff})
+        
+        retire_before = before_info["can_retire"]
+        retire_after = after_info["can_retire"]
+        if retire_after != retire_before:
+            diff = retire_after - retire_before
+            info_diff.update({"can_retire":diff})
+            
+        opportunities_before = before_info["opportunities"]
+        experiences_before = before_info["experiences"]
+        opportunities_after = after_info["opportunities"]
+        experiences_after = after_info["experiences"]       
+        if opportunities_after != opportunities_before:
+            diff = opportunities_after - opportunities_before
+            info_diff.update( {"opportunities": diff})
+        if experiences_after != experiences_before:
+            diff = experiences_after - experiences_before
+            info_diff.update( {"experiences": diff})
+            
+        return info_diff
+            
     def size(self) ->int:
         return len(self._turns)
     

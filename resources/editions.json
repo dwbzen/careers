@@ -3,6 +3,12 @@
 	
 	"Hi-Tech" : {
 			"version" : "0.1.4",
+			"plugins" : {
+				"modules" :  [
+					{ "name" : "hiTechRules_Plugin", "use" : "mandatory" },
+					{ "name" : "hiTechRandomizer_Plugin" , "use" : "optional" }
+				] 
+			},
 			"full_name" : "Hi Tech Edition",
 			"Help" : "Rule Book v2 booklet.pdf",
 			"Game Parameters" : "gameParameters.json",

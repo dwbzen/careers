@@ -68,7 +68,7 @@ Status: **OPEN** </p>
 ### Turn Outcome
 There needs to be a metric for assessing the outcome or quality of a player's turn.<br>
 This is needed in order to train a computer player ANN (Artificial Neural Network).<br>
-The outcome then is a function of the following factors:
+The outcome then is a function of the following factors (resources/turnOutcomeParameters.json):
 - Net point change
 - Opportunity cards gained/lost
 - Experience cards gained/lost
@@ -76,6 +76,11 @@ The outcome then is a function of the following factors:
 - Unemployment stay (-1 or 0)
 - Degrees gained (1 or 0)
 - Occupations completed (1 or 0)
+- Salary increase/decrease
+- Can retire (1 or 0)
+- Goal fulfillment
+- Opportunity cards value
+- Experience cards value
 
 **Net point change** is the number of points gained or lost in the turn and is the sum of<br>
 delta cash (in 000's), delta Stars and delta Hearts.<br>
@@ -84,10 +89,11 @@ delta cash (in 000's), delta Stars and delta Hearts.<br>
 of some penalty. For example, when another player calls in favors  
 or when landing on "Buy Experience" and lose a card for "just looking."
 
-**Hospital/Unemployment**  -1 if a player is in the Hospital/Unemployment at the end of the Turn, 0 otherwise.  
+**Sick/Unemployed**  -1 if a player is in the Hospital or in Unemployment at the end of the Turn, 0 otherwise.  
 
-**Goal fulfillment** has a value of -1, 0 or 1 for each goal component (cash, stars, hearts).  
-A value of -1 if a previously fulfilled goal becomes short because of some loss (like half your cash).  
+**Can retire**  1 if you can retire any time after this turn, 0 otherwise or if already retired
+
+**Goal fulfillment** has a value of  0 or 1 for each goal component (cash, stars, hearts).  
 0 if no net change. 1 if the goal is fulfilled.
 
 **Defensive strategy**  There are defensive or strategic actions that contribute to the overall quality (outcome) of a turn including:    
@@ -109,14 +115,15 @@ Each of the above metrics is multiplied by a weight that indicates its relative 
 
 So the outcome = <br>
 (w1 x dPoints) + (w2 x dOpportunities) + (w3 x dExperiences) + <br>
-(w4 x Hospital) + (w5 x Unemployment) + (w6 x degrees) + (w7 x occupations) + <br>
+(w4 x sick) + (w5 x unemployed) + (w6 x degrees) + (w7 x occupations) + <br>
 (w8 x net salary increase/decrease in thousands) + <br>
 (w9 x ( cash goal fulfilled + Stars goal + Hearts goal) ) + <br>
-(w10 x sum(Opportunity card values)) + (w11 x sum(Experience card values))
+(w10 x sum(Opportunity card values)) +   
+(w11 x sum(Experience card values)) + (w12 * can retire)
 
 Cash points are measured in thousands of dollars. So $22,000 = 22 points.  
 The weights are globally configurable by Edition in the rules.json file.  
-Initial defaults are w1=2, w2,w3=1, w4,w5=4, w6,w7=2, w8=2, w9=3, w10,w11=1
+Initial defaults are w1=2, w2,w3=1, w4,w5=4, w6,w7=2, w8=2, w9=3, w10,w11=1,  w12=4
 
 **Outcomes of Sample Turns**
 Using Hi-Tech edition. Assume the player has $10,000 cash, 10 Stars, 20 Hearts and a $5,000 annual salary.  

@@ -313,11 +313,13 @@ class CareersGame(CareersObject):
         #
         # create a TurnHistory
         #
-        turn_history = TurnHistory(aplayer.number, self._turn_outcome_parameters)
+        turn_history = TurnHistory(aplayer.number, self._turn_outcome_parameters, success_formula=aplayer.success_formula)
         turn_number = 0
         turn = Turn(aplayer.number, turn_number)
         turn_history.add_turn(turn)
-        turn_history.add_player_info(turn_number, TurnHistory.BEFORE_KEY, aplayer.player_info(include_successFormula=True, outputFormat="dict" ))
+        player_info = aplayer.player_info(include_successFormula=True, outputFormat="dict" )
+        turn_history.add_player_info(turn_number, TurnHistory.BEFORE_KEY, player_info)
+        turn_history.turn_number = 1
         aplayer.turn_history = turn_history
         self._solo = self.game_state.number_of_players == 1
     

@@ -601,10 +601,11 @@ class CareersGameEngine(object):
         #
         turn_history = current_player.turn_history
         next_turn_number = turn_history.next_turn_number()
-        player_info = current_player.player_info(include_successFormula=True, outputFormat="dict" )
+        player_info = current_player.player_info(include_successFormula=True, outputFormat="dict", include_degrees=True)
         turn_number = self.game_state.turn_number
         current_player.turn_history.add_player_info(turn_number, TurnHistory.AFTER_KEY, player_info)
-        current_player.turn_history.create_turn(turn_number)
+        theTurn = current_player.turn_history.create_turn(turn_number)
+        self.log(f"turn {turn_number} outcome: {theTurn.outcome}\n")
         
         # The AFTER of this turn is now the BEFORE of the player's next turn
         current_player.turn_history.turn_number = next_turn_number
@@ -659,6 +660,20 @@ class CareersGameEngine(object):
             result = CommandResult(CommandResult.TERMINATE, f'Game is complete and saved to file: {sg_result.message}', True)
         else:
             result = CommandResult(CommandResult.TERMINATE, "Game is complete" , True)
+            
+        #
+        # Update each player's turn history and add the final after_info
+        #
+        for player in self.game_state.players:
+            #
+            # Update the AFTER of this turn and calculate the final outcome
+            #
+            turn_history = player.turn_history
+            player_info = player.player_info(include_successFormula=True, outputFormat="dict", include_degrees=True)
+            turn_number = self.game_state.turn_number
+            turn_history.add_player_info(turn_number, TurnHistory.AFTER_KEY, player_info)
+            turn_history.create_turn(turn_number)
+            self.log(player.turn_history.to_JSON())
 
         return result
     

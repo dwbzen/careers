@@ -162,6 +162,7 @@ class GameRunner(object):
         fp = open(filePath, "r")
         scriptText = fp.readlines()
         fp.close()
+
         for line in scriptText:
             if len(line) > 0:
                 cmd = line[:-1]   # drop the trailing \n
@@ -179,10 +180,11 @@ class GameRunner(object):
                     result = self.execute_command(cmd, current_player)
                     turn_number += 1
                 
-                if result is not None:    
+                if result is not None:
                     print(f'"{cmd}": {result.message}')
                     if result.return_code == CommandResult.TERMINATE:
                         break
+                        
                 time.sleep(delay)
                 
         self.game_engine.end()

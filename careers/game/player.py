@@ -176,7 +176,7 @@ class Player(CareersObject):
         self._number = value
         
     @property
-    def my_degrees(self):
+    def my_degrees(self) ->Dict:
         return self._my_degrees
     
     @property
@@ -689,7 +689,7 @@ class Player(CareersObject):
         self._salary_history = [self.salary]
         self._initialize()
     
-    def player_info(self, include_successFormula:bool=False, outputFormat:str='text') ->str:
+    def player_info(self, include_successFormula:bool=False, outputFormat:str='text', include_degrees=True) ->str:
         '''Returns key player information in the desired format.
             Arguments:
                 include_successFormula - if True, include the player's success formula
@@ -719,16 +719,32 @@ Insured: {self.is_insured}, Unemployed: {self.is_unemployed}, Sick: {self.is_sic
         if self.cash < 0:
             fstring = f'{fstring}\nALERT: You have negative cash amount and must declare bankruptcy OR borrow the needed funds from another player!!'
             info_dict.update( {"is_bankrupt":True})
+            
         if include_successFormula and self.game_type is GameType.POINTS:
             fstring = f'{fstring}\nSuccess Formula: {self.success_formula}'
             sf = {'success_formula' : self.success_formula.to_dict()}
             info_dict.update( sf)
+            
+        if include_degrees:
+            list_dict = self.list("degrees", "condensed")
+            degrees = json.dumps(list_dict)
+            fstring = f'{fstring}\nDegrees: {degrees}'
+            info_dict.update({'degrees' : list_dict})
+            
         if self.game_type is GameType.TIMED:
             fstring = f'{fstring}\nGame Time Remaining: {self.time_remaining} minutes'
             info_dict.update({"time_remaining": self.time_remaining})
+            
         if v > 0:
             fstring = f'{fstring}\nloans: {v}'
             info_dict.update( {"loans":self.loans})
+        
+        # add number of opportunity and experience cards
+        nOpportunities = len(self._my_opportunity_cards)
+        nExperiences = len(self._my_experience_cards)
+        fstring = f'{fstring},\nopportunities:{nOpportunities}, experiences:{nExperiences}'
+        info_dict.update( {"opportunities":nOpportunities, "experiences":nExperiences})
+            
         outval = fstring
         if outputFormat=='json':
             outval = json.dumps(info_dict)
