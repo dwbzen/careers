@@ -46,15 +46,15 @@ class GameState(CareersObject):
         self._game_type:GameType = game_type
         self._restored = False    # True if this is a restored game
         self._started = False
-        self._gameId = game_id
+        self._ = game_id
     
     @property
-    def gameId(self):
-        return self._gameId
+    def game_id(self):
+        return self._game_id
     
-    @gameId.setter
-    def gameId(self, value):
-        self._gameId = value
+    @game_id.setter
+    def game_id(self, value):
+        self._game_id = value
     
     @property
     def number_of_players(self):
@@ -297,7 +297,7 @@ class GameState(CareersObject):
         return json.dumps(gs, indent=2)
     
     def to_dict(self) -> dict:
-        gs = {"gameId" : self._gameId, "game_type" : self.game_type.value, "game_parameters_type" : self.game_parameters_type.value, \
+        gs = {"game_id" : self._game_id, "game_type" : self.game_type.value, "game_parameters_type" : self.game_parameters_type.value, \
               "number_of_players" : self.number_of_players, "current_player_number" : self.current_player_number }
         gs["turns"] = self.turns
         gs["turn_number"] = self.turn_number

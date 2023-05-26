@@ -11,6 +11,7 @@ from game.gameConstants import GameParametersType, GameType
 from game.careersGame import CareersGame, restore_game
 from game.gameState import GameState
 import argparse, time
+import logging
 
 class GameRunner(object):
     """A command-line text version of Careers game play used for testing and simulating web server operation.
@@ -22,7 +23,7 @@ class GameRunner(object):
             game_duration - total game duration if a timed game
             debug_flag - set to True for debugging output
             game_mode - 'test', 'prod', 'test-prod' or 'custom'
-            gameid - the game ID of a previously saved game (in JSON format)
+            game_id - the game ID of a previously saved game (in JSON format)
             restore - if True, restore a previously saved game 
             script - a script file to execute
             careers_game - a CareersGame instance. If not None, all previous parameters except debug_flag
@@ -30,22 +31,34 @@ class GameRunner(object):
             
     """
 
-    def __init__(self, edition:str, installationId:str, game_type:str, total_points:int, game_duration:int, debug_flag:bool,\
+    def __init__(self, edition:str, installationId:str, game_type:str, total_points:int, game_duration:int, loglevel:str,\
                   game_mode:str, careers_game:CareersGame|None=None, game_id:str|None=None):
         """
         Constructor
         """
-        self._careersGame = careers_game
-        self.game_engine = CareersGameEngine(careers_game=careers_game, game_id=game_id)
-        self._debug = debug_flag          # traces the action by describing each step
-        self.game_engine.debug = debug_flag
+        self._installationId = installationId
+        self._game_mode = game_mode 
+        self._edition = edition
         
-        if careers_game is None:    # new game
+        if careers_game is None:    # create a new game
+            self._game_type = GameType[game_type.upper()]
             self.total_points = total_points      # applies to GameType.POINTS
             self.game_duration = game_duration    # applies to GameType.TIMED
-            self._edition = edition
-            self._game_type = GameType[game_type.upper()]
-        else:    # restored game
+            total_points = self.total_points if game_type is GameType.POINTS else self.game_duration
+            
+            self.game_engine = \
+                CareersGameEngine(careers_game=None, game_id=None, loglevel=loglevel, edition=edition, installationId=installationId)
+
+            result = self.game_engine.create(self._edition, self._installationId, self._game_type.value, total_points, game_mode)
+            if result.return_code != CommandResult.SUCCESS:
+                logging.error("Could not create a CareersGame")
+            
+            self._careersGame = self.game_engine.careersGame
+            self._game_id = self._careersGame.gameId
+            
+        else:    # restore an existing game
+            self._game_id = self._careersGame.gameId
+            self.game_engine = CareersGameEngine(careers_game=careers_game, game_id=self.game_id, loglevel='warning', installationId=installationId)
             self.total_points = careers_game.game_state.total_points             # applies to GameType.POINTS
             self.game_duration = careers_game.game_state.get_time_remaining()    # applies to GameType.TIMED
             self._edition = careers_game.edition_name
@@ -55,8 +68,10 @@ class GameRunner(object):
             self.game_engine.careersGame = careers_game
             self.game_engine.gameId = game_id
         
-        self._installationId = installationId
-        self._game_mode = game_mode      # 'test', 'prod', 'test-prod' or 'custom'
+        debug_flag = loglevel == 'debug'
+        self._debug = debug_flag          # traces the action by describing each step
+        
+        # 'test', 'prod', 'test-prod' or 'custom'
         # these commands are not allowed in prod mode, but permitted in test, test_prod and custom modes
         self._restricted_commands = ["goto", "add_degree", "advance", "set"]
         self._action_commands = ["roll", "use", "bankrupt", "retire" ]    # increment turns for solo game
@@ -92,15 +107,20 @@ class GameRunner(object):
     def game_type(self)->GameType:
         return self._game_type
     
+    @property
+    def game_id(self) ->str:
+        return self._game_id
+    
     def number_of_players(self):
         return self.game.game_state.number_of_players
     
     def get_game_state(self) -> GameState:
         return self.careersGame.game_state
     
-    def create_game(self, game_id=None, game_parameters_type="prod") -> CommandResult:
-        total_points = self.total_points if self.game_type is GameType.POINTS else self.game_duration
-        result = self.game_engine.create(self._edition, self._installationId, self.game_type.value, total_points, game_id, game_parameters_type)
+    def create_game(self, game_type:GameType, game_id=None, game_mode="prod") -> CommandResult:
+        total_points = self.total_points if game_type is GameType.POINTS else self.game_duration
+        
+        result = self.game_engine.create(self._edition, self._installationId, game_type.value, total_points, game_id, game_mode)
         self._careersGame = self.game_engine.careersGame
         return result
     
@@ -121,7 +141,7 @@ class GameRunner(object):
     
     def run_game(self):
         game_over = False
-        game_state = self.get_game_state()
+        game_state = self.careersGame.game_state
         nplayers = game_state.number_of_players
         
         while not game_over:
@@ -157,7 +177,7 @@ class GameRunner(object):
     def run_script(self, filePath:str, delay:int, log_comments=True):
 
         turn_number = 1
-        game_state = self.get_game_state()
+        game_state = self.careersGame.game_state
         current_player = None
         fp = open(filePath, "r")
         scriptText = fp.readlines()
@@ -170,7 +190,8 @@ class GameRunner(object):
                     continue
                 elif cmd.startswith("#"):    # comment line
                     if log_comments:
-                        result = self.execute_command(f'log_message {cmd}', current_player)
+                        logging.debug(f'log_message {cmd}')
+                        result = None
                     else:
                         result = None
                 elif cmd.startswith("add player "):
@@ -199,11 +220,12 @@ def main():
     parser.add_argument("--params", help="Game parameters type: 'test', 'prod', 'test-prod' or 'custom' ", type=str, \
                         choices=["test","prod","custom","test_prod"], default="test")
     parser.add_argument("--gameid", help="Game ID", type=str, default=None)
-    parser.add_argument("--edition", help="Game edition: Hi-Tech or UK", type=str, choices=["Hi-Tech", "UK"], default="Hi-Tech")
+    parser.add_argument("--edition", help="Game edition: Hi-Tech, JazzAge, or UK", type=str, choices=["Hi-Tech", "UK", "JazzAge"], default="Hi-Tech")
     parser.add_argument("--script", help="Execute script file", type=str, default=None)
     parser.add_argument("--delay", help="Delay a specified number of seconds between script commands", type=int, default=0)
     parser.add_argument("--comments", "-c", help="Log comment lines when running a script", type=str, choices=['y','Y', 'n', 'N'], default='Y')
-    parser.add_argument("--debug", "-d", help="Run in debug mode, logging trace output",  action="store_true", default=False)
+    # parser.add_argument("--debug", "-d", help="Run in debug mode, logging trace output",  action="store_true", default=False)
+    parser.add_argument("--loglevel", help="Set Python logging level", type=str, choices=["debug","info","warning","error","critical"], default="warning")
     parser.add_argument("--type","-t", help="Game type: points, timed", type=str, choices=["points", "timed"], default="points")
     parser.add_argument("--restore", "-r", help="Restore game by gameid", action="store_true", default=False)
     args = parser.parse_args()
@@ -216,23 +238,23 @@ def main():
     filePath = args.script           # complete file path
     log_comments = args.comments.lower()=='y'
     careers_game = None
-    
     gameId = args.gameid
     current_player = None
     if args.restore:
         careers_game = restore_game(gameId)
         nplayers = careers_game.game_state.number_of_players
-        game_runner = GameRunner(edition, installationId, game_type, total_points, game_duration, args.debug, args.params, careers_game=careers_game, game_id=gameId)
+        game_runner = GameRunner(edition, installationId, game_type, total_points, game_duration, \
+                                 args.loglevel, args.params, careers_game=careers_game, game_id=gameId)
         current_player = game_runner.get_game_state().current_player
     else:
         #
         # test_prod allows goto and advance in production mode
         #
-        game_parameters_type = "prod" if args.params=="test_prod" else args.params    # not used if restoring a previously saved CareersGame
-        game_runner = GameRunner(edition, installationId, game_type, total_points, game_duration, args.debug, args.params)
+        game_mode = "prod" if args.params=="test_prod" else args.params    # not used if restoring a previously saved CareersGame
+        game_runner = GameRunner(edition, installationId, game_type, total_points, game_duration, args.loglevel, game_mode)
     
         # creates a CareersGame for points
-        game_runner.create_game(gameId, game_parameters_type)
+        # game_runner.create_game(gameId, game_parameters_type)
         
         if filePath is not None:
             game_runner.run_script(filePath, args.delay, log_comments=log_comments)
@@ -260,8 +282,8 @@ def main():
                     game_runner.execute_command(add_cmd, None)
                     print(name)
     
-    game_runner.execute_command("start", current_player)
-    game_runner.run_game()
+            game_runner.execute_command("start", current_player)
+            game_runner.run_game()
     
 if __name__ == '__main__':
     main()

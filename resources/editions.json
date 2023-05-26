@@ -2,7 +2,7 @@
 	"editions" : [ "Hi-Tech", "UK", "JazzAge"],
 	
 	"Hi-Tech" : {
-			"version" : "0.1.4",
+			"version" : "0.1.5",
 			"plugins" : {
 				"modules" :  [
 					{ "name" : "hiTechRules_Plugin", "use" : "mandatory" },
@@ -24,7 +24,7 @@
 			}
 	},
 	"Hi-Tech_Careers": {
-			"version" : "0.1",
+			"version" : "0.2",
 			"full_name" : "Hi-Tech Careers Edition",
 			"Help" : "Hig-Tech Edition Rule Book_v2.pdf",
 			"Game Parameters" : "gameParameters.json",

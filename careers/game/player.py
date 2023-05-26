@@ -434,7 +434,13 @@ class Player(CareersObject):
         self._turn_history = value
 
     def add_command(self, command:str):
+        """Adds a command to the player's command_history and current Turn
+        """
         self._command_history.append(command)
+        
+        if self.turn_history is not None:
+            turn = self.turn_history.get_turn()
+            turn.commands.append(command)
     
     def get_command(self, index:int=-1) ->str:
         return self._command_history[index]
@@ -689,10 +695,12 @@ class Player(CareersObject):
         self._salary_history = [self.salary]
         self._initialize()
     
-    def player_info(self, include_successFormula:bool=False, outputFormat:str='text', include_degrees=True) ->str:
+    def player_info(self, include_successFormula:bool=False, outputFormat:str='text', include_degrees=True, include_board_location=True) ->str:
         '''Returns key player information in the desired format.
             Arguments:
-                include_successFormula - if True, include the player's success formula
+                include_successFormula - if True, include the player's success formula. Default is False
+                include_degrees - if True, include the player's degrees (if any). Default is True
+                include_board_location - if True, include the player's current BoardLocation. Default is True.
                 outputFormat - 'json', 'dict' or 'text'. Default is 'text'
         '''
         v = self.get_total_loans()
@@ -730,6 +738,11 @@ Insured: {self.is_insured}, Unemployed: {self.is_unemployed}, Sick: {self.is_sic
             degrees = json.dumps(list_dict)
             fstring = f'{fstring}\nDegrees: {degrees}'
             info_dict.update({'degrees' : list_dict})
+            
+        if include_board_location:
+            board_locn = str(self.board_location)
+            fstring = f'{fstring}\nBoardLocation: {board_locn}'
+            info_dict.update( {"board_location" : self.board_location.to_dict()} )
             
         if self.game_type is GameType.TIMED:
             fstring = f'{fstring}\nGame Time Remaining: {self.time_remaining} minutes'

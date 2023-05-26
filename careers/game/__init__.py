@@ -25,6 +25,7 @@ __all__ = [
     'gameSquare',
     'gameState',
     'gameUtils',
+    'logger',
     'occupation',
     'occupationSquare',
     'opportunityCard',
@@ -52,6 +53,7 @@ from .gameEngineCommands import GameEngineCommands
 from .gameParameters import GameParameters
 from .gameRunner import GameRunner
 from .gameUtils import GameUtils
+from .logger import Logger
 from .player import Player
 from .successFormula import SuccessFormula
 from .opportunityCard import OpportunityCard, OpportunityType, OpportunityActionType

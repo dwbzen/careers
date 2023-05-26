@@ -21,17 +21,17 @@ from game.borderSquare import BorderSquare, BorderSquareType
 from game.occupationSquare import OccupationSquare
 from game.gameSquare import GameSquare, GameSquareClass
 from game.gameEngineCommands import GameEngineCommands
-from game.gameUtils import GameUtils
 from game.environment import Environment
 from game.gameState import GameState
 from game.gameConstants import PendingActionType, SpecialProcessingType, GameType, GameParametersType, PlayerType
 from game.turnHistory import TurnHistory
+from game.logger import Logger
 
 from datetime import datetime
 import random
 from typing import List
-import os
-
+import os, logging
+from threading import Lock
 
 class CareersGameEngine(object):
     """CareersGameEngine executes the action(s) associated with each player's turn.
@@ -58,7 +58,7 @@ class CareersGameEngine(object):
         <quit> :: "quit" player_initials        ;current player leaves the game, must include initials
         <done> :: "done" | "next"               ;done with my turn - next player's turn
         <end game> :: "end game"                ;saves the current game state then ends the game
-        <saved games> :: "saved games"          ;list any saved games by date/time and gameID
+        <saved games> :: "saved games"          ;list any saved games by date/time and game_id
         <save> :: "save" <how>                  ;saves the current game state to a file in the specified format
             <how> ::  "json" | "pkl"
         <load> :: "load" game-id                ;load a game and start play with the next player
@@ -74,7 +74,7 @@ class CareersGameEngine(object):
         <pay> :: "pay" amount                ;current player makes a payment associated with their current board location
         <transfer> :: "transfer" quantity ("cash" | "opportunity" | "experience) player_number
         <game_status> :: "game_status"
-        <create> :: "create" <edition> <game_type> points  [id]      ;create a new CareersGame with specified total points or total time (in minutes) and optional gameId
+        <create> :: "create" <edition> <game_type> points  [id]      ;create a new CareersGame with specified total points or total time (in minutes) and optional game_id
             <edition> :: "Hi-Tech" | "UK   ;supports multiple editions
             <game_type> ::  'points' | 'timed'
         <start> :: "start"                    ;starts a newly created CareersGame
@@ -88,62 +88,65 @@ class CareersGameEngine(object):
         <turn_history> ::  "turn_history"    ; displays the current player's complete TurnHistory in JSON format
         
     """
-    
-    def __init__(self, careers_game:CareersGame=None, game_id:str=None):
+    _lock = Lock()
+        
+    def __init__(self, careers_game:CareersGame=None, game_id:str=None, loglevel='warning', installationId="", edition=""):
         '''
         Constructor
         '''
         self._careersGame = careers_game    # create a new CareersGame with create()
-        self._gameId = game_id
-        self._fp = None                     # logging file pointer
         self._debug = False                 # traces the action by describing each step and logs to a file
         self._start_date_time = datetime.now()
-        self._installationId = None      # provided by the UI
+        self._installationId = installationId      # provided by the UI or the GameRunner
         self._current_player = None
         self._admin_player = Player(number=-1, name='Administrator', initials='admin')
         self._gameEngineCommands = None     # no CareersGame yet
         self.currency_symbol = None         # value set with create()
         self._game_state = None             # set with create()
-        
-        if careers_game is not None and game_id is not None:
-            self._init_logging()
-            self._init_game_engine_commands()
+        self._game_id = self._create_game_id(installationId) if game_id is None else game_id
+            
+        self._init_logging(loglevel, self._game_id, edition)
     
-    def _init_logging(self):
+    def _init_logging(self, loglevel:str, game_id, edition):
         
-        self._logfile_filename = f'{self.gameId}_{self._careersGame.edition_name}'
+        log_levels = {"debug":logging.DEBUG, "info":logging.INFO, "warning":logging.WARNING, "error":logging.ERROR, "critical":logging.CRITICAL}
+        level = log_levels[loglevel]
+        self._debug = (loglevel=='debug')
+        
+        self._logfile_filename = f'{game_id}_{edition}'
         
         self._dataRoot = Environment.get_environment().package_base
 
-        self._logfile_folder = os.path.join(self._dataRoot, 'log')   # TODO put in Environment
+        self._logfile_folder = os.path.join(self._dataRoot, 'log')
         self._gamefile_folder = os.path.join(self._dataRoot, 'games')
         self._logfile_path = os.path.join(self._logfile_folder, self._logfile_filename + ".log")
-        self._game_filename_base = os.path.join(f'{self._gamefile_folder}', f'{self.gameId}_game')
+        self._game_filename_base = os.path.join(f'{self._gamefile_folder}', f'{self.game_id}_game')
         
         if(not os.path.exists(self._logfile_folder)):
             os.mkdir(self._logfile_folder)
         
         if(not os.path.exists(self._gamefile_folder)):
             os.mkdir(self._gamefile_folder)
+        
+        # configure the logger
+        self._logger = Logger(self.game_id,  edition, self._logfile_path, level=level)
+        
 
-        self.fp = open(self._logfile_path, "w")   # log file open channel
-        self.currency_symbol = self._careersGame.game_parameters.get_param("currency_symbol")
-    
-    def _init_game_engine_commands(self):
-        self._gameEngineCommands = GameEngineCommands(self._careersGame, self.fp)
-        self._gameEngineCommands.debug = self.debug
+    def _create_game_id(self, installation_id) ->str :
+        """Create a unique game id (guid) for this game.
+            This method acquires a lock to insure uniqueness in a multi-process/web environment.
+            Format is based on current date and time and installationId for example ZenAlien2013_20220908-140952-973406-27191
+        """
+        CareersGameEngine._lock.acquire()
+        today = datetime.now()
+        gid = installation_id +  '_{0:d}{1:02d}{2:02d}_{3:02d}{4:02d}{5:02d}_{6:06d}_{7:05d}'\
+            .format(today.year, today.month, today.day, today.hour, today.minute, today.second, today.microsecond, random.randint(10000,99999))
+        CareersGameEngine._lock.release()
+        return gid
     
     @property
     def dataRoot(self) ->str:
         return self._dataRoot
-    
-    @property
-    def fp(self):
-        return self._fp
-    
-    @fp.setter
-    def fp(self, value):
-        self._fp = value
     
     @property
     def logfile_name(self):
@@ -154,12 +157,12 @@ class CareersGameEngine(object):
         return self._logfile_path
     
     @property
-    def gameId(self):
-        return self._gameId
+    def game_id(self):
+        return self._game_id
     
-    @gameId.setter
-    def gameId(self, value):
-        self._gameId = value
+    @game_id.setter
+    def game_id(self, value):
+        self._game_id = value
     
     @property
     def installationId(self):
@@ -189,23 +192,19 @@ class CareersGameEngine(object):
     def careersGame(self, value:CareersGame):
         self._careersGame = value
     
-    def log(self, *message):
-        """Write message to the log file.
+    def log_info(self, *message):
+        """Write info-level message to the log file and if debug is set, also to the console
             
         """
-        txt = ""
-        for s in message:
-            txt += f' {s}'
-        msg = GameUtils.get_datetime() + f'  {txt}\n'
-        if self.fp is not None:     # may be logging isn't initialized yet or logging option is False
-            self.fp.write(msg)
+        txt = " ".join(message)
         if self.debug:
-            print(msg)
+            print(txt)
+        logging.info(txt)
             
     def log_message(self, *message) -> CommandResult:
         """The command version of log.
         """
-        self.log(*message)
+        self.log_info(*message)
         return CommandResult(CommandResult.SUCCESS, "", True)
 
     def execute_command(self, command:str, aplayer:Player, args:list=[]) -> CommandResult:
@@ -227,15 +226,15 @@ class CareersGameEngine(object):
         commands = command.split(';')
         messages = ""
         for command in commands:
-            self.log(f'{player.player_initials}: {command}')
+            logging.debug(f'{player.player_initials}: {command}')
             if command is None or len(command) == 0:
                 return CommandResult(CommandResult.SUCCESS, "", False)
             cmd_result = self._evaluate(command, args)
-            player.add_command(command)    # adds to player's command history
+            player.add_command(command)    # adds to player's command history and current Turn
             
             board_location = player.board_location    # current board location AFTER the command is executed
             if command.lower() != "log_message":      # no need to log twice
-                self.log(f'  {player.player_initials} results: {cmd_result.return_code} {cmd_result.message}\n{board_location}')
+                logging.debug(f'  {player.player_initials} results: {cmd_result.return_code} {cmd_result.message}\n{board_location}')
             cmd_result.board_location = board_location
             messages += cmd_result.message + "\n"
         
@@ -255,12 +254,13 @@ class CareersGameEngine(object):
         
         command = "self." + command_result.message
         command_result = None
-        self.log("_evaluate: " + command)
+        logging.debug("_evaluate: " + command)
         try:
             command_result = eval(command)
         except Exception as ex:
-            command_result = CommandResult(CommandResult.ERROR,  f'"{command}" : Invalid command format or syntax\n{str(ex)}',  False, exception=ex)
-            #raise ex
+            message = f'"{command}" : Invalid command format or syntax\nexception: {str(ex)}'
+            command_result = CommandResult(CommandResult.ERROR,  message,  False, exception=ex)
+            logging.error(message)
         return command_result
     
     def get_player_game_square(self, player:Player) -> GameSquare:
@@ -310,7 +310,7 @@ class CareersGameEngine(object):
         
         dice = random.choices(population=[i for i in range(1,7)], k=ndice)
         num_spaces = sum(dice)
-        print(f' {player.player_initials}  rolled {num_spaces} {dice}')
+        self.log_info(f' {player.player_initials}  rolled {num_spaces} {dice}')    # INFO
         return self._advance(num_spaces, dice)
             
     
@@ -333,7 +333,7 @@ class CareersGameEngine(object):
         next_square_number = self._get_next_square_number(player, num_spaces)
         message = f' {player.player_initials}  rolled {num_spaces} {dice}, next_square {next_square_number}' if dice is not None \
             else f' {player.player_initials}  advances {num_spaces}, next_square {next_square_number}'
-        self.log(message)
+        self.log_info(message)
         print(message)
         #
         # check if player is on a holiday
@@ -354,7 +354,7 @@ class CareersGameEngine(object):
         # If dice is None, can_player_move will return True
         else:
             canmove, result = self._gameEngineCommands.can_player_move(player, dice)
-            self.log(result.message)
+            logging.debug(result.message)
             if canmove:
                 #
                 # clear any pending action - use it or lose it!
@@ -447,7 +447,7 @@ class CareersGameEngine(object):
                 
         elif what.lower() == "roll":        # use a pre-existing dice roll.
             # card_number is a string having the dice roll
-            self.log(f'use roll {card_number}')
+            logging.debug(f'use roll {card_number}')
             diestr = card_number.lstrip(' [').rstrip('] ').split(",")
             die = [int(s) for s in diestr]
             result = self.roll(player, die)
@@ -605,7 +605,7 @@ class CareersGameEngine(object):
         turn_number = self.game_state.turn_number
         current_player.turn_history.add_player_info(turn_number, TurnHistory.AFTER_KEY, player_info)
         theTurn = current_player.turn_history.create_turn(turn_number)
-        self.log(f"turn {turn_number} outcome: {theTurn.outcome}\n")
+        self.log_info(f"turn {turn_number} outcome: {theTurn.outcome}\n")
         
         # The AFTER of this turn is now the BEFORE of the player's next turn
         current_player.turn_history.turn_number = next_turn_number
@@ -641,7 +641,7 @@ class CareersGameEngine(object):
         #
         # save the Game on change of turns
         #
-        self._gameEngineCommands.save_game(self._game_filename_base, self.gameId, how='pkl')
+        self._gameEngineCommands.save_game(self._game_filename_base, self.game_id, how='pkl')
         result = CommandResult(CommandResult.SUCCESS,  f"{current_player.player_initials} Turn is complete, {player.player_initials}'s ({npn}) turn " , True)
         return result
     
@@ -653,7 +653,7 @@ class CareersGameEngine(object):
     def end(self, save:str=None) -> CommandResult:
         """Ends the game, saves the current state if specified, and exits.
         """
-        self.log("Ending game: " + self.gameId)
+        self.log_info("Ending game: " + self.game_id)
         self._careersGame.end_game()
         if save is not None and save.lower()=='save':    # save the game state first
             sg_result = self.save()
@@ -673,7 +673,7 @@ class CareersGameEngine(object):
             turn_number = self.game_state.turn_number
             turn_history.add_player_info(turn_number, TurnHistory.AFTER_KEY, player_info)
             turn_history.create_turn(turn_number)
-            self.log(player.turn_history.to_JSON())
+            self.log_info(player.turn_history.to_JSON())
 
         return result
     
@@ -689,7 +689,7 @@ class CareersGameEngine(object):
             save('pkl') uses joblib.dump() to save the CareersGame instance to binary pickel format.
             This can be reconstituted with joblib.load()
         """
-        return self._gameEngineCommands.save_game(self._game_filename_base, self.gameId, how=how)
+        return self._gameEngineCommands.save_game(self._game_filename_base, self.game_id, how=how)
     
     def location(self, who=None)->str:
         player = self.game_state.current_player if who is None else self.get_player(who)
@@ -898,7 +898,7 @@ class CareersGameEngine(object):
         result = CommandResult(CommandResult.SUCCESS, "'saved' command not yet implemented, but soon!", False)
         return result    
 
-    def load(self, gameid:str) -> CommandResult:
+    def load(self, game_id:str) -> CommandResult:
         """Load a previously saved game, identified by the game Id
         
         """
@@ -963,7 +963,7 @@ class CareersGameEngine(object):
             result = self.add_degree(player, name)
             message = result.message
         
-        self.log(message)
+        self.log_info(message)
         return CommandResult(CommandResult.SUCCESS, message, False)
     
     def game_status(self) -> CommandResult:
@@ -973,39 +973,38 @@ class CareersGameEngine(object):
         
         return CommandResult(CommandResult.SUCCESS, message, True)
     
-    def create(self, edition, installationId, game_type, points, game_id=None, game_parameters_type="prod") -> CommandResult:
+    def create(self, edition, installationId, game_type, points, game_parameters_type="prod") -> CommandResult:
         """Create a new CareersGame.
             Arguments:
                 edition - 'Hi-Tech' or 'UK' are the only editions currently supported
                 installationId - uniquely identifies the game's creator. It must have a length >= 5.
                 game_type - 'points', 'timed', or 'solo'
-                game_id - if not None, the gameId to use to identify this game.
-                game_parameters_type - 'test', 'prod' or 'custom'. This maps to the appropriate
+                game_parameters_type - 'test', 'prod' or 'custom'. This maps to the appropriate (game_mode)
                     gameParameters JSON file: gameParameters_prod.json, gameParameters_test.json
             Returns: 
                 CommandResult
-                    message - JSON gameId, installationId if successful, else an error message: "error":<details>
+                    message - JSON game_id, installationId if successful, else an error message: "error":<details>
                     return_code - SUCCESS or ERROR
             If a game_id is not provided, one is created based on the installationId and current date/time. For example, "ZenAlien2013_20220918-135325-650634-47816"
         """
         
         assert installationId is not None and len(installationId) >= 5
-        self._edition = edition    # 'Hi-Tech'
+        self._edition = edition
         self._installationId = installationId
-    
+        game_id = self.game_id
         #
         # Create the CareersGame instance and the GameEngineCommands
         #
         self._careersGame = CareersGame(self._edition, installationId, points, game_id, game_type=game_type, game_parameters_type=game_parameters_type)
         
         self._game_state = self._careersGame.game_state
-        self._gameId = self._careersGame.gameId         # the gameId includes the installationId
+        self._game_state.game_id = game_id
+        self._gameEngineCommands = GameEngineCommands(self._careersGame)
+        self._gameEngineCommands.debug = self.debug
+        self.currency_symbol = self._careersGame.game_parameters.get_param("currency_symbol")
         
-        self._init_logging()
-        self._init_game_engine_commands()
-
-        message = f'{{"gameId":"{self._gameId}", "installationId":"{self._installationId}"}}'
-        self.log(message)
+        message = f'{{"game_id":"{self.game_id}", "installationId":"{installationId}"}}'
+        self.log_info(message)    # INFO
         return CommandResult(CommandResult.SUCCESS, message, True)
     
     def start(self) -> CommandResult:
@@ -1155,7 +1154,7 @@ class CareersGameEngine(object):
                 # the player can afford the amount - question is what is their choice? 
                 # pay or go (to unemployment)
                 #
-                self.log(f'{player.player_initials} resolve {what} choice is "{choice}"')
+                self.log_info(f'{player.player_initials} resolve {what} choice is "{choice}"')
                 if choice.lower() == 'pay':
                     amount = game_square.special_processing.amount
                     player.add_cash(-amount)
@@ -1215,9 +1214,9 @@ class CareersGameEngine(object):
     #####################################
         
     def _start(self) -> CommandResult:
-        message = f'Starting game {self.gameId}'
+        message = f'Starting game {self.game_id}'
 
-        self.log(message)
+        self.log_info(message)
         self.game_state.set_next_player()    # sets the player number to 0 and the curent_player Player reference
         self._careersGame.start_game()       # sets the start datetime
         return CommandResult(CommandResult.SUCCESS, message, True)
@@ -1327,12 +1326,12 @@ class CareersGameEngine(object):
             if game_square_class is GameSquareClass.OCCUPATION and experienceCard.card_type is ExperienceType.TWO_DIE_WILD or \
                game_square_class is GameSquareClass.BORDER and experienceCard.card_type is ExperienceType.ONE_DIE_WILD:
                 message = f'Experience type {experienceCard.card_type.value} cannot be used for {game_square.square_class.value} '
-                self.log(message)
+                self.log_info(message)
                 return CommandResult(CommandResult.ERROR, message, False)
             else:   # simulate a roll of 1 or 2 die
                 if spaces is None:
                     message = f'A roll must be specified for {experienceCard.card_type.value}'
-                    self.log(message)
+                    self.log_info(message)
                     return CommandResult(CommandResult.ERROR, message, False)
                 else:
                     die = roll.split(',')
@@ -1340,14 +1339,14 @@ class CareersGameEngine(object):
                     if ndie == 1 and experienceCard.card_type is ExperienceType.TWO_DIE_WILD or \
                        ndie == 2 and experienceCard.card_type is ExperienceType.ONE_DIE_WILD:
                         message = f'Roll {die} cannot be applied to {experienceCard.card_type.value}'
-                        self.log(message)
+                        self.log_info(message)
                         return CommandResult(CommandResult.ERROR, message, False)
                                      
                 dice = [int(c) for c in die]
                 nspaces = sum(dice)
                     
         message = f'{player.player_initials} roll: {dice}, moving: {nspaces} spaces'
-        self.log(message)
+        self.log_info(message)
         result = self.roll(player, dice)
         #
         # remove the used experience from the player's deck
@@ -1374,14 +1373,14 @@ class CareersGameEngine(object):
         
     def _execute_occupation_square(self, player:Player, game_square:OccupationSquare, board_location:BoardLocation) -> CommandResult:
         message = f'execute_occupation_square {board_location.occupation_name}  {board_location.occupation_square_number} for {player.player_initials}'
-        self.log(message)
+        self.log_info(message)
         result = game_square.execute(player)
         
         return result
     
     def _execute_border_square(self, player:Player, game_square:BorderSquare, board_location:BoardLocation) -> CommandResult:
         message = f'{player.player_initials} landed on {game_square.name}  ({board_location.border_square_number})'
-        self.log(message)
+        self.log_info(message)
         result = game_square.execute(player)
         result.message = message + "\n" + result.message
 
@@ -1612,7 +1611,7 @@ class CareersGameEngine(object):
             choices = self._careersGame.college_degrees["degreePrograms"]
             message = f'{player.player_initials} Leaving {board_location.occupation_name}, pending_action: {PendingActionType.SELECT_DEGREE.value}'
         
-        self.log(message)
+        self.log_info(message)
         result = CommandResult(CommandResult.SUCCESS, message, True, choices=choices)
         return result
     
@@ -1637,7 +1636,7 @@ class CareersGameEngine(object):
         """
         game_square = self._careersGame.get_border_square(0)    # Payday is always square 0
         result = game_square.execute(player)
-        self.log(result.message)
+        self.log_info(result.message)
         return result
     
     def was_prior_travel(self, player) -> bool:

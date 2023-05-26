@@ -7,7 +7,6 @@ Created on Sep 11, 2022
 from game.careersGame import CareersGame
 from game.commandResult import CommandResult
 from game.player import Player
-from game.gameUtils import GameUtils
 from game.opportunityCard import OpportunityCard, OpportunityType, OpportunityActionType
 from game.occupation import Occupation
 from game.gameConstants import GameConstants, PendingActionType, SpecialProcessingType
@@ -15,6 +14,7 @@ from game.gameConstants import GameConstants, PendingActionType, SpecialProcessi
 from typing import Tuple, List
 import joblib
 import random, json
+import logging
 from game.borderSquare import BorderSquareType
 
 class GameEngineCommands(object):
@@ -22,10 +22,9 @@ class GameEngineCommands(object):
     
     """
     
-    def __init__(self, thegame:CareersGame, logfile_pointer):
+    def __init__(self, thegame:CareersGame):
         self._careersGame = thegame
         self._game_state = self._careersGame.game_state
-        self.fp = logfile_pointer
         self._debug = False          # traces the action by describing each step and logs to a file
         self.currency_symbol = self._careersGame.game_parameters.get_param("currency_symbol")
     
@@ -407,11 +406,9 @@ class GameEngineCommands(object):
 
     def log(self, message):
         """Write message to the log file.
-            TODO - refactor to use python loging
+
         """
-        msg = GameUtils.get_datetime() + f'  {message}\n'
-        if self.fp is not None:     # may be logging isn't initialized yet or logging option is False
-            self.fp.write(msg)
+        logging.info(message)
         if self.debug:
-            print(msg)
+            print(message)
     

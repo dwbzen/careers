@@ -20,7 +20,7 @@ from game.borderSquare import BorderSquare, BorderSquareType
 from game.occupationSquare import OccupationSquare
 from game.gameSquare import GameSquare
 from game.careersObject import CareersObject
-from threading import Lock
+
 from game.boardLocation import BoardLocation
 from game.gameParameters import GameParameters
 from game.gameConstants import GameConstants, GameParametersType, GameType
@@ -33,15 +33,16 @@ class CareersGame(CareersObject):
         Opportunity and Experience card decks, the game board, parameters for a given edition, occupations, players, and the game state.
         
     """
-    _lock = Lock()
     
     def __init__(self, edition_name:str,  installationId:str, total_points:int, game_id:str, game_type="points", game_parameters_type="prod"):
         """CareersGame Constructor
             Arguments:
-                installationId - An ID that uniquely identifies the game's creator - a.k.a the game master
                 edition_name - the name of the edition to create. This must be a key in editions.json file.
+                installationId - An ID that uniquely identifies the game's creator - a.k.a the game master
                 total_points - total number of points in the success formula or in a timed game, the number of minutes.
-                game_id - a Globally Unique Identifier for this game (guid). If not provided, one is generated from the current date/time.
+                game_id - a Globally Unique Identifier for this game (guid).
+                game_type - "points" or "timed"
+                game_parameters_type - prod, custom, etc.
             Raises:
                 ValueError if there is no such edition
             Saved games are indexed by installationId. This is the primary search key used to search for saved games.
@@ -81,16 +82,8 @@ class CareersGame(CareersObject):
         #
         self._game_board = self._create_game_board()   # GameBoard instance
         self._game_type = GameType[game_type.upper()]  # 'points', 'timed' (which is not yet supported), or 'solo'
-
-        #
-        # if a gameId is not provided, create one
-        #
-        if game_id is None or game_id.lower()=="none":
-            # create a unique ID for this game, used for logging    
-            self._gameId = self._create_game_id()
-        else:
-            self._gameId = game_id
-            
+        self._gameId = game_id
+                     
         #
         # create & initialize the GameState which includes a list of Players
         #
@@ -127,19 +120,6 @@ class CareersGame(CareersObject):
             jtxt = fp.read()
             turn_outcome_dict = json.loads(jtxt)
             self._turn_outcome_parameters = turn_outcome_dict['turn_outcome_parameters']
-   
-
-    def _create_game_id(self) ->str :
-        """Create a unique game id (guid) for this game.
-            This method acquires a lock to insure uniqueness in a multi-process/web environment.
-            Format is based on current date and time and installationId for example ZenAlien2013_20220908-140952-973406-27191
-        """
-        CareersGame._lock.acquire()
-        today = datetime.now()
-        gid = self.installationId +  '_{0:d}{1:02d}{2:02d}_{3:02d}{4:02d}{5:02d}_{6:06d}_{7:05d}'\
-            .format(today.year, today.month, today.day, today.hour, today.minute, today.second, today.microsecond, random.randint(10000,99999))
-        CareersGame._lock.release()
-        return gid
     
     def _create_opportunity_deck(self):
         self._opportunities = OpportunityCardDeck(self._resource_folder, self._edition_name)

@@ -8,7 +8,7 @@ from game.careersObject import CareersObject
 from game.successFormula import SuccessFormula
 from dataclasses import dataclass, field
 from typing import List, Dict
-import json
+import json, logging
 
 @dataclass
 class Turn():
@@ -18,7 +18,7 @@ class Turn():
     """
     player_number:int
     turn_number:int
-    commands:List[str]=field(default_factory=list)
+    commands:List[str]=field(default_factory=list)     # list of the commands executed this turn
     outcome:int=0           # calculated outcome
 
     points:int=0            # number of points gained or lost
@@ -175,7 +175,7 @@ class TurnHistory(CareersObject):
             diff = info_diff[key]
             outcome += self._turn_outcome_parameters[key] * diff
             exec_string = f"turn.{key} = {diff}"
-            print(f"exec: {exec_string}")
+            logging.debug(f"exec: {exec_string}")
             exec(exec_string)
         
         return outcome
@@ -199,7 +199,13 @@ class TurnHistory(CareersObject):
         if points_after != points_before:
             diff = points_after - points_before
             info_diff.update({"points" : diff})
-            
+        
+        unemployed_before = before_info["unemployed"]
+        unemployed_after = after_info["unemployed"]
+        if unemployed_after != unemployed_before:
+            diff = unemployed_after - unemployed_before
+            info_diff.update({"unemployed":diff})
+        
         sick_before = before_info["sick"]
         sick_after = after_info["sick"]
         if sick_before != sick_after:
@@ -221,14 +227,22 @@ class TurnHistory(CareersObject):
         hearts_after = after_info["progress"]["hearts"]
         if cash_before != cash_after:
             diff = int((cash_after -  cash_before)/1000)
-            info_diff.update({"cash_goal":diff})
+            info_diff.update({"cash":diff})
+            cash_goal = cash_after >= self.success_formula.money
+            info_diff.update({"cash_goal":cash_goal})
+            
         if stars_before != stars_after:
             diff = stars_after - stars_before
-            info_diff.update({"stars_goal":diff})
+            info_diff.update({"stars":diff})
+            stars_goal = stars_after >= self.success_formula.stars
+            info_diff.update({"stars_goal":stars_goal})
+            
         if hearts_before != hearts_after:
             diff =  hearts_after - hearts_before
-            info_diff.update({"stars_goal":diff})
-        
+            info_diff.update({"hearts":diff})
+            hearts_goal = hearts_after >= self.success_formula.hearts
+            info_diff.update({"hearts_goal":hearts_goal})
+
         retire_before = before_info["can_retire"]
         retire_after = after_info["can_retire"]
         if retire_after != retire_before:
