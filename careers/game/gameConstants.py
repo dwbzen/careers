@@ -5,8 +5,10 @@ Created on Oct 21, 2022
 '''
 
 from enum import Enum
-from typing import List
-
+from typing import List, Dict
+import importlib
+import pkgutil
+from game import plugins
 
 class PendingActionType(Enum):
     SELECT_DEGREE = "select_degree"
@@ -81,22 +83,36 @@ class GameConstants(object):
             'roll', 'resolve', 'save', 'saved', 'set', 'start', 'status', 'transfer','turn_history', 'update', 'use', 'use_insurance', 
             'where', 'who']
 
-    def __init__(self, params:dict):
+    def __init__(self, params:Dict):
         '''
         Constructor
         '''
         self._params = params
         
     @property
-    def params(self) -> dict:
+    def params(self) -> Dict:
         return self._params
     
     @params.setter
-    def params(self, value:dict):
+    def params(self, value:Dict):
         self._params = value
         
     def get_commands(self) -> List[str]:
         return GameConstants.COMMANDS
     
-    
+    @staticmethod
+    def get_plugins(edition_name="All") ->List:
+        package = plugins
+        prefix = package.__name__ + "."
+        discovered_plugins = []
+        for importer, modname, ispkg in pkgutil.iter_modules(package.__path__, prefix):
+            print("Found submodule %s (is a package: %s)" % (modname, ispkg))
+            module = __import__(modname, fromlist="dummy")
+            print("Imported", module)
+            
+            if modname.startswith(f'game.plugins.careers_{edition_name}_'):
+                discovered_plugins.append(module)
+
+        return discovered_plugins
+
     

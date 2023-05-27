@@ -3,13 +3,8 @@
 	
 	"Hi-Tech" : {
 			"version" : "0.1.5",
-			"plugins" : {
-				"modules" :  [
-					{ "name" : "hiTechRules_Plugin", "use" : "mandatory" },
-					{ "name" : "hiTechRandomizer_Plugin" , "use" : "optional" }
-				] 
-			},
 			"full_name" : "Hi Tech Edition",
+			"edition_name" : "HiTech",
 			"Help" : "Rule Book v2 booklet.pdf",
 			"Game Parameters" : "gameParameters.json",
 			"Opportunity Cards" : "opportunityCards.json",
@@ -26,6 +21,7 @@
 	"Hi-Tech_Careers": {
 			"version" : "0.2",
 			"full_name" : "Hi-Tech Careers Edition",
+			"edition_name" : "HiTechCareers",
 			"Help" : "Hig-Tech Edition Rule Book_v2.pdf",
 			"Game Parameters" : "gameParameters.json",
 			"Opportunity Cards" : "opportunityCards.json",
@@ -42,6 +38,7 @@
 	"UK" : {
 			"version" : "0.0.2",
 			"full_name" : "UK Edition: Destination London",
+			"edition_name" : "UK",
 			"Help" : "Rule Book Destination London.pdf",
 			"Game Parameters" : "gameParameters.json",
 			"Opportunity Cards" : "opportunityCards.json",
@@ -58,6 +55,7 @@
 	"JazzAge" : {
 			"version" : "0.0.1",
 			"full_name" : "Jazz Age Edition",
+			"edition_name" : "JazzAge",
 			"Help" : "Rule Book - Jazz Age.pdf",
 			"Game Parameters" : "gameParameters.json",
 			"Opportunity Cards" : "opportunityCards.json",

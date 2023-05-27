@@ -1,9 +1,16 @@
 {
-	"player": "DWB", "salary": 2000, 
-	"progress": {"cash": 10000, "stars": 2, "hearts": 8, "points": 20}, 
-	"insured": false, "unemployed": false, "sick": false, "extra_turn": 0, "can_retire": false, "net_worth": 10000, 
-	"pending_actions": [
-		{"pending_action_type": "stay_or_move", "pending_amount": 0, "pending_dice": 0, "pending_game_square_name": "SpringBreak"}
-	], 
-	"success_formula": {"cash": 40, "stars": 10, "hearts": 50, "points": 100}
+	"player": "DWB", "salary": 4000, 
+	"progress": {
+		"cash": 9500, "stars": 10, "hearts": 6, "points": 25
+	 }, 
+	 "insured": false, "unemployed": false, "sick": false, "extra_turn": 0, 
+	 "can_retire": false, "net_worth": 9500, "pending_actions": [], 
+	 "success_formula": {
+		 "cash": 40, "stars": 10, "hearts": 50, "points": 100
+	  }, 
+	  "degrees": {"number_of_degrees": 1, "degrees": {"Marketing": 1}}, 
+	  "board_location": {
+		  "border_square_number": 13, "border_square_name": "Amazon", "occupation_square_number": 10, "occupation_name": null
+	  }, 
+	  "opportunities": 2, "experiences": 2
 }

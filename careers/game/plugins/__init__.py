@@ -25,9 +25,12 @@ from .__version__ import __copyright__
 
 
 __all__ = [
-    "hiTechRules_Plugin",
+    "careers_All_Randomizer",
+    "careers_HiTech_Rules",
     "plugin"
 ]
 
-from .hiTechRules_Plugin import HiTechRules_Plugin
-from .plugin import Plugin
+from game.plugins.plugin import Plugin
+from game.plugins.careers_All_Randomizer import Careers_Randomizer
+from game.plugins.careers_HiTech_Rules import Careers_HiTech_Rules
+

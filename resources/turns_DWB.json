@@ -1,0 +1,531 @@
+ "turns": [
+  {
+   "turn": {
+    "player_number": 0,
+    "turn_number": 0,
+    "commands": [
+     "enter MIT",
+     "goto 6",
+     "goto 10",
+     "advance 3",
+     "resolve * Marketing"
+    ],
+    "outcome": 0,
+    "points": 0,
+    "opportunities": 0,
+    "experiences": 0,
+    "sick": 0,
+    "unemployed": 0,
+    "degrees": 0,
+    "occupations": 0,
+    "salary": 0,
+    "opportunity_card_value": 0,
+    "experience_card_value": 0,
+    "cash": 0,
+    "stars": 0,
+    "hearts": 0,
+    "can_retire": 0,
+    "cash_goal": 0,
+    "stars_goal": 0,
+    "hearts_goal": 0
+   }
+  },
+  {
+   "turn": {
+    "player_number": 0,
+    "turn_number": 0,
+    "commands": [
+     "next",
+     "enter Amazon",
+     "goto 1",
+     "goto 4",
+     "goto 12"
+    ],
+    "outcome": 21,
+    "points": 11,
+    "opportunities": 2,
+    "experiences": 2,
+    "sick": 0,
+    "unemployed": 0,
+    "degrees": 0,
+    "occupations": 0,
+    "salary": 2,
+    "opportunity_card_value": 0,
+    "experience_card_value": 0,
+    "cash": 0,
+    "stars": 8,
+    "hearts": 4,
+    "can_retire": 0,
+    "cash_goal": true,
+    "stars_goal": false,
+    "hearts_goal": false
+   }
+  },
+  {
+   "turn": {
+    "player_number": 0,
+    "turn_number": 1,
+    "commands": [
+     "next",
+     "advance 1",
+     "goto SpringBreak",
+     "status",
+     "turn_history"
+    ],
+    "outcome": 20,
+    "points": 9,
+    "opportunities": 2,
+    "experiences": 2,
+    "sick": 0,
+    "unemployed": 0,
+    "degrees": 0,
+    "occupations": 0,
+    "salary": 3,
+    "opportunity_card_value": 0,
+    "experience_card_value": 0,
+    "cash": -1,
+    "stars": 4,
+    "hearts": 6,
+    "can_retire": 0,
+    "cash_goal": true,
+    "stars_goal": false,
+    "hearts_goal": false
+   }
+  },
+  {
+   "turn": {
+    "player_number": 0,
+    "turn_number": 2,
+    "commands": [
+     "next"
+    ],
+    "outcome": 8,
+    "points": 6,
+    "opportunities": 1,
+    "experiences": 1,
+    "sick": 0,
+    "unemployed": 0,
+    "degrees": 0,
+    "occupations": 0,
+    "salary": 0,
+    "opportunity_card_value": 0,
+    "experience_card_value": 0,
+    "cash": 0,
+    "stars": 0,
+    "hearts": 6,
+    "can_retire": 0,
+    "cash_goal": 0,
+    "stars_goal": 0,
+    "hearts_goal": false
+   }
+  },
+  {
+   "turn": {
+    "player_number": 0,
+    "turn_number": 2,
+    "commands": [],
+    "outcome": 8,
+    "points": 6,
+    "opportunities": 1,
+    "experiences": 1,
+    "sick": 0,
+    "unemployed": 0,
+    "degrees": 0,
+    "occupations": 0,
+    "salary": 0,
+    "opportunity_card_value": 0,
+    "experience_card_value": 0,
+    "cash": 0,
+    "stars": 0,
+    "hearts": 6,
+    "can_retire": 0,
+    "cash_goal": 0,
+    "stars_goal": 0,
+    "hearts_goal": false
+   }
+  },
+  {
+   "turn": {
+    "player_number": 0,
+    "turn_number": 2,
+    "commands": [],
+    "outcome": 8,
+    "points": 6,
+    "opportunities": 1,
+    "experiences": 1,
+    "sick": 0,
+    "unemployed": 0,
+    "degrees": 0,
+    "occupations": 0,
+    "salary": 0,
+    "opportunity_card_value": 0,
+    "experience_card_value": 0,
+    "cash": 0,
+    "stars": 0,
+    "hearts": 6,
+    "can_retire": 0,
+    "cash_goal": 0,
+    "stars_goal": 0,
+    "hearts_goal": false
+   }
+  }
+ ],
+ "player_info": [
+  {
+   "info_before": {
+    "player": "DWB",
+    "salary": 2000,
+    "progress": {
+     "cash": 10000,
+     "stars": 2,
+     "hearts": 2,
+     "points": 14
+    },
+    "insured": false,
+    "unemployed": false,
+    "sick": false,
+    "extra_turn": 0,
+    "can_retire": false,
+    "net_worth": 10000,
+    "pending_actions": [],
+    "success_formula": {
+     "cash": 50,
+     "stars": 20,
+     "hearts": 30,
+     "points": 100
+    },
+    "degrees": {
+     "number_of_degrees": 0
+    },
+    "board_location": {
+     "border_square_number": 0,
+     "border_square_name": "Payday",
+     "occupation_square_number": 0,
+     "occupation_name": null
+    },
+    "opportunities": 0,
+    "experiences": 0
+   },
+   "info_after": {
+    "player": "DWB",
+    "salary": 4000,
+    "progress": {
+     "cash": 9500,
+     "stars": 10,
+     "hearts": 6,
+     "points": 25
+    },
+    "insured": false,
+    "unemployed": false,
+    "sick": false,
+    "extra_turn": 0,
+    "can_retire": false,
+    "net_worth": 9500,
+    "pending_actions": [],
+    "success_formula": {
+     "cash": 50,
+     "stars": 20,
+     "hearts": 30,
+     "points": 100
+    },
+    "degrees": {
+     "number_of_degrees": 1,
+     "degrees": {
+      "Marketing": 1
+     }
+    },
+    "board_location": {
+     "border_square_number": 13,
+     "border_square_name": "Amazon",
+     "occupation_square_number": 10,
+     "occupation_name": null
+    },
+    "opportunities": 2,
+    "experiences": 2
+   }
+  },
+  {
+   "info_before": {
+    "player": "DWB",
+    "salary": 4000,
+    "progress": {
+     "cash": 9500,
+     "stars": 10,
+     "hearts": 6,
+     "points": 25
+    },
+    "insured": false,
+    "unemployed": false,
+    "sick": false,
+    "extra_turn": 0,
+    "can_retire": false,
+    "net_worth": 9500,
+    "pending_actions": [],
+    "success_formula": {
+     "cash": 50,
+     "stars": 20,
+     "hearts": 30,
+     "points": 100
+    },
+    "degrees": {
+     "number_of_degrees": 1,
+     "degrees": {
+      "Marketing": 1
+     }
+    },
+    "board_location": {
+     "border_square_number": 13,
+     "border_square_name": "Amazon",
+     "occupation_square_number": 10,
+     "occupation_name": null
+    },
+    "opportunities": 2,
+    "experiences": 2
+   },
+   "info_after": {
+    "player": "DWB",
+    "salary": 7000,
+    "progress": {
+     "cash": 8500,
+     "stars": 14,
+     "hearts": 12,
+     "points": 34
+    },
+    "insured": false,
+    "unemployed": false,
+    "sick": false,
+    "extra_turn": 0,
+    "can_retire": false,
+    "net_worth": 8500,
+    "pending_actions": [],
+    "success_formula": {
+     "cash": 50,
+     "stars": 20,
+     "hearts": 30,
+     "points": 100
+    },
+    "degrees": {
+     "number_of_degrees": 1,
+     "degrees": {
+      "Marketing": 1
+     }
+    },
+    "board_location": {
+     "border_square_number": 13,
+     "border_square_name": "Amazon",
+     "occupation_square_number": 12,
+     "occupation_name": "Amazon"
+    },
+    "opportunities": 4,
+    "experiences": 4
+   }
+  },
+  {
+   "info_before": {
+    "player": "DWB",
+    "salary": 7000,
+    "progress": {
+     "cash": 8500,
+     "stars": 14,
+     "hearts": 12,
+     "points": 34
+    },
+    "insured": false,
+    "unemployed": false,
+    "sick": false,
+    "extra_turn": 0,
+    "can_retire": false,
+    "net_worth": 8500,
+    "pending_actions": [],
+    "success_formula": {
+     "cash": 50,
+     "stars": 20,
+     "hearts": 30,
+     "points": 100
+    },
+    "degrees": {
+     "number_of_degrees": 1,
+     "degrees": {
+      "Marketing": 1
+     }
+    },
+    "board_location": {
+     "border_square_number": 13,
+     "border_square_name": "Amazon",
+     "occupation_square_number": 12,
+     "occupation_name": "Amazon"
+    },
+    "opportunities": 4,
+    "experiences": 4
+   },
+   "info_after": {
+    "player": "DWB",
+    "salary": 7000,
+    "progress": {
+     "cash": 8500,
+     "stars": 14,
+     "hearts": 18,
+     "points": 40
+    },
+    "insured": false,
+    "unemployed": false,
+    "sick": false,
+    "extra_turn": 0,
+    "can_retire": false,
+    "net_worth": 8500,
+    "pending_actions": [
+     {
+      "pending_action_type": "stay_or_move",
+      "pending_amount": 0,
+      "pending_dice": 0,
+      "pending_game_square_name": "SpringBreak"
+     }
+    ],
+    "success_formula": {
+     "cash": 50,
+     "stars": 20,
+     "hearts": 30,
+     "points": 100
+    },
+    "degrees": {
+     "number_of_degrees": 1,
+     "degrees": {
+      "Marketing": 1
+     }
+    },
+    "board_location": {
+     "border_square_number": 30,
+     "border_square_name": "SpringBreak",
+     "occupation_square_number": 12,
+     "occupation_name": null
+    },
+    "opportunities": 5,
+    "experiences": 5
+   }
+  },
+  {
+   "info_before": {
+    "player": "DWB",
+    "salary": 7000,
+    "progress": {
+     "cash": 8500,
+     "stars": 14,
+     "hearts": 18,
+     "points": 40
+    },
+    "insured": false,
+    "unemployed": false,
+    "sick": false,
+    "extra_turn": 0,
+    "can_retire": false,
+    "net_worth": 8500,
+    "pending_actions": [
+     {
+      "pending_action_type": "stay_or_move",
+      "pending_amount": 0,
+      "pending_dice": 0,
+      "pending_game_square_name": "SpringBreak"
+     }
+    ],
+    "success_formula": {
+     "cash": 50,
+     "stars": 20,
+     "hearts": 30,
+     "points": 100
+    },
+    "degrees": {
+     "number_of_degrees": 1,
+     "degrees": {
+      "Marketing": 1
+     }
+    },
+    "board_location": {
+     "border_square_number": 30,
+     "border_square_name": "SpringBreak",
+     "occupation_square_number": 12,
+     "occupation_name": null
+    },
+    "opportunities": 5,
+    "experiences": 5
+   }
+  },
+  {
+   "info_after": {
+    "player": "DWB",
+    "salary": 7000,
+    "progress": {
+     "cash": 8500,
+     "stars": 14,
+     "hearts": 18,
+     "points": 40
+    },
+    "insured": false,
+    "unemployed": true,
+    "sick": false,
+    "extra_turn": 0,
+    "can_retire": false,
+    "net_worth": 8500,
+    "pending_actions": [],
+    "success_formula": {
+     "cash": 50,
+     "stars": 20,
+     "hearts": 30,
+     "points": 100
+    },
+    "degrees": {
+     "number_of_degrees": 1,
+     "degrees": {
+      "Marketing": 1
+     }
+    },
+    "board_location": {
+     "border_square_number": 21,
+     "border_square_name": "Unemployment",
+     "occupation_square_number": 12,
+     "occupation_name": null
+    },
+    "opportunities": 5,
+    "experiences": 5
+   }
+  },
+  {
+   "info_after": {
+    "player": "DWB",
+    "salary": 7000,
+    "progress": {
+     "cash": 8500,
+     "stars": 14,
+     "hearts": 18,
+     "points": 40
+    },
+    "insured": false,
+    "unemployed": true,
+    "sick": false,
+    "extra_turn": 0,
+    "can_retire": false,
+    "net_worth": 8500,
+    "pending_actions": [],
+    "success_formula": {
+     "cash": 50,
+     "stars": 20,
+     "hearts": 30,
+     "points": 100
+    },
+    "degrees": {
+     "number_of_degrees": 1,
+     "degrees": {
+      "Marketing": 1
+     }
+    },
+    "board_location": {
+     "border_square_number": 21,
+     "border_square_name": "Unemployment",
+     "occupation_square_number": 12,
+     "occupation_name": null
+    },
+    "opportunities": 5,
+    "experiences": 5
+   }
+  }
+ ]
+}

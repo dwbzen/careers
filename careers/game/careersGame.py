@@ -6,7 +6,7 @@ Created on Aug 6, 2022
 
 from game.environment import Environment
 from game.player import Player
-import json, random
+import json
 from datetime import datetime
 from pathlib import Path
 from typing import Dict, List, Tuple, Union
@@ -162,7 +162,7 @@ class CareersGame(CareersObject):
         return degrees
     
     @property
-    def edition(self):
+    def edition(self) -> Dict:
         return self._edition
     
     @property

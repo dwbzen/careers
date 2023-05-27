@@ -7,7 +7,7 @@ Created on Aug 12, 2022
 from game.player import  Player
 from game.careersGameEngine import CareersGameEngine
 from game.commandResult import CommandResult
-from game.gameConstants import GameParametersType, GameType
+from game.gameConstants import GameParametersType, GameType, GameConstants
 from game.careersGame import CareersGame, restore_game
 from game.gameState import GameState
 import argparse, time
@@ -169,6 +169,7 @@ class GameRunner(object):
                         game_over = True
                     if nplayers == 1 and cmd_str[0] in self._action_commands:
                         game_state.increment_turns()
+                        
                 if game_over:
                     break
         
@@ -253,6 +254,12 @@ def main():
         game_mode = "prod" if args.params=="test_prod" else args.params    # not used if restoring a previously saved CareersGame
         game_runner = GameRunner(edition, installationId, game_type, total_points, game_duration, args.loglevel, game_mode)
     
+        #
+        # Plugins?
+        #
+        edition_name = game_runner.careersGame.edition["edition_name"]
+        print(f"plug-ins:  {GameConstants.get_plugins(edition_name)}")
+        
         # creates a CareersGame for points
         # game_runner.create_game(gameId, game_parameters_type)
         
