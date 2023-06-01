@@ -29,6 +29,7 @@ class ExperienceCardDeck(CardDeck):
         number = card_spec['number']
         for ncard in range(1, qty+1):
             experience_card = ExperienceCard(number, ncard, card_spec['card_type'], card_spec['spaces'])
+            experience_card.value = self.card_values[card_spec['card_type']]
             self._deck.append(experience_card)
     
     def draw_cards(self, ncards:int) -> List[ExperienceCard]:

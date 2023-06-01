@@ -36,6 +36,7 @@ class ExperienceCard(CareersObject):
         self._card_type = ExperienceType[experience_card_type.upper()]
         self._spaces = spaces       # can be negative
         self._ncard = ncard
+        self._value = 0    # determined by card_type
         if self._card_type is ExperienceType.FIXED:
             self._range = list(range(1,8))
         elif self._card_type is ExperienceType.ONE_DIE_WILD:
@@ -72,6 +73,14 @@ class ExperienceCard(CareersObject):
     @property
     def range(self) ->List[int]:
         return self._range
+    
+    @property
+    def value(self) ->int:
+        return self._value
+    
+    @value.setter
+    def value(self, val):
+        self._value = val
 
     def __str__(self):
         if self.card_type is ExperienceType.FIXED:
@@ -83,6 +92,7 @@ class ExperienceCard(CareersObject):
         cd = {"type":"experience", "number":self.number}
         cd["spaces"] = self.spaces
         cd["card_type"] = self.card_type.value
+        cd["value"] =self.value
         
         if include_range:
             if self.card_type is ExperienceType.FIXED:

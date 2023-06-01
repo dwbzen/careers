@@ -40,6 +40,7 @@ class OpportunityCardDeck(CardDeck):
         for ncard in range(1, qty+1):
             action_type = card_spec.get("action_type", None)
             opportunity_card = OpportunityCard(ctype, number, ncard, destination, card_spec['text'], expenses_paid, double_happiness, action_type, special_processing)
+            opportunity_card.value = self.card_values[ctype]
             self._deck.append(opportunity_card)
 
     def draw_cards(self, ncards:int) -> List[OpportunityCard]:

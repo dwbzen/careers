@@ -29,8 +29,8 @@ class Turn():
     degrees:int=0           # number of degrees earned this Turn
     occupations:int=0       # number of occupations/careers completed
     salary:int=0            # Sum of salary increases and decreases as points (so $3000 salary bump = 3)
-    opportunity_card_value:int=0  # sum of the card values of the Opportunity cards gained. Negative value if a card is lost or used.
-    experience_card_value:int=0   # sum of the card values of the Experience cards gained. Negative value if a card is lost or used.
+    opportunity_card_value:int=0  # sum of the card values of the Opportunity cards gained.
+    experience_card_value:int=0   # sum of the card values of the Experience cards gained.
     cash:int=0              # net gain/loss in cash on hand
     stars:int=0             # net gain/loss in Fame points (stars)
     hearts:int=0            # net gain/loss in Happiness points (hearts)
@@ -173,7 +173,7 @@ class TurnHistory(CareersObject):
         info_diff = self.diff_info(before_info, after_info)
         for key in info_diff.keys():
             diff = info_diff[key]
-            outcome += self._turn_outcome_parameters[key] * diff
+            outcome += int(self._turn_outcome_parameters[key] * diff)
             exec_string = f"turn.{key} = {diff}"
             logging.debug(f"exec: {exec_string}")
             exec(exec_string)
@@ -186,7 +186,9 @@ class TurnHistory(CareersObject):
              "progress": {"cash": 9000, "stars": 14, "hearts": 2, "points": 25}, 
              "insured": false, "unemployed": false, "sick": false, "extra_turn": 0, "can_retire": false, "net_worth": 9000, "pending_actions": [], 
              "success_formula": {"cash": 40, "stars": 10, "hearts": 50, "points": 100}, 
-             "degrees": {"number_of_degrees": 2, "degrees": {"Law": 1, "Marketing": 1}}}
+             "degrees": {"number_of_degrees": 2, "degrees": {"Law": 1, "Marketing": 1}},
+             "opportunity": {"count": 8, "value": 17}, "experience": {"count": 8, "value": 16}
+             }
 
         '''
         info_diff = {}
@@ -248,7 +250,10 @@ class TurnHistory(CareersObject):
         if retire_after != retire_before:
             diff = retire_after - retire_before
             info_diff.update({"can_retire":diff})
-            
+        
+        #
+        # Opportunity and Experience cards counts
+        #
         opportunities_before = before_info["opportunities"]
         experiences_before = before_info["experiences"]
         opportunities_after = after_info["opportunities"]
@@ -259,6 +264,20 @@ class TurnHistory(CareersObject):
         if experiences_after != experiences_before:
             diff = experiences_after - experiences_before
             info_diff.update( {"experiences": diff})
+        
+        #
+        # Opportunity and Experience cards values
+        #
+        opportunities_values_before = before_info["opportunity"]["value"]
+        experiences_values_before = before_info["experience"]["value"]
+        opportunities_values_after = after_info["opportunity"]["value"]
+        experiences_values_after = after_info["experience"]["value"]
+        if opportunities_values_after != opportunities_values_before:
+            diff = opportunities_values_after - opportunities_values_before
+            info_diff.update( {"opportunity_card_value": diff})
+        if experiences_values_after != experiences_values_before:
+            diff = experiences_values_after - experiences_values_before
+            info_diff.update( {"experience_card_value": diff})             
             
         return info_diff
             

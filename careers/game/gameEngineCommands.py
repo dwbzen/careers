@@ -68,7 +68,9 @@ class GameEngineCommands(object):
                 #
                 result = game_square.execute_special_processing(player, dice)
             elif player.cash < 0:       # Can't move if bankrupt
-                result = CommandResult(CommandResult.NEED_PLAYER_CHOICE, f'You are bankrupt: {self.currency_symbol}{player.cash}, and must either borrow/trade for needed funds or declare Bankruptcy', False)
+                result = CommandResult(CommandResult.NEED_PLAYER_CHOICE, \
+                            f'You are bankrupt: {self.currency_symbol}{player.cash}, and must either borrow/trade for needed funds or declare Bankruptcy', \
+                            False, next_action="bankrupt")
             else:
                 result = CommandResult(CommandResult.SUCCESS, f'Player may move {dice} spaces', True)
             

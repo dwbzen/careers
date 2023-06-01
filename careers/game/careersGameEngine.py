@@ -310,7 +310,7 @@ class CareersGameEngine(object):
         
         dice = random.choices(population=[i for i in range(1,7)], k=ndice)
         num_spaces = sum(dice)
-        self.log_info(f' {player.player_initials}  rolled {num_spaces} {dice}')    # INFO
+        logging.info(f' {player.player_initials}  rolled {num_spaces} {dice}')    # INFO
         return self._advance(num_spaces, dice)
             
     
@@ -601,11 +601,11 @@ class CareersGameEngine(object):
         #
         turn_history = current_player.turn_history
         next_turn_number = turn_history.next_turn_number()
-        player_info = current_player.player_info(include_successFormula=True, outputFormat="dict", include_degrees=True)
+        player_info = current_player.player_info(include_successFormula=True, outputFormat="dict", include_degrees=True, include_card_values=True)
         turn_number = self.game_state.turn_number
         current_player.turn_history.add_player_info(turn_number, TurnHistory.AFTER_KEY, player_info)
         theTurn = current_player.turn_history.create_turn(turn_number)
-        self.log_info(f"turn {turn_number} outcome: {theTurn.outcome}\n")
+        self.log_info(f"turn: {turn_number} outcome: {theTurn.outcome}\n")
         
         # The AFTER of this turn is now the BEFORE of the player's next turn
         current_player.turn_history.turn_number = next_turn_number
@@ -818,7 +818,7 @@ class CareersGameEngine(object):
             return CommandResult(CommandResult.SUCCESS, message, True)
         else:
             message = f'{player.player_initials} has insufficient funds to cover {amount} and must either borrow cash from another player or declare bankruptcy or remain in Hospital/Unemployment'
-            return CommandResult(CommandResult.ERROR, message, False)
+            return CommandResult(CommandResult.ERROR, message, False, next_action="bankrupt")
         
     def transfer(self, quantity_str:str, what:str, from_player_id:str) -> CommandResult:
         """Transfers cash, opportunities or experience cards from one player to the current player
@@ -1091,18 +1091,24 @@ class CareersGameEngine(object):
             elif what ==   PendingActionType.BUY_STARS.value:
                 result = pending_action.pending_game_square.execute_special_processing(player, choice=choice, what='stars')
             
-            elif what ==   PendingActionType.BUY_INSURANCE.value:    # assume 1 quantity, regardless of the qty specified
+            elif what ==   PendingActionType.BUY_INSURANCE.value:    # assume 1 quantity, regardless of the quantity specified
                 amount = game_square.special_processing.amount
                 result = self.buy("insurance", choice, amount)
             
-            elif what ==   PendingActionType.STAY_OR_MOVE.value:
+            elif what ==   PendingActionType.STAY_OR_MOVE.value:    # choices: stay, move
                 if choice.lower() == "stay":
                     result = game_square.execute(player)
                 else:   # move off Holiday
                     player.on_holiday = False
                     result = self.roll(player, pending_action.pending_dice)
-                
-            elif what ==   PendingActionType.TAKE_SHORTCUT.value:   # yes=take the shortcut - TODO
+                    
+            elif what == PendingActionType.BANKRUPT.value:          # choices: yes (to declare bankruptcy), no
+                if choice.lower() == "yes":
+                    result = self.bankrupt()
+                else:
+                    result = CommandResult(CommandResult.SUCCESS, 'You elected not to declare bankruptcy at this time', True)
+                 
+            elif what ==   PendingActionType.TAKE_SHORTCUT.value:   # yes=take the shortcut
                 if choice.lower() == "yes":
                     #
                     # place the player's board location to the space BEFORE the next_square in the

@@ -297,7 +297,7 @@ class CareersGame(CareersObject):
         turn_number = 0
         turn = Turn(aplayer.number, turn_number)
         turn_history.add_turn(turn)
-        player_info = aplayer.player_info(include_successFormula=True, outputFormat="dict" )
+        player_info = aplayer.player_info(include_successFormula=True, outputFormat="dict", include_degrees=True, include_card_values=True)
         turn_history.add_player_info(turn_number, TurnHistory.BEFORE_KEY, player_info)
         turn_history.turn_number = 1
         aplayer.turn_history = turn_history

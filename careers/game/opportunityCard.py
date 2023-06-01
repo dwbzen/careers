@@ -63,6 +63,7 @@ class OpportunityCard(CareersObject):
         self._ncard = ncard
         self._number = number
         self._special_processing_dict = None
+        self._value = 0    # determined by card_type
         
         if special_processing is not None:
             self._special_processing_dict = special_processing
@@ -136,6 +137,14 @@ class OpportunityCard(CareersObject):
     @property
     def pending_action(self) ->PendingActionType | None:
         return self._pending_action
+    
+    @property
+    def value(self) ->int:
+        return self._value
+    
+    @value.setter
+    def value(self, val):
+        self._value = val
 
     def __str__(self):
         return f'{self.text} ({self.number})'
@@ -144,6 +153,8 @@ class OpportunityCard(CareersObject):
         cd = {"card_type": self.opportunity_type.value}
         cd["number"] = self.number
         cd['text'] = self.text
+        cd["value"] = self.value
+        
         if self.action_type is not None:
             cd['action_type'] = self.action_type.value
         if self._special_processing_dict is not None:

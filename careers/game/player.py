@@ -695,13 +695,17 @@ class Player(CareersObject):
         self._salary_history = [self.salary]
         self._initialize()
     
-    def player_info(self, include_successFormula:bool=False, outputFormat:str='text', include_degrees=True, include_board_location=True) ->str:
+    def player_info(self, include_successFormula:bool=False, outputFormat:str='text', include_degrees=True, \
+                    include_board_location=True, include_card_values=True) ->str:
         '''Returns key player information in the desired format.
             Arguments:
                 include_successFormula - if True, include the player's success formula. Default is False
                 include_degrees - if True, include the player's degrees (if any). Default is True
                 include_board_location - if True, include the player's current BoardLocation. Default is True.
                 outputFormat - 'json', 'dict' or 'text'. Default is 'text'
+                include_card_values - include the numeric value of each Opportunity and Experience card. Default is True.
+            
+            Card values are assigned by card_type and are in the cards JSON files under "types".
         '''
         v = self.get_total_loans()
         net_worth = self.net_worth()
@@ -743,6 +747,27 @@ Insured: {self.is_insured}, Unemployed: {self.is_unemployed}, Sick: {self.is_sic
             board_locn = str(self.board_location)
             fstring = f'{fstring}\nBoardLocation: {board_locn}'
             info_dict.update( {"board_location" : self.board_location.to_dict()} )
+            
+        if include_card_values:
+            #
+            # sum the values of the player's Experience and Opportunity cards
+            # return as a Dict having the count and the total value  {"count" : 2, "value" : 8} 
+            # 
+            opportunity_card_value = 0
+            opportunity_card_count = 0
+            experience_card_value = 0
+            experience_card_count = 0
+            for card in self.my_opportunity_cards:
+                opportunity_card_count += 1
+                opportunity_card_value += card.value
+            for card in self.my_experience_cards:
+                experience_card_count += 1
+                experience_card_value += card.value
+            
+            cdict = {"opportunity" : {"count": opportunity_card_count, "value" : opportunity_card_value}}
+            cdict.update({"experience" : {"count": experience_card_count, "value" : experience_card_value}})
+            fstring = f'{fstring}\n{cdict}'
+            info_dict.update(cdict)
             
         if self.game_type is GameType.TIMED:
             fstring = f'{fstring}\nGame Time Remaining: {self.time_remaining} minutes'
@@ -792,7 +817,7 @@ Insured: {self.is_insured}, Unemployed: {self.is_unemployed}, Sick: {self.is_sic
         return result
     
     def list(self, what:str, how:str) -> dict:
-        """List the Experience or Opportunity cards held thisplayer
+        """List the Experience or Opportunity cards held this player
             Arguments: 
                 what - 'experience', 'opportunity', 'degrees'  or 'all'
                 how - display control: 'full', 'condensed' or 'count'
@@ -803,7 +828,10 @@ Insured: {self.is_insured}, Unemployed: {self.is_unemployed}, Sick: {self.is_sic
         """
         listall = (what.lower() == 'all')
         list_dict = {}
-        if what.lower().startswith('opp') or listall:    # list opportunity cards
+        #
+        # list opportunity cards
+        #
+        if what.lower().startswith('opp') or listall:
             ncards = len(self.my_opportunity_cards)
             list_dict['number_opportunity_cards'] = ncards
             if ncards > 0:
@@ -813,8 +841,11 @@ Insured: {self.is_insured}, Unemployed: {self.is_unemployed}, Sick: {self.is_sic
                     list_dict['opportunity_cards'] = sorted([f'{cd.number:>2}: {cd.text}' for cd in self.my_opportunity_cards])
             else:
                 list_dict["opportunity_cards"] = []
-                    
-        if what.lower().startswith('exp') or listall:    # list experience cards
+         
+        #
+        # list experience cards
+        #           
+        if what.lower().startswith('exp') or listall:
             ncards = len(self.my_experience_cards)
             list_dict['number_experience_cards'] = ncards
             if ncards > 0:

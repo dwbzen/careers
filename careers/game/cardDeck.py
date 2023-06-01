@@ -6,6 +6,7 @@ Created on Aug 9, 2022
 import json
 from pathlib import Path
 from game.gameUtils import GameUtils
+from typing import List, Dict
 
 class CardDeck(object):
     """Abstract class representing a deck of game cards a player draws or is given.
@@ -23,7 +24,13 @@ class CardDeck(object):
         self._cards_content = self.load_cards(resource_path, deck_name, edition_name)
         self._type_list = self._cards_content['types_list']
         self._help = self._cards_content['Help']
+        
+        # dict: {'card_type': 'occupation', 'value': 1, 'Help': "Advance to the occupation named as 'destination'. Player enters immediately." }
         self._card_types = self._cards_content['types']
+        self._card_values = {}    # key is card_type string, value is just the value of that type
+        for ct in self._card_types:
+            self._card_values.update( {ct['card_type'] : ct['value']} )
+        
         self._cards = self._cards_content['cards']
         
         self._deck = []
@@ -67,6 +74,14 @@ class CardDeck(object):
     @property
     def deck_name(self):
         return self._deck_name
+    
+    @property
+    def card_types(self) -> List[Dict]:
+        return self._card_types
+    
+    @property
+    def card_values(self) ->Dict:
+        return self._card_values
 
     def draw(self):
         """Draw a card from the deck. If no cards remaining, re-shuffle and reset the next_index

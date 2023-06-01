@@ -2,7 +2,7 @@
 	"Help" : "This file has the weights to apply to the various turn outcome parameters. Keys must match player_info keys.",
 
 	"turn_outcome_parameters" : {
-		"points" : 0,
+		"points" : 0.5,
 		"opportunities" : 1,
 		"experiences" : 1,
 		"sick" : 4,
