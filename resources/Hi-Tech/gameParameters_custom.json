@@ -1,7 +1,7 @@
 {
 	"description" : "Custom Hi-Tech Edition game parameters for testing",
 	"starting_salary" : 2000,
-	"starting_cash" : 100,
+	"starting_cash" : 10000,
 	"currency" : "dollars",
 	"currency_symbol" : "\u0024",
 	"date_format" : "yyyy-mm-dd",
