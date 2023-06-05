@@ -27,10 +27,11 @@ from .__version__ import __copyright__
 __all__ = [
     "careers_All_Randomizer",
     "careers_HiTech_Rules",
+    "careers_All_Strategy",
     "plugin"
 ]
 
 from game.plugins.plugin import Plugin
-from game.plugins.careers_All_Randomizer import Careers_Randomizer
+from game.plugins.careers_All_Randomizer import Careers_All_Randomizer
 from game.plugins.careers_HiTech_Rules import Careers_HiTech_Rules
-
+from game.plugins.careers_All_Strategy import Careers_All_Strategy

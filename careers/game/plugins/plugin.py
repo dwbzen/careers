@@ -4,6 +4,8 @@ Created on May 23, 2023
 @author: don_bacon
 '''
 
+from typing import Dict
+
 class Plugin(object):
     '''
     Interface and abstract base module for all plugin modules.
@@ -24,4 +26,12 @@ class Plugin(object):
         self.name_template = "careers_{_edition_name}_{plugin_name}"
         self.edition = edition_name    # the edition that created this plug-in instance
     
+    def run(self, obj:object=None)->Dict:
+        #
+        # override in concrete class
+        #
+        return {}
+    
+    def test(self)->str:
+        return "Plugin"
     

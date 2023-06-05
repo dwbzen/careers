@@ -175,7 +175,7 @@ class TurnHistory(CareersObject):
             diff = info_diff[key]
             outcome += int(self._turn_outcome_parameters[key] * diff)
             exec_string = f"turn.{key} = {diff}"
-            logging.debug(f"exec: {exec_string}")
+            #logging.debug(f"exec: {exec_string}")
             exec(exec_string)
         
         return outcome

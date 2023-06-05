@@ -13,6 +13,10 @@
 			"Players" : "players.json",
 			"Layout" : "gameLayout.json",
 			"Rules" : "rules.json",
+			"plugins" : {
+				"careers.game.plugins.careers_All_Strategy" : {"classname" : "Careers_All_Strategy", "active":1, "context":"turn"  },
+				"careers.game.plugins.careers_All_Randomizer" : {"classname" : "Careers_All_Randomizer", "active":1, "context":"start" }
+			},
 			"configuration" : {
 					"starting_salary" : 2000,
 					"initial_cash" : 2000
@@ -30,6 +34,10 @@
 			"Players" : "players.json",
 			"Layout" : "gameLayout.json",
 			"Rules" : "rules.json",
+			"plugins" : {
+				"careers.game.plugins.careers_All_Strategy" : {"classname" : "Careers_All_Strategy", "active":1, "context":"turn"  },
+				"careers.game.plugins.careers_All_Randomizer" : {"classname" : "Careers_All_Randomizer", "active":1, "context":"start" }
+			},
 			"configuration" : {
 					"starting_salary" : 2000,
 					"initial_cash" : 2000
@@ -47,6 +55,10 @@
 			"Players" : "players.json",
 			"Layout" : "gameLayout.json",
 			"Rules" : "rules.json",
+			"plugins" : {
+				"careers.game.plugins.careers_All_Strategy" : {"classname" : "Careers_All_Strategy", "active":1, "context":"turn"  },
+				"careers.game.plugins.careers_All_Randomizer" : {"classname" : "Careers_All_Randomizer", "active":1, "context":"start" }
+			},
 			"configuration" : {
 					"starting_salary" : 2000,
 					"initial_cash" : 2500
@@ -64,6 +76,10 @@
 			"Players" : "players.json",
 			"Layout" : "gameLayout.json",
 			"Rules" : "rules.json",
+			"plugins" : {
+				"careers.game.plugins.careers_All_Strategy" : {"classname" : "Careers_All_Strategy", "active":1, "context":"turn"  },
+				"careers.game.plugins.careers_All_Randomizer" : {"classname" : "Careers_All_Randomizer", "active":1, "context":"start" }
+			},
 			"configuration" : {
 					"starting_salary" : 1000,
 					"initial_cash" : 1000

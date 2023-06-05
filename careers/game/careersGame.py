@@ -6,7 +6,7 @@ Created on Aug 6, 2022
 
 from game.environment import Environment
 from game.player import Player
-import json
+import json, logging
 from datetime import datetime
 from pathlib import Path
 from typing import Dict, List, Tuple, Union
@@ -93,7 +93,12 @@ class CareersGame(CareersObject):
         self._solo = None     # True if number of players == 1, set when adding players
         self._start_datetime:datetime = None
         self._end_datetime:datetime = None
-
+        
+        self._plugins = {}
+        #
+        # load any plug-ins for this edition
+        #
+        self.load_plugins()
         
     def _load_game_configuration(self):
         """Loads the game parameters and occupations JSON files for this edition.
@@ -120,6 +125,47 @@ class CareersGame(CareersObject):
             jtxt = fp.read()
             turn_outcome_dict = json.loads(jtxt)
             self._turn_outcome_parameters = turn_outcome_dict['turn_outcome_parameters']
+            
+    def load_plugins(self) -> bool:
+        """Get active game plug-in instances for this game edition
+            Returns:
+                boolean True if successful, otherwise False (exception is logged)
+            Instances are saved in self._plugins
+            This is a Dict keyed by the context; value is a List of instances.
+            Instances can be invoked with the run(player_number) method.
+            The context determines when the instance is run (by the CareersGameEngine)
+            Supported context values are "turn" and "start"
+        """
+        #
+        # List[Dict], keys "name", "module"
+        #
+        discovered_plugins = GameConstants.get_plugins(self.edition_name, apath=None)
+        self._plugin_names = [d["module"].__name__.split(".")[-1] for d in discovered_plugins]
+        logging.debug(f"plugin names: {self._plugin_names}")
+        #
+        # create instances from the discovered_plugins modules
+        # using "plugins" from editions.json
+        #
+        plug_ins = self._edition["plugins"]
+        for _module in discovered_plugins:
+            modname = _module["name"]
+            module = _module["module"]
+            plug_in = plug_ins[modname]
+            if plug_in["active"] > 0:
+                classname = plug_in["classname"]
+                context = plug_in["context"]
+                my_class = getattr(module, classname)
+                instance = my_class(self)
+                logging.debug(f"{classname} instance created")
+                #
+                # save the instance using the context as a key
+                # for example, "init" : [instance_1, ... instance_n ]
+                if context in self._plugins:
+                    self._plugins[context].append(instance)
+                else:
+                    self._plugins.update( {context: [instance]})
+            module = None
+        return True
     
     def _create_opportunity_deck(self):
         self._opportunities = OpportunityCardDeck(self._resource_folder, self._edition_name)
@@ -180,6 +226,10 @@ class CareersGame(CareersObject):
     @property
     def game_board(self) -> GameBoard:
         return self._game_board
+    
+    @property
+    def plugins(self) -> Dict:
+        return self._plugins
     
     def get_occupation(self, name) -> Occupation:
         return self.occupations.get(name, None)

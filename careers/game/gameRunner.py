@@ -253,12 +253,6 @@ def main():
         #
         game_mode = "prod" if args.params=="test_prod" else args.params    # not used if restoring a previously saved CareersGame
         game_runner = GameRunner(edition, installationId, game_type, total_points, game_duration, args.loglevel, game_mode)
-    
-        #
-        # Plugins?
-        #
-        edition_name = game_runner.careersGame.edition["edition_name"]
-        print(f"plug-ins:  {GameConstants.get_plugins(edition_name)}")
         
         # creates a CareersGame for points
         # game_runner.create_game(gameId, game_parameters_type)
@@ -284,7 +278,7 @@ def main():
             
             if ncomputerPlayers > 0:
                 for i in range(ncomputerPlayers):
-                    name = f"CP_{i+1}"
+                    name = f"CP_{i+1}"        # generate a computer name: CP_1, CP_2 etc.
                     add_cmd = f"add player {name} {name} {name}20230516 dwbzen@gmail.com 20 40 40 computer"
                     game_runner.execute_command(add_cmd, None)
                     print(name)

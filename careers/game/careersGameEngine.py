@@ -1005,6 +1005,7 @@ class CareersGameEngine(object):
         
         message = f'{{"game_id":"{self.game_id}", "installationId":"{installationId}"}}'
         self.log_info(message)    # INFO
+        self._plugins = self._careersGame.plugins
         return CommandResult(CommandResult.SUCCESS, message, True)
     
     def start(self) -> CommandResult:
@@ -1225,6 +1226,14 @@ class CareersGameEngine(object):
         self.log_info(message)
         self.game_state.set_next_player()    # sets the player number to 0 and the curent_player Player reference
         self._careersGame.start_game()       # sets the start datetime
+        #
+        # run any "start" plug-ins
+        #
+        plugins = self._plugins["start"]     # a List of Plugin class instances to run
+        for plugin_instance in plugins:
+            result = plugin_instance.run()   # start plugins apply to all players
+            self.log_info(result)
+                
         return CommandResult(CommandResult.SUCCESS, message, True)
     
     def _buy(self, player:Player, what:str, qty_arg:int|str=1, amount_arg:int|str=1) -> CommandResult:

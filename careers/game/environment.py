@@ -10,11 +10,12 @@ class Environment(object):
         """Initialize the running Environment by setting global environment variables
         Note - need to manually create a log folder and games folder under package_base. TODO - automate that
         """
-        script_path = os.path.dirname(os.path.abspath(__file__))
+        self.game_path = os.path.dirname(os.path.abspath(__file__))    # for example "C:\Compile\careers\careers\game"
     
-        self.resource_base = os.path.join(script_path, '..', '..', 'resources')
-        self.games_base = os.path.join(script_path, '..', '..', 'games')
-        self.package_base = os.path.join(script_path, '..', '..')
+        self.resource_base = os.path.join(self.game_path, '..', '..', 'resources')
+        self.games_base = os.path.join(self.game_path, '..', '..', 'games')
+        self.package_base = os.path.join(self.game_path, '..', '..')
+
         self.name = package_name
         self.package_name = package_name
         self.resources = {}

@@ -8,7 +8,7 @@ from enum import Enum
 from typing import List, Dict
 import importlib
 import pkgutil
-from game import plugins
+from game.environment import Environment
 
 class PendingActionType(Enum):
     SELECT_DEGREE = "select_degree"
@@ -101,17 +101,29 @@ class GameConstants(object):
         return GameConstants.COMMANDS
     
     @staticmethod
-    def get_plugins(edition_name="All") ->List:
-        package = plugins
-        prefix = package.__name__ + "."
+    def get_plugins(edition_name="All", apath=None) ->List[Dict]:
+        """Discover and return game plugins.
+            This searches the game.plugins package for modules matching the provided edition_name.
+            Arguments:
+                edition_name - "All" for all editions, or a specific edition name such as "Hi-Tech"
+                apath - the search path. If not provided it defaults to the Environment game_path/plugins,
+                        for example "C:/Compile/careers/game/plugins"
+            Returns:
+                A List[Dict] where each Dict has the keys "name" (the module name, for example 'careers.game.plugins.careers_All_Randomizer'
+                and "module" (the python module object)
+            If an specific edition is requested, any _All_ modules are also returned, since they apply to all editions.
+        """
+        path = f'{Environment.get_environment().game_path}/plugins' if apath is None else apath
+        prefix = "careers.game.plugins"
         discovered_plugins = []
-        for importer, modname, ispkg in pkgutil.iter_modules(package.__path__, prefix):
-            print("Found submodule %s (is a package: %s)" % (modname, ispkg))
+        for importer, modname, ispkg in pkgutil.iter_modules([path], f"{prefix}."):
+            # print("Found submodule '%s' (is a package: %s)" % (modname, ispkg))
             module = __import__(modname, fromlist="dummy")
-            print("Imported", module)
-            
-            if modname.startswith(f'game.plugins.careers_{edition_name}_'):
-                discovered_plugins.append(module)
+            # print("Imported", module)
+            # sample modnames:  'careers.game.plugins.careers_All_Randomizer', 'careers.game.plugins.careers_HiTech_Rules' 
+            if "_All_" in modname or edition_name in modname:
+                mdict = {"name":modname, "module":module}
+                discovered_plugins.append(mdict)
 
         return discovered_plugins
 

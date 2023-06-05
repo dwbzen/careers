@@ -57,6 +57,11 @@ class Player(CareersObject):
         # 
         self.time_remaining = -1
         
+        #
+        # a player todo List are occupations and/or degrees the player must complete successfully
+        # in addition to fulfilling their success formula
+        #
+        self._my_todos = {}    # filled in by applicable plug-in(s)
         
     def _initialize(self):
         """Sets the starting values for all properties reset under bankruptcy rules.
@@ -231,6 +236,13 @@ class Player(CareersObject):
     def board_location(self, value:BoardLocation):
         self._board_location = value
 
+    @property
+    def my_todos(self) ->Dict:
+        return self._my_todos
+    
+    @my_todos.setter
+    def my_todos(self, value):
+        self._my_todos = value
 
     def current_border_square_number(self):
         return self.board_location.border_square_number

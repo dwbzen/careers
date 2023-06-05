@@ -13,7 +13,7 @@ from game.gameConstants import GameConstants, PendingActionType, SpecialProcessi
 
 from typing import Tuple, List
 import joblib
-import random, json
+import random, json, sys
 import logging
 from game.borderSquare import BorderSquareType
 
@@ -400,8 +400,15 @@ class GameEngineCommands(object):
             fp.close()
             
         else:
-            result = joblib.dump(self._careersGame, filename)   # returns a list, as in  ['/data/games/ZenAlien2013_20220909-124721-555368-33134.pkl']
-            filename = f'{result}'
+            try:
+                result = joblib.dump(self._careersGame, filename)   # returns a list, as in  ['/data/games/ZenAlien2013_20220909-124721-555368-33134.pkl']
+                filename = f'{result}'
+            except Exception as ex:
+                message = f"joblib.dump exception: {str(ex)}"
+                logging.warn(message)
+                print(message, file=sys.stderr  )
+
+                return CommandResult(CommandResult.ERROR, message, True)
         
         self.log(f'game saved to {filename}')
         return CommandResult(CommandResult.SUCCESS, filename, True)
