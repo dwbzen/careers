@@ -1,7 +1,7 @@
 {
 	"Help" : "Board layout for the original Hi-Tech version.",
 	"types_list" : [
-		"corner_square", "opportunity_square", "danger_square", "travel_square", "occupation_entrance_square", "action_square"
+		"corner_square", "opportunity_square", "danger_square", "travel_square", "occupation_entrance_square", "occupation_square", "action_square"
 	],
 	"types" : [
 		{
@@ -22,7 +22,11 @@
 		},
 	    {
 			"type" : "occupation_entrance_square",
-			"Help" : "A player may enter an occupation after meeting the requirments."
+			"Help" : "A player may enter an occupation after meeting the requirements."
+		},
+	    {
+			"type" : "occupation_square",
+			"Help" : "Part of an occupation path."
 		},
 	    {
 			"type" : "action_square",
