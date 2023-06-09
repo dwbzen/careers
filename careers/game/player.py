@@ -256,18 +256,23 @@ class Player(CareersObject):
     def current_occupation_square_number(self):
         return self.board_location.occupation_square_number
     
-    def get_location(self) -> str:
-        """Encapsulates the player's board location as a JSON-formatted string.
+    def get_location(self, format="json") -> str:
+        """Encapsulates the player's board location as a JSON-formatted string or dictionary depending on the format specified.
+            Arguments:
+                format - output format: "dict" for dictionary, "json" for JSON (the default)
             Returns: the border and occupation name and square number as a JSON string
-                for example, {"border": {"FMC": 4}, "occupation": {"FMC": 2}} - player is on square 2 of FMC
+                for example, 
+                {"border": {"FMC": 4}, "occupation": {"FMC": 2}} - player is on square 2 of FMC (border square #4)
                 {"border": {"Opportunity": 8}, "occupation": {"None": 0}}   - player is on border square 8
         """
         pdict_border =  {self.current_border_square_name():self.current_border_square_number()}
         occupation_name = "None" if self.current_occupation_name() is None else self.current_occupation_name()
         pdict_occupation = {occupation_name:0} if occupation_name=="None" else {occupation_name:self.current_occupation_square_number()}
         pdict = {"border":pdict_border, "occupation":pdict_occupation}
-        
-        return json.dumps(pdict)
+        if format == "dict":
+            return pdict
+        else:
+            return json.dumps(pdict)
     
     @property
     def my_opportunity_cards(self) -> List[OpportunityCard]:
@@ -461,13 +466,13 @@ class Player(CareersObject):
         self._pending_actions.add(PendingAction(action, game_square_name, amount, dice))
         
     def get_pending_action(self, index=-1) -> PendingAction:
-        """Gets the PendingAction at the index requested
+        """Gets the PendingAction at the requested index
             Arguments:
                 index = the index of the PendingAction, defaults to -1 which returns the last (most recently added) PendingAction
             Returns:
-                PendingAction, also it is removed from the player's  PendingActions
+                PendingAction, also it is NOT removed from the player's  PendingActions
         """
-        pa = self._pending_actions.get(index)
+        pa = self._pending_actions.get(index, remove=False)
         return pa
     
     def has_pending_action(self, pending_action_type:PendingActionType) -> bool:
@@ -477,20 +482,22 @@ class Player(CareersObject):
         return self._pending_actions.index_of(pending_action_type) >= 0
         
     def clear_pending(self,  pending_action_type:PendingActionType=None):
-        self.clear_pending_actions(pending_action_type)    # clear all the PendingActions except for pending_action_type
+        """Clear all the PendingActions except for pending_action_type
+            Arguments:
+                pending_action_type: the PendingActionType not to clear, default is None
+                                     which would result in clearing all pending actions
+            Note this also sets the player's onHoliday flag to False
+        """
+        self.clear_pending_actions(pending_action_type)
         self._on_holiday = False
 
     def clear_pending_actions(self, pending_action_type:PendingActionType=None):
         """Removes all PendingAction except a given PendingActionType from the player's PendingActions
             If pending_action_type is None, all pending actions are removed.
         """
+                
         if self._pending_actions.size() > 0:
-            for ind in range(self._pending_actions.size()):
-                pa = self._pending_actions.get(ind, remove=False)
-                if pa.pending_action_type is pending_action_type:
-                    continue;
-                else:
-                    self._pending_actions.get(ind, remove=True)
+            self._pending_actions.remove_all_but(pending_action_type)
                     
     @property
     def pending_actions(self) -> PendingActions:

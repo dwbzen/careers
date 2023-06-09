@@ -642,6 +642,22 @@ class CareersGameEngine(object):
         # save the Game on change of turns
         #
         self._gameEngineCommands.save_game(self._game_filename_base, self.game_id, how='pkl')
+        #
+        # Is the next player a Computer player?
+        # If so, run the strategy plugin to get the player's command(s)
+        # Also need to set the GameEngineCommands instance in the strategy plugin
+        #
+        if player.player_type is PlayerType.COMPUTER:
+            plugins = self._plugins["turn"]      # a List of Plugin class instances to run
+            for plugin_instance in plugins:
+                plugin_instance.gameEngineCommands = self._gameEngineCommands
+                plugin_result = plugin_instance.run(player.number)
+                self.log_info(str(plugin_result))
+                commands = plugin_result["commands"]
+                cmd_result = self.execute_command(commands, player)
+                logging.debug(f"{player.player_initials} commands: {commands}, result: {cmd_result.message}")
+                print(cmd_result.message)
+    
         result = CommandResult(CommandResult.SUCCESS,  f"{current_player.player_initials} Turn is complete, {player.player_initials}'s ({npn}) turn " , True)
         return result
     
@@ -673,7 +689,7 @@ class CareersGameEngine(object):
             turn_number = self.game_state.turn_number
             turn_history.add_player_info(turn_number, TurnHistory.AFTER_KEY, player_info)
             turn_history.create_turn(turn_number)
-            self.log_info(player.turn_history.to_JSON())
+            logging.debug(player.turn_history.to_JSON())
 
         return result
     
@@ -1097,20 +1113,20 @@ class CareersGameEngine(object):
                 result = self.buy("insurance", choice, amount)
             
             elif what ==   PendingActionType.STAY_OR_MOVE.value:    # choices: stay, move
-                if choice.lower() == "stay":
+                if choice.lower().startswith("s"):
                     result = game_square.execute(player)
                 else:   # move off Holiday
                     player.on_holiday = False
                     result = self.roll(player, pending_action.pending_dice)
                     
             elif what == PendingActionType.BANKRUPT.value:          # choices: yes (to declare bankruptcy), no
-                if choice.lower() == "yes":
+                if choice.lower().startswith("y"):
                     result = self.bankrupt()
                 else:
                     result = CommandResult(CommandResult.SUCCESS, 'You elected not to declare bankruptcy at this time', True)
                  
             elif what ==   PendingActionType.TAKE_SHORTCUT.value:   # yes=take the shortcut
-                if choice.lower() == "yes":
+                if choice.lower().startswith("y"):
                     #
                     # place the player's board location to the space BEFORE the next_square in the
                     # shortcut specialProcessing
@@ -1204,13 +1220,10 @@ class CareersGameEngine(object):
             result = CommandResult(CommandResult.ERROR, f'Nothing to resolve for {what}', False)
 
         #
-        # clear pending_action for all except SELECT_DEGREE if result is SUCCESS
+        # clear pending_action for the type just resolved
         #            
         if result.is_successful() and not player.on_holiday:
-            if pending_action.pending_action_type is PendingActionType.SELECT_DEGREE:
-                player.clear_pending()
-            else:
-                player.clear_pending(PendingActionType.SELECT_DEGREE)
+            player.pending_actions.get_pending_action(what, remove=True)
         return result
         
                     
@@ -1232,7 +1245,7 @@ class CareersGameEngine(object):
         plugins = self._plugins["start"]     # a List of Plugin class instances to run
         for plugin_instance in plugins:
             result = plugin_instance.run()   # start plugins apply to all players
-            self.log_info(result)
+            self.log_info(str(result))
                 
         return CommandResult(CommandResult.SUCCESS, message, True)
     

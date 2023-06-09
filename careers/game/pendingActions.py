@@ -20,7 +20,7 @@ class PendingActions(CareersObject):
         '''
         Constructor
         '''
-        self._pending_actions = []
+        self._pending_actions:List[PendingAction] = []
         if pendingAction is not None:
             self._pending_actions.append(pendingAction)
     
@@ -67,15 +67,14 @@ class PendingActions(CareersObject):
         return -1
     
     def get_pending_action(self, pending_action_type:PendingActionType|str, remove:bool=False) -> PendingAction:
-        """Gets the PendingAction of a given type without removing from the list
+        """Gets the PendingAction of a given type.
             Arguments:
                 pending_action_type - a PendingActionType or a str value in PendingActionType
                 remove - if True pop the pending_actions list at the specified index, removing it from the list.
                         If false, return the PendingAction without removal.
                         Default is False
             Returns:
-                if found, the PendingAction
-                None if not found
+                if found, the PendingAction, None if not found
         """
         pending_action = None
         index = self.index_of(pending_action_type)
@@ -99,7 +98,21 @@ class PendingActions(CareersObject):
             return self._pending_actions.pop(index)
         else:
             return self._pending_actions[index]
-    
+        
+    def remove_all_but(self, pending_action_type:PendingActionType):
+        """Removes all PendingAction from the list except those having a specified PendingActionType.
+            Arguments:
+                pendingActionType - the PendingActionType to keep. If None, all are removed, emptying the list.
+        """
+        if pending_action_type is None:
+            self._pending_actions.clear()
+        else:
+            pactions = []
+            for pa in self._pending_actions:
+                if pa.pending_action_type is not pending_action_type:
+                    pactions.append(pa)
+            self._pending_actions = pactions
+                      
     def find(self, pendingActionType:PendingActionType, remove:bool=False) -> PendingAction|None:
         """Gets the PendingAction of a given type and removes it from the list
             Arguments:
@@ -122,6 +135,14 @@ class PendingActions(CareersObject):
     def remove(self, pendingActionType:PendingActionType)  -> PendingAction|None:
         return(self.find(pendingActionType))
 
+    @property
+    def pending_actions(self)->List[PendingAction]:
+        return self._pending_actions
+    
+    @pending_actions.setter
+    def pending_actions(self, value):
+        self._pending_actions = value
+    
     def get_all(self)->List[PendingAction]:
         return self._pending_actions
     

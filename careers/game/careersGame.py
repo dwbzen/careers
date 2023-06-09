@@ -155,7 +155,7 @@ class CareersGame(CareersObject):
                 classname = plug_in["classname"]
                 context = plug_in["context"]
                 my_class = getattr(module, classname)
-                instance = my_class(self)
+                instance = my_class(self)      # TODO add strategy_level if key is present as an argument
                 logging.debug(f"{classname} instance created")
                 #
                 # save the instance using the context as a key

@@ -69,9 +69,23 @@ class GameType(Enum):
     TIMED = "timed"
     POINTS = "points"
 
+class BorderSquareType(str, Enum):
+    CORNER_SQUARE = 'corner_square'
+    OPPORTUNITY_SQUARE = 'opportunity_square'
+    DANGER_SQUARE = 'danger_square'
+    TRAVEL_SQUARE = 'travel_square'
+    OCCUPATION_ENTRANCE_SQUARE = 'occupation_entrance_square'
+    ACTION_SQUARE = 'action_square'
+    
 class PlayerType(Enum):
     COMPUTER = "computer"
     HUMAN = "human"
+
+class StrategyLevel(Enum):
+    DUMB = 0        # just "roll"
+    BASIC = 1       # pick a command at random
+    SMART = 2       # basic strategy
+    GENIUS = 3      # use trained model
     
 class GameConstants(object):
     '''
@@ -80,7 +94,7 @@ class GameConstants(object):
     
     COMMANDS = ['add', 'add_degree', 'advance', 'bankrupt', 'bump', 'buy', 'create', 'done', 'end', 'enter', '_enter',
             'game_status', 'goto', 'info', 'list', 'load', 'location', 'log_message', 'next', 'pay', 'perform', 'quit', 'retire', 
-            'roll', 'resolve', 'save', 'saved', 'set', 'start', 'status', 'transfer','turn_history', 'update', 'use', 'use_insurance', 
+            'roll', 'resolve', 'save', 'saved', 'set', 'start', 'status', 'transfer', 'turn_history', 'update', 'use', 'use_insurance', 
             'where', 'who']
 
     def __init__(self, params:Dict):

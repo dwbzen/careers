@@ -9,18 +9,11 @@ from game.player import Player
 from game.commandResult import CommandResult
 from game.gameConstants import SpecialProcessingType
 from game.opportunityCard import OpportunityType
+from game.gameConstants import BorderSquareType
 
 from typing import  List
 from enum import Enum
 import json
-
-class BorderSquareType(str, Enum):
-    CORNER_SQUARE = 'corner_square'
-    OPPORTUNITY_SQUARE = 'opportunity_square'
-    DANGER_SQUARE = 'danger_square'
-    TRAVEL_SQUARE = 'travel_square'
-    OCCUPATION_ENTRANCE_SQUARE = 'occupation_entrance_square'
-    ACTION_SQUARE = 'action_square'
     
 class TravelClass(str, Enum):
     RAIL = 'rail'
