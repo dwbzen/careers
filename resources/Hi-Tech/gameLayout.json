@@ -207,7 +207,7 @@
 				"background_image" : "occupation_entrance_square.png",
 				"image" : "amazon logo.jpg",
 				"text" : "Amazon",
-				"action_text" : "Must have $1000 for AWS training, or Computer Science Degree, or Amazon experience",
+				"action_text" : "Must have $1,000 for AWS training, or Computer Science Degree, or Amazon experience",
 				"specialProcessing" : {
 					"type" : "enter_occupation",
 					"destinationOccupation" : "Amazon"

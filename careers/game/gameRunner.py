@@ -124,7 +124,7 @@ class GameRunner(object):
         self._careersGame = self.game_engine.careersGame
         return result
     
-    def execute_command(self, cmd, aplayer:Player):
+    def execute_command(self, cmd, aplayer:Player) -> CommandResult:
         """Command format is command name + optional arguments
             The command and arguments passed to the game engine for execution
             Arguments:
@@ -133,10 +133,8 @@ class GameRunner(object):
             Returns:
                 result - result dictionary (result, message, done)
         """
-
-        args = []
             
-        result = self.game_engine.execute_command(cmd, aplayer, args)
+        result = self.game_engine.execute_command(cmd, aplayer)
         return result
     
     def run_game(self):
@@ -176,27 +174,90 @@ class GameRunner(object):
         self.game_engine.end()
         
     def run_script(self, filePath:str, delay:int, log_comments=True):
-
+        """Runs a script file.
+            A script file has one legit command or a statement per line.
+            Use "add player..." to add players to the game, for example
+            "add player Don DWB dwb20230113 dwbzen@gmail.com 20 10 30" for a 60 point game
+            By default players are human. To add computer player, include "computer" as the last argument.
+            For example "add player ComputerPlayer_1 CP_1 cp120230516 dwbzen@gmail.com 20 20 20 computer"
+            Lines that begin with "# " are comments and are written to the log file as-is.
+            Statements have Python syntax and are used to check results, control looping.
+            All statements end in a "{" (for loop init), "}" (end loop) or ";" to differentiate from game commands.
+            The following statements are supported:
+            assignment
+               (variable) = (value)
+            looping
+               while (expression) {
+                   (statements and/or commands):
+            logical
+               if (variable) == (value):
+                   (commands)
+               else:
+                   (commands)
+            statements ending with ";"  are evaluated with the Python exec() or eval() functions.
+            assignments are evaluated with exec(), "counter=1"  ->  exec("counter=1")
+            The while condition is evaluated with eval(), "while counter<limit" -> eval("counter<limit")
+            other statements evaluated with exec(), "counter+=1"  ->  exec("counter+=1")
+            The logic assumes the loop body will be evaluated at least once.
+        """
         turn_number = 1
         game_state = self.careersGame.game_state
         current_player = None
         fp = open(filePath, "r")
         scriptText = fp.readlines()
         fp.close()
-
-        for line in scriptText:
+        line_number = 0
+        script_lines = len(scriptText)
+        loop_start = -1
+        loop_end = 0
+        continue_loop = False
+        #
+        while line_number < script_lines:
+            line = scriptText[line_number]
             if len(line) > 0:
-                cmd = line[:-1]   # drop the trailing \n
+                cmd = line.strip("\t\n ")   # drop tabs, spaces and  \n
                 if len(cmd) == 0:
                     continue
+                
                 elif cmd.startswith("#"):    # comment line
                     if log_comments:
                         logging.debug(f'log_message {cmd}')
                         result = None
                     else:
                         result = None
+                        
                 elif cmd.startswith("add player "):
                     result = self.execute_command(cmd, None)
+                    
+                elif cmd.endswith(";"):    # use exec()
+                    statement = cmd[:-1]
+                    try:
+                        exec(statement)
+                        result = CommandResult(CommandResult.SUCCESS, statement, False)
+                    except Exception as ex:
+                        message = f'"{statement}" : Invalid exec statement\nexception: {str(ex)}'
+                        result = CommandResult(CommandResult.ERROR,  message,  False, exception=ex)
+                        logging.error(message)
+                        
+                elif cmd.endswith("{"):   # a while loop, execute the condition with eval()
+                    condition = cmd[:-1][6:]    # assumes "while "
+                    result = CommandResult(CommandResult.SUCCESS, condition, False)
+                    try:
+                        continue_loop = eval(condition)
+                        if not continue_loop:
+                            line_number = loop_end
+                        else:
+                            loop_start = line_number
+                    except Exception as ex:
+                        message = f'"{condition}" : Invalid eval statement\nexception: {str(ex)}'
+                        result = CommandResult(CommandResult.ERROR,  message,  False, exception=ex)
+                        logging.error(message)
+                        
+                elif cmd.endswith("}"):    # end of the loop
+                    loop_end = line_number
+                    line_number = loop_start - 1   # back to the while, -1 because line_number incremented below
+                    result = CommandResult(CommandResult.SUCCESS, cmd, False)
+                    
                 else:
                     current_player = game_state.current_player
                     result = self.execute_command(cmd, current_player)
@@ -206,7 +267,8 @@ class GameRunner(object):
                     print(f'"{cmd}": {result.message}')
                     if result.return_code == CommandResult.TERMINATE:
                         break
-                        
+                    
+                line_number +=1
                 time.sleep(delay)
                 
         self.game_engine.end()

@@ -114,12 +114,16 @@ class CareersGameEngine(object):
         self._debug = (loglevel=='debug')
         
         self._logfile_filename = f'{game_id}_{edition}'
+        self._turn_history_filename = f'{game_id}_{edition}_turnHistory'
         
         self._dataRoot = Environment.get_environment().package_base
 
         self._logfile_folder = os.path.join(self._dataRoot, 'log')
         self._gamefile_folder = os.path.join(self._dataRoot, 'games')
+        
         self._logfile_path = os.path.join(self._logfile_folder, self._logfile_filename + ".log")
+        self._turn_history_path = os.path.join(self._logfile_folder, self._turn_history_filename + ".json")
+        
         self._game_filename_base = os.path.join(f'{self._gamefile_folder}', f'{self.game_id}_game')
         
         if(not os.path.exists(self._logfile_folder)):
@@ -534,7 +538,7 @@ class CareersGameEngine(object):
                     entry_ok = False
                     message = "You must be on the Occupation entry square to use 'enter'"
                 else:
-                    meets_criteria, entry_fee, message = self._gameEngineCommands.can_enter(occupation, player)        # this also checks the Opportunity card used (if any)
+                    meets_criteria, entry_fee, message, occupation_name = self._gameEngineCommands.can_enter(occupation, player)        # this also checks the Opportunity card used (if any)
 
             if entry_ok and meets_criteria:
                 #
@@ -588,6 +592,9 @@ class CareersGameEngine(object):
     
     def done(self) -> CommandResult:
         """End my turn, update turn history, and go to the next player
+            If the next player is a computer player, plugins with a "turn" context are automatically run.
+            The reference to GameEngineCommands is also set before the plugin is run.
+            
         """
         current_player = self.game_state.current_player
         ###################################################################################
@@ -680,6 +687,8 @@ class CareersGameEngine(object):
         #
         # Update each player's turn history and add the final after_info
         #
+        winning_points = 0
+        winning_player = None
         for player in self.game_state.players:
             #
             # Update the AFTER of this turn and calculate the final outcome
@@ -689,8 +698,24 @@ class CareersGameEngine(object):
             turn_number = self.game_state.turn_number
             turn_history.add_player_info(turn_number, TurnHistory.AFTER_KEY, player_info)
             turn_history.create_turn(turn_number)
-            logging.debug(player.turn_history.to_JSON())
-
+            #logging.debug(player.turn_history.to_JSON())
+            with open(self._turn_history_path, "w") as fp:
+                fp.write(player.turn_history.to_JSON())
+                fp.close()
+            #
+            # who has the most points - does not account for ties
+            #
+            if player.total_points() >= winning_points:
+                winning_player = player
+                winning_points = player.total_points()
+            
+        #
+        # Determine the winner (by points) if the game is not completed
+        #
+        if not self.game_state.is_game_complete():    # nobody won yet
+             message = f'{result.message} \nthe winner is {winning_player.player_initials} with {winning_player.total_points()} points. '
+             result.message = message
+        
         return result
     
     def quit(self, initials:str) -> CommandResult:
@@ -747,8 +772,8 @@ class CareersGameEngine(object):
         """
         player = self.game_state.current_player
         if player.can_retire:
-            # all editions use the same name for Holiday, SpringBreak etc.
-            game_square = self._careersGame.find_border_square("Holiday")
+            # all editions have the same number for the holiday square (30)
+            game_square = self._careersGame.get_holiday_square()
             next_square_number = game_square.number
             result = self.goto(next_square_number)
         else:
@@ -859,7 +884,7 @@ class CareersGameEngine(object):
         return result
         
     
-    def list(self, what='all', how='condensed') ->CommandResult:
+    def list(self, what='all', initials:str=None, how='condensed') ->CommandResult:
         """List the Experience or Opportunity cards held by the current player
             Arguments: what - 'experience', 'opportunity', or 'all'
                 how - display control: 'full', 'condensed'  (the default), or 'count'
@@ -868,7 +893,7 @@ class CareersGameEngine(object):
                 For Experience cards this is the number of spaces (if type is fixed), otherwise the type.
             
         """
-        player = self.game_state.current_player
+        player = self.game_state.current_player if initials is None else self.get_player(initials)
         return GameEngineCommands.list(player, what, how)
     
     def perform(self, what:str, how:str) -> CommandResult:
@@ -970,7 +995,7 @@ class CareersGameEngine(object):
                 card_list = self._careersGame.opportunities.draw_cards(starting_opportunities)
                 player.add_opportunity_card(card_list)
                 
-            message = player.to_JSON()
+            message = f"ADDED {player.player_name}"
 
         else:    
             # adds a degree in the current (or named) player's degree programs
@@ -1202,7 +1227,7 @@ class CareersGameEngine(object):
                         occupation = self._careersGame.get_occupation(game_square.name)
                         can_enter = self._gameEngineCommands.can_enter(occupation, player)
                         can_move = not (player.is_sick or player.is_unemployed)
-                        if can_enter and can_move:
+                        if can_enter[0] and can_move:
                             #
                             # advance the occupation square and immediately enter
                             #

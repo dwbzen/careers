@@ -6,7 +6,7 @@ Created on Aug 6, 2022
 
 from game.environment import Environment
 from game.player import Player
-import json, logging
+import json, logging, random
 from datetime import datetime
 from pathlib import Path
 from typing import Dict, List, Tuple, Union
@@ -180,7 +180,7 @@ class CareersGame(CareersObject):
 
     def load_occupations(self) -> Dict[str, Occupation]:
         """Loads individual occupation JSON files for this edition.
-            Arguments: occupation_list - a list of occupation names
+             The occupation name is the same as the border square name.
             Returns: a dict with the occupation name as the key and contents
                 of the corresponding occupation JSON file (as a dict) as the value.
                 If the occupation JSON file doesn't exist, the value is None.
@@ -206,6 +206,11 @@ class CareersGame(CareersObject):
         fp = open(f'{self._resource_folder}/{self._edition_name}/collegeDegrees.json', "r")
         degrees = json.loads(fp.read())
         return degrees
+    
+    def pick_degree(self) ->str:
+        """Pick a degreeProgram at random
+        """
+        return random.sample(self.college_degrees['degreePrograms'], 1)[0]
     
     @property
     def edition(self) -> Dict:
@@ -239,10 +244,22 @@ class CareersGame(CareersObject):
         """
         return self._game_board.get_square(num)
     
+    def get_holiday_square(self) -> BorderSquare:
+        """Holiday square is always #30 for SpringBreak, ConeyIsland, Holiday
+        """
+        return self.get_border_square(30)
+    
     def get_occupation_square(self, name:str, num:int) -> OccupationSquare | None:
         occupation = self.occupations.get(name, None)
         gameSquare = occupation.occupationSquares[num] if occupation is not None else None
         return gameSquare
+    
+    def get_insurance_info(self) ->Dict:
+        """The buy insurance is always #29 for all editions
+            Returns: a dict with keys "square_number" and "amount"
+        """
+        amount = self.get_border_square(29).special_processing.amount
+        return {"square_number":29, "amount":amount}
     
     def get_game_square(self, board_location:BoardLocation) ->GameSquare:
         """Gets the GameSquare instance for a given BoardLocation

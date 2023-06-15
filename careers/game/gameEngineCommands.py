@@ -92,10 +92,11 @@ class GameEngineCommands(object):
                 [0] bool True if can enter, False otherwise
                 [2] entry amount owed, if any. Could be 0
                 [3] an error message if player cannot enter (blank string if player can enter)
+                [4] the occupation name
         """
         message = ""
         entry_fee = occupation.entry_fee
-        has_fee = player.cash >= entry_fee
+        has_fee = player.cash > entry_fee
         occupationClass = occupation.occupationClass
         # anyone can go to college if they have the funds
         if occupationClass == 'college':
@@ -103,18 +104,19 @@ class GameEngineCommands(object):
             # Need to resolve before entering
             if player.has_pending_action(PendingActionType.SELECT_DEGREE):
                 message = f'You need to resolve {PendingActionType.SELECT_DEGREE.value} before entering College'
-                return (False, entry_fee, message)
+                return (False, entry_fee, message, occupation.name)
             if has_fee:
-                return (True, entry_fee, message)    # always pay for college
+                return (True, entry_fee, f"Okay to enter {occupation.entry_text}", occupation.name)    # always pay for college
             else:    # Can't afford College
                 message = f"Sorry, you don't meet the conditions for entering {occupation.name}, entry fee: {entry_fee}"
-                return (False, entry_fee, message)
+                return (False, entry_fee, message, occupation.name)
         
+        message =  f"Okay to enter {occupation.entry_text}"
         #
         # check occupation record for prior trips through 
         #
         if occupation.name in player.occupation_record and player.occupation_record[occupation.name] > 0:
-            return (True, 0, message)
+            return (True, 0, message, occupation.name)
         #
         # check degree requirements
         #
@@ -122,15 +124,23 @@ class GameEngineCommands(object):
         degreeName = degreeRequirements['degreeName']
         numberRequired = degreeRequirements['numberRequired']
         if degreeName in player.my_degrees and player.my_degrees[degreeName] >= numberRequired:
-            return (True, 0, message)        # can enter for free
+            return (True, 0, message, occupation.name)        # can enter for free
         #
         # is the player using a  "All expenses paid" Opportunity card ?
         #
         if player.opportunity_card is not None:
             if player.opportunity_card.expenses_paid:
-                return (True, 0, message)
+                return (True, 0, message, occupation.name)
         
-        return has_fee, entry_fee, message
+        #
+        # player needs to pay to get in
+        #
+        if has_fee:
+            return (True, entry_fee, message, occupation.name)
+        else:    # Can't afford College
+            message = f"Sorry, you don't meet the conditions for entering {occupation.name}, entry fee: {entry_fee}"
+    
+        return has_fee, entry_fee, message, occupation.name
 
     def can_backstab_player(self, player:Player, other_player:Player, occupation:Occupation) ->bool:
         '''Determine if this player can back stab another player in a given Occupation.

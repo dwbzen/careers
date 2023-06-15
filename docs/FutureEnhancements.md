@@ -22,7 +22,14 @@ and checked at the end of each players turn (on the next command).
 Status: **ACTIVE**</p>
 
 4. The "end" command should declare a winner.<br>
-Status: **OPEN**</p>
+Status: **COMPLETE**<br>
+This will determine which player has the most points and include that info<br>
+in the result message. It does not account for ties. For example:
+
+	Ending game: ZenAlien2013_20230613_103247_226364_15753<br>
+	Game is complete <br>
+	  the winner is DWB with 25 points.
+</p>
 
 5. Jazz Age edition requires support for more than one specialProcessing entry.
 RCA.json square #5 has two: lose all your cash, and go to Unemployment.

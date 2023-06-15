@@ -147,8 +147,26 @@ class TurnHistory(CareersObject):
         """Create and add a new Turn object from the player_info BEFORE and AFTER deltas
             After creating the Turn, calculate the outcome.
         """
-        before_info = self._player_info[turn_number][TurnHistory.BEFORE_KEY]
-        after_info = self._player_info[turn_number][TurnHistory.AFTER_KEY]
+        player_turn_info = self._player_info[turn_number]
+        before_info = None
+        after_info = None
+        
+        if TurnHistory.AFTER_KEY in player_turn_info:
+            after_info = player_turn_info[TurnHistory.AFTER_KEY]
+        else:
+            logging.error("key error on: TurnHistory.AFTER_KEY")
+            
+        if TurnHistory.BEFORE_KEY in player_turn_info:
+            before_info = player_turn_info[TurnHistory.BEFORE_KEY]
+        else:
+            #
+            # somehow missed a turn
+            #
+            logging.error("key error on: TurnHistory.BEFORE_KEY")
+        
+        before_info = after_info if (before_info is None and after_info is not None) else before_info
+        after_info = before_info if (after_info is None and before_info is not None) else after_info
+        
         turn = Turn(self._player_number, turn_number)
         outcome = self._turn_outcome(turn, before_info, after_info)
         turn.outcome = outcome

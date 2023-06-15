@@ -1,0 +1,15 @@
+# Test retire after 4 degrees
+add player Don DWB dwb20221206 dwbzen@gmail.com 40 10 50
+start
+roll
+# Bachelor Degree
+enter MIT;goto 10;advance 4;resolve * Marketing
+# Master Degree
+enter MIT;goto 10;advance 4;resolve * Marketing
+# PhD Degree
+enter MIT;goto 10;advance 4;resolve * Marketing
+# Player can retire after getting PhD
+retire
+status
+save
+end

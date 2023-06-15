@@ -95,4 +95,8 @@ class Occupation(object):
     def double_happiness(self, value):
         self._double_happiness = value
         
+    @property
+    def entry_text(self):
+        return self._entry_text
+    
         

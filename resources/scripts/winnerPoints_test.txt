@@ -10,11 +10,11 @@ set BDB happiness 20
 set BDB fame 10
 set BDB money 40000
 # DWB + 2 hearts
-enter UF
+enter MIT
 goto 1
 next
 # BDB + 4 stars
-enter UF
+enter MIT
 goto 3
 next
 # DWB + 2 stars, 4 hearts
