@@ -6,13 +6,36 @@
 		"background_image" : "occupation_entrance.png",
 		"image" : "alphabet logo_small.jpg",
 		"entry_fee" : 4000,
+		"prior_experience" : 1,
 		"size" : 14,
 		"entrance_square_number" : 33,
 		"exit_square_number" : 34,
-		"text" : "Must have: $4,000 for cloud training; or Marketing degree; or Alphabet experience",
+		"text" : "Must have: $4,000 for cloud training, or Marketing degree, or Alphabet experience",
 		"degreeRequirements" : { 
 			"degreeName" : "Marketing",
 			"numberRequired" : 1
+		},
+		"ranking" : {
+			"points" : 2,
+			"stars" : 6,
+			"hearts" : 5,
+			"cash" : 1,
+			"salary" : 6
+		},
+		"cards" : {
+			"experience" : 2,
+			"opportunity" : 0
+		},
+		"srategy" : {
+			"danger_squares" : 2,
+			"recommended_padding" : 3
+		},
+		"points" : {
+			"cash" : 30,
+			"stars" : 12,
+			"hearts" : 20,
+			"salary" : 3,
+			"totalPoints" : 62
 		}
 	},
 	"occupationSquares" : [

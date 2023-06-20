@@ -6,13 +6,36 @@
 		"background_image" : "occupation_entrance.png",
 		"image" : "spacex logo.jpg",
 		"entry_fee" : 5000,
+		"prior_experience" : 1,
 		"size" : 13,
 		"entrance_square_number" : 40,
 		"exit_square_number" : 1,
-		"text" : "Must have: $5000 recruiting fee; or Aerospace Engineering degree; or SpaceX experience",
+		"text" : "Must have: $5,000 recruiting fee, or Aerospace Engineering degree, or SpaceX experience",
 		"degreeRequirements" : { 
 			"degreeName" : "Aerospace",
 			"numberRequired" : 1
+		},
+		"ranking" : {
+			"points" : 1,
+			"stars" : 2,
+			"hearts" : 1,
+			"cash" : 2,
+			"salary" : 7
+		},
+		"cards" : {
+			"experience" : 2,
+			"opportunity" : 0
+		},
+		"srategy" : {
+			"danger_squares" : 3,
+			"recommended_padding" : 4
+		},
+		"points" : {
+			"cash" : 15,
+			"stars" : 34,
+			"hearts" : 24,
+			"salary" : 2,
+			"totalPoints" : 73
 		}
 	},
 	"occupationSquares" : [
@@ -94,7 +117,7 @@
 			"hearts" : 0,
 			"experience" : 0,
 			"opportunities" : 0,
-			"action_text" : "Salary up $2000",
+			"action_text" : "Salary up $2,000",
 			"specialProcessing" : {
 				"type" : "salary_increase",
 				"amount" : 2000
@@ -185,7 +208,7 @@
 			"hearts" : 0, 
 			"experience" : 0,
 			"opportunities" : 0,
-			"action_text" : "Collect Bonus $5000",
+			"action_text" : "Collect Bonus $5,000",
 			"specialProcessing" : {
 				"type" : "bonus",
 				"amount" : 5000

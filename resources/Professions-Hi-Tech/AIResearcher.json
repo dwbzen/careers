@@ -1,0 +1,211 @@
+{
+	"name" : "Alphabet",
+	"configuration" : {
+		"occupationClass" : "occupation",
+		"fullName" : "Alphabet",
+		"background_image" : "occupation_entrance.png",
+		"image" : "alphabet logo_small.jpg",
+		"entry_fee" : 4000,
+		"size" : 14,
+		"entrance_square_number" : 33,
+		"exit_square_number" : 34,
+		"text" : "Must have: $4,000 for cloud training; or Marketing degree; or Alphabet experience",
+		"degreeRequirements" : { 
+			"degreeName" : "Marketing",
+			"numberRequired" : 1
+		}
+	},
+	"occupationSquares" : [
+		{
+			"number" : 0,
+			"background_image" : "occupation_square.png",
+			"text" : "Good team interview with Alphabet management",
+			"stars" : 0,
+			"hearts" : 2,
+			"bonus" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 1,
+			"background_image" : "occupation_square.png",
+			"text" : "Project emergency",
+			"type" : "action_square",
+			"stars" : 0,
+			"hearts" : 2,
+			"bonus" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "Roll again",
+			"specialProcessing" : {
+				"type" : "extra_turn"
+			}
+		},
+		{
+			"number" : 2,
+			"background_image" : "danger_occupation_square.png",
+			"text" : "Your laptop is stolen",
+			"type" : "danger_square",
+			"stars" : 0,
+			"hearts" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "Pay $2000 OR go on Unemployment",
+			"specialProcessing" : {
+				"type" : "cash_loss_or_unemployment",
+				"pending_action" : "cash_loss_or_unemployment",
+				"amount" : 2000,
+				"of" : "cash"
+			}
+		},
+		{
+			"number" : 3,
+			"background_image" : "occupation_square.png",
+			"text" : "Awesome pod mates",
+			"stars" : 0,
+			"hearts" : 2,
+			"bonus" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 4,
+			"background_image" : "occupation_square.png",
+			"text" : "Foil foreign hacking attempt",
+			"stars" : 0,
+			"hearts" : 2,
+			"bonus" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 5,
+			"background_image" : "occupation_square.png",
+			"text" : "Lead online Marketing blitz",
+			"stars" : 0,
+			"hearts" : 0,
+			"bonus" : 0,
+			"experience" : 2,
+			"opportunities" : 0,
+			"action_text" : "Draw 2 EXPERIENCE CARDS",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 6,
+			"background_image" : "occupation_square.png",
+			"text" : "Promoted to Scrum Master",
+			"stars" : 4,
+			"hearts" : 0, 
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "Salary up $3000",
+			"specialProcessing" : {
+				"type" : "salary_increase",
+				"amount" : 3000
+			}
+		},
+		{
+			"number" : 7,
+			"background_image" : "occupation_square.png",
+			"text" : "Contribute to a major Python enhancement",
+			"stars" : 6,
+			"hearts" : 0,
+			"bonus" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 8,
+			"background_image" : "danger_occupation_square.png",
+			"text" : "Hurt in company soccer match",
+			"type" : "danger_square",
+			"stars" : 0,
+			"hearts" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "Go to Hospital",
+			"specialProcessing" : {
+				"type" : "travel_border",
+				"next_square" : "Hospital"
+			}
+		},
+		{
+			"number" : 9,
+			"background_image" : "occupation_square.png",
+			"text" : "May backstab annoying colleague(s)",
+			"type" : "action_square",
+			"stars" : 0,
+			"hearts" : -4,
+			"bonus" : 0,
+			"experience" : 2,
+			"opportunities" : 0,
+			"action_text" : "You lose 4 Hearts\n They lose 12 Hearts",
+			"specialProcessing" : {
+				"type" : "backstab",
+				"pending_action" : "backstab",
+				"amount" : -12,
+				"of" : "hearts"
+			}
+		},
+		{
+			"number" : 10,
+			"background_image" : "occupation_square.png",
+			"text" : "Patent AI search algorithm",
+			"stars" : 0,
+			"hearts" : 0, 
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "Collect bonus $5000",
+			"specialProcessing" : {
+				"type" : "bonus",
+				"amount" : 5000
+			}
+		},
+		{
+			"number" : 11,
+			"background_image" : "occupation_square.png",
+			"text" : "Successfull text-to-image beta launch",
+			"stars" : 2,
+			"hearts" : 4,
+			"bonus" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 12,
+			"background_image" : "occupation_square.png",
+			"text" : "Company meeting in Reno",
+			"stars" : 0,
+			"hearts" : 6,
+			"bonus" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 13,
+			"background_image" : "occupation_square.png",
+			"text" : "Employee of the year",
+			"stars" : 0,
+			"hearts" : 0, 
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "Collect bonus $20,000",
+			"specialProcessing" : {
+				"type" : "bonus",
+				"amount" : 20000
+			}
+		}
+	]
+}

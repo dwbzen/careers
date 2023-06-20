@@ -1,0 +1,199 @@
+{
+	"name" : "VentureCapitalist",
+	"configuration" : {
+		"occupationClass" : "occupation",
+		"fullName" : "Venture Capitalist",
+		"background_image" : "occupation_entrance.png",
+		"image" : "investor_vector_illustration_businessman_and_woman-229091c79639-1.jpg",
+		"entry_fee" : 1000,
+		"prior_experience" : 1,
+		"size" : 12,
+		"entrance_square_number" : 4,
+		"exit_square_number" : 5,
+		"text" : "Must have: $1,000 for special training, or Business Admin degree, or VC experience",
+		"degreeRequirements" : { 
+			"degreeName" : "Business Admininstration",
+			"numberRequired" : 1
+		},
+		"ranking" : {
+			"points" : 5,
+			"stars" : 8,
+			"hearts" : 4,
+			"cash" : 5,
+			"salary" : 8
+		},
+		"cards" : {
+			"experience" : 1,
+			"opportunity" : 1
+		},
+		"srategy" : {
+			"danger_squares" : 2,
+			"recommended_padding" : 3
+		},
+		"points" : {
+			"cash" : 8,
+			"stars" : 13,
+			"hearts" : 23,
+			"salary" : 2,
+			"totalPoints" : 44
+		}
+	},
+	"occupationSquares" : [
+		{
+			"number" : 0,
+			"background_image" : "occupation_square.png",
+			"text" : "Happy Hour Monday to Thursday, 4 to 7 PM",
+			"stars" : 0,
+			"hearts" : 2,
+			"bonus" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 1,
+			"background_image" : "occupation_square.png",
+			"text" : "Attend Tech Summit Conference in London",
+			"stars" : 0,
+			"hearts" : 0,
+			"bonus" : 0,
+			"experience" : 1,
+			"opportunities" : 0,
+			"action_text" : "Draw 1 EXPERIENCE CARD",
+			"specialProcessing" : {}
+		},		
+		{
+			"number" : 2,
+			"background_image" : "occupation_square.png",
+			"text" : "New Silicon Valley headquarters is beautiful",
+			"stars" : 0,
+			"hearts" : 3,
+			"bonus" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 3,
+			"background_image" : "occupation_square.png",
+			"text" : "Keynote speaker at this year's Venture West Conference",
+			"stars" : 4,
+			"hearts" : 2,
+			"bonus" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 4,
+			"background_image" : "occupation_square.png",
+			"text" : "Healthcare company you're funding has bonus payout",
+			"stars" : 0,
+			"hearts" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "Collect $1,000 x roll of 1 die",
+			"specialProcessing" : {
+				"type" : "bonus",
+				"dice" : 1,
+				"amount" : 1000
+			}
+		},
+		{
+			"number" : 5,
+			"background_image" : "occupation_square.png",
+			"text" : "Key industry contacts are 'unavailable'",
+			"type" : "action_square",
+			"stars" : 0,
+			"hearts" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "CALL IN FAVORS",
+			"specialProcessing" : {
+				"type" : "favors"
+			}
+		},
+		{
+			"number" : 6,
+			"background_image" : "occupation_square.png",
+			"text" : "Deliver DevLearn Conference Keynote address on mindsets of innovation",
+			"stars" : 2,
+			"hearts" : 4,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 7,
+			"background_image" : "occupation_square.png",
+			"text" : "Attend Deep Learning seminar at GPU Technology Conference",
+			"stars" : 0,
+			"hearts" : 2,
+			"experience" : 0,
+			"opportunities" : 1,
+			"action_text" : "Draw 1 OPPORTUNITY CARD",
+			"specialProcessing" : {}
+		},		
+		{
+			"number" : 8,
+			"background_image" : "occupation_square.png",
+			"text" : "Acquire 'Only Games' software company",
+			"stars" : 3,
+			"hearts" : 0, 
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "Collect bonus $5,000",
+			"specialProcessing" : {
+				"type" : "bonus",
+				"amount" : 5000
+			}
+		},
+		{
+			"number" : 9,
+			"background_image" : "occupation_square.png",
+			"text" : "VC Conference panel member, topic: Cybersecurity and Online Privacy",
+			"stars" : 2,
+			"hearts" : 6,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 10,
+			"background_image" : "danger_occupation_square.png",
+			"text" : "Investment in promising AI startup bombs big time!",
+			"type" : "danger_square",
+			"stars" : 0,
+			"hearts" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "Lose 1/2 your cash",
+			"specialProcessing" : {
+				"type" : "cash_loss",
+				"amount" : 0,
+				"percent" : 0.5,
+				"of" : "cash"
+			}
+		},
+		{
+			"number" : 11,
+			"background_image" : "occupation_square.png",
+			"text" : "Promoted to AI Investment Division Managing Director",
+			"type" : "action_square",
+			"stars" : 2,
+			"hearts" : 4,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "Salary up $2,000",
+			"specialProcessing" : {
+				"type" : "salary_increase",
+				"amount" : 2000
+			}
+		}
+	]
+}

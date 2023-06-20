@@ -49,6 +49,7 @@ class SpecialProcessingType(Enum):
     SALARY_INCREASE = "salary_increase"
     SALARY_CUT = "salary_cut"
     BONUS = "bonus"
+    BONUS_ALL = "bonus_all"    # applies to all players who have completed the Occupation
     FAVORS = "favors"
     BACKSTAB = "backstab"
     FAME_LOSS = "fame_loss"
@@ -77,6 +78,12 @@ class BorderSquareType(str, Enum):
     OCCUPATION_ENTRANCE_SQUARE = 'occupation_entrance_square'
     ACTION_SQUARE = 'action_square'
     
+class TravelClass(str, Enum):
+    RAIL = 'rail'
+    UNDERGROUND = 'underground'    # UK edition
+    SUBWAY = 'subway'              # all US editions
+    AIR = 'air'                    # airports
+    
 class PlayerType(Enum):
     COMPUTER = "computer"
     HUMAN = "human"
@@ -93,9 +100,9 @@ class GameConstants(object):
     '''
     
     COMMANDS = ['add', 'add_degree', 'advance', 'bankrupt', 'bump', 'buy', 'create', 'done', 'end', 'enter', '_enter',
-            'game_status', 'goto', 'info', 'list', 'load', 'location', 'log_message', 'next', 'pay', 'perform', 'quit', 'retire', 
-            'roll', 'resolve', 'save', 'saved', 'set', 'start', 'status', 'transfer', 'turn_history', 'update', 'use', 'use_insurance', 
-            'where', 'who']
+            'game_status', 'goto', 'info', 'list', 'load', 'location', 'log_message', 'lose_turn', 'next', 'pay', 'perform', 'quit', 'retire', 
+            'roll', 'resolve', 'save', 'saved', 'set', 'start', 'status', 'take_turn', 'transfer', 'turn_history', 
+            'update', 'use', 'use_insurance', 'where', 'who']
 
     def __init__(self, params:Dict):
         '''

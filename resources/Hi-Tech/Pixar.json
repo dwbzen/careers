@@ -6,13 +6,36 @@
 		"background_image" : "occupation_entrance.png",
 		"image" : "Pixar.jpg",
 		"entry_fee" : 500,
+		"prior_experience" : 0,
 		"size" : 11,
 		"entrance_square_number" : 18,
 		"exit_square_number" : 19,
-		"text" : "Must have: $500 for Digital desigh coach, or an Animation degree; or Pixar experience",
+		"text" : "Must have: $500 for Digital desigh coach, or an Animation degree, or Pixar experience",
 		"degreeRequirements" : { 
 			"degreeName" : "Animation",
 			"numberRequired" : 1
+		},
+		"ranking" : {
+			"points" : 8,
+			"stars" : 10,
+			"hearts" : 3,
+			"cash" : 9,
+			"salary" : 9
+		},
+		"cards" : {
+			"experience" : 2,
+			"opportunity" : 2
+		},
+		"srategy" : {
+			"danger_squares" : 2,
+			"recommended_padding" : 3
+		},
+		"points" : {
+			"cash" : 3,
+			"stars" : 2,
+			"hearts" : 23,
+			"salary" : 2,
+			"totalPoints" : 28
 		}
 	},
 	"occupationSquares" : [
@@ -110,7 +133,7 @@
 			"opportunities" : 0,
 			"action_text" : "Collect $1000 x roll of 1 die",
 			"specialProcessing" : {
-				"type" : "bonus",
+				"type" : "bonus_all",
 				"dice" : 1,
 				"amount" : 1000
 			}

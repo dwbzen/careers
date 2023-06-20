@@ -1,0 +1,6 @@
+{
+	"degreePrograms" : ["Aerospace Engineering", "Artificial Intelligence", "Business Admininstration", "Computer Science", "Journalism", "Law", "Pharmacology", "Software Engineering"],
+	"maxDegrees" : 4,
+	"salaryIncreases" : [2000, 3000, 4000, 5000],
+	"degreeNames" : ["Bachelors", "Masters", "PhD", "Post-Doc"]
+}

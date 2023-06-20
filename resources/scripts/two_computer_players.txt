@@ -1,0 +1,22 @@
+# add 1 human and 2 computer players - 60 point game - stars  hearts  cash
+# the human is a dummy player that executes only a "roll" command
+#
+add player Don DWB dwb20230113 dwbzen@gmail.com 50 26 24
+add player ComputerPlayer_1 CP_1 cp120230516 dwbzen@gmail.com 20 20 20 computer
+# add player ComputerPlayer_2 CP_2 cp120230614 dwbzen@gmail.com 10 20 30 computer
+start
+# run a simple loop
+counter = 0;
+# 60 turns - the computer player's command is determined by take_turn.
+limit = 60;
+while counter < limit {
+	take_turn roll
+	next
+	counter += 1;
+}
+# end the game
+status CP_1
+# status CP_2
+list all CP_1
+# list all CP_2
+end

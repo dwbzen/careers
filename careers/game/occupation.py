@@ -4,6 +4,7 @@ Created on Aug 20, 2022
 @author: don_bacon
 '''
 from game.occupationSquare import OccupationSquare
+from typing import Dict
 
 class Occupation(object):
     """Encapsulates a Careers Occupation.
@@ -13,7 +14,10 @@ class Occupation(object):
 
     def __init__(self, occupation_dict:dict, game=None):
         """
-        Constructor
+        An Occupation is loaded from the JSON file of the same name. The structure consists
+            of two sections: "configuration" and "occupationSquares"
+            The configuration section includes occupation meta-information used by the strategy plug-in.
+            
         """
         self._name = occupation_dict['name']
         self._configuration = occupation_dict['configuration']
@@ -25,6 +29,21 @@ class Occupation(object):
         self._entry_text = self._configuration['text']
         self._fullName = self._configuration['fullName']
         self._degreeRequirements = self._configuration.get('degreeRequirements', None)
+        
+        self._points = self._configuration.get('points', None)
+        
+        # if prior_experience ==1, entrance fee waived if previous experience (i.e. occupation completion)
+        # otherwise entrance fee must be paid each time
+        self._prior_experience = self._configuration.get('prior_experience', 1)
+        # ranking relative to other occupations/professions
+        self._ranking = self._configuration.get('ranking', {"points" : 0,"stars" : 0,"hearts" : 0, "cash" : 0, "salary" : 0})
+        # number of potential experience and opportunity cards
+        self._cards = self._configuration.get('cards', {"experience" : 0, "opportunity" : 0})
+        # strategy
+        self._strategy = self._configuration.get('strategy', {"danger_squares" : 2, "recommended_padding" : 3})
+        # points is the number of potential points in the occupation. Cash and salary are in 1000's, so 5 points = $5,000
+        self._points = self._configuration.get('points',{"cash" : 0,"stars" : 0,"hearts" : 0,"salary" : 0,"totalPoints" : 0})
+        
         self._double_happiness = False      # this is temporarily set by a "double_happiness" Opportunity card
         self._careersGame = None
         #
@@ -99,4 +118,36 @@ class Occupation(object):
     def entry_text(self):
         return self._entry_text
     
+    @property
+    def ranking(self) -> Dict:
+        return self._ranking
+    
+    @property
+    def cards(self) ->Dict:
+        return self._cards
+    
+    @property
+    def srategy(self) ->Dict:
+        """Dictionary with the keys "danger_squares", "recommended_padding"
+        """
+        return self._srategy
+    
+    @property
+    def points(self) ->Dict:
+        """Dictionary with the keys "cash", "stars", "hearts", "salary", and "totalPoints"
+        """
+        return self._points
+    
+    @points.setter
+    def points(self, value):
+        self._points = value
+    
+    @property
+    def prior_experience(self) ->int:
+        return self._prior_experience
+    
+    @prior_experience.setter
+    def prior_experience(self, value):
+        self._prior_experience = value
+        
         

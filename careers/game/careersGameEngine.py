@@ -316,7 +316,35 @@ class CareersGameEngine(object):
         num_spaces = sum(dice)
         logging.info(f' {player.player_initials}  rolled {num_spaces} {dice}')    # INFO
         return self._advance(num_spaces, dice)
-            
+    
+    def take_turn(self, command:str="roll") -> CommandResult:
+        """take_turn is a cover function for the current player's next command.
+            Arguments:
+                command - the command to execute, default is "roll"
+            For HUMAN players, the command string provided is executed.
+            For COMPUTER players, the command(s) are determined by the active "turn" plug-in(s).
+        """
+        cmd_result = None
+        player = self.game_state.current_player
+        if player.player_type is PlayerType.HUMAN:
+            cmd_result = self.execute_command(command, player)
+        else:
+        #
+        # Is the next player a Computer player?
+        # If so, run the strategy plugin to get the player's command(s)
+        # Also need to set the GameEngineCommands instance in the strategy plugin
+        #
+            plugins = self._plugins["turn"]      # a List of Plugin class instances to run
+            for plugin_instance in plugins:
+                plugin_instance.gameEngineCommands = self._gameEngineCommands
+                plugin_result = plugin_instance.run(player.number)
+                self.log_info(str(plugin_result))
+                commands = plugin_result["commands"]
+                cmd_result = self.execute_command(commands, player)
+                logging.debug(f"{player.player_initials} commands: '{commands}'  result: {cmd_result.message}")
+                print(cmd_result.message)
+        
+        return cmd_result  
     
     def advance(self, num_spaces, dice:List[int]|None=None) -> CommandResult:
         """Advance a given number of spaces
@@ -583,7 +611,7 @@ class CareersGameEngine(object):
         return result
     
     def turn_history(self, initials:str=None) ->CommandResult:
-        """turn_history command
+        """turn_history command displays the current player's turn history as a JSON formated string
         """
         player:Player = self.game_state.current_player if initials is None else self.get_player(initials)
         message = player.turn_history.to_JSON()
@@ -606,18 +634,7 @@ class CareersGameEngine(object):
         #
         # Update the AFTER of this turn; create a new Turn and calculate the outcome
         #
-        turn_history = current_player.turn_history
-        next_turn_number = turn_history.next_turn_number()
-        player_info = current_player.player_info(include_successFormula=True, outputFormat="dict", include_degrees=True, include_card_values=True)
-        turn_number = self.game_state.turn_number
-        current_player.turn_history.add_player_info(turn_number, TurnHistory.AFTER_KEY, player_info)
-        theTurn = current_player.turn_history.create_turn(turn_number)
-        self.log_info(f"turn: {turn_number} outcome: {theTurn.outcome}\n")
-        
-        # The AFTER of this turn is now the BEFORE of the player's next turn
-        current_player.turn_history.turn_number = next_turn_number
-        current_player.turn_history.add_player_info(next_turn_number, TurnHistory.BEFORE_KEY, player_info)
-        
+        self.update_turn_history(current_player)
         
         #
         # has this player won the game?
@@ -634,37 +651,31 @@ class CareersGameEngine(object):
     
         current_player.board_location.reset_prior()            # this player's prior board position no longer relevant
         #
-        # SELECT_DEGREE can carry over - remove all the others
+        # does the current player lose a turn? 
+        # If so, record a dummy "lose_turn" command
         #
-        # cp.clear_pending(PendingActionType.SELECT_DEGREE)
+        lose_turn = current_player.lose_turn
+        lost_turn_player = current_player if lose_turn else None
         
-        npn = self.game_state.set_next_player()    # sets current_player and returns the next player number (npn) and increments turns
+        # sets current_player and returns the next player number (npn) and increments turns
+        # may not be the the logical next player if the current_player loses a turn
+        #
+        npn = self.game_state.set_next_player()
         player = self.game_state.current_player
-        #player.opportunity_card = None
+
         player.experience_card = None
         player.can_use_opportunity = True
         if current_player.number != player.number:    # could be only 1 player if doing a solo game
             current_player.can_roll = False
+        
+        if lost_turn_player is not None:
+            self.lost_turn(lost_turn_player)
+            
         #
         # save the Game on change of turns
         #
         self._gameEngineCommands.save_game(self._game_filename_base, self.game_id, how='pkl')
-        #
-        # Is the next player a Computer player?
-        # If so, run the strategy plugin to get the player's command(s)
-        # Also need to set the GameEngineCommands instance in the strategy plugin
-        #
-        if player.player_type is PlayerType.COMPUTER:
-            plugins = self._plugins["turn"]      # a List of Plugin class instances to run
-            for plugin_instance in plugins:
-                plugin_instance.gameEngineCommands = self._gameEngineCommands
-                plugin_result = plugin_instance.run(player.number)
-                self.log_info(str(plugin_result))
-                commands = plugin_result["commands"]
-                cmd_result = self.execute_command(commands, player)
-                logging.debug(f"{player.player_initials} commands: {commands}, result: {cmd_result.message}")
-                print(cmd_result.message)
-    
+
         result = CommandResult(CommandResult.SUCCESS,  f"{current_player.player_initials} Turn is complete, {player.player_initials}'s ({npn}) turn " , True)
         return result
     
@@ -672,7 +683,38 @@ class CareersGameEngine(object):
         """Synonym for done - go to the next player
         """
         return self.done()
-    
+
+    def lost_turn(self, player:Player) -> int:
+        """Dummy command to execute when a player is skipped because of a lost turn
+            This adds a "lose_turn" command to the player's command history
+            and updates the player's turn history.
+            Returns: the lost turn number
+        """
+        next_turn_number = self.update_turn_history(player)
+        player.add_command(f"lose_turn {next_turn_number}")
+        return next_turn_number
+        
+    def update_turn_history(self, player:Player) ->int:
+        """ Update the AFTER of this turn for a given player; create a new Turn and calculate the outcome
+            Arguments:
+                player - player to update
+            Returns:
+                the next turn number
+        """
+        #
+        turn_history = player.turn_history
+        next_turn_number = turn_history.next_turn_number()
+        player_info = player.player_info(include_successFormula=True, outputFormat="dict", include_degrees=True, include_card_values=True)
+        turn_number = self.game_state.turn_number
+        player.turn_history.add_player_info(turn_number, TurnHistory.AFTER_KEY, player_info)
+        theTurn = player.turn_history.create_turn(turn_number)
+        self.log_info(f"turn: {turn_number} outcome: {theTurn.outcome}\n")
+        
+        # The AFTER of this turn is now the BEFORE of the player's next turn
+        player.turn_history.turn_number = next_turn_number
+        player.turn_history.add_player_info(next_turn_number, TurnHistory.BEFORE_KEY, player_info)
+        return next_turn_number
+        
     def end(self, save:str=None) -> CommandResult:
         """Ends the game, saves the current state if specified, and exits.
         """

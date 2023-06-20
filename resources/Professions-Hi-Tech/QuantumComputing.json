@@ -1,0 +1,208 @@
+{
+	"name" : "QuantumComputing",
+	"configuration" : {
+		"occupationClass" : "occupation",
+		"fullName" : "Quantum Computing",
+		"background_image" : "occupation_entrance.png",
+		"image" : "Hyperdimensional_quantum_computer-1.png",
+		"entry_fee" : 1000,
+		"prior_experience" : 1,
+		"size" : 13,
+		"entrance_square_number" : 13,
+		"exit_square_number" : 14,
+		"text" : "Must have: $1,000 for advanced ProjectQ training, or Computer Science degree, or Quantum Computing experience",
+		"degreeRequirements" : { 
+			"degreeName" : "Computer Science",
+			"numberRequired" : 1
+		},
+		"points" : {
+			"cash" : 3,
+			"stars" : 4,
+			"hearts" : 12,
+			"salary" : 8,
+			"totalPoints" : 19
+		}
+	},
+	"occupationSquares" : [
+		{
+			"number" : 0,
+			"background_image" : "occupation_square.png",
+			"text" : "First  programming project using PyQuil library",
+			"stars" : 0,
+			"hearts" : 0,
+			"bonus" : 0,
+			"experience" : 1,
+			"opportunities" : 0,
+			"action_text" : "Draw 1 EXPERIENCE CARD",
+			"specialProcessing" : {}
+		},		
+		{
+			"number" : 1,
+			"background_image" : "occupation_square.png",
+			"text" : "Interview for Quantum Engineer position with Alibaba",
+			"stars" : 0,
+			"hearts" : 0,
+			"experience" : 0,
+			"opportunities" : 2,
+			"action_text" : "Draw 2 OPPORTUNITY CARDS",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 2,
+			"background_image" : "occupation_square.png",
+			"text" : "Develop new cryptographic protocol",
+			"stars" : 0,
+			"hearts" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "Salary up $2000",
+			"specialProcessing" : {
+				"type" : "salary_increase",
+				"amount" : 2000
+			}
+		},
+		{
+			"number" : 3,
+			"background_image" : "occupation_square.png",
+			"text" : "Your new machine learning algorithm needs work - lots of work",
+			"image" : "frown_emoji.png",
+			"stars" : 0,
+			"hearts" : 0,
+			"bonus" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "Lose next turn",
+			"specialProcessing" : {
+				"type" : "lose_next_turn"
+			}
+		},
+		{
+			"number" : 4,
+			"background_image" : "occupation_square.png",
+			"text" : "Participate in a discussion panel at Quantum Summit conference",
+			"stars" : 0,
+			"hearts" : 0,
+			"bonus" : 0,
+			"experience" : 2,
+			"opportunities" : 0,
+			"action_text" : "Draw 2 EXPERIENCE CARDS",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 5,
+			"background_image" : "danger_occupation_square.png",
+			"text" : "Your QC design with 30 qubits is an embarrassing failure",
+			"type" : "danger_square",
+			"stars" : 0,
+			"hearts" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "Cut salary by 1/2",
+			"specialProcessing" : {
+				"type" : "salary_cut",
+				"amount" : 0,
+				"percent" : 0.5
+			}
+		},
+		{
+			"number" : 6,
+			"background_image" : "occupation_square.png",
+			"text" : "Demo at Quantum.Tech  trade show is a hit",
+			"stars" : 0,
+			"hearts" : 0, 
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "Collect bonus $3000",
+			"specialProcessing" : {
+				"type" : "bonus",
+				"amount" : 3000
+			}
+		},
+		{
+			"number" : 7,
+			"background_image" : "danger_occupation_square.png",
+			"text" : "Oh No! Caught in a massive RIF",
+			"type" : "danger_square",
+			"stars" : 0,
+			"hearts" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "Go to Unemployment",
+			"specialProcessing" : {
+				"type" : "travel_border",
+				"next_square" : "Unemployment"
+			}
+		},
+		{
+			"number" : 8,
+			"background_image" : "occupation_square.png",
+			"text" : "May backstab Quantum colleague(s)",
+			"type" : "action_square",
+			"stars" : 0,
+			"hearts" : -4,
+			"bonus" : 0,
+			"experience" : 2,
+			"opportunities" : 0,
+			"action_text" : "You lose 4 Hearts\n They lose 12 Hearts",
+			"specialProcessing" : {
+				"type" : "backstab",
+				"pending_action" : "backstab",
+				"amount" : -12,
+				"of" : "hearts"
+			}
+		},
+		{
+			"number" : 9,
+			"background_image" : "occupation_square.png",
+			"text" : "Groundbreaking research earns a promotion to Senior Architect",
+			"stars" : 0,
+			"hearts" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "Salary up $1000 x roll of 1 die",
+			"specialProcessing" : {
+				"type" : "salary_increase",
+				"dice" : 1,
+				"amount" : 1000
+			}
+		},
+		{
+			"number" : 10,
+			"background_image" : "occupation_square.png",
+			"text" : "Successful charity drive - great PR!",
+			"stars" : 0,
+			"hearts" : 2,
+			"bonus" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 11,
+			"background_image" : "occupation_square.png",
+			"text" : "Granted bonus stock options",
+			"stars" : 0,
+			"hearts" : 4,
+			"bonus" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 12,
+			"background_image" : "occupation_square.png",
+			"text" : "Named Researcher of the Year at QCE conference",
+			"stars" : 4,
+			"hearts" : 6, 
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "Salary up $3000",
+			"specialProcessing" : {
+				"type" : "salary_increase",
+				"amount" : 3000
+			}
+		}
+	]
+}

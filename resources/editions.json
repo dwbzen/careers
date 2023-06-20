@@ -1,5 +1,5 @@
 {
-	"editions" : [ "Hi-Tech", "UK", "JazzAge"],
+	"editions" : [ "Hi-Tech", "Professions-Hi-Tech", "UK", "JazzAge", "TimeMachine-JazzAge"],
 	
 	"Hi-Tech" : {
 			"version" : "0.1.5",
@@ -22,10 +22,10 @@
 					"initial_cash" : 2000
 			}
 	},
-	"Hi-Tech_Careers": {
+	"Professions-Hi-Tech": {
 			"version" : "0.2",
-			"full_name" : "Hi-Tech Careers Edition",
-			"edition_name" : "HiTechCareers",
+			"full_name" : "Professions: Hi-Tech Edition",
+			"edition_name" : "HiTecProfessions",
 			"Help" : "Hig-Tech Edition Rule Book_v2.pdf",
 			"Game Parameters" : "gameParameters.json",
 			"Opportunity Cards" : "opportunityCards.json",
@@ -56,7 +56,7 @@
 			"Layout" : "gameLayout.json",
 			"Rules" : "rules.json",
 			"plugins" : {
-				"careers.game.plugins.careers_All_Strategy" : {"classname" : "Careers_All_Strategy", "active":1, "context":"turn"  },
+				"careers.game.plugins.careers_All_Strategy" : {"classname" : "Careers_All_Strategy", "active":1, "context":"turn", "strategy_level":"dumb" },
 				"careers.game.plugins.careers_All_Randomizer" : {"classname" : "Careers_All_Randomizer", "active":1, "context":"start" }
 			},
 			"configuration" : {
@@ -77,12 +77,34 @@
 			"Layout" : "gameLayout.json",
 			"Rules" : "rules.json",
 			"plugins" : {
-				"careers.game.plugins.careers_All_Strategy" : {"classname" : "Careers_All_Strategy", "active":1, "context":"turn"  },
+				"careers.game.plugins.careers_All_Strategy" : {"classname" : "Careers_All_Strategy", "active":1, "context":"turn", "strategy_level":"dumb" },
 				"careers.game.plugins.careers_All_Randomizer" : {"classname" : "Careers_All_Randomizer", "active":1, "context":"start" }
 			},
 			"configuration" : {
 					"starting_salary" : 1000,
 					"initial_cash" : 1000
 			}	
-	}	
+	},
+	"TimeMachine-JazzAge" : {
+			"version" : "0.0.1",
+			"full_name" : "Time Machine: Jazz Age Edition",
+			"edition_name" : "JazzAge",
+			"Help" : "Rule Book - Jazz Age.pdf",
+			"Game Parameters" : "gameParameters.json",
+			"Opportunity Cards" : "opportunityCards.json",
+			"Experience Cards" : "experienceCards.json",
+			"Occupations" : "occupations.json",
+			"Players" : "players.json",
+			"Layout" : "gameLayout.json",
+			"Rules" : "rules.json",
+			"plugins" : {
+				"careers.game.plugins.careers_All_Strategy" : {"classname" : "Careers_All_Strategy", "active":1, "context":"turn", "strategy_level":"dumb"  },
+				"careers.game.plugins.careers_All_Randomizer" : {"classname" : "Careers_All_Randomizer", "active":1, "context":"start" }
+			},
+			"configuration" : {
+					"starting_salary" : 1000,
+					"initial_cash" : 1000
+			}	
+	}
+
 }

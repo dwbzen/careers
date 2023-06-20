@@ -9,17 +9,10 @@ from game.player import Player
 from game.commandResult import CommandResult
 from game.gameConstants import SpecialProcessingType
 from game.opportunityCard import OpportunityType
-from game.gameConstants import BorderSquareType
+from game.gameConstants import BorderSquareType, TravelClass
 
 from typing import  List
-from enum import Enum
 import json
-    
-class TravelClass(str, Enum):
-    RAIL = 'rail'
-    UNDERGROUND = 'underground'    # UK edition
-    SUBWAY = 'subway'              # all US editions
-    
 
 class BorderSquare(GameSquare):
     """Encapsulates a Careers game border (non-occupation) square.

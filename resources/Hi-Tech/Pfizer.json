@@ -6,6 +6,7 @@
 		"background_image" : "occupation_entrance.png",
 		"image" : "Pfizer logo.jpg",
 		"entry_fee" : 10000,
+		"prior_experience" : 1,
 		"size" : 19,
 		"entrance_square_number" : 36,
 		"exit_square_number" : 37,
@@ -13,6 +14,28 @@
 		"degreeRequirements" : { 
 			"degreeName" : "Pharmacy",
 			"numberRequired" : 2
+		},
+		"ranking" : {
+			"points" : 3,
+			"stars" : 3,
+			"hearts" : 2,
+			"cash" : 4,
+			"salary" : 5
+		},
+		"cards" : {
+			"experience" : 2,
+			"opportunity" : 1
+		},
+		"srategy" : {
+			"danger_squares" : 3,
+			"recommended_padding" : 5
+		},
+		"points" : {
+			"cash" : 8,
+			"stars" : 34,
+			"hearts" : 23,
+			"salary" : 4,
+			"totalPoints" : 65
 		}
 	},
 	"occupationSquares" : [
@@ -31,7 +54,7 @@
 		{
 			"number" : 1,
 			"background_image" : "occupation_square.png",
-			"text" : "Healthy lifestyle",
+			"text" : "Promote a healthy lifestyle",
 			"stars" : 0,
 			"hearts" : 6,
 			"bonus" : 0,
@@ -43,7 +66,7 @@
 		{
 			"number" : 2,
 			"background_image" : "occupation_square.png",
-			"text" : "Super-smart, may take shortcut",
+			"text" : "Super-smart. May take shortcut",
 			"type" : "shortcut_square",
 			"image" : "shortcut_emoji.png",
 			"stars" : 0,
@@ -62,7 +85,7 @@
 		{
 			"number" : 3,
 			"background_image" : "occupation_square.png",
-			"text" : "Story about you on CNN",
+			"text" : "Story about you on BBC America",
 			"stars" : 4,
 			"hearts" : 4,
 			"bonus" : 0,
@@ -86,21 +109,22 @@
 		{
 			"number" : 5,
 			"background_image" : "occupation_square.png",
-			"text" : "Publish research paper",
+			"text" : "record profits mean bonuses for all!",
 			"stars" : 0,
 			"hearts" : 0, 
 			"experience" : 0,
 			"opportunities" : 0,
-			"action_text" : "Collect bonus $4000",
+			"action_text" : "Collect $1,000 x roll of 1 die",
 			"specialProcessing" : {
-				"type" : "bonus",
-				"amount" : 4000
+				"type" : "bonus_all",
+				"die" : 1,
+				"amount" : 1000
 			}
 		},		
 		{
 			"number" : 6,
 			"background_image" : "occupation_square.png",
-			"text" : "On sabbatical to Pfizer UK",
+			"text" : "Take a sabbatical to Pfizer UK",
 			"stars" : 2,
 			"hearts" : 3,
 			"bonus" : 0,
@@ -112,7 +136,7 @@
 		{
 			"number" : 7,
 			"background_image" : "danger_occupation_square.png",
-			"text" : "Vaccine has weird side-effects",
+			"text" : "Vaccine has weird & unexpected side-effects",
 			"type" : "danger_square",
 			"stars" : 0,
 			"hearts" : 0,
@@ -144,7 +168,7 @@
 			"hearts" : 0,
 			"experience" : 0,
 			"opportunities" : 0,
-			"action_text" : "Salary up $1000",
+			"action_text" : "Salary up $1,000",
 			"specialProcessing" : {
 				"type" : "salary_increase",
 				"amount" : 1000
@@ -196,7 +220,7 @@
 		{
 			"number" : 13,
 			"background_image" : "occupation_square.png",
-			"text" : "Tour CDC",
+			"text" : "Celebrity tour of CDC",
 			"stars" : 0,
 			"hearts" : 4,
 			"bonus" : 0,
@@ -231,7 +255,7 @@
 			"hearts" : 0, 
 			"experience" : 0,
 			"opportunities" : 0,
-			"action_text" : "Collect bonus $5000",
+			"action_text" : "Collect bonus $5,000",
 			"specialProcessing" : {
 				"type" : "bonus",
 				"amount" : 5000
@@ -274,7 +298,7 @@
 			"hearts" : 0, 
 			"experience" : 0,
 			"opportunities" : 0,
-			"action_text" : "Salary up $3000",
+			"action_text" : "Salary up $3,000",
 			"specialProcessing" : {
 				"type" : "salary_increase",
 				"amount" : 3000

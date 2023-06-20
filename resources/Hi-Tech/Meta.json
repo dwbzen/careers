@@ -1,24 +1,40 @@
 {
-	"name" : "Facebook",
+	"name" : "Meta",
 	"configuration" : {
 		"occupationClass" : "occupation",
-		"fullName" : "Facebook",
+		"fullName" : "Meta",
 		"background_image" : "occupation_entrance.png",
-		"image" : "facebook logo.jpg",
+		"image" : "Meta-Logo.jpg",
 		"entry_fee" : 500,
+		"prior_experience" : 1,
 		"size" : 11,
 		"entrance_square_number" : 27,
 		"exit_square_number" : 31,
-		"text" : "Must have: $2000 for a new laptop; or Business Admin degree; or Facebook experience",
+		"text" : "Must have: $2,000 for a new laptop, or Business Admin degree, or Meta experience",
 		"degreeRequirements" : { 
 			"degreeName" : "Business Admin",
 			"numberRequired" : 1
+		},
+		"ranking" : {
+			"points" : 7,
+			"stars" : 4,
+			"hearts" : 10,
+			"cash" : 7,
+			"salary" : 4
+		},
+		"cards" : {
+			"experience" : 1,
+			"opportunity" : 2
+		},
+		"srategy" : {
+			"danger_squares" : 2,
+			"recommended_padding" : 3
 		},
 		"points" : {
 			"cash" : 4,
 			"stars" : 22,
 			"hearts" : 6,
-			"salary" : 2,
+			"salary" : 5,
 			"totalPoints" : 34
 		}
 	},

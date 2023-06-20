@@ -1,0 +1,188 @@
+{
+	"name" : "PatentAttorney",
+	"configuration" : {
+		"occupationClass" : "occupation",
+		"fullName" : "Patent Attorney",
+		"background_image" : "occupation_entrance.png",
+		"image" : "Patent Attorney.jpg",
+		"entry_fee" : 8000,
+		"prior_experience" : 1,
+		"size" : 12,
+		"entrance_square_number" : 24,
+		"exit_square_number" : 25,
+		"text" : "Must have: $8,000 for bar exam prep, or Law Board Certification, or Patent Attorney experience",
+		"degreeRequirements" : { 
+			"degreeName" : "Law",
+			"numberRequired" : 2
+		},
+		"points" : {
+			"cash" : 5,
+			"stars" : 38,
+			"hearts" : 6,
+			"salary" : 6,
+			"totalPoints" : 49
+		}
+	},
+	"occupationSquares" : [
+		{
+			"number" : 0,
+			"background_image" : "danger_occupation_square.png",
+			"text" : "Failed the Bar exam. Again!",
+			"type" : "danger_square",
+			"stars" : 0,
+			"hearts" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "Go to Unemployment",
+			"specialProcessing" : {
+				"type" : "travel_border",
+				"next_square" : "Unemployment"
+			}
+		},
+		{
+			"number" : 1,
+			"background_image" : "occupation_square.png",
+			"text" : "Attend this year's Intellectual Property Owners Association (IPO) Annual Meeting",
+			"stars" : 0,
+			"hearts" : 0,
+			"experience" : 0,
+			"opportunities" : 2,
+			"action_text" : "Draw 2 OPPORTUNITY CARDS",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 2,
+			"background_image" : "occupation_square.png",
+			"text" : "Brilliant keynote address at The Licensing Executives Society (LES) meeting",
+			"stars" : 4,
+			"hearts" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 3,
+			"background_image" : "occupation_square.png",
+			"text" : "You pass the USPTO (patent bar) exam first try",
+			"stars" : 0,
+			"hearts" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "Salary up $2,000",
+			"specialProcessing" : {
+				"type" : "salary_increase",
+				"amount" : 2000
+			}
+		},
+		{
+			"number" : 4,
+			"background_image" : "occupation_square.png",
+			"text" : "Grueling consultation with a difficult client",
+			"stars" : 0,
+			"hearts" : 0,
+			"bonus" : 0,
+			"experience" : 2,
+			"opportunities" : 0,
+			"action_text" : "Draw 2 EXPERIENCE CARDS",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 5,
+			"background_image" : "occupation_square.png",
+			"text" : "Your 'Patents and You' textbook to be used at PPI",
+			"stars" : 6,
+			"hearts" : 2,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 6,
+			"background_image" : "occupation_square.png",
+			"text" : "Publish in PPI Law Review",
+			"stars" : 2,
+			"hearts" : 4,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 7,
+			"background_image" : "occupation_square.png",
+			"text" : "May backstab shady colleague(s)",
+			"type" : "action_square",
+			"stars" : 0,
+			"hearts" : -4,
+			"bonus" : 0,
+			"experience" : 2,
+			"opportunities" : 0,
+			"action_text" : "You lose 4 Hearts. They lose 12 Hearts.",
+			"specialProcessing" : {
+				"type" : "backstab",
+				"pending_action" : "backstab",
+				"amount" : -12,
+				"of" : "hearts"
+			}
+		},
+		{
+			"number" : 8,
+			"background_image" : "occupation_square.png",
+			"text" : "Honored at The International Trademark Association (INTA) meeting",
+			"stars" : 8,
+			"hearts" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 9,
+			"background_image" : "occupation_square.png",
+			"text" : "Your law office has another very profitable year",
+			"stars" : 6,
+			"hearts" : 0, 
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "Collect bonus $5,000",
+			"specialProcessing" : {
+				"type" : "bonus",
+				"amount" : 5000
+			}
+		},
+		{
+			"number" : 10,
+			"background_image" : "danger_occupation_square.png",
+			"text" : "Your  cease-and-desist order is a social media joke",
+			"type" : "danger_square",
+			"stars" : 0,
+			"hearts" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "Lose 10% x roll of 1 die of your fame",
+			"specialProcessing" : {
+				"type" : "fame_loss",
+				"amount" : 0,
+				"percent" : 0.1,
+				"die" : 1,
+				"of" : "fame"
+			}
+		},
+		{
+			"number" : 11,
+			"background_image" : "occupation_square.png",
+			"text" : "Receive AV Preeminent peer review rating",
+			"stars" : 12,
+			"hearts" : 0, 
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "Salary up $4,000",
+			"specialProcessing" : {
+				"type" : "salary_increase",
+				"amount" : 4000
+			}
+		}
+	]
+}

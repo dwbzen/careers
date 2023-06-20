@@ -1,0 +1,32 @@
+{
+	"Help" : "This file has the keys to individual occupation files for the Pfofessions Hi-Tech Edition. Occupations listed in order as they appear on the board.",
+	"occupation_square_types_list" : [
+		"danger_square", "shortcut_square", "action_square", "regular_square", "travel_square"
+	],
+	"occupation_square_types" : [
+	    {
+			"type" : "danger_square",
+			"Help" : "A square where the player can expect to lose points (cash, fame or happiness) or a salary cut."
+		},
+		{
+			"type" : "shortcut_square",
+			"Help" : "A square where the player can choose which patch to follow."			
+		},
+	    {
+			"type" : "action_square",
+			"Help" : "Perform a non-movement action."
+		},
+	    {
+			"type" : "regular_square",
+			"Help" : "A square that awards one or more hearts, stars, Opportunity cards, and/or Experience cards."
+		},
+	    {
+			"type" : "travel_square",
+			"Help" : "Travel by rail on Amtrak."
+		}
+	],
+	"occupations" : [
+		" AerospaceEngineering", "VentureCapitalist", "PPI", "QuantumComputing", 
+		"BroadcastJournalism", "TechEntrepreneur", "PatentAttorney", "VideoGameDevelopment", "AIResearch", "PharmaceuticalScience"
+	]
+}

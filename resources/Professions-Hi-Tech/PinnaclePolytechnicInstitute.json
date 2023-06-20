@@ -1,0 +1,169 @@
+{
+	"name" : "PPI",
+	"configuration" : {
+		"occupationClass" : "college",
+		"fullName" : "Pinnacle Polytechnic Institute",
+		"background_image" : "occupation_entrance.png",
+		"image" : "hi-tech_university_futuristic.png",
+		"entry_fee" : 500,
+		"prior_experience" : 0,
+		"size" : 11,
+		"entrance_square_number" : 7,
+		"exit_square_number" : 11,
+		"text" : "Must have $500 tuition. Degrees available:\nAerospace Engineering, Artificial Intelligence, Business Admininstration, Computer Science, Journalism, Law, Pharmacology, Software Engineering\n",
+		"Help" : [ "Each Degree Program is with a specific profession. maxDegrees is the maximum number of degrees attainable in any degree program." ],
+		"points" : {
+			"cash" : 0,
+			"stars" : 12,
+			"hearts" : 12,
+			"salary" : 2,
+			"totalPoints" : 24
+		}
+	},
+	"occupationSquares" : [
+		{
+			"number" : 0,
+			"background_image" : "occupation_square.png",
+			"text" : "Injured on the Lacrosse field",
+			"image" : "",
+			"stars" : 0,
+			"hearts" : 0,
+			"bonus" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "Lose next turn",
+			"specialProcessing" :  {
+				"type" : "lose_next_turn"
+			}
+		},
+		{
+			"number" : 1,
+			"background_image" : "occupation_square.png",
+			"text" : "Join Board Games Society",
+			"image" : "",
+			"stars" : 0,
+			"hearts" : 2,
+			"bonus" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 2,
+			"background_image" : "occupation_square.png",
+			"text" : "Super-smart, may take shortcut",
+			"type" : "shortcut_square",
+			"image" : "shortcut_emoji.png",
+			"stars" : 0,
+			"hearts" : 0,
+			"bonus" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : {
+				"type" : "shortcut",
+				"pending_action" : "take_shortcut",
+				"next_square" : 9,
+				"next_square_text" : "AI midterm exam top score"
+			}
+		},
+		{
+			"number" : 3,
+			"background_image" : "occupation_square.png",
+			"text" : "Publish 'History of Generative AI' research paper",
+			"image" : "",
+			"stars" : 4,
+			"hearts" : 0,
+			"bonus" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 4,
+			"background_image" : "occupation_square.png",
+			"text" : "Partner has great connections",
+			"stars" : 0,
+			"hearts" : 0,
+			"experience" : 0,
+			"opportunities" : 2,
+			"action_text" : "Draw 2 OPPORTUNITY CARDS",
+			"specialProcessing" : {}
+		},		
+		{
+			"number" : 5,
+			"background_image" : "danger_occupation_square.png",
+			"text" : "Flunk out - too much partying",
+			"type" : "danger_square",
+			"stars" : 0,
+			"hearts" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "Pay $5,000 for tutoring OR go to Unemployment",
+			"specialProcessing" : {
+				"type" : "cash_loss_or_unemployment",
+				"pending_action" : "cash_loss_or_unemployment",
+				"amount" : 5000,
+				"of" : "cash"
+			}
+		},
+		{
+			"number" : 6,
+			"background_image" : "occupation_square.png",
+			"text" : "Represent PPI on Jeopardy and win!",
+			"stars" : 2,
+			"hearts" : 4,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 7,
+			"background_image" : "occupation_square.png",
+			"text" : "Take advanced Natural Language Processing seminar",
+			"stars" : 0,
+			"hearts" : 0,
+			"bonus" : 0,
+			"experience" : 2,
+			"opportunities" : 0,
+			"action_text" : "Draw 2 EXPERIENCE CARDS",
+			"specialProcessing" : {}
+		},		
+		{
+			"number" : 8,
+			"background_image" : "occupation_square.png",
+			"text" : "Great party in Quantum Court",
+			"stars" : 0,
+			"hearts" : 6,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 9,
+			"background_image" : "occupation_square.png",
+			"text" : "AI midterm exam top score",
+			"stars" : 0,
+			"hearts" : 0,
+			"experience" : 0,
+			"opportunities" : 2,
+			"action_text" : "Draw 2 OPPORTUNITY CARDS",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 10,
+			"background_image" : "occupation_square.png",
+			"text" : "You have 500K followers on Twitter",
+			"stars" : 6,
+			"hearts" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : {	}
+		}
+	]
+}

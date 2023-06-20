@@ -116,7 +116,7 @@
 				"type" : "action_square",
 				"background_image" : "light blue action square.png",
 				"text" : "Tech Convention",
-				"action_text" : "May spend up to 1 year's annual salary for the latest gaming system.\nScore 1 Heart for each $1000 spend,\nor lose 1 for 'just looking'",
+				"action_text" : "May spend up to 1 year's annual salary for the latest gaming system. Score 1 Heart for each $1000 spend, or lose 1 for 'just looking'",
 				"specialProcessing" : {
 					"type" : "buy_hearts",
 					"pending_action" : "buy_hearts",
@@ -404,7 +404,7 @@
 				"background_image" : "light blue action square.png",
 				"image" : "Insurance1.jpg",
 				"text" : "Insurance Store",
-				"action_text" : "May purchase insurance to protect your cash,\nHappiness and Fame from catastrophic loss.\nCost of coverage is $5,000.",
+				"action_text" : "May purchase insurance to protect your cash, Happiness and Fame from catastrophic loss. Cost of coverage is $5,000.",
 				"specialProcessing" : { 
 					"type" : "buy_insurance",
 					"pending_action" : "buy_insurance",
@@ -458,7 +458,7 @@
 				"background_image" : "occupation_entrance_square.png",
 				"image" : "alphabet logo_small.jpg",
 				"text" : "Alphabet",
-				"action_text" : "Must have: $4000 for Cloud training, or a Marketing degree, or Alphabet experience.",
+				"action_text" : "Must have: $4,000 for Cloud training, or a Marketing degree, or Alphabet experience.",
 				"specialProcessing" : {
 					"type" : "enter_occupation",
 					"destinationOccupation" : "Alphabet"

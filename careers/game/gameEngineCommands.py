@@ -113,18 +113,23 @@ class GameEngineCommands(object):
         
         message =  f"Okay to enter {occupation.entry_text}"
         #
-        # check occupation record for prior trips through 
+        # check occupation record for prior trips through
+        # if prior_experience is 0, the entrance fee must be paid each time
         #
-        if occupation.name in player.occupation_record and player.occupation_record[occupation.name] > 0:
+        if occupation.name in player.occupation_record and \
+            player.occupation_record[occupation.name] > 0 and \
+            occupation.prior_experience > 0:
             return (True, 0, message, occupation.name)
         #
         # check degree requirements
+        # an occupation may not have an associated degree
         #
-        degreeRequirements = occupation.degreeRequirements
-        degreeName = degreeRequirements['degreeName']
-        numberRequired = degreeRequirements['numberRequired']
-        if degreeName in player.my_degrees and player.my_degrees[degreeName] >= numberRequired:
-            return (True, 0, message, occupation.name)        # can enter for free
+        if occupation.degreeRequirements is not None:
+            degreeRequirements = occupation.degreeRequirements
+            degreeName = degreeRequirements['degreeName']
+            numberRequired = degreeRequirements['numberRequired']
+            if degreeName in player.my_degrees and player.my_degrees[degreeName] >= numberRequired:
+                return (True, 0, message, occupation.name)        # can enter for free
         #
         # is the player using a  "All expenses paid" Opportunity card ?
         #
