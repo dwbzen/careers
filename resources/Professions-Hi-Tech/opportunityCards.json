@@ -50,7 +50,7 @@
 			"destination" : "VentureCapitalist",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
-			"text" : "OPPORTUNITY to join VentureCapitalist\nMeet Normal Requirements",
+			"text" : "OPPORTUNITY to become a VentureCapitalist. Meet Normal Requirements.",
 			"quantity" : 3
 		},
 		{
@@ -59,142 +59,142 @@
 			"destination" : "QuantumComputing",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
-			"text" : "OPPORTUNITY to join QuantumComputing\nMeet Normal Requirements",
+			"text" : "OPPORTUNITY to work in QuantumComputing. Meet Normal Requirements.",
 			"quantity" : 3
 		},
 		{
 			"number" : 2,
 			"card_type" : "occupation",
-			"destination" : "Pfizer",
+			"destination" : "PharmaceuticalSciences",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
-			"text" : "OPPORTUNITY to join Pfizer\nMeet Normal Requirements",
+			"text" : "OPPORTUNITY to work in the Pharmaceutical Sciences. Meet Normal Requirements.",
 			"quantity" : 3
 		},
 		{
 			"number" : 3,
 			"card_type" : "occupation",
-			"destination" : "SpaceX",
+			"destination" : "AerospaceEngineering",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
-			"text" : "OPPORTUNITY to join SpaceX\nMeet Normal Requirements",
+			"text" : "OPPORTUNITY to work in Aerospace Engineering. Meet Normal Requirements.",
 			"quantity" : 2
 		},
 		{
 			"number" : 4,
 			"card_type" : "occupation",
-			"destination" : "SpaceX",
+			"destination" : "AerospaceEngineering",
 			"expenses_paid" : 1,
 			"double_happiness" : 0,
-			"text" : "SPECIAL OPPORTUNITY to join SpaceX because of your technical brilliance.\nAll expenses paid and no prior experience required.",
+			"text" : "SPECIAL OPPORTUNITY to work in Aerospace Engineering because of your technical brilliance. All expenses paid and no prior experience required.",
 			"quantity" : 1		
 		},
 		{
 			"number" : 5,
 			"card_type" : "occupation",
-			"destination" : "Pixar",
+			"destination" : "TechEntrepreneur",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
-			"text" : "OPPORTUNITY to join Pixar\nMeet Normal Requirements",
+			"text" : "OPPORTUNITY to be a Tech Entrepreneur. Meet Normal Requirements.",
 			"quantity" : 2
 		},
 		{
 			"number" : 6,
 			"card_type" : "occupation",
-			"destination" : "Pixar",
+			"destination" : "TechEntrepreneur",
 			"expenses_paid" : 0,
 			"double_happiness" : 1,
-			"text" : "SPECIAL OPPORTUNITY to join Disney because of your Magic touch.\nDOUBLE all Happiness earned\nMeet Normal Requirements",
+			"text" : "SPECIAL OPPORTUNITY to be a Tech Entrepreneur because of your technical background. DOUBLE all Happiness earned. Meet Normal Requirements.",
 			"quantity" : 2
 		},
 		{
 			"number" : 7,
 			"card_type" : "occupation",
-			"destination" : "Alphabet",
+			"destination" : "AIResearch",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
-			"text" : "OPPORTUNITY to join Alphabet\nMeet Normal Requirements",
+			"text" : "OPPORTUNITY to join AI Research team. Meet Normal Requirements",
 			"quantity" : 2
 		},
 		{
 			"number" : 8,
 			"card_type" : "occupation",
-			"destination" : "Alphabet",
+			"destination" : "AIResearch",
 			"expenses_paid" : 1,
 			"double_happiness" : 0,
-			"text" : "SPECIAL OPPORTUNITY to join Alphabet because of your technical brilliance. \nAll expenses paid and no prior experience required.",
+			"text" : "SPECIAL OPPORTUNITY to join AI Research team because of your technical brilliance. All expenses paid and no prior experience required.",
 			"quantity" :1			
 		},
 		{
 			"number" : 9,
 			"card_type" : "occupation",
-			"destination" : "Meta",
+			"destination" : "VideoGameDevelopment",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
-			"text" : "OPPORTUNITY to join Meta\nMeet Normal Requirements",
+			"text" : "OPPORTUNITY to work in Video Game Development. Meet Normal Requirements",
 			"quantity" : 2
 		},
 		{
 			"number" : 10,
 			"card_type" : "occupation",
-			"destination" : "Meta",
+			"destination" : "VideoGameDevelopment",
 			"expenses_paid" : 1,
 			"double_happiness" : 0,
-			"text" : "SPECIAL OPPORTUNITY to join Meta  because of your problem solving skills.\nAll expenses paid and no prior experience required.",
+			"text" : "SPECIAL OPPORTUNITY to work in Video Game Development because of your problem solving skills. All expenses paid and no prior experience required.",
 			"quantity" : 1		
 		},
 		{
 			"number" : 11,
 			"card_type" : "occupation",
-			"destination" : "ESPN",
+			"destination" : "BroadcastJournalism",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
-			"text" : "OPPORTUNITY to join ESPN\nMeet Normal Requirements",
+			"text" : "OPPORTUNITY to work in Broadcast Journalism. nMeet Normal Requirements",
 			"quantity" : 2
 		},
 		{
 			"number" : 12,
 			"card_type" : "occupation",
-			"destination" : "ESPN",
+			"destination" : "BroadcastJournalism",
 			"expenses_paid" : 1,
 			"double_happiness" : 0,
-			"text" : "SPECIAL OPPORTUNITY to join ESPN  because of your sports knowledge.\nAll expenses paid and no prior experience required.",
+			"text" : "SPECIAL OPPORTUNITY to work in Broadcast Journalism because of your global perspective. All expenses paid and no prior experience required.",
 			"quantity" : 1
 		},
 		{
 			"number" : 13,
 			"card_type" : "occupation",
-			"destination" : "MIT",
+			"destination" : "PPI",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
-			"text" : "OPPORTUNITY to enter the Massachusetts Institute of Technology\nMeet Normal Requirements",
+			"text" : "OPPORTUNITY to enter Pinnacle Polytechnic Institute. Meet Normal Requirements.",
 			"quantity" : 3
 		},
 		{
 			"number" : 14,
 			"card_type" : "occupation",
-			"destination" : "UF",
+			"destination" : "PPI",
 			"expenses_paid" : 1,
 			"double_happiness" : 0,
-			"text" : "SPECIAL OPPORTUNITY to enter MIT on Scholarship, all expenses paid.",
+			"text" : "SPECIAL OPPORTUNITY to enter Pinnacle Polytechnic Institute on Scholarship, all expenses paid.",
 			"quantity" : 2
 		},
 		{
 			"number" : 15,
 			"card_type" : "occupation",
-			"destination" : "ListerAndBacon",
+			"destination" : "PatentAttorney",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
-			"text" : "OPPORTUNITY to join Lister & Bacon\nMeet Normal Requirements",
+			"text" : "OPPORTUNITY to be a Patent Attorney. Meet Normal Requirements",
 			"quantity" : 2
 		},
 		{
 			"number" : 16,
 			"card_type" : "occupation",
-			"destination" : "ListerAndBacon",
+			"destination" : "PatentAttorney",
 			"expenses_paid" : 1,
 			"double_happiness" : 0,
-			"text" : "SPECIAL OPPORTUNITY to join Lister & Bacon because of your legal reputation\nAll expenses paid.",
+			"text" : "SPECIAL OPPORTUNITY to be a Patent Attorney because of your legal reputation. All expenses paid.",
 			"quantity" : 1
 		},
 		{
@@ -203,7 +203,7 @@
 			"destination" : "",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
-			"text" : "GOLDEN  OPPORTUNITY to join the Company of your choice\nMeet Normal Requirements",
+			"text" : "GOLDEN  OPPORTUNITY to join the Profession of your choice. Meet Normal Requirements.",
 			"quantity" : 2,
 			"special_processing" : {
 				"type" : "choose_occupation",
@@ -217,7 +217,7 @@
 			"destination" : "",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
-			"text" : "GOLDEN  OPPORTUNITY to advance to ANY border square\n*meet normal requirements for Occupation or College entrance*",
+			"text" : "GOLDEN  OPPORTUNITY to advance to ANY border square. Meet normal requirements for Profession or College entrance*",
 			"quantity" : 2,
 			"special_processing" : {
 				"type" : "choose_destination",
@@ -231,7 +231,7 @@
 			"destination" : "BuyInsurance",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
-			"text" : "OPPORTUNITY to buy Insurance\nAdvance to the Insurance Store and pay $5,000 premium",
+			"text" : "OPPORTUNITY to buy Insurance. Advance to the Insurance Store and pay $5,000 premium.",
 			"quantity" : 4,
 			"special_processing" : {
 				"type" : "buy_insurance"
@@ -252,7 +252,7 @@
 			"destination" : "Payday",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
-			"text" : "SPECIAL OPPORTUNITY to collect needed cash!\nAdvance to PAYDAY and collect DOUBLE your annual salary.",
+			"text" : "SPECIAL OPPORTUNITY to collect needed cash! Advance to PAYDAY and collect DOUBLE your annual salary.",
 			"quantity" : 3
 		},
 		{
@@ -261,7 +261,7 @@
 			"destination" : "GambleInVegas",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
-			"text" : "OPPORTUNITY to Gamble in Las Vegas",
+			"text" : "OPPORTUNITY to Gamble in Las Vegas.",
 			"quantity" : 3
 		},
 		{
@@ -276,10 +276,10 @@
 		{
 			"number" : 24,
 			"card_type" : "travel",
-			"destination" : "Amtrak",
+			"destination" : "rail",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
-			"text" : "TRAVEL OPPORTUNITY Advance to the nearest Amtrak Station and roll again.",
+			"text" : "TRAVEL OPPORTUNITY Advance to the nearest rail Station and roll again.",
 			"quantity" : 4
 		},
 		{
@@ -288,7 +288,7 @@
 			"destination" : "Opportunity",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
-			"text" : "OPPORTUNITY KNOCKS\nAdvance to the nearest OPPORTUNITY square and roll again",
+			"text" : "OPPORTUNITY KNOCKS. Advance to the nearest OPPORTUNITY square and roll again",
 			"quantity" : 3
 		},
 		{
@@ -298,7 +298,7 @@
 			"destination" : "",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
-			"text" : "SPECIAL OPPORTUNITY to gain EXPERIENCE!\nCollect one randomly selected EXPERIENCE card from each player.",
+			"text" : "SPECIAL OPPORTUNITY to gain EXPERIENCE! Collect one randomly selected EXPERIENCE card from each player.",
 			"quantity" : 2,
 			"special_processing" : {
 				"type" : "select_experience"
@@ -311,7 +311,7 @@
 			"destination" : "",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
-			"text" : "Get out of Unemployment free\nPlay this card to immediately leave Unemployment.",
+			"text" : "Get out of Unemployment free. Play this card to immediately leave Unemployment.",
 			"quantity" : 4
 		},
 		{
@@ -321,8 +321,17 @@
 			"destination" : "",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
-			"text" : "SPECIAL OPPORTUNITY to Get an Extra Turn\nPlay at the start of your turn",
+			"text" : "SPECIAL OPPORTUNITY to Get an Extra Turn. Play at the start of your turn.",
 			"quantity" : 6
+		},
+		{
+			"number" : 29,
+			"card_type" : "travel",
+			"destination" : "air",
+			"expenses_paid" : 0,
+			"double_happiness" : 0,
+			"text" : "TRAVEL OPPORTUNITY Advance to the nearest Airport and roll again.",
+			"quantity" : 2
 		}
 	]
 }

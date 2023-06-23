@@ -1,5 +1,6 @@
 {
-	"name" : "PPI",
+	"name" : "PinnaclePolytechnicInstitute",
+	"alternate_name" : "PIP",
 	"configuration" : {
 		"occupationClass" : "college",
 		"fullName" : "Pinnacle Polytechnic Institute",
@@ -12,6 +13,22 @@
 		"exit_square_number" : 11,
 		"text" : "Must have $500 tuition. Degrees available:\nAerospace Engineering, Artificial Intelligence, Business Admininstration, Computer Science, Journalism, Law, Pharmacology, Software Engineering\n",
 		"Help" : [ "Each Degree Program is with a specific profession. maxDegrees is the maximum number of degrees attainable in any degree program." ],
+		"ranking" : {
+			"points" : 9,
+			"stars" : 7,
+			"hearts" : 4,
+			"cash" : 10,
+			"salary" : 10,
+			"overall" : 8
+		},
+		"cards" : {
+			"experience" : 2,
+			"opportunity" : 4
+		},
+		"srategy" : {
+			"danger_squares" : 2,
+			"recommended_padding" : 3
+		},
 		"points" : {
 			"cash" : 0,
 			"stars" : 12,

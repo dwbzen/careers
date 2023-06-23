@@ -31,12 +31,13 @@ class Occupation(object):
         self._degreeRequirements = self._configuration.get('degreeRequirements', None)
         
         self._points = self._configuration.get('points', None)
+        self._alternate_name = self._configuration.get('alternate_name', self._name)
         
         # if prior_experience ==1, entrance fee waived if previous experience (i.e. occupation completion)
         # otherwise entrance fee must be paid each time
         self._prior_experience = self._configuration.get('prior_experience', 1)
         # ranking relative to other occupations/professions
-        self._ranking = self._configuration.get('ranking', {"points" : 0,"stars" : 0,"hearts" : 0, "cash" : 0, "salary" : 0})
+        self._ranking = self._configuration.get('ranking', {"points" : 0,"stars" : 0,"hearts" : 0, "cash" : 0, "salary" : 0, "overall" : 0})
         # number of potential experience and opportunity cards
         self._cards = self._configuration.get('cards', {"experience" : 0, "opportunity" : 0})
         # strategy
@@ -150,4 +151,11 @@ class Occupation(object):
     def prior_experience(self, value):
         self._prior_experience = value
         
+    @property
+    def alternate_name(self)->str:
+        return self._alternate_name
+    
+    @alternate_name.setter
+    def alternate_name(self, value):
+        self._alternate_name = value
         

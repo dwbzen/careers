@@ -1,25 +1,50 @@
 {
 	"name" : "BroadcastJournalism",
+	"alternate_name" : "Broadcast",
 	"configuration" : {
 		"occupationClass" : "occupation",
 		"fullName" : "Broadcast Journalism",
 		"background_image" : "occupation_entrance.png",
 		"image" : "broadcast_journalist_giving_a_report_from_a_war_zone.jpg",
 		"entry_fee" : 500,
+		"prior_experience" : 1,
 		"size" : 11,
 		"entrance_square_number" : 15,
 		"exit_square_number" : 16,
-		"text" :  "Must have: $500 for travel insurance, or Journalism degree or experience",
+		"text" :  "Must have: $500 for travel insurance, or Journalism degree or broadcasting experience",
 		"degreeRequirements" : { 
 			"degreeName" : "Journalism",
 			"numberRequired" : 1
+		},
+		"ranking" : {
+			"points" : 8,
+			"stars" : 8,
+			"hearts" : 8,
+			"cash" : 3,
+			"salary" : 3,
+			"overall" : 6
+		},
+		"cards" : {
+			"experience" : 2,
+			"opportunity" : 1
+		},
+		"srategy" : {
+			"danger_squares" : 2,
+			"recommended_padding" : 2
+		},
+		"points" : {
+			"cash" : 8,
+			"stars" : 12,
+			"hearts" : 8,
+			"salary" : 5,
+			"totalPoints" : 28
 		}
 	},
 	"occupationSquares" : [
 		{
 			"number" : 0,
 			"background_image" : "occupation_square.png",
-			"text" : "Visit Wide World of Sports Complex",
+			"text" : "Live stream Interview with the Pope",
 			"stars" : 0,
 			"hearts" : 4,
 			"bonus" : 0,
@@ -31,7 +56,7 @@
 		{
 			"number" : 1,
 			"background_image" : "occupation_square.png",
-			"text" : "Lunch with Tirico",
+			"text" : "Attend International Biodetection Technologies Conference",
 			"stars" : 0,
 			"hearts" : 0,
 			"experience" : 0,
@@ -42,7 +67,7 @@
 		{
 			"number" : 2,
 			"background_image" : "occupation_square.png",
-			"text" : "Appear on MNF with Suzy Kolber",
+			"text" : "Deliver keynote address at the World Machine Learning Summit",
 			"stars" : 2,
 			"hearts" : 4,
 			"experience" : 0,
@@ -53,7 +78,7 @@
 		{
 			"number" : 3,
 			"background_image" : "occupation_square.png",
-			"text" : "Sports Center Analyst",
+			"text" : "Cover Russian offensive in Kyiv",
 			"stars" : 0,
 			"hearts" : 0,
 			"bonus" : 0,
@@ -65,7 +90,7 @@
 		{
 			"number" : 4,
 			"background_image" : "occupation_square.png",
-			"text" : "Win Fantasy Football",
+			"text" : "Advance for your new book, 'AI and You'",
 			"stars" : 0,
 			"hearts" : 0,
 			"experience" : 0,
@@ -80,7 +105,7 @@
 		{
 			"number" : 5,
 			"background_image" : "danger_occupation_square.png",
-			"text" : "Hit by running back on the sideline",
+			"text" : "Injured in Turkey-Syria earthquake aftershocks",
 			"type" : "danger_square",
 			"stars" : 0,
 			"hearts" : 0,
@@ -95,7 +120,7 @@
 		{
 			"number" : 6,
 			"background_image" : "occupation_square.png",
-			"text" : "Need some opportunities quick!",
+			"text" : "Ratings are down - need some Opportunities quick!",
 			"type" : "action_square",
 			"stars" : 0,
 			"hearts" : 0,
@@ -109,7 +134,7 @@
 		{
 			"number" : 7,
 			"background_image" : "occupation_square.png",
-			"text" : "Reach 200K followers on Twitter",
+			"text" : "Reach 200K Twitter followers",
 			"stars" : 4,
 			"hearts" : 2,
 			"experience" : 0,
@@ -120,7 +145,7 @@
 		{
 			"number" : 8,
 			"background_image" : "occupation_square.png",
-			"text" : "Color commentator for WNBA",
+			"text" : "Exclusive coverage of QCE conference",
 			"stars" : 0,
 			"hearts" : 0, 
 			"experience" : 0,
@@ -134,7 +159,7 @@
 		{
 			"number" : 9,
 			"background_image" : "danger_occupation_square.png",
-			"text" : "Betting scandal",
+			"text" : "Sued for copywrite infringement",
 			"type" : "danger_square",
 			"stars" : 0,
 			"hearts" : 0,
@@ -151,7 +176,7 @@
 		{
 			"number" : 10,
 			"background_image" : "occupation_square.png",
-			"text" : "Reporter of the year",
+			"text" : "Win Pulitzer prize for AI coverage ",
 			"stars" : 6,
 			"hearts" : 0, 
 			"experience" : 0,

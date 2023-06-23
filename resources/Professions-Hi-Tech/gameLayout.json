@@ -41,7 +41,7 @@
 				"background_image" : "corner_square.png",
 				"image" : "startHereAndArrow.jpg",
 				"text" : "PAYDAY",
-				"action_text" : "Collect Salary as you pass PAYDAY\n Collect DOUBLE if you land here",
+				"action_text" : "Collect Salary as you pass PAYDAY. Collect DOUBLE if you land here.",
 				"specialProcessing" : {
 					"type" : "payday",
 					"amount" : "salary"
@@ -63,7 +63,7 @@
 				"type" : "danger_square",
 				"background_image" : "danger_border_square.png",
 				"text" : "INCOME TAX DUE",
-				"action_text" : "If salary is: $3,000 or less pay 20%\n $3,001 to $10,000 pay 40%\n $10,001 to $20,000 pay 60%\n $20,001 or more pay 90%\n of 1 years salary",
+				"action_text" : "If salary is: $3,000 or less pay 20%, $3,001 to $10,000 pay 40%, $10,001 to $20,000 pay 60%, $20,001 or more pay 90% of 1 years salary",
 				"specialProcessing" : {
 					"type" : "pay_tax",
 					"amount" : "taxTable",
@@ -93,7 +93,7 @@
 				"action_text" : "Must have: $1,000 for special training, or Business Admin degree, or VC experience",
 				"specialProcessing" : {
 					"type" : "enter_occupation",
-					"destinationOccupation" : "NVDIA"
+					"destinationOccupation" : "VentureCapitalist"
 				}
 			},
 			{
@@ -112,7 +112,7 @@
 				"type" : "action_square",
 				"background_image" : "light blue action square.png",
 				"text" : "Tech Convention",
-				"action_text" : "May spend up to 1 year's annual salary for the latest gaming system.\nScore 1 Heart for each $1000 spend,\nor lose 1 for 'just looking'",
+				"action_text" : "May spend up to 1 year's annual salary for the latest gaming system. Score 1 Heart for each $1000 spend, or lose 1 for 'just looking'",
 				"specialProcessing" : {
 					"type" : "buy_hearts",
 					"pending_action" : "buy_hearts",
@@ -123,12 +123,12 @@
 			},
 			{
 				"number" : 7,
-				"name" : "PPI",
+				"name" : "PinnaclePolytechnicInstitute",
 				"background_image" : "occupation_entrance_square.png",
 				"image" : "hi-tech_university_futuristic.png",
 				"type" : "occupation_entrance_square",
 				"text" : "Pinnacle Polytechnic Institute",
-				"action_text" :"Must have $500 tuition. Degrees available:\nAerospace Engineering, Artificial Intelligence, Business Admininstration, Computer Science, Journalism, Law, Pharmacology, Software Engineering",
+				"action_text" :"Must have $500 tuition. Degrees available: Aerospace Engineering, Artificial Intelligence, Business Admininstration, Computer Science, Journalism, Law, Pharmacology, Software Engineering",
 				"specialProcessing" : {
 					"type" : "enter_college",
 					"pending_action" : "select_degree",
@@ -449,15 +449,15 @@
 			},
 			{
 				"number" : 33,
-				"name" : "Alphabet",
+				"name" : "AIResearch",
 				"type" : "occupation_entrance_square",
 				"background_image" : "occupation_entrance_square.png",
-				"image" : "alphabet logo_small.jpg",
-				"text" : "Alphabet",
-				"action_text" : "Must have: $4000 for Cloud training, or a Marketing degree, or Alphabet experience.",
+				"image" : "a_group_of_AI_researchers_discussing_the_complex_model-1.png",
+				"text" : "AI Research",
+				"action_text" : "Must have: $4000 for neural network training, or an Artificial Intelligence degree, or AI Research experience",
 				"specialProcessing" : {
 					"type" : "enter_occupation",
-					"destinationOccupation" : "Alphabet"
+					"destinationOccupation" : "AIResearch"
 				}
 			},
 			{
@@ -484,12 +484,12 @@
 			},
 			{
 				"number" : 36,
-				"name" : "Pfizer",
+				"name" : "PharmaceuticalSciences",
 				"type" : "occupation_entrance_square",
 				"background_image" : "occupation_entrance_square.png",
-				"image" : "pfizer logo.jpg",
-				"text" : "Pfizer",
-				"action_text" : "Must have: $10,000 for special training, or Pharmacy Board Certification, or Pfizer experience",
+				"image" : "young_female_scientists_working_in_laboratory.png",
+				"text" : "Pharmaceutical Sciences",
+				"action_text" : "Must have: $10,000 for special training, or Pharmacy Board Certification, or Pharmaceutical experience",
 				"specialProcessing" : {
 					"type" : "enter_occupation",
 					"destinationOccupation" : "Pfizer"

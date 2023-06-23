@@ -1,5 +1,6 @@
 {
 	"name" : "AerospaceEngineering",
+	"alternate_name" : "Aero",
 	"configuration" : {
 		"occupationClass" : "occupation",
 		"fullName" : "Aerospace Engineering",
@@ -17,10 +18,11 @@
 		},
 		"ranking" : {
 			"points" : 1,
-			"stars" : 2,
-			"hearts" : 1,
+			"stars" : 3,
+			"hearts" : 2,
 			"cash" : 2,
-			"salary" : 7
+			"salary" : 7,
+			"overall" : 3
 		},
 		"cards" : {
 			"experience" : 2,
@@ -74,7 +76,7 @@
 			"opportunities" : 0,
 			"action_text" : "Lose ALL your HAPPINESS",
 			"specialProcessing" : {
-				"type" : "hapiness_loss",
+				"type" : "happiness_loss",
 				"amount" : 0,
 				"percent" : 1.0,
 				"of" : "hapiness"

@@ -1,5 +1,6 @@
 {
 	"name" : "PatentAttorney",
+	"alternate_name" : "PA",
 	"configuration" : {
 		"occupationClass" : "occupation",
 		"fullName" : "Patent Attorney",
@@ -14,6 +15,22 @@
 		"degreeRequirements" : { 
 			"degreeName" : "Law",
 			"numberRequired" : 2
+		},
+		"ranking" : {
+			"points" : 4,
+			"stars" : 1,
+			"hearts" : 9,
+			"cash" : 7,
+			"salary" : 2,
+			"overall" : 2
+		},
+		"cards" : {
+			"experience" : 2,
+			"opportunity" : 2
+		},
+		"srategy" : {
+			"danger_squares" : 2,
+			"recommended_padding" : 3	
 		},
 		"points" : {
 			"cash" : 5,

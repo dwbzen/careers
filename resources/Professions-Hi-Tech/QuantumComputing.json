@@ -1,5 +1,6 @@
 {
 	"name" : "QuantumComputing",
+	"alternate_name" : "Quantum",
 	"configuration" : {
 		"occupationClass" : "occupation",
 		"fullName" : "Quantum Computing",
@@ -15,12 +16,28 @@
 			"degreeName" : "Computer Science",
 			"numberRequired" : 1
 		},
+		"ranking" : {
+			"points" : 10,
+			"stars" : 9,
+			"hearts" : 7,
+			"cash" : 6,
+			"salary" : 1,
+			"overall" : 5
+		},
+		"cards" : {
+			"experience" : 3,
+			"opportunity" : 2
+		},
+		"srategy" : {
+			"danger_squares" : 2,
+			"recommended_padding" : 3
+		},
 		"points" : {
-			"cash" : 3,
+			"cash" : 6,
 			"stars" : 4,
 			"hearts" : 12,
 			"salary" : 8,
-			"totalPoints" : 19
+			"totalPoints" : 22
 		}
 	},
 	"occupationSquares" : [
@@ -55,7 +72,7 @@
 			"hearts" : 0,
 			"experience" : 0,
 			"opportunities" : 0,
-			"action_text" : "Salary up $2000",
+			"action_text" : "Salary up $2,000",
 			"specialProcessing" : {
 				"type" : "salary_increase",
 				"amount" : 2000
@@ -112,7 +129,7 @@
 			"hearts" : 0, 
 			"experience" : 0,
 			"opportunities" : 0,
-			"action_text" : "Collect bonus $3000",
+			"action_text" : "Collect bonus $3,000",
 			"specialProcessing" : {
 				"type" : "bonus",
 				"amount" : 3000
@@ -143,7 +160,7 @@
 			"bonus" : 0,
 			"experience" : 2,
 			"opportunities" : 0,
-			"action_text" : "You lose 4 Hearts\n They lose 12 Hearts",
+			"action_text" : "You lose 4 Hearts. They lose 12 Hearts",
 			"specialProcessing" : {
 				"type" : "backstab",
 				"pending_action" : "backstab",
@@ -159,7 +176,7 @@
 			"hearts" : 0,
 			"experience" : 0,
 			"opportunities" : 0,
-			"action_text" : "Salary up $1000 x roll of 1 die",
+			"action_text" : "Salary up $1,000 x roll of 1 die",
 			"specialProcessing" : {
 				"type" : "salary_increase",
 				"dice" : 1,
@@ -198,7 +215,7 @@
 			"hearts" : 6, 
 			"experience" : 0,
 			"opportunities" : 0,
-			"action_text" : "Salary up $3000",
+			"action_text" : "Salary up $3,000",
 			"specialProcessing" : {
 				"type" : "salary_increase",
 				"amount" : 3000

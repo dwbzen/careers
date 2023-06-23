@@ -197,6 +197,8 @@ class CareersGame(CareersObject):
                 # create an Occupation object for this occupation
                 occupation = Occupation(occupation_dict, game=self)
                 occupations[name] = occupation
+                if occupation.alternate_name != name:
+                    occupations[name] = occupation.alternate_name
             else:
                 occupations[name] = None
         return occupations

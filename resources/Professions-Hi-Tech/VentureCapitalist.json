@@ -1,5 +1,6 @@
 {
 	"name" : "VentureCapitalist",
+	"alternate_name" : "VC",
 	"configuration" : {
 		"occupationClass" : "occupation",
 		"fullName" : "Venture Capitalist",
@@ -10,17 +11,18 @@
 		"size" : 12,
 		"entrance_square_number" : 4,
 		"exit_square_number" : 5,
-		"text" : "Must have: $1,000 for special training, or Business Admin degree, or VC experience",
+		"text" : "Must have: $1,000 for special training, or Business Admininstration degree, or VC experience",
 		"degreeRequirements" : { 
 			"degreeName" : "Business Admininstration",
 			"numberRequired" : 1
 		},
 		"ranking" : {
-			"points" : 5,
-			"stars" : 8,
+			"points" : 6,
+			"stars" : 6,
 			"hearts" : 4,
-			"cash" : 5,
-			"salary" : 8
+			"cash" : 4,
+			"salary" : 8,
+			"overall" : 9
 		},
 		"cards" : {
 			"experience" : 1,

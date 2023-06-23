@@ -1,5 +1,6 @@
 {
 	"name" : "VideoGameDevelopment",
+	"alternate_name" : "Video",
 	"configuration" : {
 		"occupationClass" : "occupation",
 		"fullName" : "Video Game Development",
@@ -15,12 +16,28 @@
 			"degreeName" : "Software Engineering",
 			"numberRequired" : 1
 		},
+		"ranking" : {
+			"points" : 5,
+			"stars" : 4,
+			"hearts" : 10,
+			"cash" : 5,
+			"salary" : 4,
+			"overall" : 7
+		},
+		"cards" : {
+			"experience" : 1,
+			"opportunity" : 2
+		},
+		"srategy" : {
+			"danger_squares" : 2,
+			"recommended_padding" : 2
+		},
 		"points" : {
-			"cash" : 4,
+			"cash" : 7,
 			"stars" : 32,
 			"hearts" : 6,
-			"salary" : 2,
-			"totalPoints" : 38
+			"salary" : 5,
+			"totalPoints" : 45
 		}
 	},
 	"occupationSquares" : [
@@ -150,7 +167,7 @@
 			"hearts" : 0,
 			"experience" : 0,
 			"opportunities" : 0,
-			"action_text" : "Salary up $1000 x roll of 1 die",
+			"action_text" : "Salary up $1,000 x roll of 1 die",
 			"specialProcessing" : {
 				"type" : "salary_increase",
 				"dice" : 1,

@@ -26,7 +26,7 @@
 		}
 	],
 	"occupations" : [
-		" AerospaceEngineering", "VentureCapitalist", "PPI", "QuantumComputing", 
-		"BroadcastJournalism", "TechEntrepreneur", "PatentAttorney", "VideoGameDevelopment", "AIResearch", "PharmaceuticalScience"
+		"PinnaclePolytechnicInstitute", "AerospaceEngineering", "VentureCapitalist", "QuantumComputing", 
+		"BroadcastJournalism", "TechEntrepreneur", "PatentAttorney", "VideoGameDevelopment", "AIResearch", "PharmaceuticalSciences"
 	]
 }

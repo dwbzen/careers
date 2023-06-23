@@ -1,32 +1,61 @@
 {
-	"name" : "Alphabet",
+	"name" : "AIResearch",
+	"alternate_name" : "AI",
 	"configuration" : {
 		"occupationClass" : "occupation",
-		"fullName" : "Alphabet",
+		"fullName" : "AI Research",
 		"background_image" : "occupation_entrance.png",
-		"image" : "alphabet logo_small.jpg",
+		"image" : "a_group_of_AI_researchers_discussing_the_complex_model-1.png",
 		"entry_fee" : 4000,
+		"prior_experience" : 1,
 		"size" : 14,
 		"entrance_square_number" : 33,
 		"exit_square_number" : 34,
-		"text" : "Must have: $4,000 for cloud training; or Marketing degree; or Alphabet experience",
+		"text" : "Must have: $4,000 for neural network training, or an Artificial Intelligence degree, or AI Research experience",
 		"degreeRequirements" : { 
-			"degreeName" : "Marketing",
+			"degreeName" : "Artificial Intelligence",
 			"numberRequired" : 1
+		},
+		"ranking" : {
+			"points" : 2,
+			"stars" : 5,
+			"hearts" : 3,
+			"cash" : 1,
+			"salary" : 6,
+			"overall" : 1
+		},
+		"cards" : {
+			"experience" : 2,
+			"opportunity" : 2
+		},
+		"srategy" : {
+			"danger_squares" : 2,
+			"recommended_padding" : 4
+		},
+		"points" : {
+			"cash" : 30,
+			"stars" : 13,
+			"hearts" : 24,
+			"salary" : 3,
+			"totalPoints" : 67
 		}
 	},
 	"occupationSquares" : [
 		{
 			"number" : 0,
 			"background_image" : "occupation_square.png",
-			"text" : "Good team interview with Alphabet management",
-			"stars" : 0,
+			"text" : "Great work on Explainable AI (XAI)",
+			"stars" : 2,
 			"hearts" : 2,
 			"bonus" : 0,
 			"experience" : 0,
 			"opportunities" : 0,
-			"action_text" : "",
-			"specialProcessing" : {}
+			"action_text" : "Salary up $1,000 x roll of 1 die",
+			"specialProcessing" : {
+				"type" : "salary_increase",
+				"dice" : 1,
+				"amount" : 1000
+			}
 		},
 		{
 			"number" : 1,
@@ -46,13 +75,13 @@
 		{
 			"number" : 2,
 			"background_image" : "danger_occupation_square.png",
-			"text" : "Your laptop is stolen",
+			"text" : "Your fancy laptop is stolen",
 			"type" : "danger_square",
 			"stars" : 0,
 			"hearts" : 0,
 			"experience" : 0,
 			"opportunities" : 0,
-			"action_text" : "Pay $2000 OR go on Unemployment",
+			"action_text" : "Pay $2,000 OR go on Unemployment",
 			"specialProcessing" : {
 				"type" : "cash_loss_or_unemployment",
 				"pending_action" : "cash_loss_or_unemployment",
@@ -63,7 +92,7 @@
 		{
 			"number" : 3,
 			"background_image" : "occupation_square.png",
-			"text" : "Awesome pod mates",
+			"text" : "Research detection of disease biomarkers in real time",
 			"stars" : 0,
 			"hearts" : 2,
 			"bonus" : 0,
@@ -75,8 +104,8 @@
 		{
 			"number" : 4,
 			"background_image" : "occupation_square.png",
-			"text" : "Foil foreign hacking attempt",
-			"stars" : 0,
+			"text" : "Your Robot Chef learns to recreate recipes from watching food videos",
+			"stars" : 4,
 			"hearts" : 2,
 			"bonus" : 0,
 			"experience" : 0,
@@ -87,7 +116,7 @@
 		{
 			"number" : 5,
 			"background_image" : "occupation_square.png",
-			"text" : "Lead online Marketing blitz",
+			"text" : "Moderate roundtable on  CNNs",
 			"stars" : 0,
 			"hearts" : 0,
 			"bonus" : 0,
@@ -99,12 +128,12 @@
 		{
 			"number" : 6,
 			"background_image" : "occupation_square.png",
-			"text" : "Promoted to Scrum Master",
+			"text" : "Promoted to NLP Research lead",
 			"stars" : 4,
 			"hearts" : 0, 
 			"experience" : 0,
 			"opportunities" : 0,
-			"action_text" : "Salary up $3000",
+			"action_text" : "Salary up $3,000",
 			"specialProcessing" : {
 				"type" : "salary_increase",
 				"amount" : 3000
@@ -113,9 +142,9 @@
 		{
 			"number" : 7,
 			"background_image" : "occupation_square.png",
-			"text" : "Contribute to a major Python enhancement",
-			"stars" : 6,
-			"hearts" : 0,
+			"text" : "Contribute to a major PyQuil enhancement",
+			"stars" : 4,
+			"hearts" : 4,
 			"bonus" : 0,
 			"experience" : 0,
 			"opportunities" : 0,
@@ -140,14 +169,14 @@
 		{
 			"number" : 9,
 			"background_image" : "occupation_square.png",
-			"text" : "May backstab annoying colleague(s)",
+			"text" : "May backstab arrogant colleague(s)",
 			"type" : "action_square",
 			"stars" : 0,
 			"hearts" : -4,
 			"bonus" : 0,
-			"experience" : 2,
+			"experience" : 0,
 			"opportunities" : 0,
-			"action_text" : "You lose 4 Hearts\n They lose 12 Hearts",
+			"action_text" : "You lose 4 Hearts. They lose 12 Hearts",
 			"specialProcessing" : {
 				"type" : "backstab",
 				"pending_action" : "backstab",
@@ -158,12 +187,12 @@
 		{
 			"number" : 10,
 			"background_image" : "occupation_square.png",
-			"text" : "Patent AI search algorithm",
+			"text" : "Your transformer architecture revolutionizes NLP",
 			"stars" : 0,
 			"hearts" : 0, 
 			"experience" : 0,
 			"opportunities" : 0,
-			"action_text" : "Collect bonus $5000",
+			"action_text" : "Collect bonus $10,000",
 			"specialProcessing" : {
 				"type" : "bonus",
 				"amount" : 5000
@@ -172,7 +201,7 @@
 		{
 			"number" : 11,
 			"background_image" : "occupation_square.png",
-			"text" : "Successfull text-to-image beta launch",
+			"text" : "Successful text-to-video beta launch",
 			"stars" : 2,
 			"hearts" : 4,
 			"bonus" : 0,
@@ -184,7 +213,7 @@
 		{
 			"number" : 12,
 			"background_image" : "occupation_square.png",
-			"text" : "Company meeting in Reno",
+			"text" : "Company meeting in Zurich",
 			"stars" : 0,
 			"hearts" : 6,
 			"bonus" : 0,
@@ -196,7 +225,7 @@
 		{
 			"number" : 13,
 			"background_image" : "occupation_square.png",
-			"text" : "Employee of the year",
+			"text" : "Win Kaggle competition on  breast cancer detection",
 			"stars" : 0,
 			"hearts" : 0, 
 			"experience" : 0,

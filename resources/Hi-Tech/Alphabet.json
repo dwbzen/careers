@@ -20,7 +20,8 @@
 			"stars" : 6,
 			"hearts" : 5,
 			"cash" : 1,
-			"salary" : 6
+			"salary" : 6,
+			"overall" : 5
 		},
 		"cards" : {
 			"experience" : 2,

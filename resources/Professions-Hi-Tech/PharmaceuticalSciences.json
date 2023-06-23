@@ -1,25 +1,50 @@
 {
-	"name" : "Pfizer",
+	"name" : "PharmaceuticalSciences",
+	"alternate_name" : "Pharma",
 	"configuration" : {
 		"occupationClass" : "occupation",
-		"fullName" : "Pfizer",
+		"fullName" : "Pharmaceutical Sciences",
 		"background_image" : "occupation_entrance.png",
-		"image" : "Pfizer logo.jpg",
+		"image" : "young_female_scientists_working_in_laboratory.png",
 		"entry_fee" : 10000,
+		"prior_experience" : 1,
 		"size" : 19,
 		"entrance_square_number" : 36,
 		"exit_square_number" : 37,
-		"text" : "Must have: $10,000 for special training; or Pharmacy Board Certification; or Pfizer experience",
+		"text" : "Must have: $10,000 for special training, or Pharmacy Board Certification, or Pharmaceutical experience",
 		"degreeRequirements" : { 
-			"degreeName" : "Pharmacy",
+			"degreeName" : "Pharmacology",
 			"numberRequired" : 2
+		},
+		"ranking" : {
+			"points" : 5,
+			"stars" : 2,
+			"hearts" : 1,
+			"cash" : 8,
+			"salary" : 5,
+			"overall" : 4
+		},
+		"cards" : {
+			"experience" : 2,
+			"opportunity" : 1
+		},
+		"srategy" : {
+			"danger_squares" : 3,
+			"recommended_padding" : 4
+		},
+		"points" : {
+			"cash" : 4,
+			"stars" : 34,
+			"hearts" : 28,
+			"salary" : 4,
+			"totalPoints" : 66
 		}
 	},
 	"occupationSquares" : [
 		{
 			"number" : 0,
 			"background_image" : "occupation_square.png",
-			"text" : "Group lunch with CTO",
+			"text" : "Attend mRNA seminar",
 			"stars" : 0,
 			"hearts" : 0,
 			"bonus" : 0,
@@ -31,7 +56,7 @@
 		{
 			"number" : 1,
 			"background_image" : "occupation_square.png",
-			"text" : "Healthy lifestyle",
+			"text" : "Promote a healthy lifestyle",
 			"stars" : 0,
 			"hearts" : 6,
 			"bonus" : 0,
@@ -43,7 +68,7 @@
 		{
 			"number" : 2,
 			"background_image" : "occupation_square.png",
-			"text" : "Super-smart, may take shortcut",
+			"text" : "Brilliant & cocky, may take shortcut",
 			"type" : "shortcut_square",
 			"image" : "shortcut_emoji.png",
 			"stars" : 0,
@@ -56,13 +81,13 @@
 				"type" : "shortcut",
 				"pending_action" : "take_shortcut",
 				"next_square" : 17,
-				"next_square_text" : "Promising vaccine trial results"
+				"next_square_text" : "Extraordinary stem cell research buzz breaks the internet"
 			}
 		},
 		{
 			"number" : 3,
 			"background_image" : "occupation_square.png",
-			"text" : "Story about you on CNN",
+			"text" : "Story about your research on BBC America",
 			"stars" : 4,
 			"hearts" : 4,
 			"bonus" : 0,
@@ -74,7 +99,7 @@
 		{
 			"number" : 4,
 			"background_image" : "occupation_square.png",
-			"text" : "Attend mRNA seminar",
+			"text" : "Final push to get A1C drug to trial",
 			"stars" : 0,
 			"hearts" : 0,
 			"bonus" : 0,
@@ -86,23 +111,23 @@
 		{
 			"number" : 5,
 			"background_image" : "occupation_square.png",
-			"text" : "Publish research paper",
+			"text" : "Record profits mean bonuses for all!",
 			"stars" : 0,
 			"hearts" : 0, 
 			"experience" : 0,
 			"opportunities" : 0,
-			"action_text" : "Collect bonus $4000",
+			"action_text" : "Collect bonus $4,000",
 			"specialProcessing" : {
-				"type" : "bonus",
+				"type" : "bonus_all",
 				"amount" : 4000
 			}
 		},		
 		{
 			"number" : 6,
 			"background_image" : "occupation_square.png",
-			"text" : "On sabbatical to Pfizer UK",
+			"text" : "Take a sabbatical  in Japan to study jellyfish",
 			"stars" : 2,
-			"hearts" : 3,
+			"hearts" : 6,
 			"bonus" : 0,
 			"experience" : 0,
 			"opportunities" : 0,
@@ -112,7 +137,7 @@
 		{
 			"number" : 7,
 			"background_image" : "danger_occupation_square.png",
-			"text" : "Vaccine has weird side-effects",
+			"text" : "Vaccine has weird & unexpected side-effects",
 			"type" : "danger_square",
 			"stars" : 0,
 			"hearts" : 0,
@@ -127,9 +152,9 @@
 		{
 			"number" : 8,
 			"background_image" : "occupation_square.png",
-			"text" : "Develop new Alzheimers drug",
+			"text" : "Develop promising new Alzheimers drug",
 			"stars" : 6,
-			"hearts" : 2,
+			"hearts" : 4,
 			"bonus" : 0,
 			"experience" : 0,
 			"opportunities" : 0,
@@ -139,12 +164,12 @@
 		{
 			"number" : 9,
 			"background_image" : "occupation_square.png",
-			"text" : "Promoted to Research Lead",
+			"text" : "Promoted to cancer vaccine research lead",
 			"stars" : 0,
 			"hearts" : 0,
 			"experience" : 0,
 			"opportunities" : 0,
-			"action_text" : "Salary up $1000",
+			"action_text" : "Salary up $1,000",
 			"specialProcessing" : {
 				"type" : "salary_increase",
 				"amount" : 1000
@@ -165,7 +190,7 @@
 		{
 			"number" : 11,
 			"background_image" : "occupation_square.png",
-			"text" : "You have a bad feeling about this...",
+			"text" : "Congressional call for an investigation into your insulin pricing",
 			"type" : "action_square",
 			"stars" : 0,
 			"hearts" : 0,
@@ -196,7 +221,7 @@
 		{
 			"number" : 13,
 			"background_image" : "occupation_square.png",
-			"text" : "Tour CDC",
+			"text" : "Celebrity tour of the CDC",
 			"stars" : 0,
 			"hearts" : 4,
 			"bonus" : 0,
@@ -208,7 +233,7 @@
 		{
 			"number" : 14,
 			"background_image" : "occupation_square.png",
-			"text" : "May backstab colleague(s)",
+			"text" : "May backstab ambitious colleague(s)",
 			"type" : "action_square",
 			"stars" : 0,
 			"hearts" : -4,
@@ -231,7 +256,7 @@
 			"hearts" : 0, 
 			"experience" : 0,
 			"opportunities" : 0,
-			"action_text" : "Collect bonus $5000",
+			"action_text" : "Collect bonus $5,000",
 			"specialProcessing" : {
 				"type" : "bonus",
 				"amount" : 5000
@@ -240,7 +265,7 @@
 		{
 			"number" : 16,
 			"background_image" : "danger_occupation_square.png",
-			"text" : "Inappropriate behavior scandal",
+			"text" : "Caught up in opioid  epidemic scandal",
 			"type" : "danger_square",
 			"stars" : 0,
 			"hearts" : 0,
@@ -257,7 +282,7 @@
 		{
 			"number" : 17,
 			"background_image" : "occupation_square.png",
-			"text" : "Promising vaccine trial results",
+			"text" : "Extraordinary stem cell research buzz breaks the internet",
 			"stars" : 0,
 			"hearts" : 8,
 			"bonus" : 0,
@@ -269,12 +294,12 @@
 		{
 			"number" : 18,
 			"background_image" : "occupation_square.png",
-			"text" : "Researcher of the year",
+			"text" : "You make Time’s list of most influential people",
 			"stars" : 10,
 			"hearts" : 0, 
 			"experience" : 0,
 			"opportunities" : 0,
-			"action_text" : "Salary up $3000",
+			"action_text" : "Salary up $3,000",
 			"specialProcessing" : {
 				"type" : "salary_increase",
 				"amount" : 3000

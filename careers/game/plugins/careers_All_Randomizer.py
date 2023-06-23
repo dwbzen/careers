@@ -38,7 +38,7 @@ class Careers_All_Randomizer(Plugin):
         #
         # hard-coded for testing
         #
-        todos = {"occupations" : ["Meta","ESPN"], "degrees" : ["Business Admin"]}
+        todos = {"occupations" : ["VentureCapitalist","BroadcastJournalism"], "degrees" : ["Journalism"]}
         result = {"player_number":player_number, "todo":todos }
         for player in self._game_state.players:
                 player.my_todos = todos
