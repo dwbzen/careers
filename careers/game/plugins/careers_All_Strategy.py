@@ -116,7 +116,7 @@ class Careers_All_Strategy(Plugin):
         advance_cmds = self._pick_advance_commands(player)
         commands.append(advance_cmds)    # pick opportunity, experience, or roll
                 
-        commands.append("next")
+        #commands.append("next")
         return ";".join(commands)
         
     def _pick_advance_commands(self, player) ->str:

@@ -1,7 +1,7 @@
 {
 	"name" : "AerospaceEngineering",
-	"alternate_name" : "Aero",
 	"configuration" : {
+		"alternate_name" : "Aero",
 		"occupationClass" : "occupation",
 		"fullName" : "Aerospace Engineering",
 		"background_image" : "occupation_entrance.png",

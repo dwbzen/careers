@@ -1,6 +1,7 @@
 {
 	"name" : "ListerAndBacon",
 	"configuration" : {
+		"alternate_name" : "L&B",
 		"occupationClass" : "occupation",
 		"fullName" : "Lister & Bacon",
 		"background_image" : "occupation_entrance.png",

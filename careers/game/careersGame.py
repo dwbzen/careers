@@ -6,7 +6,7 @@ Created on Aug 6, 2022
 
 from game.environment import Environment
 from game.player import Player
-import json, logging, random
+import json, logging, random, copy
 from datetime import datetime
 from pathlib import Path
 from typing import Dict, List, Tuple, Union
@@ -115,11 +115,21 @@ class CareersGame(CareersObject):
         with open(self._occupations_filename, "r") as fp:
             jtxt = fp.read()
             occupations_dict = json.loads(jtxt)
+            self._occupations_dict = copy.deepcopy(occupations_dict)
             self._occupation_names = occupations_dict['occupations']
+        fp.close()
         
         # load the individual occupation files
         self._occupations = self.load_occupations()     # dictionary of Occupation instances keyed by name
-        
+        #
+        # add alternate names to occupation_names
+        #
+        for key in self._occupations.keys():
+            if key not in self._occupation_names:
+                self._occupation_names.append(key)
+            else:
+                self._occupation_names.append(key.lower())
+            
         self._turn_outcome_parameters_filename = f'{self._resource_folder}/{self._edition_name}/turnOutcomeParameters.json'
         with open(self._turn_outcome_parameters_filename, "r") as fp:
             jtxt = fp.read()
@@ -197,8 +207,11 @@ class CareersGame(CareersObject):
                 # create an Occupation object for this occupation
                 occupation = Occupation(occupation_dict, game=self)
                 occupations[name] = occupation
-                if occupation.alternate_name != name:
-                    occupations[name] = occupation.alternate_name
+                occupations[name.lower()] = occupation
+                alternate_name = occupation.alternate_name
+                if alternate_name != name:
+                    occupations[alternate_name] = occupation
+                    occupations[alternate_name.lower()] = occupation
             else:
                 occupations[name] = None
         return occupations
@@ -354,6 +367,12 @@ class CareersGame(CareersObject):
     def turn_outcome_parameters(self) -> dict:
         return self._turn_outcome_parameters
     
+    @property
+    def occupations_dict(self) ->Dict:
+        """Contents of the occupations.json resource file as a Dict
+        """
+        return self._occupations_dict
+    
     def add_player(self, aplayer:Player):
         """Adds a new Player to the game.
             This also creates a TurnHistory for the Player, and adds an initial Turn object and before player_info
@@ -461,6 +480,7 @@ class CareersGame(CareersObject):
             if square.name.lower() == name.lower():
                 bs = square
                 break
+        
         return bs
     
     def to_JSON(self) -> str:

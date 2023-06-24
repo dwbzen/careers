@@ -1,7 +1,7 @@
 {
 	"name" : "VideoGameDevelopment",
-	"alternate_name" : "Video",
 	"configuration" : {
+		"alternate_name" : "Game",
 		"occupationClass" : "occupation",
 		"fullName" : "Video Game Development",
 		"background_image" : "women_want_to_have_their_own_business_in_vr_headsets-2.png",

@@ -8,6 +8,7 @@ from game.careersGame import CareersGame
 from game.plugins.plugin import Plugin
 
 from typing import Dict
+import random
 
 class Careers_All_Randomizer(Plugin):
     '''
@@ -34,11 +35,18 @@ class Careers_All_Randomizer(Plugin):
         """TODO: Implement the plugin interface for this class
             Arguments:
                 player_number - not needed for this plugin. Default is -1, the admin player.
+            Returns: A Dict with the keys "player_number" and "todo"
+                todo is a Dict with the the keys "degrees" and "occupations"
+                degrees is a 1-element list consisting of a degree name
+                occupations is a 2-element list of occupation names
+            By rule, a player must complete the occupations and degree programs in order to win.
         """
+        occupation_names = self._careersGame.occupations_dict["occupations"]
+        degree_names = self._careersGame.college_degrees["degreePrograms"]
+        degree_name = random.sample(degree_names, 1)[0]
+        occupations = random.sample(occupation_names, 2)
         #
-        # hard-coded for testing
-        #
-        todos = {"occupations" : ["VentureCapitalist","BroadcastJournalism"], "degrees" : ["Journalism"]}
+        todos = {"occupations" : occupations, "degrees" : [degree_name]}
         result = {"player_number":player_number, "todo":todos }
         for player in self._game_state.players:
                 player.my_todos = todos

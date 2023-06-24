@@ -1,5 +1,5 @@
 {
-	"Help" : "Board layout for the Professions: Hi-Tech version.",
+	"Help" : "Board layout for the Professions: Hi-Tech Edition.",
 	"types_list" : [
 		"corner_square", "opportunity_square", "danger_square", "travel_square", "occupation_entrance_square", "action_square"
 	],
@@ -14,11 +14,11 @@
 		},
 	    {
 			"type" : "danger_square",
-			"Help" : "A square where the player can expect to lose points (cash, fame or happiness) or a salary cut."
+			"Help" : "A square where the player can expect to lose points (cash, fame or happiness) or a salary cut. A player may also be sent to the Hospital or Unemployment."
 		},
 	    {
 			"type" : "travel_square",
-			"Help" : "Travel by rail on Amtrak."
+			"Help" : "Travel by rail on Amtrak, or by air from LAX or LGA."
 		},
 	    {
 			"type" : "occupation_entrance_square",

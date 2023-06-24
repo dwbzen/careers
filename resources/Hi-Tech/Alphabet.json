@@ -1,6 +1,7 @@
 {
 	"name" : "Alphabet",
 	"configuration" : {
+		"alternate_name" : "Google",
 		"occupationClass" : "occupation",
 		"fullName" : "Alphabet",
 		"background_image" : "occupation_entrance.png",

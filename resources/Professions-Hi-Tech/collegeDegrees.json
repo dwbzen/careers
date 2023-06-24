@@ -1,5 +1,16 @@
 {
+	"Help" : "This file contains a list of degree programs, degree names and their associated salary increases. Send/enter 'help degree degree_program' for more information.",
 	"degreePrograms" : ["Aerospace Engineering", "Artificial Intelligence", "Business Admininstration", "Computer Science", "Journalism", "Law", "Pharmacology", "Software Engineering"],
+	"help_details" : [ 
+		{"Aerospace Engineering" : "TODO" },
+		{"Artificial Intelligence" : "TODO" },
+		{"Business Admininstration" : "TODO" },
+		{"Computer Science" : "TODO" },
+		{"Journalism" : "TODO" },
+		{"Law" : "TODO" }, 
+		{"Pharmacology" : "TODO" },
+		{"Software Engineering" : "TODO" }
+	],
 	"maxDegrees" : 4,
 	"salaryIncreases" : [2000, 3000, 4000, 5000],
 	"degreeNames" : ["Bachelors", "Masters", "PhD", "Post-Doc"]

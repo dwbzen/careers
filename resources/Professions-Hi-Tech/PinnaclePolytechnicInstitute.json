@@ -1,7 +1,7 @@
 {
 	"name" : "PinnaclePolytechnicInstitute",
-	"alternate_name" : "PIP",
 	"configuration" : {
+		"alternate_name" : "PPI",
 		"occupationClass" : "college",
 		"fullName" : "Pinnacle Polytechnic Institute",
 		"background_image" : "occupation_entrance.png",

@@ -1,7 +1,7 @@
 {
 	"name" : "VentureCapitalist",
-	"alternate_name" : "VC",
 	"configuration" : {
+		"alternate_name" : "VC",
 		"occupationClass" : "occupation",
 		"fullName" : "Venture Capitalist",
 		"background_image" : "occupation_entrance.png",

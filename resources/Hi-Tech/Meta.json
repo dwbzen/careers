@@ -1,6 +1,7 @@
 {
 	"name" : "Meta",
 	"configuration" : {
+		"alternate_name" : "Facebook",
 		"occupationClass" : "occupation",
 		"fullName" : "Meta",
 		"background_image" : "occupation_entrance.png",

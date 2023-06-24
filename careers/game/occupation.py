@@ -145,6 +145,9 @@ class Occupation(object):
     
     @property
     def prior_experience(self) ->int:
+        """Returns 1 if prior completion entitles a player to enter without paying the entry fee.
+            Returns 0 if the entry fee must be paid each time the occupation is entered.
+        """
         return self._prior_experience
     
     @prior_experience.setter
@@ -158,4 +161,12 @@ class Occupation(object):
     @alternate_name.setter
     def alternate_name(self, value):
         self._alternate_name = value
-        
+    
+    @property
+    def configuration(self)->Dict:
+        return self._configuration
+    
+    @property
+    def strategy(self)->Dict:
+        return self._strategy
+    

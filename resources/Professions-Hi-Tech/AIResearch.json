@@ -1,7 +1,7 @@
 {
 	"name" : "AIResearch",
-	"alternate_name" : "AI",
 	"configuration" : {
+		"alternate_name" : "AI",
 		"occupationClass" : "occupation",
 		"fullName" : "AI Research",
 		"background_image" : "occupation_entrance.png",

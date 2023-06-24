@@ -39,7 +39,7 @@ Status: **OPEN**</p>
 6. Add a player attribute that indicates the type of player: computer or human.<br>
 The end goal is to use AI (neural network) to create a "smart" computer player<br>
 by running thousands of games and feeding the results to the neural network.<br>
-Status: **OPEN**</p>
+Status: **COMPLETE**</p>
 
 7. Add Air Travel transportation squares.<br>
 In Hi-Tech version change 2 of the Amtrak squares 12 and 35 to Airlines: LAX and ATL respectively.<br>
@@ -48,7 +48,7 @@ Players landing on an Amtrak square advances to the next Amtrak station OR the c
 Players landing on LAX advances to the nearest Amtrak station (square#22) OR to a connecting flight at ATL (square #35).<br>
 Players landing on ATL advances to the nearest Amtrak station (square#3) OR to a connecting flight at LAX (square #12).<br>
 The player rolls again after reaching their destination.<br>
-Status: **OPEN** </p>
+Status: **ACTIVE** </p>
 
 8. Implement bonus all. The bonus amount is applied to the player landing on the bonus square,<br>
 and any players that are currently on  or have completed the associated career path.<br>
@@ -58,7 +58,8 @@ Status: **OPEN** </p>
 9. Refactor messaging logging.  
 Currently this is a method in CareersGameEngine. Some other classes cannot use this  
 because it would create circular dependencies.
-Status: **OPEN**  Make this a service so all classes can log.</p>
+Status: **COMPLETE**<br>
+Refactored to use python logging.</p>
 
 10. Implement turn outcome (described below).  
 Also keep a history of turns and outcomes. A player's command history is already implemented as command_history.  
@@ -67,7 +68,14 @@ For example using an Opportunity to enter a career path requires 2 commands:
 use Opportunity, followed by a roll or use experience.  
 Turn history should also include the player's status before and after the turn.  
 Also provide an API for serializing the turn history in JSON.  This could be used as input to AI training a computer player.  
-Status: **OPEN** </p>
+Status: **ACTIVE** </p>
+
+11. Added an alternate_name for each occupation in Professions-Hi-Tech edition.<br>
+Need to do the same for other editions. If not specified, the code defaults alternate_name to the name.<br>
+Also add an alternate_name to each game square. This would be done in the gameLayout file.<br>
+The alternate_name for occupation entrance squares would match the corresponding occupation alternate_name<br>
+Status: **ACTIVE** </p>
+
 
 ---
 # Computer Player

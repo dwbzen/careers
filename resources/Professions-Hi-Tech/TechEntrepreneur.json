@@ -1,7 +1,7 @@
 {
 	"name" : "TechEntrepreneur",
-	"alternate_name" : "Tech",
 	"configuration" : {
+		"alternate_name" : "Tech",
 		"occupationClass" : "occupation",
 		"fullName" : "Tech Entrepreneur",
 		"background_image" : "occupation_entrance.png",

@@ -23,12 +23,12 @@ from game.gameSquare import GameSquare, GameSquareClass
 from game.gameEngineCommands import GameEngineCommands
 from game.environment import Environment
 from game.gameState import GameState
-from game.gameConstants import PendingActionType, SpecialProcessingType, GameType, GameParametersType, PlayerType
+from game.gameConstants import PendingActionType, SpecialProcessingType, GameType, GameParametersType, PlayerType, GameConstants
 from game.turnHistory import TurnHistory
 from game.logger import Logger
 
 from datetime import datetime
-import random
+import random, json
 from typing import List
 import os, logging
 from threading import Lock
@@ -532,14 +532,14 @@ class CareersGameEngine(object):
     def _enter(self, occupation_name:str) -> CommandResult:
         return self.enter(occupation_name, internal_use=True)
         
-    def enter(self, occupation_name:str, internal_use=False) -> CommandResult:
+    def enter(self, name:str, internal_use=False) -> CommandResult:
         """Enter the named occupation at the designated square number and execute the occupation square.
             This checks if the player meets the entry conditions
             and if not, return an error with the appropriate message.
             Upon entering, the player's BoardLocation  occupation_name is set to occupation_name,
             and border_square_number = current border_square_number.
             Arguments:
-                occupation_name - the name of the occupation to enter. Case-sensitive!
+                name - the name or alternate name of the occupation to enter. Not case sensitive.
             Return:
                 CommandResult
                 
@@ -547,8 +547,9 @@ class CareersGameEngine(object):
             In production mode, the player must be on the occupation's entry square.
         """
         player = self.game_state.current_player
-        if occupation_name in self._careersGame.occupation_names:
-            occupation = self._careersGame.occupations[occupation_name]   # Occupation instance
+        if name in self._careersGame.occupation_names:
+            occupation = self._careersGame.occupations[name]   # Occupation instance
+            occupation_name = occupation.name
             occupation_entrance_square = self._careersGame.get_occupation_entrance_squares()[occupation_name]    # BorderSquare instance
             current_board_location = player.board_location
             message = None
@@ -754,9 +755,9 @@ class CareersGameEngine(object):
         #
         # Determine the winner (by points) if the game is not completed
         #
-        if not self.game_state.is_game_complete():    # nobody won yet
-             message = f'{result.message} \nthe winner is {winning_player.player_initials} with {winning_player.total_points()} points. '
-             result.message = message
+        if not self.game_state.is_game_complete():    # if no winner
+            message = f'{result.message} \nthe winner is {winning_player.player_initials} with {winning_player.total_points()} points. '
+            result.message = message
         
         return result
     
@@ -937,6 +938,57 @@ class CareersGameEngine(object):
         """
         player = self.game_state.current_player if initials is None else self.get_player(initials)
         return GameEngineCommands.list(player, what, how)
+    
+    def help(self, what:str, name:str="None", format:str="json", how:str='full') ->CommandResult:
+        """Get help on an occupation, degree program, or game square
+            Arguments: 
+                what - "occupation", "degree", "square", or "command"
+                name - the occupation, degree, square name, command name, or all.
+                    The occupation name is not case sensitive and can be the name or alternate_name.
+                format - type of display: 'json', the default, or 'text'
+                how - display control: 'full' (the default), or 'condensed'. For now, only the 'full' display is implemented.
+            Returns:
+                CommandResult.message is the help string to display.
+                For now, only the json format is supported. Specifying text will default back to json.
+        """
+        assert(format=="json" or format=="text")
+        assert(how=="full" or how=="condensed")
+        assert(name!="None")
+        return_code = CommandResult.SUCCESS
+        message = f"'help {what} {name} command not yet implemented, but soon!"
+        match(what):
+                case "occupation":
+                    if name in self._careersGame.occupation_names:
+                        occupation = self._careersGame.occupations[name]
+                        entry_text = occupation.entry_text
+                        degreeRequirements = occupation.degreeRequirements
+                        ranking = occupation.ranking
+                        points = occupation.points
+                        strategy = occupation.strategy
+                        if format=="json" or format=="text":
+                            message_dict = {"name" : occupation.name, "alternate_name" : occupation.alternate_name, "entry_text" : entry_text}
+                            message_dict.update( {"ranking" : ranking, "points" : points, "strategy" : strategy} )
+                            message = json.dumps(message_dict, indent=2)
+                        else:    # TODO - implement a text view
+                            pass
+                    else:
+                        return_code = CommandResult.ERROR
+                        message = f"No such occupation: {name}"
+                case "degree":   # TODO implement text output
+                    degreePrograms = self._careersGame.college_degrees["degreePrograms"]
+                    degrees_dict = {"degreePrograms" : degreePrograms, "help" : "Help for individual degree programs not yet implemented." }
+                    message = json.dumps(degrees_dict, indent=2)
+                case "square":
+                    message = {"help" : "Help on game squares not yet implemented."}
+                case "command":
+                    commands_dict = {"valid_commands" : GameConstants.COMMANDS, "help" : "Help for individual commands not yet implemented." }
+                    message = json.dumps(commands_dict, indent=2)
+                case _:
+                    return_code = CommandResult.ERROR
+                    message = f'Cannot get help on {what}. what must be one of "occupation", "degree, or "square"'
+                    
+        return CommandResult(return_code, message, True)
+      
     
     def perform(self, what:str, how:str) -> CommandResult:
         player = self.game_state.current_player

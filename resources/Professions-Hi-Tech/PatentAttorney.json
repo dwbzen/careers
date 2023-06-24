@@ -1,7 +1,7 @@
 {
 	"name" : "PatentAttorney",
-	"alternate_name" : "PA",
 	"configuration" : {
+		"alternate_name" : "Attorney",
 		"occupationClass" : "occupation",
 		"fullName" : "Patent Attorney",
 		"background_image" : "occupation_entrance.png",

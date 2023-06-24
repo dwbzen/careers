@@ -1,7 +1,7 @@
 {
 	"name" : "BroadcastJournalism",
-	"alternate_name" : "Broadcast",
 	"configuration" : {
+		"alternate_name" : "Broadcast",
 		"occupationClass" : "occupation",
 		"fullName" : "Broadcast Journalism",
 		"background_image" : "occupation_entrance.png",

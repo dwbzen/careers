@@ -1,7 +1,7 @@
 {
 	"name" : "QuantumComputing",
-	"alternate_name" : "Quantum",
 	"configuration" : {
+		"alternate_name" : "Quantum",
 		"occupationClass" : "occupation",
 		"fullName" : "Quantum Computing",
 		"background_image" : "occupation_entrance.png",

@@ -61,7 +61,7 @@ class Player(CareersObject):
         # a player todo List are occupations and/or degrees the player must complete successfully
         # in addition to fulfilling their success formula
         #
-        self._my_todos = {}    # filled in by applicable plug-in(s)
+        self._my_todos = {}    # filled in by applicable active plug-in(s)
         
     def _initialize(self):
         """Sets the starting values for all properties reset under bankruptcy rules.
