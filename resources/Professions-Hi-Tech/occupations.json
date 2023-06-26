@@ -28,5 +28,17 @@
 	"occupations" : [
 		"PinnaclePolytechnicInstitute", "AerospaceEngineering", "VentureCapitalist", "QuantumComputing", 
 		"BroadcastJournalism", "TechEntrepreneur", "PatentAttorney", "VideoGameDevelopment", "AIResearch", "PharmaceuticalSciences"
-	]
+	],
+	"gameboard_mapping": {
+		"ppi": "PinnaclePolytechnicInstitute",
+		"aerospace": "AerospaceEngineering",
+		"vc": "VentureCapitalist",
+		"qc": "QuantumComputing",
+		"broadcast": "BroadcastJournalism",
+		"entrepreneur": "TechEntrepreneur",
+		"attorney": "PatentAttorney",
+		"game": "VideoGameDevelopment",
+		"ai": "AIResearch",
+		"pharmaceutical": "PharmaceuticalSciences"
+	}
 }
