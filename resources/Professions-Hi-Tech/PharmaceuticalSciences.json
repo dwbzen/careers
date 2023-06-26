@@ -1,7 +1,7 @@
 {
 	"name" : "PharmaceuticalSciences",
 	"configuration" : {
-		"alternate_name" : "Pharma",
+		"alternate_name" : "Pharmaceutical",
 		"occupationClass" : "occupation",
 		"fullName" : "Pharmaceutical Sciences",
 		"background_image" : "occupation_entrance.png",
