@@ -35,8 +35,8 @@ class SuccessFormula(CareersObject):
     def stars(self, value):
         self._stars = value
     @hearts.setter
-    def hapiness(self, value):
-        self._hapiness = value
+    def hearts(self, value):
+        self._hearts = value
     @money.setter
     def money(self, value):
         self._money = value

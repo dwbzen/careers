@@ -1,13 +1,14 @@
-# add 2 players - 60 point game - stars  hearts  cash
-add player Don DWB dwb20230113 dwbzen@gmail.com 20 10 30
-add player Brian BDB bdb20230113 brian.bacon01@gmail.com 20 10 30
+# add 2 players - 60 point game - cash stars(Fame) hearts(Happiness)
+#
+add player Don DWB dwb20230113 dwbzen@gmail.com 20 30 10
+add player Brian BDB bdb20230113 brian.bacon01@gmail.com 20 30 10
 start
 # set starting params for this test
 set DWB happiness 20
 set DWB fame 10
 set DWB money 40000
 set BDB happiness 20
-set BDB fame 10
+set BDB fame 20
 set BDB money 40000
 # DWB + 2 hearts
 enter MIT

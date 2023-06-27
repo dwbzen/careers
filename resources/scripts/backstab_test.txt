@@ -3,7 +3,7 @@
 # as it starts players with 20 hearts
 # The backstabber loses 4 hearts for each backstabbed player
 # Backstabees lose 12 hearts
-# add 3 players
+# add 3 players  100 point game - cash  stars  hearts
 add player Don DWB dwb20221206 dwbzen@gmail.com 40 10 50
 add player Brian BDB bdb20221206 brian.bacon01@gmail.com 50 20 30
 add player Cheryl CJL cjl20221206 Lister.Cheryl@gmail.com 10 50 40

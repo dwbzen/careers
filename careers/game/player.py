@@ -668,9 +668,10 @@ class Player(CareersObject):
     
         """
         if self.game_type is GameType.POINTS:
+            cash = self.cash_points()
             complete = self.happiness >= self.success_formula.hearts and \
                        self.fame >= self.success_formula.stars and \
-                       self.cash_points() >= self.success_formula.money
+                       cash >= self.success_formula.money
         else:
             complete = self.time_remaining <= 0
                        

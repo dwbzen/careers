@@ -1,4 +1,6 @@
-# add 2 players
+# add 2 players 100 point game
+# name, initials, player_id, email, success formula: cash, stars, hearts
+#
 add player Don DWB dwb20230113 dwbzen@gmail.com 40 10 50
 add player Brian BDB bdb20230113 brian.bacon01@gmail.com 50 20 30
 start

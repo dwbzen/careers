@@ -610,6 +610,33 @@ class CareersGameEngine(object):
         message = player.player_info(include_successFormula=include_success_formula, outputFormat='json')
         result = CommandResult(CommandResult.SUCCESS,  message, True)
         return result
+
+    def need(self, initials:str=None) -> CommandResult:
+        """How many cash, Fame and Happiness points needed to win
+            Arguments:
+                initials - optional player player_initials, default if not specified is the current player
+            Returns:
+                CommandResult where the message is JSON-formatted
+        """
+        player = self.game_state.current_player if initials is None else self.get_player(initials)
+        time_remaining = self.game_state.get_time_remaining() if self.game_state.game_type is GameType.TIMED else -1
+        success_formula = player.success_formula
+        total_points = success_formula.total_points
+        cash_points = player.cash // 1000
+        stars = player.fame
+        hearts = player.happiness
+        current_points = cash_points + stars + hearts
+        cash_needed = (1000 * success_formula.money)-player.cash
+        currency_symbol = self._careersGame.game_parameters.get_param("currency_symbol")
+        message_dict = {"current_points" : current_points, "points_needed" : total_points-current_points, \
+                        "cash_needed" : f"{currency_symbol}{cash_needed}", \
+                        "fame_needed" : success_formula.stars-stars, "hearts_needed" : success_formula.hearts-hearts }
+        if time_remaining >= 0:
+            message_dict.update({"time_remaining" : time_remaining})
+            
+        message = json.dumps(message_dict, indent=2)
+        result = CommandResult(CommandResult.SUCCESS,  message, True)
+        return result            
     
     def turn_history(self, initials:str=None) ->CommandResult:
         """turn_history command displays the current player's turn history as a JSON formated string
@@ -1357,6 +1384,7 @@ class CareersGameEngine(object):
 
         self.log_info(message)
         self.game_state.set_next_player()    # sets the player number to 0 and the curent_player Player reference
+        self.game_state.started = True
         self._careersGame.start_game()       # sets the start datetime
         #
         # run any "start" plug-ins

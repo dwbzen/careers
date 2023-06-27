@@ -413,11 +413,11 @@ class CareersGame(CareersObject):
         """
         return self.game_state.is_game_complete()
     
-    def start_game(self):
+    def start_game(self) ->bool:
         """
         Initializes game state and starts the game
         """
-        pass
+        return True
         
     def end_game(self)->int:
         self.game_duration = self.game_state.get_elapsed_time()
