@@ -413,7 +413,7 @@ class CareersGameEngine(object):
         
         return result
     
-    def use(self, what, card_number, spaces:str|int|None=None) -> CommandResult:
+    def use(self, what, card_number, spaces:int|str|None) -> CommandResult:
         """Use an Experience or Opportunity card in place of rolling the die.
             Experience and Opportunity cards are identified (through the UI) by number, which uniquely
             identifies the card function. i.e. Cards having the same "number" are identical
@@ -1467,7 +1467,8 @@ class CareersGameEngine(object):
             player.used_opportunity()
             return result                   
     
-    def _execute_experience_card(self,  player:Player, experienceCard:ExperienceCard, spaces:int|str|None=None) -> CommandResult:
+    def _execute_experience_card(self,  player:Player, experienceCard:ExperienceCard, \
+                                 spaces:int|str|None=None) -> CommandResult:
         '''Executes an Experience card.
             Command format is "use experience [roll]"
             roll is required only for wild cards and specifies the dice as a csv list, for example "4,5" to roll a 9, or "3" as a single die roll
@@ -1519,10 +1520,10 @@ class CareersGameEngine(object):
                                      
                 dice = [int(c) for c in die]
                 nspaces = sum(dice)
-                    
+
         message = f'{player.player_initials} roll: {dice}, moving: {nspaces} spaces'
         self.log_info(message)
-        result = self.roll(player, dice)
+        result = self._advance(nspaces)
         #
         # remove the used experience from the player's deck
         #

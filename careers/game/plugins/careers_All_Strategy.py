@@ -8,8 +8,8 @@ from game.careersGame import CareersGame
 from game.gameState import GameState
 from game.gameUtils import GameUtils
 from game.plugins import Plugin
-from game.opportunityCard import OpportunityCard
-from game.experienceCard import ExperienceCard
+from game.opportunityCard import OpportunityCard, OpportunityType, OpportunityActionType
+from game.experienceCard import ExperienceCard, ExperienceType
 from game.gameConstants import StrategyLevel, BorderSquareType, PendingActionType
 from game.gameEngineCommands import GameEngineCommands
 from typing import Dict, List
@@ -182,18 +182,60 @@ class Careers_All_Strategy(Plugin):
             If use experience, select the one at random.
             If no experience cards, default to roll
         """
-        #if player.is_sick or player.is_unemployed:
-
-        actions = random.sample(["roll", "use opportunity", "use experience"], 3)    # returns the list in random order
-        for action in actions:
-            if action.endswith("opportunity"):
-                #
-                # select an opportunity at random
-                #
-                for opportunity_card in player.my_opportunity_cards:
+        #if player can enter the occupation they are currently on, then do so
+        if can_enter[0]:
+            commands = f"enter {can_enter[3]};roll"
+        else:
+            actions = random.sample(["roll", "use opportunity", "use experience"], 3)    # returns the list in random order
+            for action in actions:
+                if action.endswith("opportunity"):
+                    commands = self.get_opportunity_command(player)
+                    if commands is None:
+                        continue
+                    else:
+                        return commands
+                    
+                elif action.endswith("experience"):
+                    commands = self.get_experience_command(player)
+                    
+                else:
+                    commands = "roll"
+        return commands
+    
+    def get_opportunity_command(self, player) ->str|None:
+        """Select an opportunity at random.
+            If the player is on an occupation path or the player can't use an opportunity now, return None.
+            Otherwise pick one that's affordable and use it
+        """
+        # 
+        #
+        locn = player.get_current_location()
+        commands = None
+        if player.can_use_opportunity and locn.occupation_name is not None:
+            for opportunity_card in player.my_opportunity_cards:
+                pass
+            
+        return commands
+    
+    def get_experience_command(self, player) ->str|None:
+        """For basic strategy, select an Experience at random.
+            For smart strategy, select a random Experience that results in a positive gain.
+            Otherwise return None.
+        """
+        commands = None
+        if len(player.my_experience_cards) > 0:
+            experience_card = player.my_experience_cards[random.randint(len(player.my_experience_cards))]
+            if player.is_unemployed:   # if it's fixed with 7 spaces or TWO_DIE_WILD or TRIPPLE_DIE_WILD, then use it
+                if experience_card.card_type is ExperienceType.FIXED and experience_card.spaces == 7:
+                    commands = f"use experience {experience_card.number}"
+                elif experience_card.card_type is ExperienceType.TWO_DIE_WILD or experience_card.card_type is ExperienceType.TRIPLE_WILD:
+                    commands = f"use experience {experience_card.number} 5,2"
+                else:
                     pass
-                
-        return "roll"
+            elif commands is None:
+                pass
+            
+        return commands
     
     def smart_strategy(self, player, can_enter) ->str:
         """Applies additional smarts to the basic strategy.

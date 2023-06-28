@@ -47,11 +47,11 @@ class ExperienceCard(CareersObject):
             self._range = list(range(1,13))        # 1 to 6 on an occupation path, 2 to 12 on a border square
         
     @property
-    def card_type(self) -> str:
+    def card_type(self) -> ExperienceType:
         return self._card_type
     
     @card_type.setter
-    def card_type(self, ct:str) :
+    def card_type(self, ct:ExperienceType) :
         self._card_type = ct
         
     @property

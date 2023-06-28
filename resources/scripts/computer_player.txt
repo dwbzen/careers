@@ -6,7 +6,7 @@ add player ComputerPlayer_1 CP_1 cp120230516 dwbzen@gmail.com 20 20 20 computer
 start
 # run a simple loop
 counter = 0;
-# max 150 turns (300 / 2 players) - the computer player's command is determined by take_turn.
+# max 150 turns (300 / 2 players) -  take_turn determines a computer players command using the strategy plug-in
 limit = 300;
 while counter < limit {
 	take_turn roll
