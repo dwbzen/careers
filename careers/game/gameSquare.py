@@ -106,7 +106,7 @@ class GameSquare(CareersObject):
         self._action_text = value
         
     @property
-    def special_processing(self):
+    def special_processing(self) ->SpecialProcessing:
         return self._special_processing
     
     @property

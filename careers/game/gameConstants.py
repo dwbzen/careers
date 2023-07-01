@@ -24,6 +24,8 @@ class PendingActionType(Enum):
     CHOOSE_DESTINATION = "choose_destination"
     BACKSTAB = "backstab"                     # resolve backstab_or_not   <player's initials> | no
     BANKRUPT = "bankrupt"
+    TRAVEL_CHOICE = "travel_choice"    # choose next travel square, travel class depends on the edition
+    BIDIRECTIONAL_TRAVEL_CHOICE = "bidirectional_travel_choice"
 
 class SpecialProcessingType(Enum):
     # border squares
@@ -57,6 +59,8 @@ class SpecialProcessingType(Enum):
     
     # common to Occupation and Border squares
     TRAVEL_BORDER = "travel_border"
+    TRAVEL_CHOICE = "travel_choice"    # go to nearest airline or rail station, also a PendingActionType to specify the choice
+    BIDIRECTIONAL_TRAVEL_CHOICE = "bidirectional_travel_choice"     # forward of backward to travel square choice
     CASH_LOSS = "cash_loss"
     EXTRA_TURN = "extra_turn"
     LOSE_NEXT_TURN = "lose_next_turn"
@@ -81,7 +85,7 @@ class BorderSquareType(str, Enum):
 class TravelClass(str, Enum):
     RAIL = 'rail'
     UNDERGROUND = 'underground'    # UK edition
-    SUBWAY = 'subway'              # all US editions
+    SUBWAY = 'subway'              # US editions
     AIR = 'air'                    # airports
     
 class PlayerType(Enum):

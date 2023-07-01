@@ -104,7 +104,42 @@ class Careers_All_Strategy(Plugin):
                     if player.cash > pending_action.pending_amount:
                         commands.append(f"resolve {pending_action_value} {pending_action.pending_amount}" )
                 elif pending_action.pending_action_type is PendingActionType.BUY_HEARTS:
-                    pass
+                    amount = pending_action.pending_amount
+                    #
+                    # amount could be an integer amount, which is the price of 1 heart
+                    # or a Dict[str, int] for quantity, amount
+                    #
+                    if isinstance(amount, dict):
+                        qty = random.sample(list(amount), 1)[0]
+                        cost = amount[qty]
+                        hearts_needed = player.need()["hearts"]
+                        if player.cash > cost and hearts_needed >= int(qty):    # this could be smarter
+                            commands.append(f"resolve {pending_action_value} {qty}" )
+                    else:   # an integer amount for 1 heart
+                        if player.cash > amount:
+                            commands.append(f"resolve {pending_action_value} 1" )
+                
+                elif pending_action.pending_action_type is PendingActionType.BUY_STARS:
+                    amount = pending_action.pending_amount
+                    #
+                    # amount is a Dict[str, int] for quantity, amount
+                    #
+                    if isinstance(amount, dict):
+                        qty = random.sample(list(amount), 1)[0]
+                        cost = amount[qty]
+                        hearts_needed = player.need()["stars"]
+                        if player.cash > cost and hearts_needed >= int(qty):    # this could be smarter
+                            commands.append(f"resolve {pending_action_value} {qty}" )
+                            
+                elif pending_action.pending_action_type is PendingActionType.TRAVEL_CHOICE or\
+                     pending_action.pending_action_type is PendingActionType.BIDIRECTIONAL_TRAVEL_CHOICE:
+                    #
+                    # just pick a random destination
+                    #
+                    game_square = self._careersGame.game_board.border_squares[player.board_location.border_square_number]
+                    destinations = game_square.special_processing.destination_names
+                    my_dest = random.sample(destinations, 1)[0]
+                    commands.append(f"resolve {pending_action_value} {my_dest}")
         else:
             #
             # can I bump anyone? If so pick a bumpable player at random

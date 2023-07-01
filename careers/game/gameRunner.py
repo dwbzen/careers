@@ -202,6 +202,7 @@ class GameRunner(object):
         """
         turn_number = 1
         game_state = self.careersGame.game_state
+        self.game_engine.automatic_run = True
         current_player = None
         fp = open(filePath, "r")
         scriptText = fp.readlines()

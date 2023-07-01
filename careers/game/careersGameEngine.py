@@ -103,6 +103,7 @@ class CareersGameEngine(object):
         self._gameEngineCommands = None     # no CareersGame yet
         self.currency_symbol = None         # value set with create()
         self._game_state = None             # set with create()
+        self._automatic_run = False         # set to True if running a script
         self._game_id = self._create_game_id(installationId) if game_id is None else game_id
             
         self._init_logging(loglevel, self._game_id, edition)
@@ -195,6 +196,14 @@ class CareersGameEngine(object):
     @careersGame.setter
     def careersGame(self, value:CareersGame):
         self._careersGame = value
+    
+    @property
+    def automatic_run(self)->bool:
+        return self._automatic_run
+    
+    @automatic_run.setter
+    def automatic_run(self, value:bool):
+        self._automatic_run = value
     
     def log_info(self, *message):
         """Write info-level message to the log file and if debug is set, also to the console
@@ -363,8 +372,8 @@ class CareersGameEngine(object):
         player = self.game_state.current_player
 
         next_square_number = self._get_next_square_number(player, num_spaces)
-        message = f' {player.player_initials}  rolled {num_spaces} {dice}, next_square {next_square_number}' if dice is not None \
-            else f' {player.player_initials}  advances {num_spaces}, next_square {next_square_number}'
+        message = f' {player.player_initials}  rolled {num_spaces} {dice}, next_square number: {next_square_number}' if dice is not None \
+            else f' {player.player_initials}  advances {num_spaces}, next_square number: {next_square_number}'
         self.log_info(message)
         print(message)
         #
@@ -1265,7 +1274,7 @@ class CareersGameEngine(object):
                     player.on_holiday = False
                     result = self.roll(player, pending_action.pending_dice)
                     
-            elif what == PendingActionType.BANKRUPT.value:          # choices: yes (to declare bankruptcy), no
+            elif what == PendingActionType.BANKRUPT.value:          # choices: yes (to declare bankruptcy), or no
                 if choice.lower().startswith("y"):
                     result = self.bankrupt()
                 else:
@@ -1358,6 +1367,24 @@ class CareersGameEngine(object):
                         else:
                             result = CommandResult(CommandResult.ERROR, f'You can afford the {self.currency_symbol}{occupation.entry_fee} for {occupation.name}', False)
 
+            elif what == PendingActionType.TRAVEL_CHOICE.value:
+                self.log_info(f'{player.player_initials} resolves {what}, choice is "{choice}"')
+                destinations = game_square.special_processing.destination_names
+                destination_squares = game_square.special_processing.destination_squares
+                #
+                # Player's choice must match one of the destinations and is case sensitive
+                # since it's an Border Square name
+                #
+                if choice in destinations:
+                    ind = destinations.index(choice)
+                    square_number = destination_squares[ind]
+                    commands = f"goto {square_number};where am i;roll"
+                    result = self.execute_command(commands, player)
+                    logging.debug(f"{player.player_initials} commands: '{commands}'  result: {result.message}")
+                    print(result.message)
+                else:
+                    result = CommandResult(CommandResult.ERROR, f"{choice} is not a valid destination. Please choose one of {destinations}", False)
+                
             else:
                 result = CommandResult(CommandResult.ERROR, f'Sorry {player.player_initials}, "{what}" is an invalid or unimplemented pending action!', False)
 
@@ -1682,7 +1709,7 @@ class CareersGameEngine(object):
                 board_location.occupation_name = None
                 #
                 # execute this game square
-                # unless it's a travel_square and we just game from a travel_square
+                # unless it's a travel_square and we just came from a travel_square
                 # otherwise we'd get into an endless travel loop
                 #
                 if border_square.square_type is BorderSquareType.TRAVEL_SQUARE and self.was_prior_travel(player):

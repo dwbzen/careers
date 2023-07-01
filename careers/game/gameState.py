@@ -8,6 +8,7 @@ import json
 from game.player import Player
 from game.careersObject import CareersObject
 from game.gameConstants import GameType, GameParametersType
+from typing import List
 
 class GameState(CareersObject):
     """Maintains the global state of a Careers game instance.
@@ -31,7 +32,7 @@ class GameState(CareersObject):
                 game_type - 'points' (the default) or 'timed'
         """
         self._number_of_players = 0
-        self._players = []   # list of Player
+        self._players:List[Player] = []
         self._current_player_number = -1
         self._current_player = None
         self._total_points = total_points
@@ -65,7 +66,7 @@ class GameState(CareersObject):
         self._number_of_players = value
 
     @property
-    def players(self):
+    def players(self) -> List[Player]:
         return self._players
     
     @property

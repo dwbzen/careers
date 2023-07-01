@@ -8,7 +8,7 @@
 		"image" : "man_demonstrating_a_new_technology_to_a_stunned_audience.jpg",
 		"entry_fee" : 1000,
 		"prior_experience" : 0,
-		"size" : 11,
+		"size" : 12,
 		"entrance_square_number" : 18,
 		"exit_square_number" : 19,
 		"text" : "Must have: $1,000 initial investment",
@@ -188,7 +188,7 @@
 			}
 		},
 		{
-			"number" : 10,
+			"number" : 11,
 			"background_image" : "occupation_square.png",
 			"text" : "Gamble on AI startup pays off",
 			"stars" : 2,

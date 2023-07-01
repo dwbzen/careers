@@ -376,6 +376,7 @@ class CareersGame(CareersObject):
     def add_player(self, aplayer:Player):
         """Adds a new Player to the game.
             This also creates a TurnHistory for the Player, and adds an initial Turn object and before player_info
+            And sets the reference to this CareersGame instance in player.my_game
         """
         self.game_state.add_player(aplayer)
         #
@@ -390,6 +391,7 @@ class CareersGame(CareersObject):
         turn_history.turn_number = 1
         aplayer.turn_history = turn_history
         self._solo = self.game_state.number_of_players == 1
+        aplayer.my_game = self
     
     def complete_player_move(self) -> Player | None:
         """Completes the move of the current player and determines if there's a winner and returns winning_player.

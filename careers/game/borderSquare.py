@@ -76,14 +76,19 @@ class BorderSquare(GameSquare):
             case BorderSquareType.TRAVEL_SQUARE:
                 #
                 # advance to the next travel_square and roll again
-                # 
-                #
-                next_square_number, game_square = self._careersGame.find_next_border_square(self.number, BorderSquareType.TRAVEL_SQUARE)
-                next_action = f'goto {next_square_number};roll'    # player.board_location set by 'goto' command
-    
-                result = CommandResult(CommandResult.SUCCESS, f'Advance to square {next_square_number}, {game_square.name} and roll again', False)
-                result.next_action = next_action
-                #result.board_location = player.board_location
+                # If this is a travel_choice, set the pending_action to TRAVEL_CHOICE
+                if self.special_processing.processing_type is SpecialProcessingType.TRAVEL_CHOICE:
+                    pending_action_type = self.special_processing.pending_action         # PendingActionType
+                    destination_names = self.special_processing.destination_names        # List[str] len=2
+                    message = f'{self.text}. {self.action_text} {destination_names}'
+                    player.add_pending_action(pending_action_type, game_square_name=self.name)
+                    result = CommandResult(CommandResult.NEED_PLAYER_CHOICE, message, False)   # player needs to pick the destination travel_square
+                else:
+                    next_square_number, game_square = self._careersGame.find_next_border_square(self.number, BorderSquareType.TRAVEL_SQUARE)
+                    next_action = f'goto {next_square_number};roll'    # player.board_location set by 'goto' command
+                    result = CommandResult(CommandResult.SUCCESS, f'Advance to square {next_square_number}, {game_square.name} and roll again', False)
+                    result.next_action = next_action
+                    
                 return result
         
             case BorderSquareType.OCCUPATION_ENTRANCE_SQUARE:

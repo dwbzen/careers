@@ -21,9 +21,10 @@ class OccupationSquareType(Enum):
 
 
 class OccupationSquare(GameSquare):
-    '''
-    classdocs
-    '''
+    """Represents an GameSquare that belongs to an Occupation.
+        The OccupationSquare.name is set to the name of the parent Occupation
+        when the Occupation creates the occupationSquares.
+    """
     
     types_list = list(OccupationSquareType)
 
@@ -110,9 +111,28 @@ class OccupationSquare(GameSquare):
                 if dice > 0:
                     n = GameUtils.roll(dice)
                     amount = amount * sum(n)
-                    message += f'\n You rolled a {n}, collect {amount}'
+                    message += f'\n You rolled {dice} die and got a {n} to collect {amount}'
                 player.add_cash(amount)
-                
+            
+            case SpecialProcessingType.BONUS_ALL:
+                if dice > 0:
+                    n = GameUtils.roll(dice)
+                    amount = amount * sum(n)
+                    #
+                    # who else has COMPLETED this occupation? They also get the bonus amount
+                    #
+                    bonus_players = {player.player_name:player}
+                    player_names = [player.player_name]
+                    for aplayer in player.my_game.game_state.players:
+                        if aplayer.player_name not in player_names:
+                            if self.name in aplayer.occupation_record:
+                                bonus_players.update( {aplayer.player_name: aplayer} )    # need to have the Player reference to add bonus
+                                player_names.append(aplayer.player_name)
+
+                    message = f'{message}\n You rolled {dice} die and got a {n}.\nThe following players collect {amount}: {player_names}: '
+                    for name in player_names:    # will have at least 1 element
+                        bonus_players[name].cash += amount
+                    
             case SpecialProcessingType.SALARY_INCREASE:
                 if dice > 0:
                     n = GameUtils.roll(dice)

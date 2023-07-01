@@ -64,6 +64,7 @@ class Occupation(object):
         occupation_squares = list()
         for occupation_square_dict in occupationSquares:
             occupation_square = OccupationSquare(occupation_square_dict, game=game)
+            occupation_square.name = self.name
             occupation_squares.append(occupation_square)
         return occupation_squares
     

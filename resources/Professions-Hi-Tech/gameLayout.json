@@ -77,10 +77,13 @@
 				"type" : "travel_square",
 				"travel_class" : "rail",
 				"background_image" : "amtrak.jpg",
-				"text" : "",
+				"text" : "Travel from Amtrak(3)",
+				"action_text" : "Select travel destination: ",
 				"specialProcessing" : {
-					"type" : "travel_border",
-					"next_square" : 12
+					"type" : "travel_choice",
+					"destination_names" : ["Amtrak", "LAX"],
+					"destination_squares" : [22, 12],
+					"pending_action" : "travel_choice"
 				}
 			},
 			{
@@ -190,10 +193,13 @@
 				"type" : "travel_square",
 				"travel_class" : "air",
 				"background_image" : "LAX_blue_logo.svg.png",
-				"text" : "",
+				"text" : "Travel from LAX",
+				"action_text" : "Select a travel destination: ",
 				"specialProcessing" : {
-					"type" : "travel_border",
-					"next_square" : 22
+					"type" : "travel_choice",
+					"destination_names" : ["Amtrak", "LGA"],
+					"destination_squares" : [22,35],
+					"pending_action" : "travel_choice"
 				}
 			},
 			{
@@ -314,10 +320,13 @@
 				"type" : "travel_square",
 				"travel_class" : "rail",
 				"background_image" : "amtrak.jpg",
-				"text" : "",
+				"text" : "Travel from Amtrak(22)",
+				"action_text" : "Select travel destination: ",
 				"specialProcessing" : {
-					"type" : "travel_border",
-					"next_square" : 35
+					"type" : "travel_choice",
+					"destination_names" : ["LGA","Amtrak"],
+					"destination_squares" : [35, 3],
+					"pending_action" : "travel_choice"
 				}
 			}, 
 			{
@@ -476,10 +485,13 @@
 				"type" : "travel_square",
 				"travel_class" : "air",
 				"background_image" : "LaGuardia_Airport_Logo.png",
-				"text" : "",
+				"text" : "Travel from LGA",
+				"action_text" : "Select travel destination: ",
 				"specialProcessing" : {
-					"type" : "travel_border",
-					"next_square" : 3
+					"type" : "travel_choice",
+					"destination_names" : ["Amtrak", "LAX"],
+					"destination_squares" : [3, 12],
+					"pending_action" : "travel_choice"
 				}
 			},
 			{

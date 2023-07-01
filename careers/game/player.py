@@ -62,6 +62,7 @@ class Player(CareersObject):
         # in addition to fulfilling their success formula
         #
         self._my_todos = {}    # filled in by applicable active plug-in(s)
+        self._my_game = None   # will be a CareersGame reference
         
     def _initialize(self):
         """Sets the starting values for all properties reset under bankruptcy rules.
@@ -185,7 +186,22 @@ class Player(CareersObject):
         return self._my_degrees
     
     @property
+    def my_game(self):
+        """Returns CareersGame reference
+        """
+        return self._my_game
+    
+    @my_game.setter
+    def my_game(self, game):
+        """Set the value of the player's CareersGame.
+            This is done by the CareersGame add_player function.
+        """
+        self._my_game = game
+    
+    @property
     def occupation_record(self) -> Dict[str, int]:
+        """ Returns: Dict[str,int] where key is occupation name, value is the number of completed trips
+        """
         return self._occupation_record
     
     @property
@@ -676,6 +692,16 @@ class Player(CareersObject):
             complete = self.time_remaining <= 0
                        
         return complete
+    
+    def need(self) -> Dict[str, int]:
+        """Gives the amount of hearts, stars and cash needed in order to fulfill success formula
+            Could be negative if the current amount/qty exceeds the number specified in the success formula.
+            Returns: A Dict[str, int] where the key is in ['cash', 'stars', 'hearts']
+        """
+        cash_needed = (1000 * self.success_formula.money)-self.cash
+        stars_needed = self.success_formula.stars-self.fame
+        hearts_needed = self.success_formula.hearts-self.happiness
+        return {"cash":cash_needed, "stars":stars_needed, "hearts":hearts_needed}
 
     def save(self, gameId:str|None=None):
         """Persist this player's state to a JSON file.

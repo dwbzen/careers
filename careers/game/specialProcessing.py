@@ -52,12 +52,15 @@ class SpecialProcessing(CareersObject):
             self._amount_dict = amt    # how a money amount is calculated
         
         self._dice = special_processing_dict.get('dice', 0)                 # number of dice used to calculate some amount
-        self._of = special_processing_dict.get('of', 'cash')              # cash (cash-on-hand) or salary
+        self._of = special_processing_dict.get('of', 'cash')                # cash (cash-on-hand) or salary
         self._penalty = special_processing_dict.get('penalty', 0)           # a loss quantity (hearts or stars)
         self._limit = special_processing_dict.get('limit', None)            # a limiting factor, usually "salary" (in 1000s)
         
         # square number to advance to, relative to the overall game layout or occupation
-        self._next_square = special_processing_dict.get('next_square', None)    
+        self._destination_squares:List[int] = special_processing_dict.get('destination_squares', [])
+        self._destination_names:List[str] = special_processing_dict.get('destination_names', [])
+        next_square = self._destination_squares[0] if  len(self._destination_squares)>0 else None    # default if running in automatic mode (script)
+        self._next_square = special_processing_dict.get('next_square', next_square)
         self.next_square_text = special_processing_dict.get('next_square_text', None)
 
         self._destination = special_processing_dict.get('destinationOccupation', None)  # the name of a destination occupation
@@ -66,11 +69,10 @@ class SpecialProcessing(CareersObject):
         self._require_doubles = special_processing_dict.get('require_doubles', 0)==1
         self._hearts = special_processing_dict.get('hearts', [])                        # used for holiday type, a 2-element list
         self._tax_table = special_processing_dict.get('taxTable', None)    # format is upper limit : % amount, for example { 3000 : 0.2 } if you make <= 3000/yr, take 20% as tax
+        
         pending_action = special_processing_dict.get('pending_action', None) 
-        if pending_action is not None:
-            self._pending_action = PendingActionType[pending_action.upper()]
-        else:
-            self._pending_action = None
+        self._pending_action = PendingActionType[pending_action.upper()] if pending_action is not None else None
+
         self._choices = []
         if special_processing_dict.get('choices',None) is not None:
             self._choices = special_processing_dict.get('choices').split(",")
@@ -124,6 +126,22 @@ class SpecialProcessing(CareersObject):
     @property
     def next_square(self):
         return self._next_square
+    
+    @property
+    def destination_squares(self) ->List[int]:
+        return self._destination_squares
+    
+    @destination_squares.setter
+    def destination_squares(self, values:List[int]):
+        self._destination_squares = values
+    
+    @property
+    def destination_names(self) -> List[str]:
+        return self._destination_names
+    
+    @destination_names.setter
+    def destination_names(self, values:List[str]):
+        self._destination_names = values
     
     @property
     def penalty(self):
