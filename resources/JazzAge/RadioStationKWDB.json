@@ -1,0 +1,201 @@
+{
+	"name" : "RadioStationKWDB",
+	"configuration" : {
+		"alternate_name" : "KWDB"
+		"occupationClass" : "occupation",
+		"fullName" : "Radio Station KWDB",
+		"background_image" : "occupation_entrance.png",
+		"image" : "Columbia Phonograph company.png",
+		"entry_fee" : 1000,
+		"size" : 13,
+		"entrance_square_number" : 13,
+		"exit_square_number" : 14,
+		"text" : "Must have: $1000 for internship; or Business Admin degree; or prior experience",
+		"degreeRequirements" : { 
+			"degreeName" : "Business Admin",
+			"numberRequired" : 1
+		}
+	},
+	"occupationSquares" : [
+		{
+			"number" : 0,
+			"background_image" : "occupation_square.png",
+			"text" : "Make the first electrical recordings",
+			"stars" : 0,
+			"hearts" : 0,
+			"bonus" : 0,
+			"experience" : 1,
+			"opportunities" : 0,
+			"action_text" : "Draw 1 EXPERIENCE CARD",
+			"specialProcessing" : {}
+		},		
+		{
+			"number" : 1,
+			"background_image" : "occupation_square.png",
+			"text" : "Meeting with major stockholder J.P. Morgan",
+			"stars" : 0,
+			"hearts" : 0,
+			"experience" : 0,
+			"opportunities" : 2,
+			"action_text" : "Draw 2 OPPORTUNITY CARDS",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 2,
+			"background_image" : "occupation_square.png",
+			"text" : "Design 'magic notes' logo",
+			"stars" : 0,
+			"hearts" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "Salary up $2000",
+			"specialProcessing" : {
+				"type" : "salary_increase",
+				"amount" : 2000
+			}
+		},
+		{
+			"number" : 3,
+			"background_image" : "occupation_square.png",
+			"text" : "Stock market crash of 1929",
+			"image" : "",
+			"stars" : 0,
+			"hearts" : 0,
+			"bonus" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "Lose next turn",
+			"specialProcessing" : {
+				"type" : "lose_next_turn"
+			}
+		},
+		{
+			"number" : 4,
+			"background_image" : "occupation_square.png",
+			"text" : "Acquires Okey Records (1926)",
+			"stars" : 0,
+			"hearts" : 0,
+			"bonus" : 0,
+			"experience" : 2,
+			"opportunities" : 0,
+			"action_text" : "Draw 2 EXPERIENCE CARDS",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 5,
+			"background_image" : "danger_occupation_square.png",
+			"text" : "Company enters receivership (1922)",
+			"type" : "danger_square",
+			"stars" : 0,
+			"hearts" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "Cut salary by 1/2",
+			"specialProcessing" : {
+				"type" : "salary_cut",
+				"amount" : 0,
+				"percent" : 0.5
+			}
+		},
+		{
+			"number" : 6,
+			"background_image" : "occupation_square.png",
+			"text" : "Paul Whiteman leaves Victor to record with Columbia (1928)",
+			"stars" : 0,
+			"hearts" : 0, 
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "Collect bonus $3000",
+			"specialProcessing" : {
+				"type" : "bonus",
+				"amount" : 3000
+			}
+		},
+		{
+			"number" : 7,
+			"background_image" : "danger_occupation_square.png",
+			"text" : "In receivership after company declares bankruptcy (1933)",
+			"type" : "danger_square",
+			"stars" : 0,
+			"hearts" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "Go to Unemployment",
+			"specialProcessing" : {
+				"type" : "travel_border",
+				"next_square" : "Unemployment"
+			}
+		},
+		{
+			"number" : 8,
+			"background_image" : "occupation_square.png",
+			"text" : "May backstab colleague(s)",
+			"type" : "action_square",
+			"stars" : 0,
+			"hearts" : -4,
+			"bonus" : 0,
+			"experience" : 2,
+			"opportunities" : 0,
+			"action_text" : "You lose 4 Hearts\n They lose 12 Hearts",
+			"specialProcessing" : {
+				"type" : "backstab",
+				"pending_action" : "backstab",
+				"amount" : -12,
+				"of" : "hearts"
+			}
+		},
+		{
+			"number" : 9,
+			"background_image" : "occupation_square.png",
+			"text" : "Adopt Western Electric's recording process (1925)",
+			"stars" : 0,
+			"hearts" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "Salary up $1000 x roll of 1 die",
+			"specialProcessing" : {
+				"type" : "salary_increase",
+				"dice" : 1,
+				"amount" : 1000
+			}
+		},
+		{
+			"number" : 10,
+			"background_image" : "occupation_square.png",
+			"text" : "Recording session with Louis Armstrong",
+			"stars" : 0,
+			"hearts" : 2,
+			"bonus" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 11,
+			"background_image" : "occupation_square.png",
+			"text" : "Recording session with Bessie Smith",
+			"stars" : 0,
+			"hearts" : 4,
+			"bonus" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 12,
+			"background_image" : "occupation_square.png",
+			"text" : "Sign contract with the Chuck Wagon Gang",
+			"stars" : 4,
+			"hearts" : 6, 
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "Salary up $3000",
+			"specialProcessing" : {
+				"type" : "salary_increase",
+				"amount" : 3000
+			}
+		}
+	]
+}

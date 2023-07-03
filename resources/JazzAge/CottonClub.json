@@ -1,6 +1,7 @@
 {
 	"name" : "CottonClub",
 	"configuration" : {
+		"alternate_name" : "Cotton"
 		"occupationClass" : "occupation",
 		"fullName" : "Cotton Club",
 		"background_image" : "occupation_entrance.png",

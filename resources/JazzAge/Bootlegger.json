@@ -1,6 +1,7 @@
 {
 	"name" : "Bootlegger",
 	"configuration" : {
+		"alternate_name" : "Bootlegger",
 		"occupationClass" : "occupation",
 		"fullName" : "Bootlegger",
 		"background_image" : "occupation_entrance.png",
@@ -9,7 +10,7 @@
 		"size" : 12,
 		"entrance_square_number" : 4,
 		"exit_square_number" : 5,
-		"text" : "Must have: $1000 to make vehicle modifications; or Bootlegging experience",
+		"text" : "Must have: $1,000 to make vehicle modifications; or Bootlegging experience",
 		"degreeRequirements" : { }
 	},
 	"occupationSquares" : [
@@ -69,7 +70,7 @@
 			"hearts" : 0,
 			"experience" : 0,
 			"opportunities" : 0,
-			"action_text" : "Collect $1000 x roll of 1 die",
+			"action_text" : "Collect $1,000 x roll of 1 die",
 			"specialProcessing" : {
 				"type" : "bonus",
 				"dice" : 1,
@@ -163,7 +164,7 @@
 			"hearts" : 4,
 			"experience" : 0,
 			"opportunities" : 0,
-			"action_text" : "Salary up $1000",
+			"action_text" : "Salary up $1,000",
 			"specialProcessing" : {
 				"type" : "salary_increase",
 				"amount" : 1000

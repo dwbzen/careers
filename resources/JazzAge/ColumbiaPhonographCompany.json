@@ -1,6 +1,7 @@
 {
 	"name" : "ColumbiaPhonographCompany",
 	"configuration" : {
+		"alternate_name" : "Columbia"
 		"occupationClass" : "occupation",
 		"fullName" : "Columbia Phonograph Company",
 		"background_image" : "occupation_entrance.png",

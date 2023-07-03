@@ -1,6 +1,7 @@
 {
 	"name" : "ChicagoOutfit",
 	"configuration" : {
+		"alternate_name" : "Mob",
 		"occupationClass" : "occupation",
 		"fullName" : "The Chicago Outfit",
 		"background_image" : "occupation_entrance.png",

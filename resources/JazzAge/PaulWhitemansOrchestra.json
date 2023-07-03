@@ -1,6 +1,7 @@
 {
 	"name" : "PaulWhitemansOrchestra",
 	"configuration" : {
+		"alernate_name" : "PaulWhitman",
 		"occupationClass" : "occupation",
 		"fullName" : "Paul Whiteman's Orchestra",
 		"background_image" : "occupation_entrance.png",

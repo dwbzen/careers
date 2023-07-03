@@ -1,5 +1,5 @@
 {
-	"Help" : "This file has the keys to individual occupation files for the Pfofessions Hi-Tech Edition. Occupations listed in order as they appear on the board.",
+	"Help" : "This file has the keys to individual occupation files for the Time Machine - Jazz Age Edition. Occupations listed in order as they appear on the board.",
 	"occupation_square_types_list" : [
 		"danger_square", "shortcut_square", "action_square", "regular_square", "travel_square"
 	],
@@ -26,7 +26,19 @@
 		}
 	],
 	"occupations" : [
-		" AerospaceEngineering", "VentureCapitalist", "PPI", "QuantumComputing", 
-		"BroadcastJournalism", "TechEntrepreneur", "PatentAttorney", "VideoGameDevelopment", "AIResearch", "PharmaceuticalScience"
-	]
+		"RadioStationKWDB", "Bootlegger", "RooseveltCollege", "SapphireRecords", 
+		"MajorLeagueBaseball", "PaulWhitemansOrchestra", "ProhibitionAgent", "CottonClub", "ChicagoOutfit", "StorkClub"
+	],
+	"gameboard_mapping": {
+		"kwdb": "RadioStationKWDB",
+		"bootlegger": "Bootlegger",
+		"rc" : "RooseveltCollege",
+		"sapphire": "SapphireRecords",
+		"mlb": "MajorLeagueBaseball",
+		"PaulWhiteman": "PaulWhitemansOrchestra",
+		"agent": "ProhibitionAgent",
+		"cotton": "CottonClub",
+		"mob": "ChicagoOutfit",
+		"stork": "StorkClub"
+	}
 }

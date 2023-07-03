@@ -1,6 +1,7 @@
 {
 	"name" : "StorkClub",
 	"configuration" : {
+		"alernate_name" : "Stork",
 		"occupationClass" : "occupation",
 		"fullName" : "The Stork Club",
 		"background_image" : "occupation_entrance.png",
