@@ -71,6 +71,7 @@ class Player(CareersObject):
         self._set_starting_board_location() # always start on Payday corner square
         self._can_retire = False
         self._is_insured = False
+        self._insurance_premium = 0         # set to the insurance premium amount if the player is insured
         self._is_unemployed = False         # True when player lands on (or is sent to) Unemployment
         self._is_sick = False               # True when player lands on Hospital
         self._on_holiday = False            # True when the player lands on Holiday/Spring Break
@@ -219,6 +220,16 @@ class Player(CareersObject):
     @is_insured.setter
     def is_insured(self, value:bool):
         self._is_insured = value
+    
+    @property
+    def insurance_premium(self)-> int:
+        return self._insurance_premium if self._is_insured else 0
+    
+    @insurance_premium.setter
+    def insurance_premium(self, value):
+        """Set to the insurance premium amount paid when the player buys insurance
+        """
+        self._insurance_premium = value
         
     @property
     def happiness(self):
@@ -457,6 +468,12 @@ class Player(CareersObject):
     @player_type.setter
     def player_type(self, value:PlayerType):
         self._player_type = value
+    
+    def is_computer_player(self)->bool:
+        return self._player_type is PlayerType.COMPUTER
+    
+    def is_human_player(self)->bool:
+        return self._player_type is PlayerType.HUMAN
     
     @property
     def turn_history(self) ->TurnHistory:

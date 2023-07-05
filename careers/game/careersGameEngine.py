@@ -403,6 +403,11 @@ class CareersGameEngine(object):
                 #
                 player.clear_pending()
                 result = self.goto(next_square_number)
+            elif player.is_human_player() and self._automatic_run:
+                if result.next_action is not None and result.next_action == 'bankrupt':
+                    # if running a script and a human player is bankrupt
+                    # then execute a bankrupt command
+                    result = self.bankrupt(who="me")
                 
         return result
 
@@ -681,8 +686,9 @@ class CareersGameEngine(object):
             save_result = self.save()
             game_time = self.game_state.get_elapsed_time()
             message = f'The game is over, the winner is {winning_player.player_initials} with {winning_player.total_points()} points. '
-            message += f'Game time: {game_time} minutes'
-            message += f'\nGame saved as: {save_result.message}'
+            message = f'{message}\n Game time: {game_time} minutes \n Game saved as: {save_result.message}'
+            player_info = winning_player.player_info(include_successFormula=True, outputFormat='text')
+            message = f'{message}\n {player_info}'
             result = CommandResult(CommandResult.TERMINATE, message, True)
             return result
     
@@ -975,7 +981,7 @@ class CareersGameEngine(object):
         player = self.game_state.current_player if initials is None else self.get_player(initials)
         return GameEngineCommands.list(player, what, how)
     
-    def help(self, what:str, name:str="None", format:str="json", how:str='full') ->CommandResult:
+    def help(self, what:str="None", name:str="None", format:str="json", how:str='full') ->CommandResult:
         """Get help on an occupation, degree program, or game square
             Arguments: 
                 what - "occupation", "degree", "square", or "command"
@@ -989,10 +995,17 @@ class CareersGameEngine(object):
         """
         assert(format=="json" or format=="text")
         assert(how=="full" or how=="condensed")
-        assert(name!="None")
+
         return_code = CommandResult.SUCCESS
         message = f"'help {what} {name} command not yet implemented, but soon!"
         match(what):
+                case "None":
+                    message = """Syntax: help <what> <name> <format> <how>
+Where <what> is 'occupation' or 'command'
+<name> is the name of the command or occupation,
+<format> is 'json' (the default) or 'text', and
+<how> is 'full' (the default) or 'condensed'
+"""
                 case "occupation":
                     if name in self._careersGame.occupation_names:
                         occupation = self._careersGame.occupations[name]
@@ -1008,17 +1021,21 @@ class CareersGameEngine(object):
                         else:    # TODO - implement a text view
                             pass
                     else:
-                        return_code = CommandResult.ERROR
-                        message = f"No such occupation: {name}"
+                        occupations = ",".join(self._careersGame.occupation_names)
+                        message = f"Occupations: {occupations}"
+                        
                 case "degree":   # TODO implement text output
                     degreePrograms = self._careersGame.college_degrees["degreePrograms"]
                     degrees_dict = {"degreePrograms" : degreePrograms, "help" : "Help for individual degree programs not yet implemented." }
                     message = json.dumps(degrees_dict, indent=2)
+                    
                 case "square":
                     message = {"help" : "Help on game squares not yet implemented."}
+                    
                 case "command":
                     commands_dict = {"valid_commands" : GameConstants.COMMANDS, "help" : "Help for individual commands not yet implemented." }
                     message = json.dumps(commands_dict, indent=2)
+                    
                 case _:
                     return_code = CommandResult.ERROR
                     message = f'Cannot get help on {what}. what must be one of "occupation", "degree, or "square"'
@@ -1261,7 +1278,7 @@ class CareersGameEngine(object):
                     result = CommandResult(CommandResult.ERROR, f'{choice} is an invalid selection. Valid selections and costs are {amounts}', False)
                 
             elif what ==   PendingActionType.BUY_STARS.value:
-                result = pending_action.pending_game_square.execute_special_processing(player, choice=choice, what='stars')
+                result = pending_game_square.execute_special_processing(player, choice=choice, what='stars')
             
             elif what ==   PendingActionType.BUY_INSURANCE.value:    # assume 1 quantity, regardless of the quantity specified
                 amount = game_square.special_processing.amount
@@ -1472,6 +1489,7 @@ class CareersGameEngine(object):
             if player.cash < total_amount:
                 return CommandResult(CommandResult.ERROR, f'Insufficient funds {self.currency_symbol}{player.cash} for insurance amount {self.currency_symbol}{amount}', True)
             player.is_insured = True
+            player.insurance_premium = total_amount
 
         elif what.lower() == 'gamble':    # player needs to roll 2 dice in order to gamble - that's a separate command
             return CommandResult(CommandResult.SUCCESS, "", False)

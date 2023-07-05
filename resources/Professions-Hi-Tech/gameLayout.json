@@ -115,7 +115,7 @@
 				"type" : "action_square",
 				"background_image" : "light blue action square.png",
 				"text" : "Tech Convention",
-				"action_text" : "May spend up to 1 year's annual salary for the latest gaming system. Score 1 Heart for each $1000 spend, or lose 1 for 'just looking'",
+				"action_text" : "May spend up to 1 year's annual salary for the latest gaming system. Score 1 Heart for each $1,000 spend, or lose 1 for 'just looking'",
 				"specialProcessing" : {
 					"type" : "buy_hearts",
 					"pending_action" : "buy_hearts",
@@ -447,7 +447,7 @@
 				"background_image" : "light blue action square.png",
 				"image" : "Las Vegas.jpg",
 				"text" : "Gamble in Vegas",
-				"action_text" : "Roll 2 dice to start gambling.\n6 or less - lose $1000 x roll of 1 die\n7 - Jackpot! Collect $10,000\n8 or more - collect $1000 x roll of 1 die",
+				"action_text" : "Roll 2 dice to start gambling.\n6 or less - lose $1000 x roll of 1 die\n7 - Jackpot! Collect $10,000\n8 or more - collect $1,000 x roll of 1 die",
 				"specialProcessing" : {
 					"type" : "gamble",
 					"pending_action" : "gamble",
@@ -463,7 +463,7 @@
 				"background_image" : "occupation_entrance_square.png",
 				"image" : "a_group_of_AI_researchers_discussing_the_complex_model-1.png",
 				"text" : "AI Research",
-				"action_text" : "Must have: $4000 for neural network training, or an Artificial Intelligence degree, or AI Research experience",
+				"action_text" : "Must have: $4,000 for neural network training, or an Artificial Intelligence degree, or AI Research experience",
 				"specialProcessing" : {
 					"type" : "enter_occupation",
 					"destinationOccupation" : "AIResearch"

@@ -140,10 +140,14 @@ class OccupationSquare(GameSquare):
                     message = f'{message}\n You rolled a {n}, salary increase {amount}'
                 player.add_to_salary(amount)
             
-            case SpecialProcessingType.CASH_LOSS:      # could cause the player into bankruptcy
+            case SpecialProcessingType.CASH_LOSS:         # could cause the player into bankruptcy
                 payment = self.special_processing.compute_cash_loss(player)
+
                 player.add_point_loss("cash", payment)    # cash loss covered by insurance
                 player.add_cash(-payment)       # this will set the bankrupt pending_action if cash is < 0 as a result
+                if player.is_computer_player() and player.is_insured and (payment >= player.insurance_premium):
+                    # use insurance
+                    next_action = 'use_insurance'    # this will add back the amount paid
             
             case SpecialProcessingType.FAVORS:
                 #

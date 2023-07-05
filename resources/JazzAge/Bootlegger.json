@@ -11,7 +11,30 @@
 		"entrance_square_number" : 4,
 		"exit_square_number" : 5,
 		"text" : "Must have: $1,000 to make vehicle modifications; or Bootlegging experience",
-		"degreeRequirements" : { }
+		"degreeRequirements" : { },
+		"ranking" : {
+			"points" : 6,
+			"stars" : 7,
+			"hearts" : 3,
+			"cash" : 5,
+			"salary" : 10,
+			"overall" : 6
+		},
+		"cards" : {
+			"experience" : 1,
+			"opportunity" : 1
+		},
+		"srategy" : {
+			"danger_squares" : 2,
+			"recommended_padding" : 3
+		},
+		"points" : {
+			"cash" : 8,
+			"stars" : 8,
+			"hearts" : 21,
+			"salary" : 1,
+			"totalPoints" : 37
+		}
 	},
 	"occupationSquares" : [
 		{

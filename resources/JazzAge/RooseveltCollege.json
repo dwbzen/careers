@@ -11,7 +11,31 @@
 		"entrance_square_number" : 7,
 		"exit_square_number" : 11,
 		"text" : "Must have: $500 tuition\nDegrees available: Business Admin, Dance, Engineering, Government, Hospitality, Law Enforcement, Medicine, Music, and Theatre",
-		"Help" : [ "Each Degree Program is associated with a specific occupation or corner square. maxDegrees is the maximum number of degrees attainable in any degree program." ]
+		"Help" : [ "Each Degree Program is associated with a specific occupation or corner square. maxDegrees is the maximum number of degrees attainable in any degree program." ],
+		"ranking" : {
+			"points" : 9,
+			"stars" : 5,
+			"hearts" : 7,
+			"cash" : 10,
+			"salary" : 7,
+			"overall" : 9
+		},
+		"cards" : {
+			"experience" : 2,
+			"opportunity" : 4
+		},
+		"srategy" : {
+			"danger_squares" : 2,
+			"recommended_padding" : 2
+		},
+		"points" : {
+			"cash" : 0,
+			"stars" : 12,
+			"hearts" : 12,
+			"salary" : 2,
+			"totalPoints" : 24
+		}
+	},
 	},
 	"occupationSquares" : [
 		{

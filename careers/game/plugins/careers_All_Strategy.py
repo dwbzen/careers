@@ -97,12 +97,16 @@ class Careers_All_Strategy(Plugin):
                     #
                     degree = self._careersGame.pick_degree()
                     commands.append(f"resolve {pending_action_value} {degree}")
+                    
                 elif pending_action.pending_action_type is PendingActionType.TAKE_SHORTCUT:   # random yes or not
                     selection = random.sample(['yes','no'], 1)[0]
                     commands.append(f"resolve {pending_action_value} {selection}")
+                    
                 elif pending_action.pending_action_type is PendingActionType.BUY_INSURANCE:   # int dollar amount
-                    if player.cash > pending_action.pending_amount:
-                        commands.append(f"resolve {pending_action_value} {pending_action.pending_amount}" )
+                    # only buy insurance if uninsured
+                    if player.cash > pending_action.pending_amount and not player.is_insured:
+                        commands.append(f"resolve {pending_action_value} 1" )
+                        
                 elif pending_action.pending_action_type is PendingActionType.BUY_HEARTS:
                     amount = pending_action.pending_amount
                     #
@@ -181,8 +185,6 @@ class Careers_All_Strategy(Plugin):
             occupation = self.careers_game.occupations[occupation_name]
             # can_enter tupple is meets_criteria (bool), entry_fee (int), message (str), occupation.name (str)
             can_enter = self._gameEngineCommands.can_enter(occupation, player)
-            
-            # commands.append(f"enter {occupation_name}")    # this could ERROR if the player doesn't meet the occupation entrance criteria
     
         match(self.strategy_level):
             case StrategyLevel.DUMB:

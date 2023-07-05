@@ -186,7 +186,13 @@ class BorderSquare(GameSquare):
                 payment = self.special_processing.compute_cash_loss(player)
                 player.add_cash(-payment)       # this will set the bankrupt pending_action if cash is < 0 as a result
                 player.add_point_loss("cash", payment)    # covered by insurance
-                result =  CommandResult(CommandResult.SUCCESS, f'{self.action_text}\n Player {player.player_initials}  pays {payment}, remaining cash: {player.cash}', player.cash < 0)
+                if player.is_computer_player() and player.is_insured and (payment >= player.insurance_premium):
+                    # use insurance
+                    next_action = 'use_insurance'    # this will add back the amount paid
+                    result =  CommandResult(CommandResult.SUCCESS, \
+                                f"Player {player.player_initials} uses insurance to cover {payment} payment", True, next_action=next_action)
+                else:
+                    result =  CommandResult(CommandResult.SUCCESS, f'{self.action_text}\n Player {player.player_initials}  pays {payment}, remaining cash: {player.cash}', player.cash < 0)
             case _:
                 result = CommandResult(CommandResult.SUCCESS, f'{self.square_type} {self.name} execute not yet implemented', False)   #  TODO
                 
