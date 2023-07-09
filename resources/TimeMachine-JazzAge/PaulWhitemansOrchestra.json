@@ -1,0 +1,205 @@
+{
+	"name" : "PaulWhitemansOrchestra",
+	"configuration" : {
+		"alernate_name" : "Orchestra",
+		"occupationClass" : "occupation",
+		"fullName" : "Paul Whiteman's Orchestra",
+		"background_image" : "occupation_entrance.png",
+		"image" : "Paul Whiteman.jpg",
+		"entry_fee" : 500,
+		"size" : 11,
+		"entrance_square_number" : 18,
+		"exit_square_number" : 19,
+		"text" : "Must have: $500 to perfect Jazz Stride piano; or a Music degree; or band experience",
+		"degreeRequirements" : { 
+			"degreeName" : "Music",
+			"numberRequired" : 1
+		},
+		"ranking" : {
+			"points" : 8,
+			"stars" : 10,
+			"hearts" : 2,
+			"cash" : 9,
+			"salary" : 9,
+			"overall" : 8
+		},
+		"cards" : {
+			"experience" : 1,
+			"opportunity" : 2
+		},
+		"srategy" : {
+			"danger_squares" : 2,
+			"recommended_padding" : 3
+		},
+		"points" : {
+			"cash" : 3,
+			"stars" : 2,
+			"hearts" : 23,
+			"salary" : 1,
+			"totalPoints" : 28
+		}
+	},
+	"occupationSquares" : [
+		{
+			"number" : 0,
+			"background_image" : "danger_occupation_square.png",
+			"text" : "Get drunk and fall off the stage",
+			"type" : "danger_square",
+			"stars" : 0,
+			"hearts" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "Go to Hospital",
+			"specialProcessing" : {
+				"type" : "travel_border",
+				"next_square" : "Hospital"
+			}
+		},
+		{
+			"number" : 1,
+			"background_image" : "occupation_square.png",
+			"text" : "Rehearse Ferde Grofe's Grand Canyon Suite",
+			"stars" : 0,
+			"hearts" : 2,
+			"bonus" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 2,
+			"background_image" : "occupation_square.png",
+			"text" : "Star in NBC radio's The Victory Hour",
+			"stars" : 0,
+			"hearts" : 0,
+			"experience" : 0,
+			"opportunities" : 3,
+			"action_text" : "Draw 2 OPPORTUNITY CARDS",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 3,
+			"background_image" : "occupation_square.png",
+			"text" : "Fast Track!",
+			"type" : "travel_square",
+			"stars" : 0,
+			"hearts" : 3,
+			"bonus" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "Move ahead 5 squares",
+			"specialProcessing" : {
+				"type" : "goto",
+				"next_square" : 8
+			}
+		},
+		{
+			"number" : 4,
+			"background_image" : "occupation_square.png",
+			"text" : "May backstab fellow musician(s)",
+			"type" : "action_square",
+			"stars" : 0,
+			"hearts" : -4,
+			"bonus" : 0,
+			"experience" : 2,
+			"opportunities" : 0,
+			"action_text" : "You lose 4 Hearts\n They lose 12 Hearts",
+			"specialProcessing" : {
+				"type" : "backstab",
+				"pending_action" : "backstab",
+				"amount" : -12,
+				"of" : "hearts"
+			}
+		},
+		{
+			"number" : 5,
+			"background_image" : "occupation_square.png",
+			"text" : "Recording session with Bix Beiderbecke",
+			"stars" : 0,
+			"hearts" : 0,
+			"bonus" : 0,
+			"experience" : 1,
+			"opportunities" : 0,
+			"action_text" : "Draw 1 EXPERIENCE CARD",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 6,
+			"background_image" : "occupation_square.png",
+			"text" : "Take part in weekly radio show for Old Gold cigarettes (1929)",
+			"stars" : 0,
+			"hearts" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "Collect $1000 x roll of 1 die",
+			"specialProcessing" : {
+				"type" : "bonus",
+				"dice" : 1,
+				"amount" : 1000
+			}
+		},
+		{
+			"number" : 7,
+			"background_image" : "occupation_square.png",
+			"text" : "Visit Al Jolson in New Orleans",
+			"stars" : 0,
+			"hearts" : 4,
+			"bonus" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 8,
+			"background_image" : "occupation_square.png",
+			"text" : "Premier of Rhapsody in Blue",
+			"stars" : 0,
+			"hearts" : 6,
+			"bonus" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 9,
+			"background_image" : "occupation_square.png",
+			"text" : "Sign with Columbia Records (1928 - 1930)",
+			"stars" : 0,
+			"hearts" : 0,
+			"bonus" : 0,
+			"experience" : 1,
+			"opportunities" : 0,
+			"action_text" : "Draw 1 EXPERIENCE CARD",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 10,
+			"background_image" : "occupation_square.png",
+			"text" :  "Miss return ship back to NY after Vienna tour",
+			"image" : "frown_emoji.png",
+			"stars" : 0,
+			"hearts" : 0,
+			"bonus" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "Lose next turn",
+			"specialProcessing" :  {
+				"type" : "lose_next_turn"
+			}
+		},
+		{
+			"number" : 10,
+			"background_image" : "occupation_square.png",
+			"text" : "Recording of Jose Padillas 'Valencia' tops the charts (1926)",
+			"stars" : 0,
+			"hearts" : 8, 
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "Salary up $1000",
+			"specialProcessing" : { }
+		}
+	]
+}

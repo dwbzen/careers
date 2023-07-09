@@ -22,7 +22,11 @@
 		},
 	    {
 			"type" : "travel_square",
-			"Help" : "Travel by rail on Amtrak."
+			"Help" : "Travel by rail, underground, plane, or bus depending on the game edition."
+		},
+	    {
+			"type" : "opportunity_square",
+			"Help" : "Draw an Opportunity Card."
 		}
 	],
 	"occupations" : [

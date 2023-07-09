@@ -11,7 +11,30 @@
 		"entrance_square_number" : 33,
 		"exit_square_number" : 34,
 		"text" : "Must have: $4000 to bribe the local boss; or Mob experience",
-		"degreeRequirements" : { }
+		"degreeRequirements" : { },
+		"ranking" : {
+			"points" : 3,
+			"stars" : 6,
+			"hearts" : 4,
+			"cash" : 1,
+			"salary" : 6,
+			"overall" : 3
+		},
+		"cards" : {
+			"experience" : 2,
+			"opportunity" : 0
+		},
+		"srategy" : {
+			"danger_squares" : 2,
+			"recommended_padding" : 3
+		},
+		"points" : {
+			"cash" : 30,
+			"stars" : 10,
+			"hearts" : 20,
+			"salary" : 3,
+			"totalPoints" : 60
+		}
 	},
 	"occupationSquares" : [
 		{

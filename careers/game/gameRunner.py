@@ -285,7 +285,7 @@ def main():
                         choices=["test","prod","custom","test_prod"], default="test")
     parser.add_argument("--gameid", help="Game ID", type=str, default=None)
     parser.add_argument("--edition", help="Game edition: Hi-Tech, Professions-Hi-Tech, JazzAge, or UK", \
-                        type=str, choices=["Hi-Tech", "Professions-Hi-Tech", "UK", "JazzAge"], default="Hi-Tech")
+                        type=str, choices=["Hi-Tech", "Professions-Hi-Tech", "UK", "TimeMachine-JazzAge"], default="Professions-Hi-Tech")
     parser.add_argument("--script", help="Execute script file", type=str, default=None)
     parser.add_argument("--delay", help="Delay a specified number of seconds between script commands", type=int, default=0)
     parser.add_argument("--comments", "-c", help="Log comment lines when running a script", type=str, choices=['y','Y', 'n', 'N'], default='Y')

@@ -25,7 +25,7 @@
 			"opportunity" : 1
 		},
 		"srategy" : {
-			"danger_squares" : 2,
+			"danger_squares" : 1,
 			"recommended_padding" : 3
 		},
 		"points" : {
@@ -144,7 +144,7 @@
 			"hearts" : 0, 
 			"experience" : 0,
 			"opportunities" : 0,
-			"action_text" : "Collect bonus $5000",
+			"action_text" : "Collect bonus $5,000",
 			"specialProcessing" : {
 				"type" : "bonus",
 				"amount" : 5000
@@ -164,7 +164,7 @@
 		{
 			"number" : 10,
 			"background_image" : "danger_occupation_square.png",
-			"text" : "Agents destroy your still",
+			"text" : "Agents destroy your stills",
 			"type" : "danger_square",
 			"stars" : 0,
 			"hearts" : 0,

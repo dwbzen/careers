@@ -1,7 +1,7 @@
 {
 	"Help" : "This file has the keys to individual occupation files for the Time Machine - Jazz Age Edition. Occupations listed in order as they appear on the board.",
 	"occupation_square_types_list" : [
-		"danger_square", "shortcut_square", "action_square", "regular_square", "travel_square"
+		"danger_square", "shortcut_square", "action_square", "occupation_square", "travel_square"
 	],
 	"occupation_square_types" : [
 	    {
@@ -17,26 +17,22 @@
 			"Help" : "Perform a non-movement action."
 		},
 	    {
-			"type" : "regular_square",
+			"type" : "occupation_square",
 			"Help" : "A square that awards one or more hearts, stars, Opportunity cards, and/or Experience cards."
-		},
-	    {
-			"type" : "travel_square",
-			"Help" : "Travel by rail on Amtrak."
 		}
 	],
 	"occupations" : [
-		"RadioStationKWDB", "Bootlegger", "RooseveltCollege", "SapphireRecords", 
-		"MajorLeagueBaseball", "PaulWhitemansOrchestra", "ProhibitionAgent", "CottonClub", "ChicagoOutfit", "StorkClub"
+		"RCA", "Bootlegger", "UniversityOfChicago", "ColumbiaPhonographCompany", 
+		"NewYorkYankees", "PaulWhitemansOrchestra", "TheUntouchables", "CottonClub", "ChicagoOutfit", "StorkClub"
 	],
 	"gameboard_mapping": {
-		"kwdb": "RadioStationKWDB",
+		"rca": "RCA",
 		"bootlegger": "Bootlegger",
-		"rc" : "RooseveltCollege",
-		"sapphire": "SapphireRecords",
-		"mlb": "MajorLeagueBaseball",
-		"PaulWhiteman": "PaulWhitemansOrchestra",
-		"agent": "ProhibitionAgent",
+		"uc" : "UniversityOfChicago",
+		"columbia": "ColumbiaPhonographCompany",
+		"yankees": "NewYorkYankees",
+		"orchestra": "PaulWhitemansOrchestra",
+		"untouchables": "TheUntouchables",
 		"cotton": "CottonClub",
 		"mob": "ChicagoOutfit",
 		"stork": "StorkClub"

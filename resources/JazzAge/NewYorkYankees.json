@@ -1,6 +1,7 @@
 {
 	"name" : "NewYorkYankees",
 	"configuration" : {
+		"alternate_name" : "Yankees",
 		"occupationClass" : "occupation",
 		"fullName" : "New York Yankees",
 		"background_image" : "occupation_entrance.png",

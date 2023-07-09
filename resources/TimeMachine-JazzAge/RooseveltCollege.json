@@ -1,0 +1,185 @@
+{
+	"name" : "RooseveltCollege",
+	"configuration" : {
+		"alternate_name" : "RC",
+		"occupationClass" : "college",
+		"fullName" : "Roosevelt College",
+		"background_image" : "occupation_entrance.png",
+		"image" : "administration_building_of_a_1920s_era_university.png",
+		"entry_fee" : 500,
+		"size" : 11,
+		"entrance_square_number" : 7,
+		"exit_square_number" : 11,
+		"text" : "Must have: $500 tuition\nDegrees available: Business Admin, Dance, Engineering, Government, Hospitality, Law Enforcement, Medicine, Music, and Theatre",
+		"Help" : [ "Each Degree Program is associated with a specific occupation or corner square. maxDegrees is the maximum number of degrees attainable in any degree program." ],
+		"ranking" : {
+			"points" : 9,
+			"stars" : 5,
+			"hearts" : 7,
+			"cash" : 10,
+			"salary" : 7,
+			"overall" : 9
+		},
+		"cards" : {
+			"experience" : 2,
+			"opportunity" : 4
+		},
+		"srategy" : {
+			"danger_squares" : 2,
+			"recommended_padding" : 2
+		},
+		"points" : {
+			"cash" : 0,
+			"stars" : 12,
+			"hearts" : 12,
+			"salary" : 2,
+			"totalPoints" : 24
+		}
+	},
+	"occupationSquares" : [
+		{
+			"number" : 0,
+			"background_image" : "occupation_square.png",
+			"text" : "You need a serious ass-whooping",
+			"image" : "",
+			"stars" : 0,
+			"hearts" : 0,
+			"bonus" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "Lose next turn",
+			"specialProcessing" :  {
+				"type" : "lose_next_turn"
+			}
+		},
+		{
+			"number" : 1,
+			"background_image" : "occupation_square.png",
+			"text" : "Earl Hines plays the Grand Terrace",
+			"image" : "",
+			"stars" : 0,
+			"hearts" : 2,
+			"bonus" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 2,
+			"background_image" : "occupation_square.png",
+			"text" : "You're the bees knees. May take shortcut",
+			"type" : "shortcut_square",
+			"image" : "shortcut_emoji.png",
+			"stars" : 0,
+			"hearts" : 0,
+			"bonus" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : {
+				"type" : "shortcut",
+				"pending_action" : "take_shortcut",
+				"next_square" : 9,
+				"next_square_text" : "Earn PhD in Music Composition: Draw 2 OPPORTUNITY CARDS"
+			}
+		},
+		{
+			"number" : 3,
+			"background_image" : "occupation_square.png",
+			"text" : "Publish 'History of Chicago Jazz' research paper",
+			"image" : "",
+			"stars" : 4,
+			"hearts" : 0,
+			"bonus" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 4,
+			"background_image" : "occupation_square.png",
+			"text" : "Roomate has connections",
+			"stars" : 0,
+			"hearts" : 0,
+			"experience" : 0,
+			"opportunities" : 2,
+			"action_text" : "Draw 2 OPPORTUNITY CARDS",
+			"specialProcessing" : {}
+		},		
+		{
+			"number" : 5,
+			"background_image" : "danger_occupation_square.png",
+			"text" : "Caught in speakeasy raid and kicked out of school",
+			"type" : "danger_square",
+			"stars" : 0,
+			"hearts" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "Pay $5,000 bail OR go on Unemployment",
+			"specialProcessing" : {
+				"type" : "cash_loss_or_unemployment",
+				"pending_action" : "cash_loss_or_unemployment",
+				"amount" : 5000,
+				"of" : "cash"
+			}
+		},
+		{
+			"number" : 6,
+			"background_image" : "occupation_square.png",
+			"text" : "Pledge Sorority/Fraternity",
+			"stars" : 2,
+			"hearts" : 4,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 7,
+			"background_image" : "occupation_square.png",
+			"text" : "Earn Masters in Music Theory",
+			"stars" : 0,
+			"hearts" : 0,
+			"bonus" : 0,
+			"experience" : 2,
+			"opportunities" : 0,
+			"action_text" : "Draw 2 EXPERIENCE CARDS",
+			"specialProcessing" : {}
+		},		
+		{
+			"number" : 8,
+			"background_image" : "occupation_square.png",
+			"text" : "Great party in Roosevelt Commons",
+			"stars" : 0,
+			"hearts" : 6,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 9,
+			"background_image" : "occupation_square.png",
+			"text" : "Earn PhD in Music Composition: Draw 2 OPPORTUNITY CARDS",
+			"stars" : 0,
+			"hearts" : 0,
+			"experience" : 0,
+			"opportunities" : 2,
+			"action_text" : "Draw 2 OPPORTUNITY CARDS",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 10,
+			"background_image" : "occupation_square.png",
+			"text" : "Collaborate with Earl Hines' band",
+			"stars" : 6,
+			"hearts" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : {	}
+		}
+	]
+}

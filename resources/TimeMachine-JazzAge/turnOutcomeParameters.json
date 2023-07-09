@@ -1,0 +1,23 @@
+{
+	"Help" : "This file has the weights to apply to the various turn outcome parameters. Keys must match player_info keys.",
+
+	"turn_outcome_parameters" : {
+		"points" : 0.5,
+		"opportunities" : 1,
+		"experiences" : 1,
+		"sick" : 4,
+		"unemployed" : 4,
+		"degrees" : 2,
+		"occupations" : 2,
+		"salary" : 2,
+		"can_retire" : 3,
+		"cash_goal" : 1,
+		"stars_goal" : 1,
+		"hearts_goal" : 1,
+		"cash" : 1,
+		"stars": 1,
+		"hearts": 1,
+		"opportunity_card_value" : 1,
+		"experience_card_value" : 1
+	}
+}

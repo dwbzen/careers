@@ -90,7 +90,7 @@
 				"background_image" : "occupation_entrance_square.png",
 				"image" : "black_and_white_photograph_of_bootleggers.png",
 				"text" : "Bootlegger",
-				"action_text" : "Must have:\n$1000 to make vehicle modifications; or Bootlegging experience",
+				"action_text" : "Must have: $1,000 to make vehicle modifications; or Bootlegging experience",
 				"specialProcessing" : {
 					"type" : "enter_occupation",
 					"destinationOccupation" : "Bootlegger"
@@ -123,16 +123,16 @@
 			},
 			{
 				"number" : 7,
-				"name" : "UC",
+				"name" : "UniversityOfChicago",
 				"background_image" : "occupation_entrance_square.png",
 				"image" : "university-of-chicago-logo.jpg",
 				"type" : "occupation_entrance_square"  
-				"text" : "University of Chicago",
+				"text" : "University Of Chicago",
 				"action_text" : "Must have $500 tuition. Degrees available:\n Business Admin, Dance, Engineering, Government, Law Enforcement, Medicine, Music, Theatre",
 				"specialProcessing" : {
 					"type" : "enter_college",
 					"pending_action" : "select_degree",
-					"destinationOccupation" : "UC"
+					"destinationOccupation" : "UniversityOfChicago"
 				}
 			},
 			{
@@ -151,7 +151,7 @@
 				"type" : "corner_square",
 				"background_image" : "corner_square.png",
 				"text" : "HOSPITAL",
-				"action_text" : "You are LAID UP until you throw 5 or less\nor pay the Doctor/Paymaster 1/2 your salary for experimental drugs",
+				"action_text" : "You are LAID UP until you throw 5 or less, or pay the Doctor/Paymaster 1/2 your salary for experimental drugs",
 				"specialProcessing" : { 
 					"type" : "hospital",
 					"must_roll" : [2, 3, 4, 5],
@@ -204,7 +204,7 @@
 				"background_image" : "occupation_entrance_square.png",
 				"image" : "Columbia Phonograph company.png",
 				"text" : "Columbia Phonograph Company",
-				"action_text" : "Must have $1000 for internship; or Business Admin Degree; or prior experience",
+				"action_text" : "Must have $1,000 for internship, or Business Admin Degree, or prior experience",
 				"specialProcessing" : {
 					"type" : "enter_occupation",
 					"destinationOccupation" : "ColumbiaPhonographCompany"
@@ -227,7 +227,7 @@
 				"background_image" : "occupation_entrance_square.png",
 				"image" : "NewYorkYankees_PrimaryLogo.svg.png",
 				"text" : "New York Yankees",
-				"action_text" : "Must have: $500 for batting coach; or Yankees experience",
+				"action_text" : "Must have: $500 for batting coach; or MLB experience",
 				"specialProcessing" : {
 					"type" : "enter_occupation",
 					"destinationOccupation" : "NewYorkYankees"
@@ -263,7 +263,7 @@
 				"background_image" : "occupation_entrance_square.png",
 				"image" : "Paul Whiteman.jpg",
 				"text" : "Paul Whiteman's Orchestra",
-				"action_text" : "Must have: $500 to perfect Stride Jazz Piano; or a Music degree; or prior band experience",
+				"action_text" : "Must have: $500 to perfect Stride Jazz Piano, or a Music degree, or prior band experience",
 				"specialProcessing" : {
 					"type" : "enter_occupation",
 					"destinationOccupation" : "PaulWhitemansOrchestra"
@@ -300,7 +300,7 @@
 				"type" : "corner_square",
 				"background_image" : "corner_square.png",
 				"text" : "UNEMPLOYMENT",
-				"action_text" : "You LOST YOUR JOB and must throw 7, 11, or doubles to move on.\nOR pay 1 year's Salary for additional training.",
+				"action_text" : "You LOST YOUR JOB and must throw 7, 11, or doubles to move on, OR pay 1 year's Salary for additional training.",
 				"specialProcessing" : {
 					"type" : "unemployment",
 					"must_roll" : [7, 11],
@@ -342,7 +342,7 @@
 				"background_image" : "occupation_entrance_square.png",
 				"image" : "The_Untouchables_oil_painting.png",
 				"text" : "The Untouchables",
-				"action_text" : "Must have: $8,000 for special training; or Law Enforcement degree; or prior experience",
+				"action_text" : "Must have: $8,000 for special training, or Law Enforcement degree, or prior experience",
 				"specialProcessing" : {
 					"type" : "enter_occupation",
 					"destinationOccupation" : "TheUntouchables"
@@ -379,7 +379,7 @@
 				"background_image" : "occupation_entrance_square.png",
 				"image" : "cotton club.png",
 				"text" : "Facebook",
-				"action_text" : "Must have: $1000 for dance lessons; or a dance degree; or Cotton Club experience",
+				"action_text" : "Must have: $1,000 for dance lessons, or a dance degree, or Cotton Club experience",
 				"specialProcessing" : {
 					"type" : "enter_occupation",
 					"destinationOccupation" : "CottonClub"
@@ -401,7 +401,7 @@
 				"type" : "action_square",
 				"background_image" : "light blue action square.png",
 				"text" : "Mob Protection",
-				"action_text" : "Spend $5,000 to by protection from the Chicago Outfit for your cash, Happiness and Fame.",
+				"action_text" : "May buy 'insurance' from the Chicago Outfit to protect for your cash, Happiness and Fame. Cost of protection $5,000.",
 				"specialProcessing" : { 
 					"type" : "buy_insurance",
 					"pending_action" : "buy_insurance",
@@ -439,7 +439,7 @@
 				"background_image" : "light blue action square.png",
 				"image" : "",
 				"text" : "Horseracing at Pimlico",
-				"action_text" : "Roll 2 dice to bet on the trifecta at Pimlico.\n6 or less - lose $1000 x roll of 1 die\n7 - Collect $10,000\n8 or more - collect $1000 x roll of 1 die",
+				"action_text" : "Roll 2 dice to bet on the trifecta at Pimlico.\n6 or less - lose $1,000 x roll of 1 die\n7 - Collect $10,000\n8 or more - collect $1,000 x roll of 1 die",
 				"specialProcessing" : {
 					"type" : "gamble",
 					"pending_action" : "gamble",
@@ -453,9 +453,9 @@
 				"name" : "ChicagoOutfit",
 				"type" : "occupation_entrance_square",
 				"background_image" : "occupation_entrance_square.png",
-				"image" : "ChicagoMob.png",
+				"image" : "group_of_depression-era_gangsters_holding_machine_guns.png",
 				"text" : "The Chicago Outfit",
-				"action_text" : "Must have: $4000 to bribe the local boss; or Mob experience.",
+				"action_text" : "Must have: $4,000 to bribe the local boss or Mob experience.",
 				"specialProcessing" : {
 					"type" : "enter_occupation",
 					"destinationOccupation" : "ChicagoOutfit"
@@ -490,10 +490,10 @@
 				"background_image" : "occupation_entrance_square.png",
 				"image" : "Stork_Club_logo.jpg",
 				"text" : "The Stork Club",
-				"action_text" : "Must have: A Member Card; or $10,000 for a new Member Card; or a Theatre degree",
+				"action_text" : "Must have: A Member Card, or $10,000 for a new Member Card, or a Theatre degree",
 				"specialProcessing" : {
 					"type" : "enter_occupation",
-					"destinationOccupation" : "Pfizer"
+					"destinationOccupation" : "StorkClub"
 				}
 			},
 			{
@@ -511,7 +511,7 @@
 				"name" : "DivorceCourt",
 				"type" : "danger_square",
 				"background_image" : "danger_border_square.png",
-				"image" : "divorce icon.jpg",
+				"image" : "A_middle-aged_couple_their_faces_etched_with_lines-72ef0d54fe1b.png",
 				"text" : "DIVORCE COURT",
 				"action_text" : "You and your partner split amicably. Throw 1 die to see how amicably. Pay number thrown times 10% of your annual salary",
 				"specialProcessing" : {
@@ -543,7 +543,7 @@
 				"background_image" : "occupation_entrance_square.png",
 				"image" : "RCA logo.jpg",
 				"text" : "Radio Corporation of America",
-				"action_text" : "Must have: $5000 for technical training; or an Engineering Degree; or RCA experience",
+				"action_text" : "Must have: $5,000 for technical training, or an Engineering Degree, or radio broadcasting experience",
 				"specialProcessing" : {
 					"type" : "enter_occupation",
 					"destinationOccupation" : "RCA"
@@ -555,7 +555,7 @@
 				"type" : "action_square",
 				"background_image" : "light blue action square.png",
 				"text" : "PUBLICITY",
-				"action_text" : "May hire Walter Winchell for good publicity. Score Fame points as follows:\n4 Stars - $4,000; 10 Stars - $8,000; 16 stars - $12,000; 22 Stars - $16,000 ",
+				"action_text" : "May hire Walter Winchell for good publicity. Score Fame points as follows:\n4 Stars - $4,000, 10 Stars - $8,000, 16 stars - $12,000, 22 Stars - $16,000 ",
 				"specialProcessing" : {
 					"type" : "buy_stars",
 					"pending_action" : "buy_stars",

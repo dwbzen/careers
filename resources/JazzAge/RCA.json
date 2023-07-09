@@ -1,6 +1,7 @@
 {
 	"name" : "RCA",
 	"configuration" : {
+		"alternate_name" : "RCA",
 		"occupationClass" : "occupation",
 		"fullName" : "Radio Corporation of America",
 		"background_image" : "occupation_entrance.png",

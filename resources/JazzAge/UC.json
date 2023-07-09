@@ -1,6 +1,7 @@
 {
-	"name" : "UC",
+	"name" : "UniversityOfChicago",
 	"configuration" : {
+		"alternate_name" : "UC"
 		"occupationClass" : "college",
 		"fullName" : "University of Chicago",
 		"background_image" : "occupation_entrance.png",

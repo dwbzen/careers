@@ -14,6 +14,29 @@
 		"degreeRequirements" : { 
 			"degreeName" : "Theatre",
 			"numberRequired" : 1
+		},
+		"ranking" : {
+			"points" : 2,
+			"stars" : 4,
+			"hearts" : 1,
+			"cash" : 3,
+			"salary" : 4,
+			"overall" : 2
+		},
+		"cards" : {
+			"experience" : 2,
+			"opportunity" : 1
+		},
+		"srategy" : {
+			"danger_squares" : 3,
+			"recommended_padding" : 4
+		},
+		"points" : {
+			"cash" : 9,
+			"stars" : 16,
+			"hearts" : 39,
+			"salary" : 9,
+			"totalPoints" : 64
 		}
 	},
 	"occupationSquares" : [

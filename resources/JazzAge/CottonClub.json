@@ -14,6 +14,29 @@
 		"degreeRequirements" : { 
 			"degreeName" : "Dance",
 			"numberRequired" : 1
+		},
+		"ranking" : {
+			"points" : 5,
+			"stars" : 3,
+			"hearts" : 10,
+			"cash" : 7,
+			"salary" : 4,
+			"overall" : 5
+		},
+		"cards" : {
+			"experience" : 1,
+			"opportunity" : 2
+		},
+		"srategy" : {
+			"danger_squares" : 2,
+			"recommended_padding" : 3
+		},
+		"points" : {
+			"cash" : 3,
+			"stars" : 28,
+			"hearts" : 6,
+			"salary" : 4,
+			"totalPoints" : 38
 		}
 	},
 	"occupationSquares" : [

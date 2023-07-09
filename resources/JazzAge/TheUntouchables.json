@@ -1,6 +1,7 @@
 {
 	"name" : "TheUntouchables",
 	"configuration" : {
+		"alternate_name" : "Untouchables",
 		"occupationClass" : "occupation",
 		"fullName" : "The Untouchables",
 		"background_image" : "occupation_entrance.png",

@@ -46,6 +46,7 @@ class SpecialProcessingType(Enum):
     # occupation squares
     SHORTCUT = "shortcut"
     CASH_LOSS_OR_UNEMPLOYMENT = "cash_loss_or_unemployment"
+    CASH_LOSS_AND_UNEMPLOYMENT = "cash_loss_and_unemployment"
     GOTO = "goto"
     NEXT_SQUARE = "next_square"
     SALARY_INCREASE = "salary_increase"
