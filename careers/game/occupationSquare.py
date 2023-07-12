@@ -174,15 +174,42 @@ class OccupationSquare(GameSquare):
                 #
                 # if the player's cash is < the amount, put them in Unemployment
                 # otherwise player needs to choose to pay or go to Unemployment
+                # Using insurance and avoiding unemployment is automatic for an insured computer player
                 #
                 if player.cash < amount:
-                    message += f'\nInsufficient cash to cover amount: {amount}, you will be sent to Unemployment'
-                    next_action = 'goto unemployment'
-                    player.pending_actions.remove(PendingActionType.CASH_LOSS_OR_UNEMPLOYMENT)
+                    if player.is_computer_player() and player.is_insured:
+                        player.add_point_loss("cash", payment)    # cash loss covered by insurance
+                        player.add_cash(-payment)                 # this will set the bankrupt pending_action if cash is < 0 as a result
+                        # use insurance
+                        next_action = 'use_insurance'    # this will add back the amount paid
+                        message = f"\n{message} Using insurance to cover the payment amount and avoid Unemployment."
+                    else:
+                        message = f"{message}\nInsufficient cash to cover amount: {amount}, you will be sent to Unemployment"
+                        next_action = 'goto unemployment'
+                        player.pending_actions.remove(PendingActionType.CASH_LOSS_OR_UNEMPLOYMENT)
                 else:
                     player.add_pending_action(PendingActionType.CASH_LOSS_OR_UNEMPLOYMENT, self.name, amount, dice)
                     done_flag = False
-                
+            
+            case SpecialProcessingType.CASH_LOSS_AND_UNEMPLOYMENT:
+                #
+                # player loses a percentage of cash AND then goes to unemployment
+                # Unemployment can be avoided by using insurance to cover the amount
+                # Insurance use is automatic for all players - computer and human
+                #
+                payment = self.special_processing.compute_cash_loss(player)
+
+                player.add_point_loss("cash", payment)    # cash loss covered by insurance
+                player.add_cash(-payment)                 # this will set the bankrupt pending_action if cash is < 0 as a result
+                message = f"You lose {payment} cash "
+                if player.is_insured and (payment >= player.insurance_premium):
+                    # use insurance
+                    next_action = 'use_insurance'    # this will add back the amount paid
+                    message = f"\n{message} Using insurance to cover the payment amount and avoid Unemployment."
+                else:
+                    next_action = "goto unemployment"
+                    message = f"{message} and go to Unemployment"
+            
             case SpecialProcessingType.TRAVEL_BORDER:
                 destination = self.special_processing.next_square   # possible destinations: Unemployment and Hospital
                 next_action = f'goto {destination}'

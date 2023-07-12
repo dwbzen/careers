@@ -13,6 +13,7 @@ from game.pendingAction import PendingAction
 from game.pendingActions import PendingActions
 from game.gameConstants import GameType, PlayerType
 from game.turnHistory import TurnHistory
+from game.todoList import TodoList
 from datetime import datetime
 from typing import Dict, List, Union
 import json
@@ -61,7 +62,7 @@ class Player(CareersObject):
         # a player todo List are occupations and/or degrees the player must complete successfully
         # in addition to fulfilling their success formula
         #
-        self._my_todos = {}    # filled in by applicable active plug-in(s)
+        self._my_todos:TodoList = None    # filled in by applicable active plug-in(s)
         self._my_game = None   # will be a CareersGame reference
         
     def _initialize(self):
@@ -264,11 +265,11 @@ class Player(CareersObject):
         self._board_location = value
 
     @property
-    def my_todos(self) ->Dict:
+    def my_todos(self) ->TodoList:
         return self._my_todos
     
     @my_todos.setter
-    def my_todos(self, value):
+    def my_todos(self, value:TodoList):
         self._my_todos = value
 
     def current_border_square_number(self):
@@ -700,6 +701,7 @@ class Player(CareersObject):
             Note the result is only valid if the game has started (game_state.started is True)
     
         """
+        
         if self.game_type is GameType.POINTS:
             cash = self.cash_points()
             complete = self.happiness >= self.success_formula.hearts and \
@@ -707,7 +709,9 @@ class Player(CareersObject):
                        cash >= self.success_formula.money
         else:
             complete = self.time_remaining <= 0
-                       
+        if self._my_todos is not None:
+            complete &= self._my_todos.is_comlete()
+            
         return complete
     
     def need(self) -> Dict[str, int]:
@@ -759,7 +763,7 @@ class Player(CareersObject):
         self._initialize()
     
     def player_info(self, include_successFormula:bool=False, outputFormat:str='text', include_degrees=True, \
-                    include_board_location=True, include_card_values=True) ->str:
+                    include_board_location=True, include_card_values=True, include_todos= True) ->str:
         '''Returns key player information in the desired format.
             Arguments:
                 include_successFormula - if True, include the player's success formula. Default is False
@@ -767,6 +771,7 @@ class Player(CareersObject):
                 include_board_location - if True, include the player's current BoardLocation. Default is True.
                 outputFormat - 'json', 'dict' or 'text'. Default is 'text'
                 include_card_values - include the numeric value of each Opportunity and Experience card. Default is True.
+                include_todos - include the player's TodoList if there is one
             
             Card values are assigned by card_type and are in the cards JSON files under "types".
         '''
@@ -831,6 +836,10 @@ Insured: {self.is_insured}, Unemployed: {self.is_unemployed}, Sick: {self.is_sic
             cdict.update({"experience" : {"count": experience_card_count, "value" : experience_card_value}})
             fstring = f'{fstring}\n{cdict}'
             info_dict.update(cdict)
+        
+        if include_todos and self._my_todos is not None:
+            todos = self._my_todos.todos
+            info_dict.update(todos)
             
         if self.game_type is GameType.TIMED:
             fstring = f'{fstring}\nGame Time Remaining: {self.time_remaining} minutes'
@@ -851,6 +860,7 @@ Insured: {self.is_insured}, Unemployed: {self.is_unemployed}, Sick: {self.is_sic
             outval = json.dumps(info_dict)
         elif outputFormat=='dict':
             outval = info_dict 
+            
         return outval
     
     def get_current_location(self) -> BoardLocation:
@@ -974,6 +984,12 @@ Insured: {self.is_insured}, Unemployed: {self.is_unemployed}, Sick: {self.is_sic
         
         return pdict
 
+    def check_todos(self)->bool:
+        """Check the player's TODO list.
+            Returns: True if all TODO items are complete, False otherwise
+        """
+        return True
+        
     def to_JSON(self):
         return json.dumps(self.to_dict(), indent=2)
 

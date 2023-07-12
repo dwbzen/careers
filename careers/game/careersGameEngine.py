@@ -25,6 +25,7 @@ from game.environment import Environment
 from game.gameState import GameState
 from game.gameConstants import PendingActionType, SpecialProcessingType, GameType, GameParametersType, PlayerType, GameConstants
 from game.turnHistory import TurnHistory
+from game.todoList import TodoList
 from game.logger import Logger
 
 from datetime import datetime
@@ -1250,6 +1251,11 @@ Where <what> is 'occupation' or 'command'
             if what == PendingActionType.SELECT_DEGREE.value:  # the degree program chosen is the 'choice'
                 result = self.add_degree(player, choice)
                 result.message = f'{message}\n{result.message}'
+                #
+                # if this degree is in the player's todo list, set to completed
+                #
+                if player.my_todos is not None:
+                    player.my_todos.set_completed(degree_name=what)
 
             elif what ==  PendingActionType.GAMBLE.value:
                 #
@@ -1824,6 +1830,11 @@ Where <what> is 'occupation' or 'command'
 
             self.add_experience_cards(player, nexperience)
             message = f'{player.player_initials} Leaving {board_location.occupation_name}, collects {nexperience} Experience cards'
+            #
+            # if this occupation is in the player's todo list, set complete to True (1)
+            #
+            if player.my_todos is not None:
+                player.my_todos.set_completed(occupation_name=board_location.occupation_name)
         else:    
             # special_processing.processing_type == SpecialProcessingType.ENTER_COLLEGE
             # player must choose a degree program

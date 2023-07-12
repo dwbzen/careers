@@ -1,5 +1,5 @@
 {
-	"degreePrograms" : [ "Business Admin", "Dance", "Engineering",  "Government", "Hospitality", "Law Enforcement", "Medicine", "Music", "Theatre" ],
+	"degreePrograms" : [ "Business Admin", "Dance", "Engineering", "Hospitality", "Law Enforcement", "Medicine", "Music", "Theatre" ],
 	"maxDegrees" : 4,
 	"salaryIncreases" : [2000, 3000, 4000, 5000],
 	"degreeNames" : ["Bachelors", "Masters", "PhD", "Post-Doc"]

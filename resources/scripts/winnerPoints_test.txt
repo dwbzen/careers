@@ -1,4 +1,5 @@
 # add 2 players - 60 point game - cash stars(Fame) hearts(Happiness)
+# Hi-Tech edition - no player ToDos
 #
 add player Don DWB dwb20230113 dwbzen@gmail.com 20 30 10
 add player Brian BDB bdb20230113 brian.bacon01@gmail.com 20 30 10
@@ -11,11 +12,11 @@ set BDB happiness 20
 set BDB fame 20
 set BDB money 40000
 # DWB + 2 hearts
-enter MIT
+enter PPI
 goto 1
 next
 # BDB + 4 stars
-enter MIT
+enter PPI
 goto 3
 next
 # DWB + 2 stars, 4 hearts
@@ -32,7 +33,7 @@ status
 next
 # BDB + 6 stars, this should win it
 goto 10
-status
+need
 next
 
 # end the game

@@ -118,7 +118,7 @@
 			"opportunities" : 0,
 			"action_text" : "Lose ALL your Cash and go to Unemployment",
 			"specialProcessing" : {
-				"type" : "cash_loss",
+				"type" : "cash_loss_and_unemployment",
 				"amount" : 0,
 				"percent" : 1.0,
 				"of" : "cash"

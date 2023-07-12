@@ -124,7 +124,7 @@ class GameEngineCommands(object):
         # check degree requirements
         # an occupation may not have an associated degree
         #
-        if occupation.degreeRequirements is not None:
+        if occupation.degreeRequirements is not None and len(occupation.degreeRequirements) > 0:
             degreeRequirements = occupation.degreeRequirements
             degreeName = degreeRequirements['degreeName']
             numberRequired = degreeRequirements['numberRequired']
