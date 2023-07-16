@@ -31,7 +31,7 @@ from game.logger import Logger
 from datetime import datetime
 import random, json
 from typing import List
-import os, logging
+import os, logging, sys
 from threading import Lock
 
 class CareersGameEngine(object):
@@ -275,6 +275,7 @@ class CareersGameEngine(object):
             message = f'"{command}" : Invalid command format or syntax\nexception: {str(ex)}'
             command_result = CommandResult(CommandResult.ERROR,  message,  False, exception=ex)
             logging.error(message)
+            print(message, file=sys.stderr)
         return command_result
     
     def get_player_game_square(self, player:Player) -> GameSquare:
@@ -635,17 +636,8 @@ class CareersGameEngine(object):
         """
         player = self.game_state.current_player if initials is None else self.get_player(initials)
         time_remaining = self.game_state.get_time_remaining() if self.game_state.game_type is GameType.TIMED else -1
-        success_formula = player.success_formula
-        total_points = success_formula.total_points
-        cash_points = player.cash // 1000
-        stars = player.fame
-        hearts = player.happiness
-        current_points = cash_points + stars + hearts
-        cash_needed = (1000 * success_formula.money)-player.cash
-        currency_symbol = self._careersGame.game_parameters.get_param("currency_symbol")
-        message_dict = {"current_points" : current_points, "points_needed" : total_points-current_points, \
-                        "cash_needed" : f"{currency_symbol}{cash_needed}", \
-                        "fame_needed" : success_formula.stars-stars, "hearts_needed" : success_formula.hearts-hearts }
+
+        message_dict = player.need()
         if time_remaining >= 0:
             message_dict.update({"time_remaining" : time_remaining})
             
@@ -1191,6 +1183,10 @@ Where <what> is 'occupation' or 'command'
         self._gameEngineCommands = GameEngineCommands(self._careersGame)
         self._gameEngineCommands.debug = self.debug
         self.currency_symbol = self._careersGame.game_parameters.get_param("currency_symbol")
+        #
+        # make currency_symbol globally available
+        #
+        GameConstants.set_currency_symbol(self.currency_symbol)
         
         message = f'{{"game_id":"{self.game_id}", "installationId":"{installationId}"}}'
         self.log_info(message)    # INFO
@@ -1255,7 +1251,7 @@ Where <what> is 'occupation' or 'command'
                 # if this degree is in the player's todo list, set to completed
                 #
                 if player.my_todos is not None:
-                    player.my_todos.set_completed(degree_name=what)
+                    player.my_todos.set_completed(degree_name=choice)
 
             elif what ==  PendingActionType.GAMBLE.value:
                 #
@@ -1439,10 +1435,11 @@ Where <what> is 'occupation' or 'command'
         #
         # run any "start" plug-ins
         #
-        plugins = self._plugins["start"]     # a List of Plugin class instances to run
-        for plugin_instance in plugins:
-            result = plugin_instance.run()   # start plugins apply to all players
-            self.log_info(str(result))
+        if "start" in self._plugins:
+            plugins = self._plugins["start"]     # a List of Plugin class instances to run
+            for plugin_instance in plugins:
+                result = plugin_instance.run()   # start plugins apply to all players
+                self.log_info(str(result))
                 
         return CommandResult(CommandResult.SUCCESS, message, True)
     

@@ -47,6 +47,8 @@ class TodoList(CareersObject):
                 occupation_name - the name of the occupation to complete. 
                 degree_name - the names of the degree to complete.
             The occupation/degree does not need to be in the todo list
+            Note that degree_name is case sensitive,
+            That is it needs to be in the degreePrograms list in collegeDegrees.json.
         """
         if occupation_name is not None:
             for occupation in self._todos["occupations_todo"]:
@@ -69,6 +71,6 @@ class TodoList(CareersObject):
         return complete
     
     def to_JSON(self) ->str:
-        jstr = json.dumps(self._todos, indent=2)
+        jstr = json.dumps(self._todos)
         return jstr
     

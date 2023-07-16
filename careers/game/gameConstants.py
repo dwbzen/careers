@@ -108,8 +108,10 @@ class GameConstants(object):
             'game_status', 'goto', 'help', 'info', 'list', 'load', 'location', 'log_message', 'lose_turn', 'need', 'next', 'pay', 'perform', 'quit', 'retire', 
             'roll', 'resolve', 'save', 'saved', 'set', 'start', 'status', 'take_turn', 'transfer', 'turn_history', 
             'update', 'use', 'use_insurance', 'where', 'who']
+    
+    CURRENCY_SYMBOL = ""
 
-    def __init__(self, params:Dict):
+    def __init__(self, params:Dict={} ):
         '''
         Constructor
         '''
@@ -125,6 +127,14 @@ class GameConstants(object):
         
     def get_commands(self) -> List[str]:
         return GameConstants.COMMANDS
+    
+    @staticmethod
+    def get_currency_symbol()->str:
+        return GameConstants.CURRENCY_SYMBOL
+    
+    @staticmethod
+    def set_currency_symbol(value:str):
+        GameConstants.CURRENCY_SYMBOL = value
     
     @staticmethod
     def get_plugins(edition_name="All", apath=None) ->List[Dict]:

@@ -14,6 +14,7 @@ from game.pendingActions import PendingActions
 from game.gameConstants import GameType, PlayerType
 from game.turnHistory import TurnHistory
 from game.todoList import TodoList
+from game.gameConstants import GameConstants
 from datetime import datetime
 from typing import Dict, List, Union
 import json
@@ -699,7 +700,7 @@ class Player(CareersObject):
             happiness (hearts), fame (stars), money, False otherwise
             In a timed game, this returns True if time_remaining <= 0
             Note the result is only valid if the game has started (game_state.started is True)
-    
+            Also the play must have completed their TODOs (if the Randomizer plug-in is active)
         """
         
         if self.game_type is GameType.POINTS:
@@ -717,12 +718,27 @@ class Player(CareersObject):
     def need(self) -> Dict[str, int]:
         """Gives the amount of hearts, stars and cash needed in order to fulfill success formula
             Could be negative if the current amount/qty exceeds the number specified in the success formula.
+            Also if the Randomizer plug-in is active, incomplete TODO items are also returned.
             Returns: A Dict[str, int] where the key is in ['cash', 'stars', 'hearts']
         """
         cash_needed = (1000 * self.success_formula.money)-self.cash
-        stars_needed = self.success_formula.stars-self.fame
-        hearts_needed = self.success_formula.hearts-self.happiness
-        return {"cash":cash_needed, "stars":stars_needed, "hearts":hearts_needed}
+        cash_points = self.cash // 1000
+        currency_symbol = GameConstants.CURRENCY_SYMBOL
+        
+        stars = self.success_formula.stars
+        stars_needed = stars - self.fame
+        hearts = self.success_formula.hearts
+        hearts_needed = hearts-self.happiness
+        current_points = cash_points + self.fame + self.happiness
+        total_points = self.success_formula.total_points
+        needs_dict = \
+            { "current_points" : current_points, "points_needed" : total_points-current_points, \
+            "cash_needed": f"{currency_symbol}{cash_needed}", "stars_needed":stars_needed, "hearts_needed":hearts_needed }
+
+        if self.my_todos is not None:
+            needs_dict.update(self.my_todos.todos)
+            
+        return needs_dict
 
     def save(self, gameId:str|None=None):
         """Persist this player's state to a JSON file.
