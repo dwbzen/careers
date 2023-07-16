@@ -16,7 +16,6 @@ class Careers_All_Randomizer(Plugin):
     Implements the optional Randomizer feature for selecting mandatory occupation(s) and degree(s).
     '''
 
-
     def __init__(self, thegame:CareersGame):
         '''
         Constructor
@@ -49,7 +48,7 @@ class Careers_All_Randomizer(Plugin):
                         {"occupation_name": "CottonClub", "complete" : 1}
                     ], 
                     "degrees_todo": [
-                        {"degree_name" : "Dance"} 
+                        {"degree_name" : "Dance", "complete": 0} 
                     ]
                 }
         """
