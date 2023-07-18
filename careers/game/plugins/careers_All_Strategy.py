@@ -116,7 +116,7 @@ class Careers_All_Strategy(Plugin):
                     if isinstance(amount, dict):
                         qty = random.sample(list(amount), 1)[0]
                         cost = amount[qty]
-                        hearts_needed = player.need()["hearts"]
+                        hearts_needed = player.need()["hearts_needed"]
                         if player.cash > cost and hearts_needed >= int(qty):    # this could be smarter
                             commands.append(f"resolve {pending_action_value} {qty}" )
                     else:   # an integer amount for 1 heart
@@ -131,7 +131,7 @@ class Careers_All_Strategy(Plugin):
                     if isinstance(amount, dict):
                         qty = random.sample(list(amount), 1)[0]
                         cost = amount[qty]
-                        hearts_needed = player.need()["stars"]
+                        hearts_needed = player.need()["stars_needed"]
                         if player.cash > cost and hearts_needed >= int(qty):    # this could be smarter
                             commands.append(f"resolve {pending_action_value} {qty}" )
                             
@@ -144,18 +144,49 @@ class Careers_All_Strategy(Plugin):
                     destinations = game_square.special_processing.destination_names
                     my_dest = random.sample(destinations, 1)[0]
                     commands.append(f"resolve {pending_action_value} {my_dest}")
-        else:
-            #
-            # can I bump anyone? If so pick a bumpable player at random
-            #
-            if len(player.can_bump) > 0:
-                num = random.randint(0, len(player.can_bump)-1)
-                commands.append(f"bump {player.can_bump[num]}")
+                
+                elif pending_action.pending_action_type is PendingActionType.CASH_LOSS_OR_UNEMPLOYMENT:
+                    #
+                    # if the player can afford it, then pay the amount
+                    #
+                    amount = game_square.special_processing.amount
+                    if player.cash > amount:
+                        commands.append(f"resolve {pending_action_value} pay")
+                    else:
+                        commands.append(f"resolve {pending_action_value} unemployment")
+                        
+                elif pending_action.pending_action_type is PendingActionType.CHOOSE_OCCUPATION:
+                    # the result of using an occupation_choice Opportunity Card
+                    pass
+                
+                elif pending_action.pending_action_type is PendingActionType.CHOOSE_DESTINATION:
+                    # the result of using a border_square_choice Opportunity Card
+                    pass
+                
+                elif pending_action.pending_action_type is PendingActionType.STAY_OR_MOVE:
+                    # leave unresolved - so move
+                    pass
+                
+                elif pending_action.pending_action_type is PendingActionType.BACKSTAB:
+                    # leave unresolved
+                    pass
+                
+                elif pending_action.pending_action_type is PendingActionType.BANKRUPT:
+                    # 
+                    # no need to resolve bankruptcy as that is handled at the start of this function
+                    #
+                    pass
+                    
+
+        if len(player.can_bump) > 0:
+            num = random.randint(0, len(player.can_bump)-1)
+            commands.append(f"bump {player.can_bump[num]}")
 
         advance_cmds = self._pick_advance_commands(player)
         commands.append(advance_cmds)    # pick opportunity, experience, or roll
-                
-        #commands.append("next")
+        if not self._game_state.automatic_run:
+            commands.append("next")
+            
         return ";".join(commands)
         
     def _pick_advance_commands(self, player) ->str:

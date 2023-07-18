@@ -205,6 +205,7 @@ class CareersGameEngine(object):
     @automatic_run.setter
     def automatic_run(self, value:bool):
         self._automatic_run = value
+        self._game_state.automatic_run = value
     
     def log_info(self, *message):
         """Write info-level message to the log file and if debug is set, also to the console
@@ -309,9 +310,15 @@ class CareersGameEngine(object):
     #############################################################################
     def roll(self, number_of_dice=2) ->CommandResult:
         """Roll 1 or 2 dice and advance that number of squares for current_player and execute the occupation or border square.
-            A specific roll of no spaces can be forced by specifying number_of_dice=0.
-            This will cause the player to stay where they are and will execute the current square again.
-            roll is implemented by the _advance(...) function.
+            Arguments:
+                number_of_dice - number of dice to roll.
+                A specific roll of no spaces can be forced by specifying number_of_dice=0.
+                This will cause the player to stay where they are and will execute the current square again.
+                roll is implemented by the _advance(...) function.
+            Returns:
+                CommandResult - could be an ERROR or the result of the _advance command.
+            Side Effects:
+                If the player has a stay_or_move pending action, then clear it.
         """
         player = self.game_state.current_player
         if not player.can_roll:
@@ -326,6 +333,12 @@ class CareersGameEngine(object):
         dice = random.choices(population=[i for i in range(1,7)], k=ndice)
         num_spaces = sum(dice)
         logging.info(f' {player.player_initials}  rolled {num_spaces} {dice}')    # INFO
+        #
+        # if the player has a stay_or_move pending action, then clear it
+        #
+        if player.has_pending_action(PendingActionType.STAY_OR_MOVE):
+            player.clear_pending(PendingActionType.STAY_OR_MOVE)
+            
         return self._advance(num_spaces, dice)
     
     def take_turn(self, command:str="roll") -> CommandResult:
@@ -334,6 +347,11 @@ class CareersGameEngine(object):
                 command - the command to execute, default is "roll"
             For HUMAN players, the command string provided is executed.
             For COMPUTER players, the command(s) are determined by the active "turn" plug-in(s).
+            
+            Note - needs to handle extra turns (for example square 1 of AI Research is "throw again")
+            and also missed turns, for example square 10 of Tech Entrepreneur is "Lose next turn"
+            Failing to do so gets the running script out of sync with the players.
+            
         """
         cmd_result = None
         player = self.game_state.current_player
@@ -343,7 +361,7 @@ class CareersGameEngine(object):
         #
         # Is the next player a Computer player?
         # If so, run the strategy plugin to get the player's command(s)
-        # Also need to set the GameEngineCommands instance in the strategy plugin
+        # Also need to set the GameEngineCommands instance in the strategy plug-in
         #
             plugins = self._plugins["turn"]      # a List of Plugin class instances to run
             for plugin_instance in plugins:
@@ -429,7 +447,7 @@ class CareersGameEngine(object):
         
         return result
     
-    def use(self, what, card_number, spaces:int|str|None) -> CommandResult:
+    def use(self, what, card_number, spaces:int|str|None=None) -> CommandResult:
         """Use an Experience or Opportunity card in place of rolling the die.
             Experience and Opportunity cards are identified (through the UI) by number, which uniquely
             identifies the card function. i.e. Cards having the same "number" are identical
@@ -439,7 +457,7 @@ class CareersGameEngine(object):
                 what - "opportunity", "experience", "roll"
                 card_number - the unique number for this card. Corresponds to card.number OR
                     if what == 'roll', the dice roll as a list. For example, "[3, 4]"
-                spaces - required for Experience wild cards, the number of spaces to move. Can be + or
+                spaces - required for Experience wild cards, the number of spaces to move. Can be + or negative.
                          For card types choose_destination, choose_occupation spaces can be the chosen destination.
                          This is optional but if specified it resolves the choice (so sending a "resolve" command is not needed).
         """
@@ -484,7 +502,7 @@ class CareersGameEngine(object):
                 result = self._execute_opportunity_card(player, opportunityCard=thecard, spaces=spaces)
                 
         elif what.lower() == 'experience' and player.can_roll:    # Can I use an Experience card?
-            cards = player.get_experience_cards()   # dict with number as the key
+            cards = player.get_experience_cards()   # dict with card number as the key
             thecard_dict = cards.get(card_number, None)
             if thecard_dict is None:    # no such card
                 result = CommandResult(CommandResult.ERROR, f"No {what} card exists with number {card_number} ", False)
@@ -658,6 +676,10 @@ class CareersGameEngine(object):
             If the next player is a computer player, plugins with a "turn" context are automatically run.
             The reference to GameEngineCommands is also set before the plugin is run.
             
+            Note - needs to handle extra turns (for example square 1 of AI Research is "throw again")
+            and also missed turns, for example square 10 of Tech Entrepreneur is "Lose next turn"
+            Failing to do so gets the running script out of sync with the players.
+            
         """
         current_player = self.game_state.current_player
         ###################################################################################
@@ -704,6 +726,11 @@ class CareersGameEngine(object):
         if current_player.number != player.number:    # could be only 1 player if doing a solo game
             current_player.can_roll = False
         
+        #
+        # if the next player is a computer AND not running in automatic mode (a script)
+        # take_turn automatically for the computer player
+        #
+        
         if lost_turn_player is not None:
             self.lost_turn(lost_turn_player)
             
@@ -711,8 +738,17 @@ class CareersGameEngine(object):
         # save the Game on change of turns
         #
         self._gameEngineCommands.save_game(self._game_filename_base, self.game_id, how='pkl')
-
+        
         result = CommandResult(CommandResult.SUCCESS,  f"{current_player.player_initials} Turn is complete, {player.player_initials}'s ({npn}) turn " , True)
+        #
+        # if the next player is a computer AND not running in automatic mode (a script)
+        # take_turn automatically for the computer player
+        #
+        if player.is_computer_player() and not self.game_state.automatic_run:
+            cmd_result = self.execute_command("take_turn", player)
+            cmd_result.message = f"{result.message}\n{cmd_result.message}"
+            result = cmd_result
+            
         return result
     
     def next(self) -> CommandResult:
@@ -1531,6 +1567,9 @@ Where <what> is 'occupation' or 'command'
                          For ONE_DIE_WILD, this a string with numerical value from 1 to 6 inclusive,
                          for TWO_DIE_WILD this is a comma-delimited string representing the 2 die, for example "2,5"
                          for TRIPLE_WILD, this can be either depending on the player's board position.
+            Side Effects:
+                If the player has a stay_or_move pending action, then clear it.
+                
             Note - _execute_experience_card(...) is implemented by roll() which in turn is implemented by _advance().
             
         '''
@@ -1576,6 +1615,11 @@ Where <what> is 'occupation' or 'command'
         # remove the used experience from the player's deck
         #
         player.used_experience()
+        #
+        # if the player has a stay_or_move pending action, then clear it
+        #
+        if player.has_pending_action(PendingActionType.STAY_OR_MOVE):
+            player.clear_pending(PendingActionType.STAY_OR_MOVE)
             
         return result        
     

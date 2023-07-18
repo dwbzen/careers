@@ -47,6 +47,7 @@ class GameState(CareersObject):
         self._game_type:GameType = game_type
         self._restored = False    # True if this is a restored game
         self._started = False
+        self._automatic_run = False         # set to True if running a script
         self._ = game_id
     
     @property
@@ -104,6 +105,14 @@ class GameState(CareersObject):
     @property
     def game_parameters_type(self) -> GameParametersType:
         return self._game_parameters_type
+    
+    @property
+    def automatic_run(self)->bool:
+        return self._automatic_run
+    
+    @automatic_run.setter
+    def automatic_run(self, value:bool):
+        self._automatic_run = value
     
     def is_game_complete(self) -> bool:
         """Iterates over the players to see who, if anyone, has won.
