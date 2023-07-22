@@ -136,7 +136,7 @@
 			"bonus" : 0,
 			"experience" : 2,
 			"opportunities" : 0,
-			"action_text" : "You lose 4 Hearts. They lose 12 Hearts.",
+			"action_text" : "You lose 4 <HEART>s. They lose 12 <HEART>s.",
 			"specialProcessing" : {
 				"type" : "backstab",
 				"pending_action" : "backstab",
@@ -178,7 +178,7 @@
 			"hearts" : 0,
 			"experience" : 0,
 			"opportunities" : 0,
-			"action_text" : "Lose 10% x roll of 1 die of your fame",
+			"action_text" : "Lose 10% x roll of 1 die of your <FAME>",
 			"specialProcessing" : {
 				"type" : "fame_loss",
 				"amount" : 0,

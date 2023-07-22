@@ -129,12 +129,29 @@ class CareersGame(CareersObject):
                 self._occupation_names.append(key)
             else:
                 self._occupation_names.append(key.lower())
+                
+        #
+        # load point icons
+        #
+        self._point_icons =  self._edition["point_icons"] if "point_icons" in self._edition else None
+        GameConstants.load_point_icons(self._point_icons)
             
         self._turn_outcome_parameters_filename = f'{self._resource_folder}/{self._edition_name}/turnOutcomeParameters.json'
         with open(self._turn_outcome_parameters_filename, "r") as fp:
             jtxt = fp.read()
             turn_outcome_dict = json.loads(jtxt)
-            self._turn_outcome_parameters = turn_outcome_dict['turn_outcome_parameters']
+            turn_outcome_parameters = turn_outcome_dict['turn_outcome_parameters']
+            self._turn_outcome_parameters = {}
+            for key in turn_outcome_parameters:
+                val = turn_outcome_parameters[key]
+                if "<STAR>" in key:
+                    key = key.replace("<STAR>", GameConstants.STAR)
+                    
+                elif "<HEART>" in key:
+                    key = key.replace("<HEART>", GameConstants.HEART)
+
+                self._turn_outcome_parameters.update({key:val})   
+        fp.close()
             
     def load_plugins(self) -> bool:
         """Get active game plug-in instances for this game edition

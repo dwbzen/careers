@@ -15,6 +15,7 @@ from game.gameConstants import GameType, PlayerType
 from game.turnHistory import TurnHistory
 from game.todoList import TodoList
 from game.gameConstants import GameConstants
+from game.gameUtils import GameUtils
 from datetime import datetime
 from typing import Dict, List, Union
 import json
@@ -723,7 +724,7 @@ class Player(CareersObject):
         """
         cash_needed = (1000 * self.success_formula.money)-self.cash
         cash_points = self.cash // 1000
-        currency_symbol = GameConstants.CURRENCY_SYMBOL
+        cash_str = GameUtils.format_money(cash_needed)
         
         stars = self.success_formula.stars
         stars_needed = stars - self.fame
@@ -733,7 +734,7 @@ class Player(CareersObject):
         total_points = self.success_formula.total_points
         needs_dict = \
             { "current_points" : current_points, "points_needed" : total_points-current_points, \
-            "cash_needed": f"{currency_symbol}{cash_needed}", "stars_needed":stars_needed, "hearts_needed":hearts_needed }
+            "cash_needed": f"{cash_str}", f"{GameConstants.STAR}s_needed":stars_needed, f"{GameConstants.HEART}s_needed":hearts_needed }
 
         if self.my_todos is not None:
             needs_dict.update(self.my_todos.todos)
@@ -793,8 +794,10 @@ class Player(CareersObject):
         '''
         v = self.get_total_loans()
         net_worth = self.net_worth()
-        progress =  {"cash":self.cash, "stars":self.fame, "hearts":self.happiness, "points":self.total_points()}
+        progress =  {"cash":self.cash, f"{GameConstants.STAR}s":self.fame, f"{GameConstants.HEART}s":self.happiness, "points":self.total_points()}
+        
         info_dict = {"player":self.player_initials,  "salary":self.salary, 'progress' : progress }
+        
         info_dict.update( {"insured":self.is_insured, "unemployed":self.is_unemployed, "sick":self.is_sick, \
                            "extra_turn":self.extra_turn, "can_retire":self.can_retire, "net_worth":net_worth} )
         info_dict.update( self._get_pending() )
@@ -806,10 +809,15 @@ class Player(CareersObject):
             for pa in self.pending_actions.get_all():
                 pending_string +=  f'{pa.pending_action_type.value}, '
             pending_string = pending_string[:len(pending_string)-2] + "}"
-          
+        
+        salary_str = GameUtils.format_money(self.salary)
+        cash_str = GameUtils.format_money(self.cash)
+        net_worth_str = GameUtils.format_money(net_worth)
+        fame_str = GameConstants.FAME.title()
+        happiness_str = GameConstants.HAPPINESS.title()
         fstring = \
-f'''Initials: {self.player_initials}: Salary:{self.salary}, Cash: {self.cash},  Fame: {self.fame}, Happiness: {self.happiness}, Points: {self.total_points()}
-Insured: {self.is_insured}, Unemployed: {self.is_unemployed}, Sick: {self.is_sick}, Can Retire: {self.can_retire}, Net worth: {net_worth}
+f'''Initials: {self.player_initials}: Salary:{salary_str}, Cash: {cash_str},  {fame_str}: {self.fame}, {happiness_str}: {self.happiness}, Points: {self.total_points()}
+Insured: {self.is_insured}, Unemployed: {self.is_unemployed}, Sick: {self.is_sick}, Can Retire: {self.can_retire}, Net worth: {net_worth_str}
 {pending_string}, Extra turn: {self.extra_turn} '''
 
         if self.cash < 0:
@@ -855,6 +863,7 @@ Insured: {self.is_insured}, Unemployed: {self.is_unemployed}, Sick: {self.is_sic
         
         if include_todos and self._my_todos is not None:
             todos = self._my_todos.todos
+            fstring = f'{fstring}\n{todos}'
             info_dict.update(todos)
             
         if self.game_type is GameType.TIMED:
@@ -868,7 +877,7 @@ Insured: {self.is_insured}, Unemployed: {self.is_unemployed}, Sick: {self.is_sic
         # add number of opportunity and experience cards
         nOpportunities = len(self._my_opportunity_cards)
         nExperiences = len(self._my_experience_cards)
-        fstring = f'{fstring},\nopportunities:{nOpportunities}, experiences:{nExperiences}'
+        fstring = f'{fstring},\nOpportunity Cards:{nOpportunities}, Experience Cards:{nExperiences}'
         info_dict.update( {"opportunities":nOpportunities, "experiences":nExperiences})
             
         outval = fstring
@@ -975,14 +984,14 @@ Insured: {self.is_insured}, Unemployed: {self.is_unemployed}, Sick: {self.is_sic
         return  f' "name" : "{self.player_name}",  "number" : "{self.number}",  "initials" : "{self.player_initials}"'
     
     def __str__(self):
-        fstring = f'Cash: {self.cash}  Fame: {self.fame}  Happiness: {self.happiness}'
+        fstring = f'Cash: {self.cash}  {GameConstants.FAME}: {self.fame}  {GameConstants.HAPPINESS}: {self.happiness}'
         return f'{self.number}. {self.player_name} ({self.player_initials}) : salary:{self.salary}\n{fstring}\nSuccess Formula: {self.success_formula}'
     
     def to_dict(self):
         pdict = {"name" : self.player_name, "number" : self.number, "initials" : self.player_initials}
         pdict['success_formula'] = self._success_formula.to_dict()
         points = self.total_points()
-        pdict['score'] = {"cash":self.cash, "fame":self.fame, "happiness":self.happiness, "total_points":points}
+        pdict['score'] = {"cash":self.cash, f"{GameConstants.FAME}":self.fame, f"{GameConstants.HAPPINESS}":self.happiness, "total_points":points}
         pdict['loans'] = self.loans 
         pdict['board_location'] = self.board_location.to_dict()
         pdict['is_insured'] = self.is_insured

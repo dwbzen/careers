@@ -12,11 +12,11 @@
 		"salary" : 2,
 		"can_retire" : 3,
 		"cash_goal" : 1,
-		"stars_goal" : 1,
-		"hearts_goal" : 1,
+		"<STAR>s_goal" : 1,
+		"<HEART>s_goal" : 1,
 		"cash" : 1,
-		"stars": 1,
-		"hearts": 1,
+		"<STAR>s": 1,
+		"<HEART>s": 1,
 		"opportunity_card_value" : 1,
 		"experience_card_value" : 1
 	}

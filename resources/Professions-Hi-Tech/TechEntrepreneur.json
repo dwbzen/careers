@@ -102,7 +102,7 @@
 			"bonus" : 0,
 			"experience" : 2,
 			"opportunities" : 0,
-			"action_text" : "You lose 4 Hearts. They lose 12 Hearts",
+			"action_text" : "You lose 4 <HEART>s. They lose 12 <HEART>s",
 			"specialProcessing" : {
 				"type" : "backstab",
 				"pending_action" : "backstab",

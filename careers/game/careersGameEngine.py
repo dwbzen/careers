@@ -332,7 +332,7 @@ class CareersGameEngine(object):
         
         dice = random.choices(population=[i for i in range(1,7)], k=ndice)
         num_spaces = sum(dice)
-        logging.info(f' {player.player_initials}  rolled {num_spaces} {dice}')    # INFO
+        logging.info(f' {player.player_initials}  rolled {num_spaces} {dice}')
         #
         # if the player has a stay_or_move pending action, then clear it
         #
@@ -1264,7 +1264,8 @@ Where <what> is 'occupation' or 'command'
                resolve back_stab_or_not <opponent player's initials> or no
                
         """
-        message = f'{what}:{choice}'
+        message = f'resolve({what}, {choice})'
+        logging.info(message)
         player = self.game_state.current_player
         game_square = self.get_player_game_square(player)
         pending_action = None

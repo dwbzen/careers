@@ -6,6 +6,7 @@ Created on May 21, 2023
 
 from game.careersObject import CareersObject
 from game.successFormula import SuccessFormula
+from game.gameConstants import GameConstants
 from dataclasses import dataclass, field
 from typing import List, Dict
 import json, logging
@@ -50,8 +51,8 @@ class Turn():
                     "occupations" : self.occupations, "salary" : self.salary, \
                     "opportunity_card_value" : self.opportunity_card_value, \
                     "experience_card_value" : self.experience_card_value, \
-                    "cash" : self.cash, "stars" : self.stars, "hearts" : self.hearts, "can_retire" : self.can_retire, \
-                    "cash_goal" : self.cash_goal, "stars_goal" : self.stars_goal, "hearts_goal" : self.hearts_goal } }
+                    "cash" : self.cash, f"{GameConstants.STAR}s" : self.stars, f"{GameConstants.HEART}s" : self.hearts, "can_retire" : self.can_retire, \
+                    "cash_goal" : self.cash_goal, f"{GameConstants.STAR}s_goal" : self.stars_goal, f"{GameConstants.HEART}s_goal" : self.hearts_goal } }
         return turn_dict
     
     def __repr__(self):
@@ -240,11 +241,11 @@ class TurnHistory(CareersObject):
             
         # check success formula goals (cash, stars, hearts) that have been completed this turn
         cash_before = before_info["progress"]["cash"]
-        stars_before = before_info["progress"]["stars"]
-        hearts_before = before_info["progress"]["hearts"]
+        stars_before = before_info["progress"][f"{GameConstants.STAR}s"]
+        hearts_before = before_info["progress"][f"{GameConstants.HEART}s"]
         cash_after = after_info["progress"]["cash"]
-        stars_after = after_info["progress"]["stars"]
-        hearts_after = after_info["progress"]["hearts"]
+        stars_after = after_info["progress"][f"{GameConstants.STAR}s"]
+        hearts_after = after_info["progress"][f"{GameConstants.HEART}s"]
         if cash_before != cash_after:
             diff = int((cash_after -  cash_before)/1000)
             info_diff.update({"cash":diff})
@@ -253,15 +254,15 @@ class TurnHistory(CareersObject):
             
         if stars_before != stars_after:
             diff = stars_after - stars_before
-            info_diff.update({"stars":diff})
+            info_diff.update({f"{GameConstants.STAR}s":diff})
             stars_goal = stars_after >= self.success_formula.stars
-            info_diff.update({"stars_goal":stars_goal})
+            info_diff.update({f"{GameConstants.STAR}s_goal":stars_goal})
             
         if hearts_before != hearts_after:
             diff =  hearts_after - hearts_before
-            info_diff.update({"hearts":diff})
+            info_diff.update({f"{GameConstants.HEART}s":diff})
             hearts_goal = hearts_after >= self.success_formula.hearts
-            info_diff.update({"hearts_goal":hearts_goal})
+            info_diff.update({f"{GameConstants.HEART}s_goal":hearts_goal})
 
         retire_before = before_info["can_retire"]
         retire_after = after_info["can_retire"]

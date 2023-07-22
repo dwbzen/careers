@@ -6,7 +6,7 @@
 	"currency_symbol" : "\u0024",
 	"date_format" : "yyyy-mm-dd",
 	"starting_experience_cards" : 2,
-	"starting_opportunity_cards" : 2,
+	"starting_opportunity_cards" : 12,
 	"starting_stars" : 2,
 	"starting_hearts" : 2,
 	"default_game_points" : 100,

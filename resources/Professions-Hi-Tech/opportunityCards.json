@@ -104,7 +104,7 @@
 			"destination" : "TechEntrepreneur",
 			"expenses_paid" : 0,
 			"double_happiness" : 1,
-			"text" : "SPECIAL OPPORTUNITY to be a Tech Entrepreneur because of your technical background. DOUBLE all Happiness earned. Meet Normal Requirements.",
+			"text" : "SPECIAL OPPORTUNITY to be a Tech Entrepreneur because of your technical background. DOUBLE all <HAPPINESS> earned. Meet Normal Requirements.",
 			"quantity" : 2
 		},
 		{

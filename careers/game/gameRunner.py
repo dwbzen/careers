@@ -10,6 +10,8 @@ from game.commandResult import CommandResult
 from game.gameConstants import GameParametersType, GameType, GameConstants
 from game.careersGame import CareersGame, restore_game
 from game.gameState import GameState
+from game.gameUtils import GameUtils
+from game.successFormula import SuccessFormula
 import argparse, time
 import logging
 
@@ -332,13 +334,19 @@ def main():
             
             # name, initials=None, player_id=None, email=None, cash=0, stars=0, hearts=0
             # use update command to add success_formula if not provided here
-            game_runner.execute_command("add player Don DWB dwb20221206 dwbzen@gmail.com 40 10 50", None)
+            # in the meantime, create a random formula for each player
+            #
+            success_formula:SuccessFormula = GameUtils.get_random_formula(total_points)
+            game_runner.execute_command(f"add player Don DWB dwb20221206 dwbzen@gmail.com {success_formula.money} {success_formula.stars} {success_formula.hearts}", None)
             if nplayers >= 2:
-                game_runner.execute_command("add player Brian BDB bdb20221206 brian.bacon01@gmail.com 50 20 30", None)
+                successFormula = GameUtils.update_random_formula(success_formula)
+                game_runner.execute_command(f"add player Brian BDB bdb20221206 brian.bacon01@gmail.com {success_formula.money} {success_formula.stars} {success_formula.hearts}", None)
             if nplayers >= 3:
-                game_runner.execute_command("add player Cheryl CJL cjl20221206 Lister.Cheryl@gmail.com 10 50 40", None)
+                successFormula = GameUtils.update_random_formula(success_formula)
+                game_runner.execute_command(f"add player Cheryl CJL cjl20221206 Lister.Cheryl@gmail.com {success_formula.money} {success_formula.stars} {success_formula.hearts}", None)
             if nplayers == 4:
-                game_runner.execute_command("add player Scott SFP scott20230125 scotty121382@yahoo.com 30 30 40", None)
+                successFormula = GameUtils.update_random_formula(success_formula)
+                game_runner.execute_command(f"add player Scott SFP scott20230125 scotty121382@yahoo.com {success_formula.money} {success_formula.stars} {success_formula.hearts}", None)
             
             if ncomputerPlayers > 0:
                 for i in range(ncomputerPlayers):

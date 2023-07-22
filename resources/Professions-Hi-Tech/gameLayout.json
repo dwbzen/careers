@@ -115,7 +115,7 @@
 				"type" : "action_square",
 				"background_image" : "light blue action square.png",
 				"text" : "Tech Convention",
-				"action_text" : "May spend up to 1 year's annual salary for the latest gaming system. Score 1 Heart for each $1,000 spend, or lose 1 for 'just looking'",
+				"action_text" : "May spend up to 1 year's annual salary for the latest gaming system. Score 1 <HEART> for each $1,000 spend, or lose 1 for 'just looking'",
 				"specialProcessing" : {
 					"type" : "buy_hearts",
 					"pending_action" : "buy_hearts",
@@ -409,7 +409,7 @@
 				"background_image" : "light blue action square.png",
 				"image" : "Insurance1.jpg",
 				"text" : "Insurance Store",
-				"action_text" : "May purchase insurance to protect your cash,\nHappiness and Fame from catastrophic loss.\nCost of coverage is $5,000.",
+				"action_text" : "May purchase insurance to protect your cash,\n<HAPPINESS> and <FAME> from catastrophic loss.\nCost of coverage is $5,000.",
 				"specialProcessing" : { 
 					"type" : "buy_insurance",
 					"pending_action" : "buy_insurance",
@@ -422,7 +422,7 @@
 				"type" : "corner_square",
 				"background_image" : "DWBZen_Photo_of_Clearwater_Beach_Florida_small.png",
 				"text" : "Spring Break",
-				"action_text" : "You are on Spring Break! Collect 6 Hearts for landing here and 3 each time you stay with a roll of 7 or less",
+				"action_text" : "You are on Spring Break! Collect 6 <HEART>s for landing here and 3 each time you stay with a roll of 7 or less",
 				"specialProcessing" : {
 					"type": "holiday",
 					"pending_action": "stay_or_move",
@@ -538,7 +538,7 @@
 				"type" : "action_square",
 				"background_image" : "A_stunning_photograph_of_a_vintage_Bentley_small",
 				"text" : "VINTAGE CARS",
-				"action_text" : "Vintage cars for sale. Score Happiness points as follows:\n4 Hearts - $2,000; 8 Hearts - $8,000; 12 Hearts - $16,000",
+				"action_text" : "Vintage cars for sale. Score <HAPPINESS> points as follows:\n4 <HEART>s - $2,000; 8 <HEART>s - $8,000; 12 <HEART>s - $16,000",
 				"specialProcessing" : {
 					"type" : "buy_hearts",
 					"pending_action" : "buy_hearts",
@@ -566,7 +566,7 @@
 				"type" : "action_square",
 				"background_image" : "light blue action square.png",
 				"text" : "WEB PRESENCE",
-				"action_text" : "May hire consultant to build web site. Score Fame points as follows:\n4 Stars - $4,000; 10 Stars - $8,000; 16 stars - $12,000; 22 Stars - $16,000 ",
+				"action_text" : "May hire consultant to build web site. Score <FAME> points as follows:\n4 <STAR>s - $4,000; 10 <STAR>s - $8,000; 16 <STAR>s - $12,000; 22 <STAR>s - $16,000 ",
 				"specialProcessing" : {
 					"type" : "buy_stars",
 					"pending_action" : "buy_stars",

@@ -41,6 +41,13 @@
 			"configuration" : {
 					"starting_salary" : 2000,
 					"initial_cash" : 2000
+			},
+			"Help" : "point_icons are aliases to use for this edition.",
+			"point_icons" : {
+				"heart" : "charm", "Heart" : "Charm",
+				"star" : "muon", "Star" : "Muon",
+				"happiness" : "quarks", "Happiness" : "Quarks",
+				"fame" : "leptons", "Fame" : "Leptons"
 			}
 	},
 	"UK" : {

@@ -137,7 +137,7 @@
 			"hearts" : 0,
 			"experience" : 0,
 			"opportunities" : 0,
-			"action_text" : "But lose ALL your Happiness",
+			"action_text" : "But lose ALL your <HAPPINESS>",
 			"specialProcessing" : {
 				"type" : "happiness_loss",
 				"amount" : 0,

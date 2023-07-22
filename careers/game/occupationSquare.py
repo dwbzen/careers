@@ -7,7 +7,7 @@ from game.gameSquare import GameSquare, GameSquareClass
 from game.player import Player
 from game.commandResult import CommandResult
 from game.gameUtils import GameUtils
-from game.gameConstants import SpecialProcessingType, PendingActionType
+from game.gameConstants import SpecialProcessingType, PendingActionType, GameConstants
 from enum import Enum
 import json, random
 from typing import Any
@@ -46,7 +46,12 @@ class OccupationSquare(GameSquare):
         self._experience = occupation_square_dict["experience"]         # the number of Experience cards to collect on this square
         self._opportunities = occupation_square_dict["opportunities"]   # the number of Opportunity cards to collect on this square
         self._square_type = OccupationSquareType[occupation_square_dict.get('type', 'regular_square').upper()]    # square type is optional for OccupationSquare
-        self.action_text = occupation_square_dict.get('action_text', None)
+        action_text = occupation_square_dict.get('action_text', None)
+        if action_text is not None:
+            action_text = action_text.replace("<HEART>", GameConstants.HEART)
+            action_text = action_text.replace("<STAR>", GameConstants.STAR)
+            action_text = action_text.replace("<HAPPINESS>", GameConstants.HAPPINESS)
+            self.action_text = action_text.replace("<FAME>", GameConstants.FAME)
         self._bonus = occupation_square_dict.get('bonus',0)
         self._help_text = occupation_square_dict.get('help_text', None)
         
@@ -77,13 +82,15 @@ class OccupationSquare(GameSquare):
         done_flag = True
         message = f'{self.text}'
         next_action = None
+        fame_str = f"{GameConstants.STAR}s".title()
+        happiness_str = f"{GameConstants.HEART}s".title()
         if len(self.action_text) > 0:
             message += f'\n{self.action_text}'
         if self.stars > 0:
-            message += f'\n Stars: {str(self.stars)}'
+            message += f'\n {fame_str}: {str(self.stars)}'
             player.add_stars(self.stars)
         if self.hearts > 0:
-            message += f'\n Hearts: {str(self.hearts)}'
+            message += f'\n {happiness_str}: {str(self.hearts)}'
             player.add_hearts(self.hearts)
         if self.opportunities > 0:
             card_list = self.careersGame.opportunities.draw_cards(self.opportunities)
@@ -255,14 +262,14 @@ class OccupationSquare(GameSquare):
                     amount = int(player.fame * percent)
                 player.add_stars(-amount)
                 player.add_point_loss("stars", amount)
-                message = f'{player.player_initials} loses {amount} stars'
+                message = f'{player.player_initials} loses {amount} {GameConstants.STAR}s'
                 
             case SpecialProcessingType.HAPPINESS_LOSS:
                 if  percent > 0:
                     amount = int(player.happiness * percent)
                 player.add_hearts(-amount)
                 player.add_point_loss("hearts", amount)
-                message = f'{player.player_initials} loses {amount} hearts'
+                message = f'{player.player_initials} loses {amount} {GameConstants.HEART}s'
             
             case SpecialProcessingType.NEXT_SQUARE:
                 message = f'Next square: {self.special_processing.next_square}'

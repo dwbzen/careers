@@ -5,7 +5,7 @@ Created on Aug 9, 2022
 '''
 
 from game.careersObject import CareersObject
-from game.gameConstants import PendingActionType
+from game.gameConstants import PendingActionType, GameConstants
 from enum import Enum
 import json
 
@@ -57,6 +57,10 @@ class OpportunityCard(CareersObject):
             self._destination = None
         else:
             self._destination = destination
+        if "<HAPPINESS>" in text:
+            text = text.replace("<HAPPINESS>", f"{GameConstants.HAPPINESS.title()}")
+        if "<FAME>" in text:
+            text = text.replace("<FAME>", f"{GameConstants.FAME.title()}")
         self._text = text
         self._expenses_paid = expenses_paid
         self._double_happiness = double_happiness

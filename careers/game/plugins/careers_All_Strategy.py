@@ -149,6 +149,7 @@ class Careers_All_Strategy(Plugin):
                     #
                     # if the player can afford it, then pay the amount
                     #
+                    game_square = self._careersGame.game_board.border_squares[player.board_location.border_square_number]
                     amount = game_square.special_processing.amount
                     if player.cash > amount:
                         commands.append(f"resolve {pending_action_value} pay")

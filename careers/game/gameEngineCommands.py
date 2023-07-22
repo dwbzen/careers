@@ -73,7 +73,9 @@ class GameEngineCommands(object):
                             False, next_action="bankrupt")
             else:
                 result = CommandResult(CommandResult.SUCCESS, f'Player may move {dice} spaces', True)
-            
+        
+        if result is None:
+            print("ERROR result is None", file=sys.stderr)
         can_move = result.is_successful()
         return can_move, result
 

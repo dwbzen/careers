@@ -7,7 +7,7 @@ Created on Aug 12, 2022
 from game.gameSquare import GameSquare, GameSquareClass
 from game.player import Player
 from game.commandResult import CommandResult
-from game.gameConstants import SpecialProcessingType
+from game.gameConstants import SpecialProcessingType, GameConstants
 from game.opportunityCard import OpportunityType
 from game.gameConstants import BorderSquareType, TravelClass
 
@@ -39,7 +39,14 @@ class BorderSquare(GameSquare):
         self._game_square_dict = border_square_dict
         self._game_square_dict["square_class"] = GameSquareClass.BORDER
         self._square_type = BorderSquareType[border_square_dict['type'].upper()]
-        self.action_text = border_square_dict.get('action_text', None)
+        action_text = border_square_dict.get('action_text', None)
+        if action_text is not None:
+            action_text = action_text.replace("<HEART>", GameConstants.HEART.title())
+            action_text = action_text.replace("<STAR>", GameConstants.STAR.title())
+            action_text = action_text.replace("<HAPPINESS>", GameConstants.HAPPINESS.title())
+            self.action_text = action_text.replace("<FAME>", GameConstants.FAME.title())
+        else:
+            self.action_text = None
         self._help_text = border_square_dict.get('help_text', None)
         self._travel_class = None
         if border_square_dict.get('travel_class', None) is not None:
@@ -172,7 +179,8 @@ class BorderSquare(GameSquare):
                         player.add_hearts(nhearts)
                         player.on_holiday = True
                         player.add_pending_action(self.special_processing.pending_action, game_square_name=self.name, amount=0)
-                        result = CommandResult(CommandResult.SUCCESS, f'Player {player.player_initials} {self.action_text}\n collect {nhearts} hearts', True)
+                        result = CommandResult(CommandResult.SUCCESS, \
+                                    f'Player {player.player_initials} {self.action_text}\n Collect {nhearts} {GameConstants.HEART}s', True)
                     
                     case SpecialProcessingType.BUY_INSURANCE:
                         player.pending_action = self.special_processing.pending_action

@@ -109,7 +109,15 @@ class GameConstants(object):
             'roll', 'resolve', 'save', 'saved', 'set', 'start', 'status', 'take_turn', 'transfer', 'turn_history', 
             'update', 'use', 'use_insurance', 'where', 'who']
     
-    CURRENCY_SYMBOL = ""
+    CURRENCY_SYMBOL = "$"    # default, set by CareersGameEngine from gameParameters JSON file
+    
+    #
+    # point_icon definitions initially defaulted, can be updated with load_point_icons()
+    #
+    HEART = "heart"
+    HAPPINESS = "happiness"
+    STAR = "star"
+    FAME = "fame"
 
     def __init__(self, params:Dict={} ):
         '''
@@ -162,5 +170,14 @@ class GameConstants(object):
                 discovered_plugins.append(mdict)
 
         return discovered_plugins
+
+    @staticmethod
+    def load_point_icons(point_icons:Dict):
+        if point_icons is not None and len(point_icons) > 0:
+            GameConstants.HEART = point_icons["heart"]
+            GameConstants.HAPPINESS = point_icons["happiness"]
+            GameConstants.STAR = point_icons["star"]
+            GameConstants.FAME = point_icons["fame"]
+        # else use the default vales
 
     
