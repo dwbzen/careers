@@ -286,8 +286,8 @@ def main():
     parser.add_argument("--params", help="Game parameters type: 'test', 'prod', 'test-prod' or 'custom' ", type=str, \
                         choices=["test","prod","custom","test_prod"], default="test")
     parser.add_argument("--gameid", help="Game ID", type=str, default=None)
-    parser.add_argument("--edition", help="Game edition: Hi-Tech, Professions-Hi-Tech, JazzAge, or UK", \
-                        type=str, choices=["Hi-Tech", "Professions-Hi-Tech", "UK", "TimeMachine-JazzAge"], default="Professions-Hi-Tech")
+    parser.add_argument("--edition", help="Game edition: Professions-Hi-Tech_v2, Professions-Hi-Tech_v3, JazzAge, or UK", \
+                        type=str, choices=["Professions-Hi-Tech_v2", "Professions-Hi-Tech_v3", "UK", "TimeMachine-JazzAge"], default="Professions-Hi-Tech_v3")
     parser.add_argument("--script", help="Execute script file", type=str, default=None)
     parser.add_argument("--delay", help="Delay a specified number of seconds between script commands", type=int, default=0)
     parser.add_argument("--comments", "-c", help="Log comment lines when running a script", type=str, choices=['y','Y', 'n', 'N'], default='Y')

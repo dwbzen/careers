@@ -1,10 +1,11 @@
 {
-	"editions" : [ "Hi-Tech", "Professions-Hi-Tech", "UK", "JazzAge", "TimeMachine-JazzAge"],
+	"editions" : [ "Hi-Tech", "Professions-Hi-Tech_v2", "Professions-Hi-Tech_v3", "UK", "JazzAge", "TimeMachine-JazzAge"],
 	
 	"Hi-Tech" : {
 			"version" : "0.1.5",
 			"full_name" : "Hi Tech Edition",
 			"edition_name" : "HiTech",
+			"edition_path" : "Hi-Tech",
 			"Help" : "Rule Book v2 booklet.pdf",
 			"Game Parameters" : "gameParameters.json",
 			"Opportunity Cards" : "opportunityCards.json",
@@ -22,10 +23,40 @@
 					"initial_cash" : 2000
 			}
 	},
-	"Professions-Hi-Tech": {
+	"Professions-Hi-Tech_v2": {
 			"version" : "0.2",
 			"full_name" : "Professions: Hi-Tech Edition",
-			"edition_name" : "HiTecProfessions",
+			"edition_name" : "HiTechProfessions",
+			"edition_path" : "Professions-Hi-Tech",
+			"Help" : "Hig-Tech Edition Rule Book_v2.pdf",
+			"Game Parameters" : "gameParameters.json",
+			"Opportunity Cards" : "opportunityCards.json",
+			"Experience Cards" : "experienceCards.json",
+			"Occupations" : "occupations.json",
+			"Players" : "players.json",
+			"Layout" : "gameLayout.json",
+			"Rules" : "rules.json",
+			"plugins" : {
+				"careers.game.plugins.careers_All_Strategy" : {"classname" : "Careers_All_Strategy", "active":1, "context":"turn", "strategy_level":"dumb"  },
+				"careers.game.plugins.careers_All_Randomizer" : {"classname" : "Careers_All_Randomizer", "active":0, "context":"start" }
+			},
+			"configuration" : {
+					"starting_salary" : 2000,
+					"initial_cash" : 2000
+			},
+			"Help" : "point_icons are aliases to use for this edition.",
+			"point_icons" : {
+				"heart" : "heart", "Heart" : "Heart",
+				"star" : "star", "Star" : "Star",
+				"happiness" : "happiness", "Happiness" : "Happiness",
+				"fame" : "fame", "Fame" : "Fame"
+			}
+	},
+	"Professions-Hi-Tech_v3": {
+			"version" : "0.2",
+			"full_name" : "Professions: Hi-Tech Edition",
+			"edition_name" : "HiTechProfessions",
+			"edition_path" : "Professions-Hi-Tech",
 			"Help" : "Hig-Tech Edition Rule Book_v2.pdf",
 			"Game Parameters" : "gameParameters.json",
 			"Opportunity Cards" : "opportunityCards.json",
@@ -54,6 +85,7 @@
 			"version" : "0.0.2",
 			"full_name" : "UK Edition: Destination London",
 			"edition_name" : "UK",
+			"edition_path" : "UK",
 			"Help" : "Rule Book Destination London.pdf",
 			"Game Parameters" : "gameParameters.json",
 			"Opportunity Cards" : "opportunityCards.json",
@@ -69,12 +101,20 @@
 			"configuration" : {
 					"starting_salary" : 2000,
 					"initial_cash" : 2500
-			}	
+			},
+			"Help" : "point_icons are aliases to use for this edition.",
+			"point_icons" : {
+				"heart" : "heart", "Heart" : "Heart",
+				"star" : "star", "Star" : "Star",
+				"happiness" : "happiness", "Happiness" : "Happiness",
+				"fame" : "fame", "Fame" : "Fame"
+			}
 	},
 	"JazzAge" : {
 			"version" : "0.0.1",
 			"full_name" : "Jazz Age Edition",
 			"edition_name" : "JazzAge",
+			"edition_path" : "JazzAge",
 			"Help" : "Rule Book - Jazz Age.pdf",
 			"Game Parameters" : "gameParameters.json",
 			"Opportunity Cards" : "opportunityCards.json",
@@ -96,6 +136,7 @@
 			"version" : "0.0.1",
 			"full_name" : "Time Machine: Jazz Age Edition",
 			"edition_name" : "JazzAge",
+			"edition_path" : "TimeMachine-JazzAge",
 			"Help" : "Rule Book - Jazz Age.pdf",
 			"Game Parameters" : "gameParameters.json",
 			"Opportunity Cards" : "opportunityCards.json",
@@ -111,7 +152,14 @@
 			"configuration" : {
 					"starting_salary" : 1000,
 					"initial_cash" : 1000
-			}	
+			},
+			"Help" : "point_icons are aliases to use for this edition.",
+			"point_icons" : {
+				"heart" : "heart", "Heart" : "Heart",
+				"star" : "star", "Star" : "Star",
+				"happiness" : "happiness", "Happiness" : "Happiness",
+				"fame" : "fame", "Fame" : "Fame"
+			}
 	}
 
 }

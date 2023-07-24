@@ -33,6 +33,7 @@ import random, json
 from typing import List
 import os, logging, sys
 from threading import Lock
+from game.gameUtils import GameUtils
 
 class CareersGameEngine(object):
     """CareersGameEngine executes the action(s) associated with each player's turn.
@@ -1280,6 +1281,7 @@ Where <what> is 'occupation' or 'command'
         if pending_action is not None:
             pending_game_square_name = pending_action.pending_game_square_name
             pending_game_square = None if pending_game_square_name is None else self.careersGame.find_border_square(pending_game_square_name)
+            special_processing = pending_game_square.special_processing
             
             if what == PendingActionType.SELECT_DEGREE.value:  # the degree program chosen is the 'choice'
                 result = self.add_degree(player, choice)
@@ -1324,11 +1326,17 @@ Where <what> is 'occupation' or 'command'
                 result = self.buy("insurance", choice, amount)
             
             elif what ==   PendingActionType.STAY_OR_MOVE.value:    # choices: stay, move
-                if choice.lower().startswith("s"):
-                    result = game_square.execute(player)
-                else:   # move off Holiday
+                # roll the die to see if the player must move 
+                # i.e. the roll is not in the special_processing must_roll list
+                # typically 2 - 7
+                dice = GameUtils.roll(2)
+                num_spaces = sum(dice)
+                
+                if choice.lower().startswith("s") and num_spaces in special_processing.must_roll:
+                    result = game_square.execute(player, dice=dice)
+                else:   # move off Holiday/Vacation square
                     player.on_holiday = False
-                    result = self.roll(player, pending_action.pending_dice)
+                    result = self._advance(num_spaces, dice)
                     
             elif what == PendingActionType.BANKRUPT.value:          # choices: yes (to declare bankruptcy), or no
                 if choice.lower().startswith("y"):

@@ -11,7 +11,7 @@ from game.commandResult import CommandResult
 from game.gameParameters import GameParameters
 
 from enum import Enum
-from typing import Dict, Union
+from typing import Dict, Union, List
 
 
 class GameSquareClass(Enum):
@@ -125,7 +125,7 @@ class GameSquare(CareersObject):
     def help_text(self, text:str):
         self._help_text = text
     
-    def execute(self, player:Player) -> CommandResult:
+    def execute(self, player:Player, dice:List[int]=None) -> CommandResult:
         """Execute actions associated with this Occupation or Border square
             Override in derived class. Base implementation returns None.
         

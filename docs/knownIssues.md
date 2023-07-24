@@ -114,6 +114,29 @@ There are 169 game squares. The bug is only 168 have the "number=" alt text expo
 Unfortunately there is no quick way of finding the rogue game square - the export option of each rectangle must be checked manually.  <br>
 Status: **COMPLETE**</p>
 
+15. Select travel destination.  
+Upon landing on a travel square where the type is travel_choice,  
+the player must select a travel destination, for example: Select travel destination:  ['Amtrak', 'LAX'].  
+Failure to resolve travel_choice pending action can result in stacking of pending actions,  
+for example {travel_choice, stay_or_move} which messes up the turn sequence.<br>
+Status: **INVESTIGATING**<br>
+If the player does a 'next' without resolving travel_choice, the pending action should be cleared.  
+Use it or lose it as the saying goes. This is how the board game works. If a player doesn't resolve  
+an action on the spot, it's lost when the turn is passed to the next player.  
+Should add a warning message informing the player that the travel_choice was cleared AND there's no roll again.</p>
+
+16. stay_or_move.  
+The stay_or_move pending action (from landing on the vacation square) is not resolved correctly.<br>
+Status: **COMPLETE**<br>
+When should the player issue the resolve command (as in resolve stay_or_move stay, or resolve stay_or_move move)?  
+Before or after the roll? In the board game, the player decides after rolling the die. If it's 7 or less  
+THEN they decide to stay or move. Otherwise they need to move.  
+The right way to handle this in the game engine is for the player to resolve, then roll.  
+If they resolve to stay, they remain on the square, and collect the additional 3 points.  
+In this case pending action should not be cleared.  
+If the player resolves to move, the stay_or_move pending action should be cleared.
+</p>
+
 ---
 ## Technical TODOs
 1. Make game_type ('points', 'timed') an Enum; add to GameConstants.<br>

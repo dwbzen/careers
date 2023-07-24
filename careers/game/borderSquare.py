@@ -64,7 +64,7 @@ class BorderSquare(GameSquare):
     def square_type(self) -> BorderSquareType:
         return self._square_type
     
-    def execute(self, player:Player) -> CommandResult:
+    def execute(self, player:Player, dice:List[int]=None) -> CommandResult:
         """Execute the actions associated with landing on this BorderSquare. Overrides GameSquare.execute().
             Assumes the Player's current location is this BorderSquare.
             Arguments:
@@ -179,8 +179,9 @@ class BorderSquare(GameSquare):
                         player.add_hearts(nhearts)
                         player.on_holiday = True
                         player.add_pending_action(self.special_processing.pending_action, game_square_name=self.name, amount=0)
-                        result = CommandResult(CommandResult.SUCCESS, \
-                                    f'Player {player.player_initials} {self.action_text}\n Collect {nhearts} {GameConstants.HEART}s', True)
+                        roll_str = f"rolled a {sum(dice)}. " if dice is not None else ""
+                        message = f'Player {player.player_initials} {roll_str} {self.action_text}\n Collect {nhearts} {GameConstants.HEART}s'
+                        result = CommandResult(CommandResult.SUCCESS, message, True)
                     
                     case SpecialProcessingType.BUY_INSURANCE:
                         player.pending_action = self.special_processing.pending_action

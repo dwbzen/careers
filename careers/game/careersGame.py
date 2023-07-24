@@ -66,6 +66,7 @@ class CareersGame(CareersObject):
             self._edition = editions_txt[edition_name]
         else: raise ValueError(f"No such edition {edition_name}")
         fp.close()
+        self._edition_path = self._edition["edition_path"]
         #
         # load game parameters, layout and occupations
         #
@@ -105,13 +106,13 @@ class CareersGame(CareersObject):
         
         """
         game_params_type = self._game_parameters_type.value
-        self._game_parameters_filename = f'{self._resource_folder}/{self._edition_name}/gameParameters_{game_params_type}.json'
+        self._game_parameters_filename = f'{self._resource_folder}/{self._edition_path}/gameParameters_{game_params_type}.json'
             
         with open(self._game_parameters_filename, "r") as fp:
             jtxt = fp.read()
             self._game_parameters = GameParameters(json.loads(jtxt))
 
-        self._occupations_filename = f'{self._resource_folder}/{self._edition_name}/occupations.json'
+        self._occupations_filename = f'{self._resource_folder}/{self._edition_path}/occupations.json'
         with open(self._occupations_filename, "r") as fp:
             jtxt = fp.read()
             occupations_dict = json.loads(jtxt)
@@ -136,7 +137,7 @@ class CareersGame(CareersObject):
         self._point_icons =  self._edition["point_icons"] if "point_icons" in self._edition else None
         GameConstants.load_point_icons(self._point_icons)
             
-        self._turn_outcome_parameters_filename = f'{self._resource_folder}/{self._edition_name}/turnOutcomeParameters.json'
+        self._turn_outcome_parameters_filename = f'{self._resource_folder}/{self._edition_path}/turnOutcomeParameters.json'
         with open(self._turn_outcome_parameters_filename, "r") as fp:
             jtxt = fp.read()
             turn_outcome_dict = json.loads(jtxt)
@@ -195,13 +196,13 @@ class CareersGame(CareersObject):
         return True
     
     def _create_opportunity_deck(self):
-        self._opportunities = OpportunityCardDeck(self._resource_folder, self._edition_name)
+        self._opportunities = OpportunityCardDeck(self._resource_folder, self._edition_path)
     
     def _create_experience_deck(self):
-        self._experience_cards = ExperienceCardDeck(self._resource_folder, self._edition_name)
+        self._experience_cards = ExperienceCardDeck(self._resource_folder, self._edition_path)
         
     def _create_game_board(self) -> GameBoard:
-        game_layout_filename = f'{self._resource_folder}/{self._edition_name}/gameLayout.json'
+        game_layout_filename = f'{self._resource_folder}/{self._edition_path}/gameLayout.json'
         game_board = GameBoard(game_layout_filename, game=self)
         return game_board
 
@@ -216,7 +217,7 @@ class CareersGame(CareersObject):
         """
         occupations:Dict[str, Occupation] = {}
         for name in self._occupation_names:
-            filepath = f'{self._resource_folder}/{self._edition_name}/{name}.json'
+            filepath = f'{self._resource_folder}/{self._edition_path}/{name}.json'
             p = Path(filepath)
             if p.exists():
                 fp = open(filepath, "r")
@@ -235,7 +236,7 @@ class CareersGame(CareersObject):
 
     
     def _load_college_degrees(self) -> Dict[str, Union[List[int] ,List[str], int]]:
-        fp = open(f'{self._resource_folder}/{self._edition_name}/collegeDegrees.json', "r")
+        fp = open(f'{self._resource_folder}/{self._edition_path}/collegeDegrees.json', "r")
         degrees = json.loads(fp.read())
         return degrees
     
@@ -389,6 +390,10 @@ class CareersGame(CareersObject):
         """Contents of the occupations.json resource file as a Dict
         """
         return self._occupations_dict
+    
+    @property
+    def edition_path(self)->str:
+        return self._edition_path
     
     def add_player(self, aplayer:Player):
         """Adds a new Player to the game.
