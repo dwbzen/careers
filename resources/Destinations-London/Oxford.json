@@ -1,0 +1,161 @@
+{
+	"name" : "UF",
+	"configuration" : {
+		"occupationClass" : "college",
+		"fullName" : "University of Oxford",
+		"background_image" : "occupation_entrance.png",
+		"image" : "Oxford logo.png",
+		"entry_fee" : 1000,
+		"size" : 11,
+		"entrance_square_number" : 7,
+		"exit_square_number" : 11,
+		"text" : "Must have: £1000 tuition\nDegrees available:Engineering, IT, Athletic Training, Law, \nHistory, Anthropology, Sales & Marketting, Journalism and Pharmacology",
+		"Help" : [ "Each Degree Program is with a specific occupation. maxDegrees is the maximum number of degrees attainable in any degree program." ]
+	},
+	"occupationSquares" : [
+		{
+			"number" : 0,
+			"background_image" : "occupation_square.png",
+			"text" : "You need some serious counseling",
+			"image" : "frown_emoji.png",
+			"stars" : 0,
+			"hearts" : 0,
+			"bonus" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "Lose next turn",
+			"specialProcessing" :  {
+				"type" : "lose_next_turn"
+			}
+		},
+		{
+			"number" : 1,
+			"background_image" : "occupation_square.png",
+			"text" : "Join Board Games Society",
+			"image" : "",
+			"stars" : 0,
+			"hearts" : 2,
+			"bonus" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 2,
+			"background_image" : "occupation_square.png",
+			"text" : "Super-smart, may take shortcut",
+			"type" : "shortcut_square",
+			"image" : "shortcut_emoji.png",
+			"stars" : 0,
+			"hearts" : 0,
+			"bonus" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : {
+				"type" : "shortcut",
+				"pending_action" : "take_shortcut",
+				"next_square" : 9,
+				"next_square_text" : "Trinity term exam top score"
+			}
+		},
+		{
+			"number" : 3,
+			"background_image" : "occupation_square.png",
+			"text" : "Publish research paper",
+			"image" : "",
+			"stars" : 4,
+			"hearts" : 0,
+			"bonus" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 4,
+			"background_image" : "occupation_square.png",
+			"text" : "Partner has business connections",
+			"stars" : 0,
+			"hearts" : 0,
+			"experience" : 0,
+			"opportunities" : 2,
+			"action_text" : "Draw 2 OPPORTUNITY CARDS",
+			"specialProcessing" : {}
+		},		
+		{
+			"number" : 5,
+			"background_image" : "danger_occupation_square.png",
+			"text" : "Flunk out - too much partying",
+			"type" : "danger_square",
+			"stars" : 0,
+			"hearts" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "Pay £5000 for tutoring OR go to Unemployment",
+			"specialProcessing" : {
+				"type" : "cash_loss_or_unemployment",
+				"pending_action" : "cash_loss_or_unemployment",
+				"amount" : 5000,
+				"of" : "cash"
+			}
+		},
+		{
+			"number" : 6,
+			"background_image" : "occupation_square.png",
+			"text" : "Win Oxford-Cambridge boat race",
+			"stars" : 2,
+			"hearts" : 4,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 7,
+			"background_image" : "occupation_square.png",
+			"text" : "Take advanced seminar",
+			"stars" : 0,
+			"hearts" : 0,
+			"bonus" : 0,
+			"experience" : 2,
+			"opportunities" : 0,
+			"action_text" : "Draw 2 EXPERIENCE CARD",
+			"specialProcessing" : {}
+		},		
+		{
+			"number" : 8,
+			"background_image" : "occupation_square.png",
+			"text" : "Great party in The Kidneys",
+			"stars" : 0,
+			"hearts" : 6,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 9,
+			"background_image" : "occupation_square.png",
+			"text" : "Trinity term exam top score",
+			"stars" : 0,
+			"hearts" : 0,
+			"experience" : 0,
+			"opportunities" : 2,
+			"action_text" : "Draw 2 OPPORTUNITY CARDS",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 10,
+			"background_image" : "occupation_square.png",
+			"text" : "Your YouTube channel has 500K followers",
+			"stars" : 6,
+			"hearts" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : {	}
+		}
+	]
+}

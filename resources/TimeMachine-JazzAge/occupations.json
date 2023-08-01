@@ -1,7 +1,7 @@
 {
 	"Help" : "This file has the keys to individual occupation files for the Time Machine - Jazz Age Edition. Occupations listed in order as they appear on the board.",
 	"occupation_square_types_list" : [
-		"danger_square", "shortcut_square", "action_square", "occupation_square", "travel_square"
+		"danger_square", "shortcut_square", "action_square", "occupation_square", "travel_square", "opportunity_square"
 	],
 	"occupation_square_types" : [
 	    {
@@ -17,8 +17,16 @@
 			"Help" : "Perform a non-movement action."
 		},
 	    {
+			"type" : "regular_square",
+			"Help" : "A square that awards one or more hearts, stars, Opportunity cards, and/or Experience cards."
+		},
+	    {
 			"type" : "occupation_square",
 			"Help" : "A square that awards one or more hearts, stars, Opportunity cards, and/or Experience cards."
+		},
+	    {
+			"type" : "opportunity_square",
+			"Help" : "Draw an Opportunity Card."
 		}
 	],
 	"occupations" : [

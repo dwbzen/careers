@@ -1,5 +1,5 @@
 {
-	"Help" : "This file has the keys to individual occupation files for the Hi-Tech Edition. Occupations listed in order as they appear on the board.",
+	"Help" : "This file has the keys to individual occupation files for Destinations - London. Occupations listed in order as they appear on the board.",
 	"occupation_square_types_list" : [
 		"danger_square", "shortcut_square", "action_square", "regular_square", "travel_square", "opportunity_square"
 	],

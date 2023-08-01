@@ -1,0 +1,18 @@
+{
+	"description" : "Default UV version game parameters",
+	"starting_salary" : 5000,
+	"starting_cash" : 10000,
+	"currency" : "Pounds",
+	"currency_symbol" : "\u00A3",
+	"date_format" : "yyyy-dd-mm",
+	"starting_experience_cards" : 2,
+	"starting_opportunity_cards" : 2,
+	"starting_hearts" : 10,
+	"starting_stars" : 10,
+	"default_game_points" : 100,
+	"timed_game" : 0,
+	"default_game_minutes" : 60,
+	"allow_negative_experience" : 1,
+	"interest_rate" : 2.5,
+	"early_withdrawal_penalty" : 5.0
+}

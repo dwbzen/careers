@@ -1,7 +1,7 @@
 {
-	"Help" : "This file has the keys to individual occupation files for the Pfofessions Hi-Tech Edition. Occupations listed in order as they appear on the board.",
+	"Help" : "This file has the keys to individual occupation files for the Professions Hi-Tech Edition. Occupations listed in order as they appear on the board.",
 	"occupation_square_types_list" : [
-		"danger_square", "shortcut_square", "action_square", "regular_square", "travel_square"
+		"danger_square", "shortcut_square", "action_square", "regular_square", "travel_square", "opportunity_square"
 	],
 	"occupation_square_types" : [
 	    {
@@ -34,9 +34,9 @@
 		"BroadcastJournalism", "TechEntrepreneur", "PatentAttorney", "VideoGameDevelopment", "AIResearch", "PharmaceuticalSciences"
 	],
 	"gameboard_mapping": {
-		"ppi": "PinnaclePolytechnicInstitute",
 		"aerospace": "AerospaceEngineering",
 		"vc": "VentureCapitalist",
+		"ppi": "PinnaclePolytechnicInstitute",
 		"quantum": "QuantumComputing",
 		"broadcast": "BroadcastJournalism",
 		"entrepreneur": "TechEntrepreneur",

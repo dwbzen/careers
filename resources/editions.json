@@ -110,6 +110,35 @@
 				"fame" : "fame", "Fame" : "Fame"
 			}
 	},
+	"Destinations-London" : {
+			"version" : "0.0.1",
+			"full_name" : "Destination London",
+			"edition_name" : "Destinations-London",
+			"edition_path" : "Destinations-London",
+			"Help" : "Rule Book Destination London.pdf",
+			"Game Parameters" : "gameParameters.json",
+			"Opportunity Cards" : "opportunityCards.json",
+			"Experience Cards" : "experienceCards.json",
+			"Occupations" : "occupations.json",
+			"Players" : "players.json",
+			"Layout" : "gameLayout.json",
+			"Rules" : "rules.json",
+			"plugins" : {
+				"careers.game.plugins.careers_All_Strategy" : {"classname" : "Careers_All_Strategy", "active":1, "context":"turn", "strategy_level":"dumb" },
+				"careers.game.plugins.careers_All_Randomizer" : {"classname" : "Careers_All_Randomizer", "active":0, "context":"start" }
+			},
+			"configuration" : {
+					"starting_salary" : 2000,
+					"initial_cash" : 2500
+			},
+			"Help" : "point_icons are aliases to use for this edition.",
+			"point_icons" : {
+				"heart" : "heart", "Heart" : "Heart",
+				"star" : "star", "Star" : "Star",
+				"happiness" : "happiness", "Happiness" : "Happiness",
+				"fame" : "fame", "Fame" : "Fame"
+			}
+	},
 	"JazzAge" : {
 			"version" : "0.0.1",
 			"full_name" : "Jazz Age Edition",

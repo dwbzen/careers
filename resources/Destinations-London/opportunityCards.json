@@ -1,0 +1,330 @@
+{
+	"Help" : "Hi-Tech Edition Opportunity cards",
+	"types_list" : [
+		"occupation", "occupation_choice", "border_square", "border_square_choice", "action", "travel", "opportunity"
+	],
+	"action_types" : [
+		"collect_experience", "extra_turn", "leave_unemployment"
+	],
+	"types" : [
+		{
+			"card_type" : "occupation",
+			"Help" : "Advance to the occupation named as 'destination'. Player enters immediately."
+		},
+		{
+			"card_type" : "occupation_choice",
+			"Help" : "Advance to the occupation chosen by the player. Player enters immediately."
+		},
+		{
+			"card_type" : "border_square",
+			"Help" : "Advance to the border square named as 'destination'. Subsequent player action depends on the landing square."
+		},
+		{
+			"card_type" : "border_square_choice",
+			"Help" : "Advance to any border square chosen by the player. Subsequent player action depends on the landing square."
+		},
+		{
+			"card_type" : "action",
+			"Help" : "Non-movement player action. There are three action types: extra_turn, leave_unemployment, collect_experience."
+		},
+		{
+			"card_type" : "travel",
+			"Help" : "Advance to the nearest  British Rail or Underground station and roll again."
+		},
+		{
+			"card_type" : "opportunity",
+			"Help" : "Advance to the nearest Opportunity space and roll again."
+		}
+	],
+	"cards" : [
+		{
+			"number" : 0,
+			"card_type" : "occupation",
+			"destination" : "AGRIVI",
+			"expenses_paid" : 0,
+			"double_happiness" : 0,
+			"text" : "OPPORTUNITY to join AGRIVI\nMeet Normal Requirements",
+			"quantity" : 3
+		},
+		{
+			"number" : 1,
+			"card_type" : "occupation",
+			"destination" : "Harrods",
+			"expenses_paid" : 0,
+			"double_happiness" : 0,
+			"text" : "OPPORTUNITY to join Harrods\nMeet Normal Requirements",
+			"quantity" : 3
+		},
+		{
+			"number" : 2,
+			"card_type" : "occupation",
+			"destination" : "Pfizer",
+			"expenses_paid" : 0,
+			"double_happiness" : 0,
+			"text" : "OPPORTUNITY to join Pfizer\nMeet Normal Requirements",
+			"quantity" : 3
+		},
+		{
+			"number" : 3,
+			"card_type" : "occupation",
+			"destination" : "Rolls Royce",
+			"expenses_paid" : 0,
+			"double_happiness" : 0,
+			"text" : "OPPORTUNITY to join Rolls Royce\nMeet Normal Requirements",
+			"quantity" : 2
+		},
+		{
+			"number" : 4,
+			"card_type" : "occupation",
+			"destination" : "Rolls Royce",
+			"expenses_paid" : 1,
+			"double_happiness" : 0,
+			"text" : "SPECIAL OPPORTUNITY to join Rolls Royce because of your technical brilliance.\nAll expenses paid and no prior experience required.",
+			"quantity" : 1		
+		},
+		{
+			"number" : 5,
+			"card_type" : "occupation",
+			"destination" : "Stonehenge",
+			"expenses_paid" : 0,
+			"double_happiness" : 0,
+			"text" : "OPPORTUNITY to join Stonehenge\nMeet Normal Requirements",
+			"quantity" : 2
+		},
+		{
+			"number" : 6,
+			"card_type" : "occupation",
+			"destination" : "Stonehenge",
+			"expenses_paid" : 0,
+			"double_happiness" : 1,
+			"text" : "SPECIAL OPPORTUNITY to join Stonehenge because of your Mystical touch.\nDOUBLE all Happiness earned\nMeet Normal Requirements",
+			"quantity" : 2
+		},
+		{
+			"number" : 7,
+			"card_type" : "occupation",
+			"destination" : "Tower Of London",
+			"expenses_paid" : 0,
+			"double_happiness" : 0,
+			"text" : "OPPORTUNITY to join the Tower Of London\nMeet Normal Requirements",
+			"quantity" : 2
+		},
+		{
+			"number" : 8,
+			"card_type" : "occupation",
+			"destination" : "Tower Of London",
+			"expenses_paid" : 1,
+			"double_happiness" : 0,
+			"text" : "SPECIAL OPPORTUNITY to join the Tower Of London because of your technical brilliance. \nAll expenses paid and no prior experience required.",
+			"quantity" :1			
+		},
+		{
+			"number" : 9,
+			"card_type" : "occupation",
+			"destination" : "BBC News",
+			"expenses_paid" : 0,
+			"double_happiness" : 0,
+			"text" : "OPPORTUNITY to join BBC News\nMeet Normal Requirements",
+			"quantity" : 2
+		},
+		{
+			"number" : 10,
+			"card_type" : "occupation",
+			"destination" : "BBC News",
+			"expenses_paid" : 1,
+			"double_happiness" : 0,
+			"text" : "SPECIAL OPPORTUNITY to join BBC News because of your journalism chops.\nAll expenses paid and no prior experience required.",
+			"quantity" : 1		
+		},
+		{
+			"number" : 11,
+			"card_type" : "occupation",
+			"destination" : "Arsenal",
+			"expenses_paid" : 0,
+			"double_happiness" : 0,
+			"text" : "OPPORTUNITY to join Arsenal\nMeet Normal Requirements",
+			"quantity" : 2
+		},
+		{
+			"number" : 12,
+			"card_type" : "occupation",
+			"destination" : "Arsenal",
+			"expenses_paid" : 1,
+			"double_happiness" : 0,
+			"text" : "SPECIAL OPPORTUNITY to join Arsenal because of your football knowledge.\nAll expenses paid and no prior experience required.",
+			"quantity" : 1
+		},
+		{
+			"number" : 13,
+			"card_type" : "occupation",
+			"destination" : "Oxford",
+			"expenses_paid" : 0,
+			"double_happiness" : 0,
+			"text" : "OPPORTUNITY to enter Oxford\nMeet Normal Requirements",
+			"quantity" : 3
+		},
+		{
+			"number" : 14,
+			"card_type" : "occupation",
+			"destination" : "Oxford",
+			"expenses_paid" : 1,
+			"double_happiness" : 0,
+			"text" : "SPECIAL OPPORTUNITY to enter Oxford on Scholarship, all expenses paid.",
+			"quantity" : 2
+		},
+		{
+			"number" : 15,
+			"card_type" : "occupation",
+			"destination" : "ListerAndBacon",
+			"expenses_paid" : 0,
+			"double_happiness" : 0,
+			"text" : "OPPORTUNITY to join Lister & Bacon\nMeet Normal Requirements",
+			"quantity" : 3
+		},
+		{
+			"number" : 16,
+			"card_type" : "occupation",
+			"destination" : "ListerAndBacon",
+			"expenses_paid" : 1,
+			"double_happiness" : 0,
+			"text" : "SPECIAL OPPORTUNITY to join Lister & Bacon because of your legal reputation\nAll expenses paid.",
+			"quantity" : 1
+		},
+		{
+			"number" : 17,
+			"card_type" : "occupation_choice",
+			"destination" : "",
+			"expenses_paid" : 0,
+			"double_happiness" : 0,
+			"text" : "GOLDEN  OPPORTUNITY to join the Company of your choice\nMeet Normal Requirements",
+			"quantity" : 20,
+			"special_processing" : {
+				"type" : "choose_occupation",
+				"pending_action" : "choose_occupation",
+				"choices" : "*Occupation"
+			}
+		},
+		{
+			"number" : 18,
+			"card_type" : "border_square_choice",
+			"destination" : "",
+			"expenses_paid" : 0,
+			"double_happiness" : 0,
+			"text" : "GOLDEN  OPPORTUNITY to advance to ANY border square\n*meet normal requirements for Occupation or College entrance*",
+			"quantity" : 2,
+			"special_processing" : {
+				"type" : "choose_destination",
+				"pending_action" : "choose_destination",
+				"choices" : "*Border"
+			}			
+		},
+		{
+			"number" : 19,
+			"card_type" : "border_square",
+			"destination" : "BuyInsurance",
+			"expenses_paid" : 0,
+			"double_happiness" : 0,
+			"text" : "OPPORTUNITY to buy Insurance\nAdvance to the Insurance Store and pay £5,000 premium",
+			"quantity" : 4,
+			"special_processing" : {
+				"type" : "buy_insurance"
+			}
+		},
+		{
+			"number" : 20,
+			"card_type" : "border_square",
+			"destination" : "Holiday",
+			"expenses_paid" : 0,
+			"double_happiness" : 0,
+			"text" : "OPPORTUNITY to go on Holiday!",
+			"quantity" : 4
+		},
+		{
+			"number" : 21,
+			"card_type" : "border_square",
+			"destination" : "Payday",
+			"expenses_paid" : 0,
+			"double_happiness" : 0,
+			"text" : "SPECIAL OPPORTUNITY to collect needed cash!\nAdvance to PAYDAY and collect DOUBLE your annual salary.",
+			"quantity" : 3
+		},
+		{
+			"number" : 22,
+			"card_type" : "border_square",
+			"destination" : "HippodromeCasino",
+			"expenses_paid" : 0,
+			"double_happiness" : 0,
+			"text" : "OPPORTUNITY to Gamble at the Hippodrome Casino",
+			"quantity" : 3
+		},
+		{
+			"number" : 23,
+			"card_type" : "border_square",
+			"destination" : "BuyExperience",
+			"expenses_paid" : 0,
+			"double_happiness" : 0,
+			"text" : "SPECIAL OPPORTUNITY to buy needed padding! Advance to EXPERIENCE square and buy at least 1 and up to 3 EXPERIENCE cards.",
+			"quantity" : 2
+		},
+		{
+			"number" : 24,
+			"card_type" : "travel",
+			"destination" : "BritishRail",
+			"expenses_paid" : 0,
+			"double_happiness" : 0,
+			"text" : "TRAVEL OPPORTUNITY Advance to the nearest British Rail Station and roll again.",
+			"quantity" : 2
+		},
+		{
+			"number" : 25,
+			"card_type" : "travel",
+			"destination" : "Underground",
+			"expenses_paid" : 0,
+			"double_happiness" : 0,
+			"text" : "TRAVEL OPPORTUNITY Advance to the nearest Underground Station and roll again.",
+			"quantity" : 2
+		},
+		{
+			"number" : 26,
+			"card_type" : "opportunity",
+			"destination" : "Opportunity",
+			"expenses_paid" : 0,
+			"double_happiness" : 0,
+			"text" : "OPPORTUNITY KNOCKS\nAdvance to the nearest OPPORTUNITY square and roll again",
+			"quantity" : 3
+		},
+		{
+			"number" : 27,
+			"card_type" : "action", 
+			"action_type" : "collect_experience",
+			"destination" : "",
+			"expenses_paid" : 0,
+			"double_happiness" : 0,
+			"text" : "SPECIAL OPPORTUNITY to gain EXPERIENCE!\nCollect one randomly selected EXPERIENCE card from each player.",
+			"quantity" : 2,
+			"special_processing" : {
+				"type" : "select_experience"
+			}
+		},
+		{
+			"number" : 28,
+			"card_type" : "action",
+			"action_type" : "leave_unemployment",
+			"destination" : "",
+			"expenses_paid" : 0,
+			"double_happiness" : 0,
+			"text" : "Get out of Unemployment free\nPlay this card to immediately leave Unemployment.",
+			"quantity" : 4
+		},
+		{
+			"number" : 29,
+			"card_type" : "action", 
+			"action_type" : "extra_turn",
+			"destination" : "",
+			"expenses_paid" : 0,
+			"double_happiness" : 0,
+			"text" : "SPECIAL OPPORTUNITY to Get an Extra Turn\nPlay at the start of your turn",
+			"quantity" : 6
+		}
+	]
+}
