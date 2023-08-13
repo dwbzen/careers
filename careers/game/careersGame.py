@@ -221,6 +221,7 @@ class CareersGame(CareersObject):
             p = Path(filepath)
             if p.exists():
                 fp = open(filepath, "r")
+                print(filepath)
                 occupation_dict = json.loads(fp.read())
                 # create an Occupation object for this occupation
                 occupation = Occupation(occupation_dict, game=self)

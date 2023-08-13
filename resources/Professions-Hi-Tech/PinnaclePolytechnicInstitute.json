@@ -4,14 +4,12 @@
 		"alternate_name" : "PPI",
 		"occupationClass" : "college",
 		"fullName" : "Pinnacle Polytechnic Institute",
-		"background_image" : "occupation_entrance.png",
-		"image" : "hi-tech_university_futuristic.png",
 		"entry_fee" : 500,
 		"prior_experience" : 0,
 		"size" : 11,
 		"entrance_square_number" : 7,
 		"exit_square_number" : 11,
-		"text" : "Must have $500 tuition. Degrees available:\nAerospace Engineering, Artificial Intelligence, Business Admininstration, Computer Science, Journalism, Law, Pharmacology, Software Engineering\n",
+		"text" : "Must have $500 tuition. Degrees available: Aerospace Engineering, Artificial Intelligence, Business Admininstration, Computer Science, Journalism, Law, Pharmacology, Software Engineering",
 		"Help" : [ "Each Degree Program is with a specific profession. maxDegrees is the maximum number of degrees attainable in any degree program." ],
 		"ranking" : {
 			"points" : 9,
@@ -40,7 +38,6 @@
 	"occupationSquares" : [
 		{
 			"number" : 0,
-			"background_image" : "occupation_square.png",
 			"text" : "Injured on the Lacrosse field",
 			"image" : "",
 			"stars" : 0,
@@ -55,7 +52,6 @@
 		},
 		{
 			"number" : 1,
-			"background_image" : "occupation_square.png",
 			"text" : "Join Board Games Society",
 			"image" : "",
 			"stars" : 0,
@@ -68,7 +64,6 @@
 		},
 		{
 			"number" : 2,
-			"background_image" : "occupation_square.png",
 			"text" : "Super-smart, may take shortcut",
 			"type" : "shortcut_square",
 			"image" : "shortcut_emoji.png",
@@ -87,7 +82,6 @@
 		},
 		{
 			"number" : 3,
-			"background_image" : "occupation_square.png",
 			"text" : "Publish 'History of Generative AI' research paper",
 			"image" : "",
 			"stars" : 4,
@@ -100,7 +94,6 @@
 		},
 		{
 			"number" : 4,
-			"background_image" : "occupation_square.png",
 			"text" : "Partner has great connections",
 			"stars" : 0,
 			"hearts" : 0,
@@ -111,7 +104,6 @@
 		},		
 		{
 			"number" : 5,
-			"background_image" : "danger_occupation_square.png",
 			"text" : "Flunk out - too much partying",
 			"type" : "danger_square",
 			"stars" : 0,
@@ -128,7 +120,6 @@
 		},
 		{
 			"number" : 6,
-			"background_image" : "occupation_square.png",
 			"text" : "Represent PPI on Jeopardy and win!",
 			"stars" : 2,
 			"hearts" : 4,
@@ -139,7 +130,6 @@
 		},
 		{
 			"number" : 7,
-			"background_image" : "occupation_square.png",
 			"text" : "Take advanced Natural Language Processing seminar",
 			"stars" : 0,
 			"hearts" : 0,
@@ -151,7 +141,6 @@
 		},		
 		{
 			"number" : 8,
-			"background_image" : "occupation_square.png",
 			"text" : "Great party in Quantum Court",
 			"stars" : 0,
 			"hearts" : 6,
@@ -162,7 +151,6 @@
 		},
 		{
 			"number" : 9,
-			"background_image" : "occupation_square.png",
 			"text" : "AI midterm exam top score",
 			"stars" : 0,
 			"hearts" : 0,
@@ -173,8 +161,7 @@
 		},
 		{
 			"number" : 10,
-			"background_image" : "occupation_square.png",
-			"text" : "You have 500K followers on Twitter",
+			"text" : "You have 500K followers on X",
 			"stars" : 6,
 			"hearts" : 0,
 			"experience" : 0,

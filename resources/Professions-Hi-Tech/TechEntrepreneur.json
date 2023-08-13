@@ -4,8 +4,6 @@
 		"alternate_name" : "Tech",
 		"occupationClass" : "occupation",
 		"fullName" : "Tech Entrepreneur",
-		"background_image" : "occupation_entrance.png",
-		"image" : "man_demonstrating_a_new_technology_to_a_stunned_audience.jpg",
 		"entry_fee" : 1000,
 		"prior_experience" : 0,
 		"size" : 12,
@@ -40,7 +38,6 @@
 	"occupationSquares" : [
 		{
 			"number" : 0,
-			"background_image" : "danger_occupation_square.png",
 			"text" : "Severe peanut allergy attack during pitch to VCs",
 			"type" : "danger_square",
 			"stars" : 0,
@@ -55,7 +52,6 @@
 		},
 		{
 			"number" : 1,
-			"background_image" : "occupation_square.png",
 			"text" : "Buy that domain name now: OnlyGames.com",
 			"stars" : 0,
 			"hearts" : 2,
@@ -67,7 +63,6 @@
 		},
 		{
 			"number" : 2,
-			"background_image" : "occupation_square.png",
 			"text" : "Hobnob with VCs at Tech.eu Summit",
 			"stars" : 0,
 			"hearts" : 0,
@@ -78,7 +73,6 @@
 		},
 		{
 			"number" : 3,
-			"background_image" : "occupation_square.png",
 			"text" : "Fast Track! Move ahead 5 squares.",
 			"type" : "travel_square",
 			"stars" : 0,
@@ -94,7 +88,6 @@
 		},
 		{
 			"number" : 4,
-			"background_image" : "occupation_square.png",
 			"text" : "May backstab untalented colleague(s)",
 			"type" : "action_square",
 			"stars" : 0,
@@ -112,7 +105,6 @@
 		},
 		{
 			"number" : 5,
-			"background_image" : "occupation_square.png",
 			"text" : "Furious debate to determine initial stock offering",
 			"stars" : 0,
 			"hearts" : 0,
@@ -124,7 +116,6 @@
 		},
 		{
 			"number" : 6,
-			"background_image" : "occupation_square.png",
 			"text" : "Your quantum computing company stock split - bonuses for all!",
 			"stars" : 0,
 			"hearts" : 0,
@@ -139,7 +130,6 @@
 		},
 		{
 			"number" : 7,
-			"background_image" : "occupation_square.png",
 			"text" : "Your partner is totally on-board. Could it be love?",
 			"stars" : 0,
 			"hearts" : 4,
@@ -151,7 +141,6 @@
 		},
 		{
 			"number" : 8,
-			"background_image" : "occupation_square.png",
 			"text" : "Digital Partners invest $1 million in your hairbrained, er, awesome product idea",
 			"stars" : 0,
 			"hearts" : 6,
@@ -163,8 +152,7 @@
 		},
 		{
 			"number" : 9,
-			"background_image" : "occupation_square.png",
-			"text" : "Investors push back on your 4-day work week proposal",
+			"text" : "Investors push back on your 3-day work week proposal",
 			"stars" : 0,
 			"hearts" : 0,
 			"bonus" : 0,
@@ -175,7 +163,6 @@
 		},
 		{
 			"number" : 10,
-			"background_image" : "occupation_square.png",
 			"text" :  "Multi-car pileup on the commute to the office",
 			"stars" : 0,
 			"hearts" : 0,
@@ -189,13 +176,13 @@
 		},
 		{
 			"number" : 11,
-			"background_image" : "occupation_square.png",
 			"text" : "Gamble on AI startup pays off",
 			"stars" : 2,
 			"hearts" : 8, 
 			"experience" : 0,
 			"opportunities" : 0,
-			"action_text" : "Salary up $2,000",
+			"action_text" : "Salary up",
+			"full_action_text" : "Salary up $2,000",
 			"specialProcessing" : {
 				"type" : "salary_increase",
 				"amount" : 2000

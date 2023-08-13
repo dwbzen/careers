@@ -4,8 +4,6 @@
 		"alternate_name" : "Aerospace",
 		"occupationClass" : "occupation",
 		"fullName" : "Aerospace Engineering",
-		"background_image" : "occupation_entrance.png",
-		"image" : "Cosmic_photo_of_a_enormous_high-tech_spaceship.png",
 		"entry_fee" : 5000,
 		"prior_experience" : 1,
 		"size" : 13,
@@ -43,7 +41,6 @@
 	"occupationSquares" : [
 		{
 			"number" : 0,
-			"background_image" : "occupation_square.png",
 			"text" : "Cape Canaveral sunrise is beautiful",
 			"stars" : 0,
 			"hearts" : 2,
@@ -55,7 +52,6 @@
 		},
 		{
 			"number" : 1,
-			"background_image" : "occupation_square.png",
 			"text" : "Successful Falcon Heavy take-off",
 			"stars" : 6,
 			"hearts" : 0,
@@ -67,7 +63,6 @@
 		},
 		{
 			"number" : 2,
-			"background_image" : "danger_occupation_square.png",
 			"text" : "Dragon docking fails",
 			"type" : "danger_square",
 			"stars" : 0,
@@ -84,7 +79,6 @@
 		},
 		{
 			"number" : 3,
-			"background_image" : "danger_occupation_square.png",
 			"text" : "New booster test explodes on the launchpad ",
 			"type" : "danger_square",
 			"stars" : 0,
@@ -101,7 +95,6 @@
 		},
 		{
 			"number" : 4,
-			"background_image" : "occupation_square.png",
 			"text" : "Enhance thruster test facility",
 			"stars" : 2,
 			"hearts" : 4,
@@ -113,13 +106,12 @@
 		},
 		{
 			"number" : 5,
-			"background_image" : "occupation_square.png",
 			"text" : "Successful docking with Intl. Space Station",
 			"stars" : 0,
 			"hearts" : 0,
 			"experience" : 0,
 			"opportunities" : 0,
-			"action_text" : "Salary up $2,000",
+			"action_text" : "Salary up",
 			"specialProcessing" : {
 				"type" : "salary_increase",
 				"amount" : 2000
@@ -127,7 +119,6 @@
 		},
 		{
 			"number" : 6,
-			"background_image" : "occupation_square.png",
 			"text" : "Grueling avionics project",
 			"stars" : 0,
 			"hearts" : 0,
@@ -139,7 +130,6 @@
 		},
 		{
 			"number" : 7,
-			"background_image" : "occupation_square.png",
 			"text" : "Selected for 1st Mars Mission Crew",
 			"stars" : 16,
 			"hearts" : 0,
@@ -151,7 +141,6 @@
 		},
 		{
 			"number" : 8,
-			"background_image" : "occupation_square.png",
 			"text" : "Meeting with Mars Mission Commander",
 			"stars" : 2,
 			"hearts" : 10,
@@ -163,7 +152,6 @@
 		},
 		{
 			"number" : 9,
-			"background_image" : "danger_occupation_square.png",
 			"text" : "Exhausted from conference keynote address",
 			"type" : "danger_square",
 			"stars" : 10,
@@ -178,13 +166,13 @@
 		},
 		{
 			"number" : 10,
-			"background_image" : "occupation_square.png",
 			"text" : "Advance for new Mars Mission book",
 			"stars" : 0,
 			"hearts" : 0, 
 			"experience" : 0,
 			"opportunities" : 0,
-			"action_text" : "Collect Bonus $10,000",
+			"action_text" : "Collect Bonus",
+			"full_action_text" : "Collect $10,000 bonus",
 			"specialProcessing" : {
 				"type" : "bonus",
 				"amount" : 10000
@@ -192,7 +180,6 @@
 		},
 		{
 			"number" : 11,
-			"background_image" : "occupation_square.png",
 			"text" : "Successful Starship launch. Next stop - Mars!",
 			"stars" : 6,
 			"hearts" : 4,
@@ -204,13 +191,13 @@
 		},
 		{
 			"number" : 12,
-			"background_image" : "occupation_square.png",
 			"text" : "Astronaut of the year",
 			"stars" : 2,
 			"hearts" : 4,
 			"experience" : 0,
 			"opportunities" : 0,
-			"action_text" : "Collect $5,000 Bonus",
+			"action_text" : "Collect Bonus",
+			"full_action_text" : "Collect $5,000 bonus",
 			"specialProcessing" : {
 				"type" : "bonus",
 				"amount" : 5000

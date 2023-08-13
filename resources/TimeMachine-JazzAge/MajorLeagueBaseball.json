@@ -4,7 +4,6 @@
 		"alternate_name" : "MLB",
 		"occupationClass" : "occupation",
 		"fullName" : "Major League Baseball",
-		"background_image" : "occupation_entrance.png",
 		"image" : "",
 		"entry_fee" : 500,
 		"size" : 11,
@@ -39,7 +38,6 @@
 	"occupationSquares" : [
 		{
 			"number" : 0,
-			"background_image" : "occupation_square.png",
 			"text" : "Spring practice opens",
 			"stars" : 0,
 			"hearts" : 4,
@@ -51,7 +49,6 @@
 		},
 		{
 			"number" : 1,
-			"background_image" : "occupation_square.png",
 			"text" : "Yankee scouts attend your minor league game",
 			"stars" : 0,
 			"hearts" : 0,
@@ -62,7 +59,6 @@
 		},
 		{
 			"number" : 2,
-			"background_image" : "occupation_square.png",
 			"text" : "Yankees World Series debut (1921)",
 			"stars" : 2,
 			"hearts" : 4,
@@ -73,8 +69,7 @@
 		},
 		{
 			"number" : 3,
-			"background_image" : "occupation_square.png",
-			"text" : "Back to the minors",
+			"text" : "Sent back to the minors",
 			"stars" : 0,
 			"hearts" : 0,
 			"bonus" : 0,
@@ -85,7 +80,6 @@
 		},
 		{
 			"number" : 4,
-			"background_image" : "occupation_square.png",
 			"text" : "Great signing bonus",
 			"stars" : 0,
 			"hearts" : 0,
@@ -100,7 +94,6 @@
 		},
 		{
 			"number" : 5,
-			"background_image" : "danger_occupation_square.png",
 			"text" : "Pulled hamstring sliding into 2nd base",
 			"type" : "danger_square",
 			"stars" : 0,
@@ -115,7 +108,6 @@
 		},
 		{
 			"number" : 6,
-			"background_image" : "occupation_square.png",
 			"text" : "Lou Gherig retires after contracting ALS",
 			"type" : "action_square",
 			"stars" : 0,
@@ -129,7 +121,6 @@
 		},
 		{
 			"number" : 7,
-			"background_image" : "occupation_square.png",
 			"text" : "Murderers Row declared best team of all time (1927)",
 			"stars" : 4,
 			"hearts" : 2,
@@ -140,13 +131,13 @@
 		},
 		{
 			"number" : 8,
-			"background_image" : "occupation_square.png",
 			"text" : "Yankees beat the Cubs to win the World Series (1932)",
 			"stars" : 0,
 			"hearts" : 0, 
 			"experience" : 0,
 			"opportunities" : 0,
-			"action_text" : "Collect bonus $5,000",
+			"action_text" : "Collect bonus",
+			"full_action_text" : "Collect bonus $5,000",
 			"specialProcessing" : {
 				"type" : "bonus",
 				"amount" : 5000
@@ -154,7 +145,6 @@
 		},
 		{
 			"number" : 9,
-			"background_image" : "danger_occupation_square.png",
 			"text" : "Falsly accused of throwing a game",
 			"type" : "danger_square",
 			"stars" : 0,
@@ -177,7 +167,8 @@
 			"hearts" : 4, 
 			"experience" : 0,
 			"opportunities" : 0,
-			"action_text" : "Salary up $5,000",
+			"action_text" : "Salary up",
+			"full_action_text" : "Salary up $5,000",
 			"specialProcessing" : {
 				"type" : "salary_increase",
 				"amount" : 5000

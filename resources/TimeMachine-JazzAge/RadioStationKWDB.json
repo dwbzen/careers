@@ -4,9 +4,7 @@
 		"alternate_name" : "KWDB",
 		"occupationClass" : "occupation",
 		"fullName" : "Radio Station KWDB",
-		"background_image" : "occupation_entrance.png",
-		"image" : "photograph_of_a_1920s_era_broadcast_microphone",
-		"entry_fee" : 1000,
+		"entry_fee" : 5000,
 		"size" : 13,
 		"entrance_square_number" : 40,
 		"exit_square_number" : 1,
@@ -42,7 +40,6 @@
 	"occupationSquares" : [
 		{
 			"number" : 0,
-			"background_image" : "occupation_square.png",
 			"text" : "KWDB begins broadcasting at 6:00 AM on 27 December, 1920",
 			"stars" : 2,
 			"hearts" : 2,
@@ -54,7 +51,6 @@
 		},		
 		{
 			"number" : 1,
-			"background_image" : "occupation_square.png",
 			"text" : "Broadcast Dempsey-Carpentier championship (1921)",
 			"stars" : 4,
 			"hearts" : 0,
@@ -65,7 +61,6 @@
 		},
 		{
 			"number" : 2,
-			"background_image" : "occupation_square.png",
 			"text" : "Fight commentary with David Sarnoff",
 			"stars" : 0,
 			"hearts" : 0,
@@ -76,7 +71,6 @@
 		},
 		{
 			"number" : 3,
-			"background_image" : "occupation_square.png",
 			"text" : "Sign a contract with Fanny Brice for a weekly show",
 			"image" : "",
 			"stars" : 0,
@@ -84,7 +78,8 @@
 			"bonus" : 0,
 			"experience" : 0,
 			"opportunities" : 0,
-			"action_text" : "Collect Bonus $5,000",
+			"action_text" : "Collect Bonus",
+			"full_action_text" : "Collect Bonus $5,000",
 			"specialProcessing" : {
 				"type" : "bonus",
 				"amount" : 5000
@@ -92,8 +87,7 @@
 		},
 		{
 			"number" : 4,
-			"background_image" : "danger_occupation_square.png",
-			"text" : "Lose your radio show, your significant other",
+			"text" : "Lose your radio show, your significant other,",
 			"type" : "danger_square",
 			"stars" : 0,
 			"hearts" : 0,
@@ -109,7 +103,6 @@
 		},
 		{
 			"number" : 5,
-			"background_image" : "danger_occupation_square.png",
 			"text" : "Dow Jones drops to a low of 41 points (1932)",
 			"type" : "danger_square",
 			"stars" : 0,
@@ -126,13 +119,13 @@
 		},
 		{
 			"number" : 6,
-			"background_image" : "occupation_square.png",
 			"text" : "Buy cross-town rival KNBC (1929)",
 			"stars" : 0,
 			"hearts" : 0, 
 			"experience" : 0,
 			"opportunities" : 0,
-			"action_text" : "Collect Bonus $10,000",
+			"action_text" : "Collect Bonus",
+			"full_action_text" : "Collect Bonus $10,000",
 			"specialProcessing" : {
 				"type" : "bonus",
 				"amount" : 10000
@@ -140,13 +133,13 @@
 		},	
 		{
 			"number" : 7,
-			"background_image" : "occupation_square.png",
 			"text" : "Promoted to recording sound engineer",
 			"stars" : 0,
 			"hearts" : 0,
 			"experience" : 0,
 			"opportunities" : 0,
-			"action_text" : "Salary up $2,000",
+			"action_text" : "Salary up",
+			"full_action_text" : "Salary up $2,000",
 			"specialProcessing" : {
 				"type" : "salary_increase",
 				"amount" : 2000
@@ -154,7 +147,6 @@
 		},
 		{
 			"number" : 8,
-			"background_image" : "occupation_square.png",
 			"text" : "Clyde McCoy debuts 'Sugar Blues; in a live broadcast (1931)",
 			"stars" : 4,
 			"hearts" : 2,
@@ -166,7 +158,6 @@
 		},
 		{
 			"number" : 9,
-			"background_image" : "danger_occupation_square.png",
 			"text" : "Publicity stunt broadcast goes horribly wrong",
 			"type" : "danger_square",
 			"stars" : 10,
@@ -181,7 +172,6 @@
 		},
 		{
 			"number" : 10,
-			"background_image" : "occupation_square.png",
 			"text" : "KWDB buys 2 radio stations from AT&T (1926)",
 			"stars" : 6,
 			"hearts" : 4,
@@ -193,7 +183,6 @@
 		},
 		{
 			"number" : 11,
-			"background_image" : "occupation_square.png",
 			"text" : "Begin broadcasting jazz bands and records (1932)",
 			"stars" : 2,
 			"hearts" : 10,
@@ -205,7 +194,6 @@
 		},
 		{
 			"number" : 12,
-			"background_image" : "occupation_square.png",
 			"text" : "Expand operations to black-and-white television (1939)",
 			"stars" : 10,
 			"hearts" : 0, 

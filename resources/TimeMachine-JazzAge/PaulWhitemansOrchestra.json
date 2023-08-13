@@ -4,13 +4,11 @@
 		"alernate_name" : "Orchestra",
 		"occupationClass" : "occupation",
 		"fullName" : "Paul Whiteman's Orchestra",
-		"background_image" : "occupation_entrance.png",
-		"image" : "Paul Whiteman.jpg",
 		"entry_fee" : 500,
 		"size" : 11,
 		"entrance_square_number" : 18,
 		"exit_square_number" : 19,
-		"text" : "Must have: $500 to perfect Jazz Stride piano; or a Music degree; or band experience",
+		"text" : "Must have: $500 to perfect Jazz Stride piano, or a Music degree, or band experience",
 		"degreeRequirements" : { 
 			"degreeName" : "Music",
 			"numberRequired" : 1
@@ -42,7 +40,6 @@
 	"occupationSquares" : [
 		{
 			"number" : 0,
-			"background_image" : "danger_occupation_square.png",
 			"text" : "Get drunk and fall off the stage",
 			"type" : "danger_square",
 			"stars" : 0,
@@ -57,7 +54,6 @@
 		},
 		{
 			"number" : 1,
-			"background_image" : "occupation_square.png",
 			"text" : "Rehearse Ferde Grofe's Grand Canyon Suite",
 			"stars" : 0,
 			"hearts" : 2,
@@ -69,7 +65,6 @@
 		},
 		{
 			"number" : 2,
-			"background_image" : "occupation_square.png",
 			"text" : "Star in NBC radio's The Victory Hour",
 			"stars" : 0,
 			"hearts" : 0,
@@ -80,7 +75,6 @@
 		},
 		{
 			"number" : 3,
-			"background_image" : "occupation_square.png",
 			"text" : "Fast Track!",
 			"type" : "travel_square",
 			"stars" : 0,
@@ -96,7 +90,6 @@
 		},
 		{
 			"number" : 4,
-			"background_image" : "occupation_square.png",
 			"text" : "May backstab fellow musician(s)",
 			"type" : "action_square",
 			"stars" : 0,
@@ -104,7 +97,7 @@
 			"bonus" : 0,
 			"experience" : 2,
 			"opportunities" : 0,
-			"action_text" : "You lose 4 Hearts\n They lose 12 Hearts",
+			"action_text" : "You lose 4 Hearts. They lose 12 Hearts.",
 			"specialProcessing" : {
 				"type" : "backstab",
 				"pending_action" : "backstab",
@@ -114,7 +107,6 @@
 		},
 		{
 			"number" : 5,
-			"background_image" : "occupation_square.png",
 			"text" : "Recording session with Bix Beiderbecke",
 			"stars" : 0,
 			"hearts" : 0,
@@ -126,7 +118,6 @@
 		},
 		{
 			"number" : 6,
-			"background_image" : "occupation_square.png",
 			"text" : "Take part in weekly radio show for Old Gold cigarettes (1929)",
 			"stars" : 0,
 			"hearts" : 0,
@@ -141,7 +132,6 @@
 		},
 		{
 			"number" : 7,
-			"background_image" : "occupation_square.png",
 			"text" : "Visit Al Jolson in New Orleans",
 			"stars" : 0,
 			"hearts" : 4,
@@ -153,7 +143,6 @@
 		},
 		{
 			"number" : 8,
-			"background_image" : "occupation_square.png",
 			"text" : "Premier of Rhapsody in Blue",
 			"stars" : 0,
 			"hearts" : 6,
@@ -165,7 +154,6 @@
 		},
 		{
 			"number" : 9,
-			"background_image" : "occupation_square.png",
 			"text" : "Sign with Columbia Records (1928 - 1930)",
 			"stars" : 0,
 			"hearts" : 0,
@@ -177,7 +165,6 @@
 		},
 		{
 			"number" : 10,
-			"background_image" : "occupation_square.png",
 			"text" :  "Miss return ship back to NY after Vienna tour",
 			"image" : "frown_emoji.png",
 			"stars" : 0,
@@ -192,13 +179,12 @@
 		},
 		{
 			"number" : 10,
-			"background_image" : "occupation_square.png",
 			"text" : "Recording of Jose Padillas 'Valencia' tops the charts (1926)",
 			"stars" : 0,
 			"hearts" : 8, 
 			"experience" : 0,
 			"opportunities" : 0,
-			"action_text" : "Salary up $1000",
+			"action_text" : "",
 			"specialProcessing" : { }
 		}
 	]

@@ -4,8 +4,6 @@
 		"alternate_name" : "Pharmaceutical",
 		"occupationClass" : "occupation",
 		"fullName" : "Pharmaceutical Sciences",
-		"background_image" : "occupation_entrance.png",
-		"image" : "young_female_scientists_working_in_laboratory.png",
 		"entry_fee" : 10000,
 		"prior_experience" : 1,
 		"size" : 19,
@@ -43,7 +41,6 @@
 	"occupationSquares" : [
 		{
 			"number" : 0,
-			"background_image" : "occupation_square.png",
 			"text" : "Attend mRNA seminar",
 			"stars" : 0,
 			"hearts" : 0,
@@ -55,7 +52,6 @@
 		},
 		{
 			"number" : 1,
-			"background_image" : "occupation_square.png",
 			"text" : "Promote a healthy lifestyle",
 			"stars" : 0,
 			"hearts" : 6,
@@ -67,10 +63,8 @@
 		},
 		{
 			"number" : 2,
-			"background_image" : "occupation_square.png",
 			"text" : "Brilliant & cocky, may take shortcut",
 			"type" : "shortcut_square",
-			"image" : "shortcut_emoji.png",
 			"stars" : 0,
 			"hearts" : 0,
 			"bonus" : 0,
@@ -86,7 +80,6 @@
 		},
 		{
 			"number" : 3,
-			"background_image" : "occupation_square.png",
 			"text" : "Story about your research on BBC America",
 			"stars" : 4,
 			"hearts" : 4,
@@ -98,7 +91,6 @@
 		},		
 		{
 			"number" : 4,
-			"background_image" : "occupation_square.png",
 			"text" : "Final push to get A1C drug to trial",
 			"stars" : 0,
 			"hearts" : 0,
@@ -110,13 +102,13 @@
 		},
 		{
 			"number" : 5,
-			"background_image" : "occupation_square.png",
 			"text" : "Record profits mean bonuses for all!",
 			"stars" : 0,
 			"hearts" : 0, 
 			"experience" : 0,
 			"opportunities" : 0,
-			"action_text" : "Collect bonus $4,000",
+			"action_text" : "Collect bonus",
+			"full_action_text" : "Collect bonus $4,000",
 			"specialProcessing" : {
 				"type" : "bonus_all",
 				"amount" : 4000
@@ -124,7 +116,6 @@
 		},		
 		{
 			"number" : 6,
-			"background_image" : "occupation_square.png",
 			"text" : "Take a sabbatical  in Japan to study jellyfish",
 			"stars" : 2,
 			"hearts" : 6,
@@ -136,7 +127,6 @@
 		},
 		{
 			"number" : 7,
-			"background_image" : "danger_occupation_square.png",
 			"text" : "Vaccine has weird & unexpected side-effects",
 			"type" : "danger_square",
 			"stars" : 0,
@@ -151,7 +141,6 @@
 		},		
 		{
 			"number" : 8,
-			"background_image" : "occupation_square.png",
 			"text" : "Develop promising new Alzheimers drug",
 			"stars" : 6,
 			"hearts" : 4,
@@ -163,13 +152,13 @@
 		},
 		{
 			"number" : 9,
-			"background_image" : "occupation_square.png",
 			"text" : "Promoted to cancer vaccine research lead",
 			"stars" : 0,
 			"hearts" : 0,
 			"experience" : 0,
 			"opportunities" : 0,
-			"action_text" : "Salary up $1,000",
+			"action_text" : "Salary up",
+			"full_action_text" : "Salary up $1,000",
 			"specialProcessing" : {
 				"type" : "salary_increase",
 				"amount" : 1000
@@ -177,7 +166,6 @@
 		},
 		{
 			"number" : 10,
-			"background_image" : "occupation_square.png",
 			"text" : "POTUS advisor appointment",
 			"stars" : 4,
 			"hearts" : 4,
@@ -189,7 +177,6 @@
 		},
 		{
 			"number" : 11,
-			"background_image" : "occupation_square.png",
 			"text" : "Congressional call for an investigation into your insulin pricing",
 			"type" : "action_square",
 			"stars" : 0,
@@ -203,7 +190,6 @@
 		},
 		{
 			"number" : 12,
-			"background_image" : "danger_occupation_square.png",
 			"text" : "Accused of ethics violations",
 			"type" : "danger_square",
 			"stars" : 0,
@@ -220,7 +206,6 @@
 		},
 		{
 			"number" : 13,
-			"background_image" : "occupation_square.png",
 			"text" : "Celebrity tour of the CDC",
 			"stars" : 0,
 			"hearts" : 4,
@@ -232,7 +217,6 @@
 		},
 		{
 			"number" : 14,
-			"background_image" : "occupation_square.png",
 			"text" : "May backstab ambitious colleague(s)",
 			"type" : "action_square",
 			"stars" : 0,
@@ -250,7 +234,6 @@
 		},		
 		{
 			"number" : 15,
-			"background_image" : "occupation_square.png",
 			"text" : "Forge agreement with BioTech",
 			"stars" : 0,
 			"hearts" : 0, 
@@ -264,7 +247,6 @@
 		},
 		{
 			"number" : 16,
-			"background_image" : "danger_occupation_square.png",
 			"text" : "Caught up in opioid  epidemic scandal",
 			"type" : "danger_square",
 			"stars" : 0,
@@ -281,7 +263,6 @@
 		},
 		{
 			"number" : 17,
-			"background_image" : "occupation_square.png",
 			"text" : "Extraordinary stem cell research buzz breaks the internet",
 			"stars" : 0,
 			"hearts" : 8,
@@ -293,13 +274,13 @@
 		},
 		{
 			"number" : 18,
-			"background_image" : "occupation_square.png",
 			"text" : "You make Time’s list of most influential people",
 			"stars" : 10,
 			"hearts" : 0, 
 			"experience" : 0,
 			"opportunities" : 0,
-			"action_text" : "Salary up $3,000",
+			"action_text" : "Salary up",
+			"full_action_text" : "Salary up $3,000",
 			"specialProcessing" : {
 				"type" : "salary_increase",
 				"amount" : 3000

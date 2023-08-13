@@ -4,7 +4,6 @@
 		"alternate_name" : "Game",
 		"occupationClass" : "occupation",
 		"fullName" : "Video Game Development",
-		"background_image" : "women_want_to_have_their_own_business_in_vr_headsets-2.png",
 		"image" : "",
 		"entry_fee" : 500,
 		"prior_experience" : 1,
@@ -43,7 +42,6 @@
 	"occupationSquares" : [
 		{
 			"number" : 0,
-			"background_image" : "occupation_square.png",
 			"text" : "You are recruited from a rival gaming company with much fanfare",
 			"stars" : 2,
 			"hearts" : 0,
@@ -55,7 +53,6 @@
 		},
 		{
 			"number" : 1,
-			"background_image" : "occupation_square.png",
 			"text" : "Evaluate latest Unity release",
 			"stars" : 0,
 			"hearts" : 0,
@@ -67,7 +64,6 @@
 		},
 		{
 			"number" : 2,
-			"background_image" : "occupation_square.png",
 			"text" : "Career networking at GameDaily Connect USA",
 			"stars" : 0,
 			"hearts" : 0,
@@ -78,7 +74,6 @@
 		},
 		{
 			"number" : 3,
-			"background_image" : "occupation_square.png",
 			"text" : "Participate in Automated Testing Roundtable at GDC (Game Developers Conference)",
 			"stars" : 6,
 			"hearts" : 2,
@@ -89,13 +84,13 @@
 		},
 		{
 			"number" : 4,
-			"background_image" : "occupation_square.png",
 			"text" : "Incentive for beating a very tight release schedule",
 			"stars" : 0,
 			"hearts" : 0,
 			"experience" : 0,
 			"opportunities" : 0,
-			"action_text" : "Salary up $2,000",
+			"action_text" : "Salary up",
+			"full_action_text" : "Salary up $2,000",
 			"specialProcessing" : {
 				"type" : "salary_increase",
 				"amount" : 2000
@@ -103,7 +98,6 @@
 		},
 		{
 			"number" : 5,
-			"background_image" : "occupation_square.png",
 			"text" : "Your Midjourney Chrome extension is a hit with developers",
 			"stars" : 2,
 			"hearts" : 4,
@@ -114,7 +108,6 @@
 		},
 		{
 			"number" : 6,
-			"background_image" : "danger_occupation_square.png",
 			"text" : "Extreme measures taken to keep the company solvent",
 			"type" : "danger_square",
 			"stars" : 0,
@@ -130,7 +123,6 @@
 		},
 		{
 			"number" : 7,
-			"background_image" : "danger_occupation_square.png",
 			"text" : "Testify before a hostile House Subcommittee investigating your company's woke video games",
 			"type" : "danger_square",
 			"stars" : 10,
@@ -147,7 +139,6 @@
 		},
 		{
 			"number" : 8,
-			"background_image" : "occupation_square.png",
 			"text" : "Your manager somehow managed to alienate the VFX artists on your project",
 			"type" : "action_square",
 			"stars" : 0,
@@ -161,7 +152,6 @@
 		},
 		{
 			"number" : 9,
-			"background_image" : "occupation_square.png",
 			"text" : "Promoted to game rules engine Team Lead",
 			"stars" : 0,
 			"hearts" : 0,
@@ -176,13 +166,13 @@
 		},
 		{
 			"number" : 10,
-			"background_image" : "occupation_square.png",
 			"text" : "Beat the product launch deadline by 2 weeks",
 			"stars" : 12,
 			"hearts" : 0, 
 			"experience" : 0,
 			"opportunities" : 0,
-			"action_text" : "Collect $4,000 Bonus",
+			"action_text" : "Collect Bonus",
+			"full_action_text" : "Collect $4,000 Bonus",
 			"specialProcessing" : {
 				"type" : "bonus",
 				"amount" : 4000

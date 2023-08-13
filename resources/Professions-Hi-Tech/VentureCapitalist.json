@@ -4,8 +4,6 @@
 		"alternate_name" : "VC",
 		"occupationClass" : "occupation",
 		"fullName" : "Venture Capitalist",
-		"background_image" : "occupation_entrance.png",
-		"image" : "investor_vector_illustration_businessman_and_woman-229091c79639-1.jpg",
 		"entry_fee" : 1000,
 		"prior_experience" : 1,
 		"size" : 12,
@@ -43,7 +41,6 @@
 	"occupationSquares" : [
 		{
 			"number" : 0,
-			"background_image" : "occupation_square.png",
 			"text" : "Happy Hour Monday to Thursday, 4 to 7 PM",
 			"stars" : 0,
 			"hearts" : 2,
@@ -55,7 +52,6 @@
 		},
 		{
 			"number" : 1,
-			"background_image" : "occupation_square.png",
 			"text" : "Attend Tech Summit Conference in London",
 			"stars" : 0,
 			"hearts" : 0,
@@ -67,7 +63,6 @@
 		},		
 		{
 			"number" : 2,
-			"background_image" : "occupation_square.png",
 			"text" : "New Silicon Valley headquarters is beautiful",
 			"stars" : 0,
 			"hearts" : 3,
@@ -79,7 +74,6 @@
 		},
 		{
 			"number" : 3,
-			"background_image" : "occupation_square.png",
 			"text" : "Keynote speaker at this year's Venture West Conference",
 			"stars" : 4,
 			"hearts" : 2,
@@ -91,7 +85,6 @@
 		},
 		{
 			"number" : 4,
-			"background_image" : "occupation_square.png",
 			"text" : "Healthcare company you're funding has bonus payout",
 			"stars" : 0,
 			"hearts" : 0,
@@ -106,7 +99,6 @@
 		},
 		{
 			"number" : 5,
-			"background_image" : "occupation_square.png",
 			"text" : "Key industry contacts are 'unavailable'",
 			"type" : "action_square",
 			"stars" : 0,
@@ -120,7 +112,6 @@
 		},
 		{
 			"number" : 6,
-			"background_image" : "occupation_square.png",
 			"text" : "Deliver DevLearn Conference Keynote address on mindsets of innovation",
 			"stars" : 2,
 			"hearts" : 4,
@@ -131,7 +122,6 @@
 		},
 		{
 			"number" : 7,
-			"background_image" : "occupation_square.png",
 			"text" : "Attend Deep Learning seminar at GPU Technology Conference",
 			"stars" : 0,
 			"hearts" : 2,
@@ -142,7 +132,6 @@
 		},		
 		{
 			"number" : 8,
-			"background_image" : "occupation_square.png",
 			"text" : "Acquire 'Only Games' software company",
 			"stars" : 3,
 			"hearts" : 0, 
@@ -156,7 +145,6 @@
 		},
 		{
 			"number" : 9,
-			"background_image" : "occupation_square.png",
 			"text" : "VC Conference panel member, topic: Cybersecurity and Online Privacy",
 			"stars" : 2,
 			"hearts" : 6,
@@ -167,7 +155,6 @@
 		},
 		{
 			"number" : 10,
-			"background_image" : "danger_occupation_square.png",
 			"text" : "Investment in promising AI startup bombs big time!",
 			"type" : "danger_square",
 			"stars" : 0,
@@ -184,14 +171,14 @@
 		},
 		{
 			"number" : 11,
-			"background_image" : "occupation_square.png",
 			"text" : "Promoted to AI Investment Division Managing Director",
 			"type" : "action_square",
 			"stars" : 2,
 			"hearts" : 4,
 			"experience" : 0,
 			"opportunities" : 0,
-			"action_text" : "Salary up $2,000",
+			"action_text" : "Salary up",
+			"full_action_text" : "Salary up $2,000",
 			"specialProcessing" : {
 				"type" : "salary_increase",
 				"amount" : 2000

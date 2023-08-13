@@ -1,5 +1,5 @@
 {
-	"Help" : "Board layout for the Jazz Age version.",
+	"Help" : "Board layout for the Time Machine: Jazz Age edition.",
 	"types_list" : [
 		"corner_square", "opportunity_square", "danger_square", "travel_square", "occupation_entrance_square", "action_square"
 	],
@@ -38,10 +38,8 @@
 				"number" : 0,
 				"name" : "Payday",
 				"type" : "corner_square",
-				"background_image" : "corner_square.png",
-				"image" : "startHereAndArrow.jpg",
 				"text" : "PAYDAY",
-				"action_text" : "Collect Salary as you pass PAYDAY\n Collect DOUBLE if you land here",
+				"action_text" : "Collect Salary as you pass PAYDAY. Collect DOUBLE if you land here",
 				"specialProcessing" : {
 					"type" : "payday",
 					"amount" : "salary"
@@ -51,7 +49,6 @@
 				"number" : 1,
 				"name" : "Opportunity",
 				"type" : "opportunity_square",
-				"background_image" : "opportunity.png",
 				"text" : "OPPORTUNITY KNOCKS",
 				"specialProcessing" : {
 					"type" : "opportunity"
@@ -61,9 +58,8 @@
 				"number" : 2,
 				"name" : "IncomeTax",
 				"type" : "danger_square",
-				"background_image" : "danger_border_square.png",
 				"text" : "INCOME TAX DUE",
-				"action_text" : "If salary is: $3,000 or less no tax\n $3,001 to $10,000 pay 15%\n $10,001 to $200,000 pay 50%\n $200,001 or more pay 90%\n of 1 years salary",
+				"action_text" : "If salary is: $3,000 or less no tax. $3,001 to $10,000 pay 15%. $10,001 to $200,000 pay 50%. $200,001 or more pay 90% of 1 years salary",
 				"specialProcessing" : {
 					"type" : "pay_tax",
 					"amount" : "taxTable",
@@ -76,7 +72,6 @@
 				"name" : "UnionPacific",
 				"type" : "travel_square",
 				"travel_class" : "rail",
-				"background_image" : "800px-Union_pacific_railroad_logo.png",
 				"text" : "",
 				"specialProcessing" : {
 					"type" : "travel_border",
@@ -87,10 +82,8 @@
 				"number" : 4,
 				"name" : "Bootlegger",
 				"type" : "occupation_entrance_square",
-				"background_image" : "occupation_entrance_square.png",
-				"image" : "black_and_white_photograph_of_bootleggers.png",
 				"text" : "Bootlegger",
-				"action_text" : "Must have: $1,000 to make vehicle modifications; or Bootlegging experience",
+				"action_text" : "Must have $1,000 to make vehicle modifications, or Bootlegging experience",
 				"specialProcessing" : {
 					"type" : "enter_occupation",
 					"destinationOccupation" : "Bootlegger"
@@ -100,7 +93,6 @@
 				"number" : 5,
 				"name" : "Opportunity",
 				"type" : "opportunity_square",
-				"background_image" : "opportunity.png",
 				"text" : "OPPORTUNITY KNOCKS",
 				"specialProcessing" : {
 					"type" : "opportunity"
@@ -110,9 +102,8 @@
 				"number" : 6,
 				"name" : "ShopWoolworths",
 				"type" : "action_square",
-				"background_image" : "light blue action square.png",
 				"text" : "Shop at Woolworth's",
-				"action_text" : "May spend up to 1 year's annual salary for the latest Crossley Radio.\nScore 1 Heart for each $1000 spend,\nor lose 1 for 'just looking'",
+				"action_text" : "May spend up to 1 year's annual salary for the latest Crossley Radio. Score 1 Heart for each $1000 spend, or lose 1 for 'just looking'",
 				"specialProcessing" : {
 					"type" : "buy_hearts",
 					"pending_action" : "buy_hearts",
@@ -124,11 +115,9 @@
 			{
 				"number" : 7,
 				"name" : "RooseveltCollege",
-				"background_image" : "occupation_entrance_square.png",
-				"image" : "administration_building_of_a_1920s_era_university.png",
 				"type" : "occupation_entrance_square",
 				"text" : "Roosevelt College",
-				"action_text" : "Must have $500 tuition. Degrees available:\n Business Admin, Dance, Engineering, Government, Law Enforcement, Medicine, Music, Theatre",
+				"action_text" : "Must have $500 tuition. Degrees available: Business Admin, Dance, Engineering, Government, Law Enforcement, Medicine, Music, Theatre",
 				"specialProcessing" : {
 					"type" : "enter_college",
 					"pending_action" : "select_degree",
@@ -139,7 +128,6 @@
 				"number" : 8,
 				"name" : "Opportunity",
 				"type" : "opportunity_square",
-				"background_image" : "opportunity.png",
 				"text" : "OPPORTUNITY KNOCKS",
 				"specialProcessing" : {
 					"type" : "opportunity"
@@ -149,9 +137,8 @@
 				"number" : 9,
 				"name" : "Hospital",
 				"type" : "corner_square",
-				"background_image" : "corner_square.png",
 				"text" : "HOSPITAL",
-				"action_text" : "You are LAID UP until you throw 5 or less, or pay the Doctor/Paymaster 1/2 your salary for experimental drugs",
+				"action_text" : "You are LAID UP until you throw 5 or less, or pay the Doctor or Paymaster 1/2 your salary for experimental drugs",
 				"specialProcessing" : { 
 					"type" : "hospital",
 					"must_roll" : [2, 3, 4, 5],
@@ -164,7 +151,6 @@
 				"number" : 10,
 				"name" : "Opportunity",
 				"type" : "opportunity_square",
-				"background_image" : "opportunity.png",
 				"text" : "OPPORTUNITY KNOCKS",
 				"specialProcessing" : {
 					"type" : "opportunity"
@@ -174,15 +160,14 @@
 				"number" : 11,
 				"name" : "DonateNow",
 				"type" : "danger_square",
-				"background_image" : "danger_border_square.png",
-				"text" : "**DONATE NOW**",
-				"action_text" : "The Class of 1929 is having a fund drive and call on you to donate your fair share. Throw 1 die to find out how fair. Pay the number thrown time $1,000 OR go to the Hospital if you can't or refuse to contribute.",
+				"text" : "DONATE NOW",
+				"action_text" : "The Class of 1929 is having a fund drive and call on you to donate your fair share. Throw 1 die to find out how fair. Pay the number thrown time $1,000 OR OR go to Unemployment if you can't or refuse to contribute.",
 				"specialProcessing" : {
 					"type" : "cash_loss",
 					"dice" : 1,
 					"amount" : 1000,
 					"of" : "cash",
-					"alternative" : "Hospital"
+					"alternative" : "Unemployment"
 				}
 			},
 			{
@@ -190,7 +175,6 @@
 				"name" : "NYCentral",
 				"type" : "travel_square",
 				"travel_class" : "rail",
-				"background_image" : "New_York_Central_Herald.png",
 				"text" : "",
 				"specialProcessing" : {
 					"type" : "travel_border",
@@ -201,8 +185,6 @@
 				"number" : 13,
 				"name" : "SapphireRecords",
 				"type" : "occupation_entrance_square",
-				"background_image" : "occupation_entrance_square.png",
-				"image" : "Sapphire_Records_logo_design_small.png",
 				"text" : "Sapphire Records",
 				"action_text" : "Must have $1,000 for internship, or Business Admin Degree, or prior experience",
 				"specialProcessing" : {
@@ -214,7 +196,6 @@
 				"number" : 14,
 				"name" : "Opportunity",
 				"type" : "opportunity_square",
-				"background_image" : "opportunity.png",
 				"text" : "OPPORTUNITY KNOCKS",
 				"specialProcessing" : {
 					"type" : "opportunity"
@@ -224,8 +205,6 @@
 				"number" : 15,
 				"name" : "MajorLeagueBaseball",
 				"type" : "occupation_entrance_square",
-				"background_image" : "occupation_entrance_square.png",
-				"image" : "1930s_era_baseball_player_at_home_plate_hitting_a_home_run-4.png",
 				"text" : "Major League Baseball",
 				"action_text" : "Must have: $500 for batting coach; or MLB experience",
 				"specialProcessing" : {
@@ -237,7 +216,6 @@
 				"number" : 16,
 				"name" : "Opportunity",
 				"type" : "opportunity_square",
-				"background_image" : "opportunity.png",
 				"text" : "OPPORTUNITY KNOCKS",
 				"specialProcessing" : {
 					"type" : "opportunity"
@@ -247,7 +225,6 @@
 				"number" : 17,
 				"name" : "CarPayment",
 				"type" : "danger_square",
-				"background_image" : "danger_border_square.png",
 				"text" : "CAR PAYMENT DUE",
 				"action_text" : "Pay 1/4 your annual salary for car payment and maintenance",
 				"specialProcessing" : {
@@ -260,8 +237,6 @@
 				"number" : 18,
 				"name" : "PaulWhitemansOrchestra",
 				"type" : "occupation_entrance_square",
-				"background_image" : "occupation_entrance_square.png",
-				"image" : "Paul Whiteman.jpg",
 				"text" : "Paul Whiteman's Orchestra",
 				"action_text" : "Must have: $500 to perfect Stride Jazz Piano, or a Music degree, or prior band experience",
 				"specialProcessing" : {
@@ -273,7 +248,6 @@
 				"number" : 19,
 				"name" : "Opportunity",
 				"type" : "opportunity_square",
-				"background_image" : "opportunity.png",
 				"text" : "OPPORTUNITY KNOCKS",
 				"specialProcessing" : {
 					"type" : "opportunity"
@@ -283,7 +257,6 @@
 				"number" : 20,
 				"name" : "buy_experience",
 				"type" : "action_square",
-				"background_image" : "light blue action square.png",
 				"text" : "EXPERIENCE",
 				"action_text" : "It's the Depression and experience is hard to come by: 1 - $3,000; 2 - $6,000; 3 - $9,000; 4 - $12,000",
 				"specialProcessing" : { 
@@ -298,7 +271,6 @@
 				"number" : 21,
 				"name" : "Unemployment",
 				"type" : "corner_square",
-				"background_image" : "corner_square.png",
 				"text" : "UNEMPLOYMENT",
 				"action_text" : "You LOST YOUR JOB and must throw 7, 11, or doubles to move on, OR pay 1 year's Salary for additional training.",
 				"specialProcessing" : {
@@ -314,7 +286,6 @@
 				"name" : "UnionPacific",
 				"type" : "travel_square",
 				"travel_class" : "rail",
-				"background_image" : "800px-Union_pacific_railroad_logo.png",
 				"text" : "",
 				"specialProcessing" : {
 					"type" : "travel_border",
@@ -325,7 +296,6 @@
 				"number" : 23,
 				"name" : "PayRent",
 				"type" : "danger_square",
-				"background_image" : "danger_border_square.png",
 				"text" : "PAY RENT HERE",
 				"action_text" : "Pay half your annual salary for this years rent OR go to Unemployment if you can't afford the rent or refuse to pay.",
 				"specialProcessing" : {
@@ -339,8 +309,6 @@
 				"number" : 24,
 				"name" : "ProhibitionAgent",
 				"type" : "occupation_entrance_square",
-				"background_image" : "occupation_entrance_square.png",
-				"image" : "The_Untouchables_realistic_oil_painting-b34207dbc1de.png",
 				"text" : "Prohibition Agent",
 				"action_text" : "Must have: $8,000 for special training, or Law Enforcement degree, or prior experience",
 				"specialProcessing" : {
@@ -352,7 +320,6 @@
 				"number" : 25,
 				"name" : "Opportunity",
 				"type" : "opportunity_square",
-				"background_image" : "opportunity.png",
 				"text" : "OPPORTUNITY KNOCKS",
 				"specialProcessing" : {
 					"type" : "opportunity"
@@ -362,7 +329,6 @@
 				"number" : 26,
 				"name" : "BeatProhibition",
 				"type" : "danger_square",
-				"background_image" : "danger_border_square.png",
 				"text" : "BEAT PROHIBITION",
 				"action_text" : "Beat the Prohibition deadline by stocking up now on your favorite booze! Throw 1 die to find out how much booze. Pay number thrown times 10% of your cash-on-hand.",
 				"specialProcessing" : {
@@ -376,8 +342,6 @@
 				"number" : 27,
 				"name" : "CottonClub",
 				"type" : "occupation_entrance_square",
-				"background_image" : "occupation_entrance_square.png",
-				"image" : "cotton club.png",
 				"text" : "Facebook",
 				"action_text" : "Must have: $1,000 for dance lessons, or a dance degree, or Cotton Club experience",
 				"specialProcessing" : {
@@ -389,7 +353,6 @@
 				"number" : 28,
 				"name" : "Opportunity",
 				"type" : "opportunity_square",
-				"background_image" : "opportunity.png",
 				"text" : "OPPORTUNITY KNOCKS",
 				"specialProcessing" : {
 					"type" : "opportunity"
@@ -399,7 +362,6 @@
 				"number" : 29,
 				"name" : "BuyProtection",
 				"type" : "action_square",
-				"background_image" : "light blue action square.png",
 				"text" : "Mob Protection",
 				"action_text" : "May buy 'insurance' from the Chicago Outfit to protect for your cash, Happiness and Fame. Cost of protection $5,000.",
 				"specialProcessing" : { 
@@ -412,7 +374,6 @@
 				"number" : 30,
 				"name" : "ConeyIsland",
 				"type" : "corner_square",
-				"background_image" : "corner_square.png",
 				"text" : "Coney Island",
 				"action_text" : "You vacation to Coney Island! Collect 6 Hearts for landing here and 3 each time you stay with a roll of 7 or less",
 				"specialProcessing" : {
@@ -426,7 +387,6 @@
 				"number" : 31,
 				"name" : "Opportunity",
 				"type" : "opportunity_square",
-				"background_image" : "opportunity.png",
 				"text" : "OPPORTUNITY KNOCKS",
 				"specialProcessing" : {
 					"type" : "opportunity"
@@ -436,10 +396,9 @@
 				"number" : 32,
 				"name" : "Horseracing",
 				"type" : "action_square",
-				"background_image" : "light blue action square.png",
 				"image" : "",
 				"text" : "Horseracing at Pimlico",
-				"action_text" : "Roll 2 dice to bet on the trifecta at Pimlico.\n6 or less - lose $1,000 x roll of 1 die\n7 - Collect $10,000\n8 or more - collect $1,000 x roll of 1 die",
+				"action_text" : "Roll 2 dice to bet on the trifecta at Pimlico. 6 or less - lose $1,000 x roll of 1 die. 7 - Collect $10,000. 8 or more - collect $1,000 x roll of 1 die.",
 				"specialProcessing" : {
 					"type" : "gamble",
 					"pending_action" : "gamble",
@@ -452,8 +411,6 @@
 				"number" : 33,
 				"name" : "ChicagoOutfit",
 				"type" : "occupation_entrance_square",
-				"background_image" : "occupation_entrance_square.png",
-				"image" : "group_of_depression-era_gangsters_holding_machine_guns.png",
 				"text" : "The Chicago Outfit",
 				"action_text" : "Must have: $4,000 to bribe the local boss or Mob experience.",
 				"specialProcessing" : {
@@ -465,7 +422,6 @@
 				"number" : 34,
 				"name" : "Opportunity",
 				"type" : "opportunity_square",
-				"background_image" : "opportunity.png",
 				"text" : "OPPORTUNITY KNOCKS",
 				"specialProcessing" : {
 					"type" : "opportunity"
@@ -476,7 +432,6 @@
 				"name" : "NYCentral",
 				"type" : "travel_square",
 				"travel_class" : "rail",
-				"background_image" : "New_York_Central_Herald.png",
 				"text" : "",
 				"specialProcessing" : {
 					"type" : "travel_border",
@@ -487,8 +442,6 @@
 				"number" : 36,
 				"name" : "StorkClub",
 				"type" : "occupation_entrance_square",
-				"background_image" : "occupation_entrance_square.png",
-				"image" : "Stork_Club_logo.jpg",
 				"text" : "The Stork Club",
 				"action_text" : "Must have: A Member Card, or $10,000 for a new Member Card, or a Theatre degree",
 				"specialProcessing" : {
@@ -500,7 +453,6 @@
 				"number" : 37,
 				"name" : "Opportunity",
 				"type" : "opportunity_square",
-				"background_image" : "opportunity.png",
 				"text" : "OPPORTUNITY KNOCKS",
 				"specialProcessing" : {
 					"type" : "opportunity"
@@ -510,8 +462,6 @@
 				"number" : 38,
 				"name" : "DivorceCourt",
 				"type" : "danger_square",
-				"background_image" : "danger_border_square.png",
-				"image" : "A_middle-aged_couple_their_faces_etched_with_lines-72ef0d54fe1b.png",
 				"text" : "DIVORCE COURT",
 				"action_text" : "You and your partner split amicably. Throw 1 die to see how amicably. Pay number thrown times 10% of your annual salary",
 				"specialProcessing" : {
@@ -525,9 +475,8 @@
 				"number" : 39,
 				"name" : "JazzRecords",
 				"type" : "action_square",
-				"background_image" : "light blue action square.png",
 				"text" : "JAZZ RECORDS",
-				"action_text" : "Jazz recordings for sale. Score Happiness points as follows:\n4 Hearts - $2,000; 8 Hearts - $8,000; 12 Hearts - $16,000",
+				"action_text" : "Jazz recordings for sale. Score Happiness points as follows: 4 Hearts - $2,000; 8 Hearts - $8,000; 12 Hearts - $16,000",
 				"specialProcessing" : {
 					"type" : "buy_hearts",
 					"pending_action" : "buy_hearts",
@@ -540,8 +489,6 @@
 				"number" : 40,
 				"name" : "RadioStationKWDB",
 				"type" : "occupation_entrance_square",
-				"background_image" : "occupation_entrance_square.png",
-				"image" : "photograph_of_a_1920s_era_broadcast_microphone.png",
 				"text" : "Radio Station KWDB",
 				"action_text" : "Must have: $5,000 for technical training, or an Engineering Degree, or radio broadcasting experience",
 				"specialProcessing" : {
@@ -553,9 +500,8 @@
 				"number" : 41,
 				"name" : "Publicity",
 				"type" : "action_square",
-				"background_image" : "light blue action square.png",
 				"text" : "PUBLICITY",
-				"action_text" : "May hire Walter Winchell for good publicity. Score Fame points as follows:\n4 Stars - $4,000, 10 Stars - $8,000, 16 stars - $12,000, 22 Stars - $16,000 ",
+				"action_text" : "May hire Walter Winchell for good publicity. Score Fame points as follows: 4 Stars - $4,000, 10 Stars - $8,000, 16 stars - $12,000, 22 Stars - $16,000",
 				"specialProcessing" : {
 					"type" : "buy_stars",
 					"pending_action" : "buy_stars",

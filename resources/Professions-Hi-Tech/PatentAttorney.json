@@ -4,8 +4,6 @@
 		"alternate_name" : "Attorney",
 		"occupationClass" : "occupation",
 		"fullName" : "Patent Attorney",
-		"background_image" : "occupation_entrance.png",
-		"image" : "Patent Attorney.jpg",
 		"entry_fee" : 8000,
 		"prior_experience" : 1,
 		"size" : 12,
@@ -43,7 +41,6 @@
 	"occupationSquares" : [
 		{
 			"number" : 0,
-			"background_image" : "danger_occupation_square.png",
 			"text" : "Failed the Bar exam. Again!",
 			"type" : "danger_square",
 			"stars" : 0,
@@ -58,7 +55,6 @@
 		},
 		{
 			"number" : 1,
-			"background_image" : "occupation_square.png",
 			"text" : "Attend this year's Intellectual Property Owners Association (IPO) Annual Meeting",
 			"stars" : 0,
 			"hearts" : 0,
@@ -69,7 +65,6 @@
 		},
 		{
 			"number" : 2,
-			"background_image" : "occupation_square.png",
 			"text" : "Brilliant keynote address at The Licensing Executives Society (LES) meeting",
 			"stars" : 4,
 			"hearts" : 0,
@@ -80,13 +75,13 @@
 		},
 		{
 			"number" : 3,
-			"background_image" : "occupation_square.png",
 			"text" : "You pass the USPTO (patent bar) exam first try",
 			"stars" : 0,
 			"hearts" : 0,
 			"experience" : 0,
 			"opportunities" : 0,
-			"action_text" : "Salary up $2,000",
+			"action_text" : "Salary up",
+			"full_action_text" : "Salary up $2,000",
 			"specialProcessing" : {
 				"type" : "salary_increase",
 				"amount" : 2000
@@ -94,7 +89,6 @@
 		},
 		{
 			"number" : 4,
-			"background_image" : "occupation_square.png",
 			"text" : "Grueling consultation with a difficult client",
 			"stars" : 0,
 			"hearts" : 0,
@@ -106,7 +100,6 @@
 		},
 		{
 			"number" : 5,
-			"background_image" : "occupation_square.png",
 			"text" : "Your 'Patents and You' textbook to be used at PPI",
 			"stars" : 6,
 			"hearts" : 2,
@@ -117,7 +110,6 @@
 		},
 		{
 			"number" : 6,
-			"background_image" : "occupation_square.png",
 			"text" : "Publish in PPI Law Review",
 			"stars" : 2,
 			"hearts" : 4,
@@ -128,7 +120,6 @@
 		},
 		{
 			"number" : 7,
-			"background_image" : "occupation_square.png",
 			"text" : "May backstab shady colleague(s)",
 			"type" : "action_square",
 			"stars" : 0,
@@ -146,7 +137,6 @@
 		},
 		{
 			"number" : 8,
-			"background_image" : "occupation_square.png",
 			"text" : "Honored at The International Trademark Association (INTA) meeting",
 			"stars" : 8,
 			"hearts" : 0,
@@ -157,13 +147,13 @@
 		},
 		{
 			"number" : 9,
-			"background_image" : "occupation_square.png",
 			"text" : "Your law office has another very profitable year",
 			"stars" : 6,
 			"hearts" : 0, 
 			"experience" : 0,
 			"opportunities" : 0,
-			"action_text" : "Collect bonus $5,000",
+			"action_text" : "Collect bonus",
+			"full_action_text" : "Collect bonus $5,000",
 			"specialProcessing" : {
 				"type" : "bonus",
 				"amount" : 5000
@@ -171,7 +161,6 @@
 		},
 		{
 			"number" : 10,
-			"background_image" : "danger_occupation_square.png",
 			"text" : "Your  cease-and-desist order is a social media joke",
 			"type" : "danger_square",
 			"stars" : 0,
@@ -189,13 +178,13 @@
 		},
 		{
 			"number" : 11,
-			"background_image" : "occupation_square.png",
 			"text" : "Receive AV Preeminent peer review rating",
 			"stars" : 12,
 			"hearts" : 0, 
 			"experience" : 0,
 			"opportunities" : 0,
-			"action_text" : "Salary up $4,000",
+			"action_text" : "Salary up",
+			"full_action_text" : "Salary up $4,000",
 			"specialProcessing" : {
 				"type" : "salary_increase",
 				"amount" : 4000

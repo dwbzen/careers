@@ -4,8 +4,6 @@
 		"alternate_name" : "Mob",
 		"occupationClass" : "occupation",
 		"fullName" : "The Chicago Outfit",
-		"background_image" : "occupation_entrance.png",
-		"image" : "ChicagoMob.png",
 		"entry_fee" : 4000,
 		"size" : 14,
 		"entrance_square_number" : 33,
@@ -39,14 +37,14 @@
 	"occupationSquares" : [
 		{
 			"number" : 0,
-			"background_image" : "occupation_square.png",
 			"text" : "Hired as a soldier for the North Side Gang",
 			"stars" : 0,
 			"hearts" : 2,
 			"bonus" : 0,
 			"experience" : 0,
 			"opportunities" : 0,
-			"action_text" : "Salary up $1000",
+			"action_text" : "Salary up",
+			"full_action_text" : "Salary up $1,000",
 			"specialProcessing" : {
 				"type" : "salary_increase",
 				"amount" : 1000
@@ -54,7 +52,6 @@
 		},
 		{
 			"number" : 1,
-			"background_image" : "occupation_square.png",
 			"text" : "Move from New York to Chicago",
 			"type" : "action_square",
 			"stars" : 0,
@@ -69,14 +66,13 @@
 		},
 		{
 			"number" : 2,
-			"background_image" : "danger_occupation_square.png",
 			"text" : "Johnny Torrio wants you to buy protection and HIS beer",
 			"type" : "danger_square",
 			"stars" : 0,
 			"hearts" : 0,
 			"experience" : 0,
 			"opportunities" : 0,
-			"action_text" : "Pay $2000 OR go on Unemployment",
+			"action_text" : "Pay $2,000 OR go on Unemployment",
 			"specialProcessing" : {
 				"type" : "cash_loss_or_unemployment",
 				"pending_action" : "cash_loss_or_unemployment",
@@ -86,7 +82,6 @@
 		},
 		{
 			"number" : 3,
-			"background_image" : "occupation_square.png",
 			"text" : "Negotiate territory with Dean O'Banion",
 			"stars" : 0,
 			"hearts" : 0,
@@ -98,7 +93,6 @@
 		},
 		{
 			"number" : 4,
-			"background_image" : "occupation_square.png",
 			"text" : "Thomas 'Fats' Waller makes an appearance in your speakeasy",
 			"stars" : 0,
 			"hearts" : 2,
@@ -110,7 +104,6 @@
 		},
 		{
 			"number" : 5,
-			"background_image" : "occupation_square.png",
 			"text" : "Gun down O'Banion in his flower shop (1924)",
 			"stars" : 3,
 			"hearts" : 2,
@@ -122,7 +115,6 @@
 		},
 		{
 			"number" : 6,
-			"background_image" : "occupation_square.png",
 			"text" : "Torrio hands over control to you",
 			"stars" : 4,
 			"hearts" : 0, 
@@ -136,7 +128,6 @@
 		},
 		{
 			"number" : 7,
-			"background_image" : "occupation_square.png",
 			"text" : "Elope with singer Dale Winter and buy a place on the South Side",
 			"stars" : 0,
 			"hearts" : 4,
@@ -148,7 +139,6 @@
 		},
 		{
 			"number" : 8,
-			"background_image" : "danger_occupation_square.png",
 			"text" : "Wounded in a North Side Gang ambush",
 			"type" : "danger_square",
 			"stars" : 0,
@@ -163,7 +153,6 @@
 		},
 		{
 			"number" : 9,
-			"background_image" : "occupation_square.png",
 			"text" : "Double-cross 'Bugs' Moran",
 			"type" : "action_square",
 			"stars" : 0,
@@ -171,7 +160,7 @@
 			"bonus" : 0,
 			"experience" : 2,
 			"opportunities" : 0,
-			"action_text" : "You lose 4 Hearts\n They lose 12 Hearts",
+			"action_text" : "You lose 4 Hearts. They lose 12 Hearts",
 			"specialProcessing" : {
 				"type" : "backstab",
 				"pending_action" : "backstab",
@@ -181,13 +170,13 @@
 		},
 		{
 			"number" : 10,
-			"background_image" : "occupation_square.png",
 			"text" : "Chicago's Beer Wars (1925-1926) increase revenue stream",
 			"stars" : 0,
 			"hearts" : 0, 
 			"experience" : 0,
 			"opportunities" : 0,
-			"action_text" : "Collect bonus $10,000",
+			"action_text" : "Collect bonus",
+			"full_action_text" : "Collect bonus $10,000",
 			"specialProcessing" : {
 				"type" : "bonus",
 				"amount" : 10000
@@ -195,7 +184,6 @@
 		},
 		{
 			"number" : 11,
-			"background_image" : "occupation_square.png",
 			"text" : "North Siders go after the Genna brothers crime family",
 			"stars" : 2,
 			"hearts" : 4,
@@ -207,7 +195,6 @@
 		},
 		{
 			"number" : 12,
-			"background_image" : "occupation_square.png",
 			"text" : "You love your new Thompson submachine gun",
 			"stars" : 0,
 			"hearts" : 6,
@@ -219,13 +206,13 @@
 		},
 		{
 			"number" : 13,
-			"background_image" : "occupation_square.png",
 			"text" : "Frank Nitti takes over the Capone gang (1932)",
 			"stars" : 0,
 			"hearts" : 0, 
 			"experience" : 0,
 			"opportunities" : 0,
-			"action_text" : "Collect bonus $20,000",
+			"action_text" : "Collect bonus",
+			"full_action_text" : "Collect bonus $20,000",
 			"specialProcessing" : {
 				"type" : "bonus",
 				"amount" : 20000

@@ -4,8 +4,6 @@
 		"alternate_name" : "Quantum",
 		"occupationClass" : "occupation",
 		"fullName" : "Quantum Computing",
-		"background_image" : "occupation_entrance.png",
-		"image" : "Hyperdimensional_quantum_computer-1.png",
 		"entry_fee" : 1000,
 		"prior_experience" : 1,
 		"size" : 13,
@@ -43,7 +41,6 @@
 	"occupationSquares" : [
 		{
 			"number" : 0,
-			"background_image" : "occupation_square.png",
 			"text" : "First  programming project using PyQuil library",
 			"stars" : 0,
 			"hearts" : 0,
@@ -55,7 +52,6 @@
 		},		
 		{
 			"number" : 1,
-			"background_image" : "occupation_square.png",
 			"text" : "Interview for Quantum Engineer position with Alibaba",
 			"stars" : 0,
 			"hearts" : 0,
@@ -66,7 +62,6 @@
 		},
 		{
 			"number" : 2,
-			"background_image" : "occupation_square.png",
 			"text" : "Develop new cryptographic protocol",
 			"stars" : 0,
 			"hearts" : 0,
@@ -80,9 +75,7 @@
 		},
 		{
 			"number" : 3,
-			"background_image" : "occupation_square.png",
 			"text" : "Your new machine learning algorithm needs work - lots of work",
-			"image" : "frown_emoji.png",
 			"stars" : 0,
 			"hearts" : 0,
 			"bonus" : 0,
@@ -95,7 +88,6 @@
 		},
 		{
 			"number" : 4,
-			"background_image" : "occupation_square.png",
 			"text" : "Participate in a discussion panel at Quantum Summit conference",
 			"stars" : 0,
 			"hearts" : 0,
@@ -107,7 +99,6 @@
 		},
 		{
 			"number" : 5,
-			"background_image" : "danger_occupation_square.png",
 			"text" : "Your QC design with 30 qubits is an embarrassing failure",
 			"type" : "danger_square",
 			"stars" : 0,
@@ -123,7 +114,6 @@
 		},
 		{
 			"number" : 6,
-			"background_image" : "occupation_square.png",
 			"text" : "Demo at Quantum.Tech  trade show is a hit",
 			"stars" : 0,
 			"hearts" : 0, 
@@ -137,7 +127,6 @@
 		},
 		{
 			"number" : 7,
-			"background_image" : "danger_occupation_square.png",
 			"text" : "Oh No! Caught in a massive RIF",
 			"type" : "danger_square",
 			"stars" : 0,
@@ -152,7 +141,6 @@
 		},
 		{
 			"number" : 8,
-			"background_image" : "occupation_square.png",
 			"text" : "May backstab Quantum colleague(s)",
 			"type" : "action_square",
 			"stars" : 0,
@@ -170,7 +158,6 @@
 		},
 		{
 			"number" : 9,
-			"background_image" : "occupation_square.png",
 			"text" : "Groundbreaking research earns a promotion to Senior Architect",
 			"stars" : 0,
 			"hearts" : 0,
@@ -185,7 +172,6 @@
 		},
 		{
 			"number" : 10,
-			"background_image" : "occupation_square.png",
 			"text" : "Successful charity drive - great PR!",
 			"stars" : 0,
 			"hearts" : 2,
@@ -197,7 +183,6 @@
 		},
 		{
 			"number" : 11,
-			"background_image" : "occupation_square.png",
 			"text" : "Granted bonus stock options",
 			"stars" : 0,
 			"hearts" : 4,
@@ -209,13 +194,13 @@
 		},
 		{
 			"number" : 12,
-			"background_image" : "occupation_square.png",
 			"text" : "Named Researcher of the Year at QCE conference",
 			"stars" : 4,
 			"hearts" : 6, 
 			"experience" : 0,
 			"opportunities" : 0,
-			"action_text" : "Salary up $3,000",
+			"action_text" : "Salary up",
+			"full_action_text" : "Salary up $3,000",
 			"specialProcessing" : {
 				"type" : "salary_increase",
 				"amount" : 3000

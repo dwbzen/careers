@@ -4,13 +4,11 @@
 		"alternate_name" : "Cotton",
 		"occupationClass" : "occupation",
 		"fullName" : "Cotton Club",
-		"background_image" : "occupation_entrance.png",
-		"image" : "cotton club.png",
 		"entry_fee" : 1000,
 		"size" : 11,
 		"entrance_square_number" : 27,
 		"exit_square_number" : 31,
-		"text" : "Must have: $1000 for dance lessons; or a dance degree; or Cotton Club experience",
+		"text" : "Must have: $1,000 for dance lessons, or a dance degree, or Cotton Club experience",
 		"degreeRequirements" : { 
 			"degreeName" : "Dance",
 			"numberRequired" : 1
@@ -42,7 +40,6 @@
 	"occupationSquares" : [
 		{
 			"number" : 0,
-			"background_image" : "occupation_square.png",
 			"text" : "Cotton Club opens in Harlem to whites-only (1923)",
 			"stars" : 2,
 			"hearts" : 0,
@@ -54,7 +51,6 @@
 		},
 		{
 			"number" : 1,
-			"background_image" : "occupation_square.png",
 			"text" : "Piano lessons from Thomas 'Fats' Waller",
 			"stars" : 0,
 			"hearts" : 0,
@@ -66,7 +62,6 @@
 		},
 		{
 			"number" : 2,
-			"background_image" : "occupation_square.png",
 			"text" : "Career boost from Duke Ellington",
 			"stars" : 0,
 			"hearts" : 0,
@@ -77,7 +72,6 @@
 		},
 		{
 			"number" : 3,
-			"background_image" : "occupation_square.png",
 			"text" : "Cotton Club Parade of 1933",
 			"stars" : 4,
 			"hearts" : 2,
@@ -88,13 +82,13 @@
 		},
 		{
 			"number" : 4,
-			"background_image" : "occupation_square.png",
 			"text" : "Patrons love your stride piano work",
 			"stars" : 0,
 			"hearts" : 0,
 			"experience" : 0,
 			"opportunities" : 0,
-			"action_text" : "Salary up $1000",
+			"action_text" : "Salary up",
+			"full_action_text" : "Salary up $1,000",
 			"specialProcessing" : {
 				"type" : "salary_increase",
 				"amount" : 1000
@@ -102,7 +96,6 @@
 		},
 		{
 			"number" : 5,
-			"background_image" : "occupation_square.png",
 			"text" : "Cotton Club opens its doors to black patrons (1935)",
 			"stars" : 2,
 			"hearts" : 4,
@@ -113,7 +106,6 @@
 		},
 		{
 			"number" : 6,
-			"background_image" : "danger_occupation_square.png",
 			"text" : "Your dance routine is a bust. Best stick to piano!",
 			"type" : "danger_square",
 			"stars" : 0,
@@ -129,7 +121,6 @@
 		},
 		{
 			"number" : 7,
-			"background_image" : "danger_occupation_square.png",
 			"text" : "Federal investigation into tax evasion",
 			"type" : "danger_square",
 			"stars" : 10,
@@ -146,7 +137,6 @@
 		},
 		{
 			"number" : 8,
-			"background_image" : "occupation_square.png",
 			"text" : "Race riot in Harlem (1935)",
 			"type" : "action_square",
 			"stars" : 0,
@@ -160,13 +150,12 @@
 		},
 		{
 			"number" : 9,
-			"background_image" : "occupation_square.png",
 			"text" : "Perform with Cab Calloway and Ethyl Waters to rave reviews",
 			"stars" : 0,
 			"hearts" : 0,
 			"experience" : 0,
 			"opportunities" : 0,
-			"action_text" : "Salary up $1000 x roll of 1 die",
+			"action_text" : "Salary up $1,000 x roll of 1 die",
 			"specialProcessing" : {
 				"type" : "salary_increase",
 				"dice" : 1,
@@ -175,13 +164,13 @@
 		},
 		{
 			"number" : 10,
-			"background_image" : "occupation_square.png",
 			"text" : "Appear with Adelaide Hall in 1934 Cotton Club Parade",
 			"stars" : 10,
 			"hearts" : 0, 
 			"experience" : 0,
 			"opportunities" : 0,
 			"action_text" : "Collect Bonus",
+			"full_action_text" : "Collect Bonus $4,000",
 			"specialProcessing" : {
 				"type" : "bonus",
 				"amount" : 4000
