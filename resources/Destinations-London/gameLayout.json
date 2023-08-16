@@ -38,8 +38,6 @@
 				"number" : 0,
 				"name" : "Payday",
 				"type" : "corner_square",
-				"background_image" : "corner_square.png",
-				"image" : "startHereAndArrow.jpg",
 				"text" : "PAYDAY"
 				"action_text" : "Collect Salary as you pass PAYDAY. Collect DOUBLE if you land here",
 				"specialProcessing" : {
@@ -51,7 +49,6 @@
 				"number" : 1,
 				"name" : "Opportunity",
 				"type" : "opportunity_square",
-				"background_image" : "opportunity.png",
 				"text" : "OPPORTUNITY KNOCKS",
 				"specialProcessing" : {
 					"type" : "opportunity"
@@ -61,9 +58,8 @@
 				"number" : 2,
 				"name" : "IncomeTax",
 				"type" : "danger_square",
-				"background_image" : "danger_border_square.png",
 				"text" : "INCOME TAX DUE",
-				"action_text" : "If salary is: £3,000 or less pay 20%\n £3,001 to £10,000 pay 40%\n £10,001 to £20,000 pay 60%\n £20,001 or more pay 90%\n of 1 years salary",
+				"action_text" : "If salary is: £3,000 or less pay 20%, £3,001 to £10,000 pay 40%, £10,001 to £20,000 pay 60%, £20,001 or more pay 90% of 1 years salary",
 				"specialProcessing" : {
 					"type" : "pay_tax",
 					"amount" : "taxTable",
@@ -76,13 +72,14 @@
 				"name" : "Victoria",
 				"type" : "travel_square",
 				"travel_class" : "rail",
-				"background_image" : "1200px-British_Rail_-_Flame_Red_logo.svg.png",
-				"text" : "",
+				"text" : "Victoria",
 				"specialProcessing" : {
 					"type" : "travel_border",
 					"pending_action" : "choose_destination",
-					"choices" : "Leicester Square,Charing Cross",
-					"next_square" : 12
+					"choices" : "Embankment,Euston,EdgwareRd",
+					"next_square" : 12,
+					"next_rail_station" : 22,
+					"previous_square" : 35
 				}
 			}
 
@@ -90,8 +87,6 @@
 				"number" : 4,
 				"name" : "BunchOfGrapes",
 				"type" : "occupation_entrance_square",
-				"background_image" : "occupation_entrance_square.png",
-				"image" : "agrivi.png",
 				"text" : "The Bunch Of Grapes Knightsbridge",
 				"action_text" : "Must have: £1,000 to file paperwork or Greene King experience",
 				"specialProcessing" : {
@@ -103,7 +98,6 @@
 				"number" : 5,
 				"name" : "Opportunity",
 				"type" : "opportunity_square",
-				"background_image" : "opportunity.png",
 				"text" : "OPPORTUNITY KNOCKS",
 				"specialProcessing" : {
 					"type" : "opportunity"
@@ -113,7 +107,6 @@
 				"number" : 6,
 				"name" : "TechConvention",
 				"type" : "action_square",
-				"background_image" : "light blue action square.png",
 				"text" : "May spend up to 1 year's annual salary for the latest gaming system. Score 1 <HEART> for each £1,000 spend, or lose 1 for 'just looking'",
 				"specialProcessing" : {
 					"type" : "buy_hearts",
@@ -126,11 +119,9 @@
 			{
 				"number" : 7,
 				"name" : "Oxford",
-				"background_image" : "occupation_entrance_square.png",
-				"image" : "Oxford logo.png",
 				"type" : "occupation_entrance_square",
 				"text" : "Oxford",
-				"action_text" : "Must have £500 continuing education tuition.\nAvailable degrees: Anthropology, Architecture, Brewing Technology, Fine Arts, Law, Medieval History",
+				"action_text" : "Must have £500 continuing education tuition. Available degrees: Anthropology, Architecture, Brewing Technology, Fine Arts, Law, Medieval History",
 				"specialProcessing" : {
 					"type" : "enter_college",
 					"pending_action" : "select_degree",
@@ -141,7 +132,6 @@
 				"number" : 8,
 				"name" : "Opportunity",
 				"type" : "opportunity_square",
-				"background_image" : "opportunity.png",
 				"text" : "OPPORTUNITY KNOCKS",
 				"specialProcessing" : {
 					"type" : "opportunity"
@@ -151,7 +141,6 @@
 				"number" : 9,
 				"name" : "Hospital",
 				"type" : "corner_square",
-				"background_image" : "corner_square.png"
 				"text" : "HOSPITAL",
 				"action_text" : "You are LAID UP and in the Hospital. Roll 1 die and get 5 or less to see a doctor, or pay 1/2 your salary for pricey experimental drugs.",
 				"specialProcessing" : { 
@@ -166,7 +155,6 @@
 				"number" : 10,
 				"name" : "Opportunity",
 				"type" : "opportunity_square",
-				"background_image" : "opportunity.png",
 				"text" : "OPPORTUNITY KNOCKS",
 				"specialProcessing" : {
 					"type" : "opportunity"
@@ -176,8 +164,7 @@
 				"number" : 11,
 				"name" : "DonateNow",
 				"type" : "danger_square",
-				"background_image" : "danger_border_square.png",
-				"text" : "**DONATE NOW**",
+				"text" : "DONATE NOW",
 				"action_text" : "The Class of 2018 is having a fund drive and call on you to donate your fair share. Throw 1 die to find out how fair. Pay the number thrown time $1,000, or go to UNEMPLOYMENT if you can't or refuse to contribute",
 				"specialProcessing" : {
 					"type" : "cash_loss",
@@ -188,16 +175,17 @@
 			},
 			{
 				"number" : 12,
-				"name" : "Leicester Square",
+				"name" : "Embankment",
 				"travel_class" : "underground",
 				"type" : "travel_square",
-				"background_image" : "Underground logo.jpg",
-				"text" : "",
+				"text" : "Embankment",
 				"specialProcessing" : {
 					"type" : "travel_border",
 					"pending_action" : "choose_destination",
-					"choices" : "Charing Cross,Pimlico",
-					"next_square" : 22
+					"choices" : "Euston,EdgwareRd,Victoria",
+					"next_square" : 22,
+					"next_rail_station" : 35,
+					"previous_square" : 3,
 				}
 			},
 			{
@@ -205,7 +193,6 @@
 				"name" : "Harrods",
 				"type" : "occupation_entrance_square",
 				"background_image" : "occupation_entrance_square.png",
-				"image" : "Harrods.jpg",
 				"text" : "Harrods",
 				"action_text" : "Must have: £1,000 for Retail Sales training, or Harrods experience",
 				"specialProcessing" : {
@@ -217,7 +204,6 @@
 				"number" : 14,
 				"name" : "Opportunity",
 				"type" : "opportunity_square",
-				"background_image" : "opportunity.png",
 				"text" : "OPPORTUNITY KNOCKS",
 				"specialProcessing" : {
 					"type" : "opportunity"
@@ -225,22 +211,19 @@
 			},
 			{
 				"number" : 15,
-				"name" : "Westminster",
+				"name" : "WestminsterAbbey",
 				"type" : "occupation_entrance_square",
-				"background_image" : "occupation_entrance_square.png",
-				"image" : "",
-				"text" : "Westminster",
+				"text" : "Westminster Abbey",
 				"action_text" : "Must have £500 for temporay pass, or Architecture degree, or previous experience",
 				"specialProcessing" : {
 					"type" : "enter_occupation",
-					"destinationOccupation" : "Westminster"
+					"destinationOccupation" : "WestminsterAbbey"
 				}
 			},
 			{
 				"number" : 16,
 				"name" : "Opportunity",
 				"type" : "opportunity_square",
-				"background_image" : "opportunity.png",
 				"text" : "OPPORTUNITY KNOCKS",
 				"specialProcessing" : {
 					"type" : "opportunity"
@@ -249,7 +232,6 @@
 			{
 				"number" : 17,
 				"name" : "CarPayment",
-				"background_image" : "danger_border_square.png",
 				"text" : "CAR PAYMENT DUE",
 				"action_text" : "Pay ¼ your annual salary for car payment & maintenance",
 				"specialProcessing" : {
@@ -273,7 +255,6 @@
 				"number" : 19,
 				"name" : "Opportunity",
 				"type" : "opportunity_square",
-				"background_image" : "opportunity.png",
 				"text" : "OPPORTUNITY KNOCKS",
 				"specialProcessing" : {
 					"type" : "opportunity"
@@ -283,7 +264,6 @@
 				"number" : 20,
 				"name" : "BuyExperience",
 				"type" : "action_square",
-				"background_image" : "light blue action square.png",
 				"text" : "EXPERIENCE",
 				"action_text" : "Who says you can't buy experience? Buy up to 4 EXPERIENCE cards or lose 1 card for being curious.",
 				"specialProcessing" : { 
@@ -297,7 +277,6 @@
 				"number" : 21,
 				"name" : "Unemployment",
 				"type" : "corner_square",
-				"background_image" : "corner_square.png"
 				"text" : "UNEMPLOYMENT",
 				"action_text" : "You were LAID OFF and must throw 7, 11, or doubles to move on, or pay 1 year's Salary for additional training.",
 				"specialProcessing" : {
@@ -310,22 +289,22 @@
 			},
 			{
 				"number" : 22,
-				"name" : "Charing Cross",
+				"name" : "Euston",
 				"type" : "travel_square",
 				"travel_class" : "rail",
-				"background_image" : "1200px-British_Rail_-_Flame_Red_logo.svg.png",
-				"text" : "",
+				"text" : "Euston",
 				"specialProcessing" : {
 					"type" : "travel_border",
 					"pending_action" : "choose_destination",
-					"choices" : "Pimlico,Victoria",
-					"next_square" : 35
+					"choices" : "EdgwareRd,Victoria,Embankment",
+					"next_square" : 35,
+					"next_rail_station" : 3,
+					"previous_square" : 12
 				}
 			}, 
 			{
 				"number" : 23,
 				"name" : "PayRent",
-				"background_image" : "danger_border_square.png",
 				"text" : "PAY RENT HERE",
 				"action_text" : "Pay ½ your annual salary for this years rent OR go to Unemployment if you are evicted (can't afford the rent or simply refuse to pay)",
 				"specialProcessing" : {
@@ -338,8 +317,6 @@
 				"number" : 24,
 				"name" : "HousesOfParliament",
 				"type" : "occupation_entrance_square",
-				"background_image" : "occupation_entrance_square.png",
-				"image" : "",
 				"text" : "Houses of Parliament",
 				"action_text" : "Must donate £8,000 to the Conservative Party, or a Law degree, or you've been here before.",
 				"specialProcessing" : {
@@ -351,7 +328,6 @@
 				"number" : 25,
 				"name" : "Opportunity",
 				"type" : "opportunity_square",
-				"background_image" : "opportunity.png",
 				"text" : "OPPORTUNITY KNOCKS",
 				"specialProcessing" : {
 					"type" : "opportunity"
@@ -361,7 +337,6 @@
 				"number" : 26,
 				"name" : "MayfairShoppingSpree",
 				"type" : "IncomeTax",
-				"background_image" : "danger_border_square.png",
 				"text" : "Mayfair Shopping Spree",
 				"action_text" : "Go bonkers shopping on Bond Street and Mayfair! Throw 1 die to find out how bonkers. Pay number thrown times 10% of your cash-on-hand.",
 				"specialProcessing" : {
@@ -375,8 +350,6 @@
 				"number" : 27,
 				"name" : "BuckinghamPalace",
 				"type" : "occupation_entrance_square",
-				"background_image" : "occupation_entrance_square.png",
-				"image" : "",
 				"text" : "Buckingham Palace",
 				"action_text" : "Must have £2,0000 for  a VIP visitor pass, or previously completed visit(s)",
 				"specialProcessing" : {
@@ -388,7 +361,6 @@
 				"number" : 28,
 				"name" : "Opportunity",
 				"type" : "opportunity_square",
-				"background_image" : "opportunity.png",
 				"text" : "OPPORTUNITY KNOCKS",
 				"specialProcessing" : {
 						"type" : "opportunity"
@@ -398,7 +370,6 @@
 				"number" : 29,
 				"name" : "ApexInsurance",
 				"type" : "action_square",
-				"background_image" : "light blue action square.png",
 				"text" : "Apex Insurance",
 				"action_text" : "May purchase insurance to protect your cash, Happiness and Fame from catastrophic loss. Cost of coverage is £5,000.",
 				"specialProcessing" : { 
@@ -411,7 +382,6 @@
 				"number" : 30,
 				"name" : "Holiday",
 				"type" : "corner_square",
-				"background_image" : "corner_square.png"
 				"text" : "Holiday",
 				"action_text" : "Welcome to Hampton Beach, Kent! Collect 6 <HEART>s for landing here and 3 each time you stay with a roll of 7 or less",
 				"specialProcessing" : {
@@ -425,7 +395,6 @@
 				"number" : 31,
 				"name" : "Opportunity",
 				"type" : "opportunity_square",
-				"background_image" : "opportunity.png",
 				"text" : "OPPORTUNITY KNOCKS",
 				"specialProcessing" : {
 					"type" : "opportunity"
@@ -435,8 +404,6 @@
 				"number" : 32,
 				"name" : "HippodromeCasino",
 				"type" : "action_square",
-				"background_image" : "light blue action square.png",
-				"image" : "hippodrome casino london.png",
 				"text" : "The Hippodrome Casino London",
 				"action_text" : "Roll 2 dice to start gambling. 6 or less - lose £1,000 x roll of 1 die. 7 - Jackpot! Collect £10,000. 8 or more - collect £1,000 x roll of 1 die",
 				"specialProcessing" : {
@@ -451,8 +418,6 @@
 				"number" : 33,
 				"name" : "TowerOfLondon",
 				"type" : "occupation_entrance_square",
-				"background_image" : "occupation_entrance_square.png",
-				"image" : "64008.png",
 				"text" : "Tower of London",
 				"action_text" : "Must have £4,000 for Raven awareness training, or a Medieval History degree, or Tower experience",
 				"specialProcessing" : {
@@ -464,7 +429,6 @@
 				"number" : 34,
 				"name" : "Opportunity",
 				"type" : "opportunity_square",
-				"background_image" : "opportunity.png",
 				"text" : "OPPORTUNITY KNOCKS",
 				"specialProcessing" : {
 					"type" : "opportunity"
@@ -472,25 +436,24 @@
 			},
 			{
 				"number" : 35,
-				"name" : "Pimlico",
+				"name" : "EdgwareRd",
 				"type" : "travel_square",
 				"travel_class" : "underground",
-				"background_image" : "Underground logo.jpg",
-				"text" : "",
+				"text" : "Edgware Road",
 				"specialProcessing" : {
 					"type" : "travel_border",
 					"pending_action" : "choose_destination",
-					"choices" : "Victoria,Leicester Square",
-					"next_square" : 3
+					"choices" : "Victoria,Embankment,Euston",
+					"next_square" : 3,
+					"next_rail_station" : 12,
+					"previous_square" : 22
 				}
 			},
 			{
 				"number" : 36,
 				"name" : "SightseeingTour",
 				"type" : "occupation_entrance_square",
-				"background_image" : "occupation_entrance_square.png",
-				"image" : "",
-				"text" : "",
+				"text" : "Sightseeing Tour",
 				"action_text" : "Must have £8,000 for lifetime VIP pass or Tour experience",
 				"specialProcessing" : {
 					"type" : "enter_occupation",
@@ -501,7 +464,6 @@
 				"number" : 37,
 				"name" : "Opportunity",
 				"type" : "opportunity_square",
-				"background_image" : "opportunity.png",
 				"text" : "OPPORTUNITY KNOCKS",
 				"specialProcessing" : {
 						"type" : "opportunity"
@@ -510,8 +472,6 @@
 			{
 				"number" : 38,
 				"name" : "DivorceCourt",
-				"background_image" : "danger_border_square.png",
-				"image" : "divorce icon.jpg",
 				"text" : "DIVORCE COURT",
 				"action_text" : "Travel puts a strain on relationships! Roll 1 die to see how much strain. Pay number thrown times 10% of your annual salary.",
 				"specialProcessing" : {
@@ -525,7 +485,6 @@
 				"number" : 39,
 				"name" : "VintageCars",
 				"type" : "action_square",
-				"background_image" : "light blue action square.png",
 				"text" : "VINTAGE CARS",
 				"action_text" : "Vintage cars for sale. Score <HAPPINESS> points as follows: 2 <HEART>s - £4,000; 8 <HEART>s - £8,000; 12 <HEART>s - £16,000",
 				"specialProcessing" : {
@@ -540,8 +499,6 @@
 				"number" : 40,
 				"name" : "Guiness",
 				"type" : "occupation_entrance_square",
-				"background_image" : "occupation_entrance_square.png",
-				"image" : "",
 				"text" : "Guiness",
 				"action_text" : "Must have £8,000 for intership, or a degree in Brewing Technology, or Guiness experience.",
 				"specialProcessing" : {
@@ -555,7 +512,7 @@
 				"type" : "action_square",
 				"background_image" : "light blue action square.png",
 				"text" : "WEB PRESENCE",
-				"action_text" : "May hire consultant to build your blog site. Score <FAME> points as follows: 4 <STAR>s - £3,000, 10 <STAR>s - £8,000, 16 <STAR>s - £12,000; 22 <STAR>s - £16,000 ",
+				"action_text" : "May hire consultant to upgrade your web site to handle the demand. Score <FAME> points as follows: 4 <STAR>s - £3,000, 10 <STAR>s - £8,000, 16 <STAR>s - £12,000; 22 <STAR>s - £16,000 ",
 				"specialProcessing" : {
 					"type" : "buy_stars",
 					"pending_action" : "buy_stars",

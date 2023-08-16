@@ -40,10 +40,10 @@
 		{
 			"number" : 0,
 			"card_type" : "occupation",
-			"destination" : "AGRIVI",
+			"destination" : "BunchOfGrapes",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
-			"text" : "OPPORTUNITY to join AGRIVI\nMeet Normal Requirements",
+			"text" : "OPPORTUNITY for lunch at the Bunch Of Grapes. Meet Normal Requirements",
 			"quantity" : 3
 		},
 		{
@@ -52,34 +52,34 @@
 			"destination" : "Harrods",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
-			"text" : "OPPORTUNITY to join Harrods\nMeet Normal Requirements",
+			"text" : "OPPORTUNITY to shop Harrods. Meet Normal Requirements",
 			"quantity" : 3
 		},
 		{
 			"number" : 2,
 			"card_type" : "occupation",
-			"destination" : "Pfizer",
+			"destination" : "SightseeingTour",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
-			"text" : "OPPORTUNITY to join Pfizer\nMeet Normal Requirements",
+			"text" : "OPPORTUNITY to take a Sightseeing Tour. Meet Normal Requirements",
 			"quantity" : 3
 		},
 		{
 			"number" : 3,
 			"card_type" : "occupation",
-			"destination" : "Rolls Royce",
+			"destination" : "Guiness",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
-			"text" : "OPPORTUNITY to join Rolls Royce\nMeet Normal Requirements",
+			"text" : "OPPORTUNITY to tour Guinness. Meet Normal Requirements",
 			"quantity" : 2
 		},
 		{
 			"number" : 4,
 			"card_type" : "occupation",
-			"destination" : "Rolls Royce",
+			"destination" : "Guiness",
 			"expenses_paid" : 1,
 			"double_happiness" : 0,
-			"text" : "SPECIAL OPPORTUNITY to join Rolls Royce because of your technical brilliance.\nAll expenses paid and no prior experience required.",
+			"text" : "SPECIAL OPPORTUNITY to tour Guinness as a VIP influencer. All expenses paid and no prior experience required.",
 			"quantity" : 1		
 		},
 		{
@@ -88,7 +88,7 @@
 			"destination" : "Stonehenge",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
-			"text" : "OPPORTUNITY to join Stonehenge\nMeet Normal Requirements",
+			"text" : "OPPORTUNITY to tour Stonehenge. Meet Normal Requirements",
 			"quantity" : 2
 		},
 		{
@@ -97,61 +97,61 @@
 			"destination" : "Stonehenge",
 			"expenses_paid" : 0,
 			"double_happiness" : 1,
-			"text" : "SPECIAL OPPORTUNITY to join Stonehenge because of your Mystical touch.\nDOUBLE all Happiness earned\nMeet Normal Requirements",
+			"text" : "SPECIAL OPPORTUNITY for a behind-the-scenes tour Stonehenge because of your Mystical nature. DOUBLE all Happiness earned. Meet Normal Requirements",
 			"quantity" : 2
 		},
 		{
 			"number" : 7,
 			"card_type" : "occupation",
-			"destination" : "Tower Of London",
+			"destination" : "TowerOfLondon",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
-			"text" : "OPPORTUNITY to join the Tower Of London\nMeet Normal Requirements",
+			"text" : "OPPORTUNITY to tour the Tower Of London. Meet Normal Requirements",
 			"quantity" : 2
 		},
 		{
 			"number" : 8,
 			"card_type" : "occupation",
-			"destination" : "Tower Of London",
+			"destination" : "TowerOfLondon",
 			"expenses_paid" : 1,
 			"double_happiness" : 0,
-			"text" : "SPECIAL OPPORTUNITY to join the Tower Of London because of your technical brilliance. \nAll expenses paid and no prior experience required.",
+			"text" : "SPECIAL OPPORTUNITY to tour the Tower Of London because of your historical knowledge. All expenses paid and no prior experience required.",
 			"quantity" :1			
 		},
 		{
 			"number" : 9,
 			"card_type" : "occupation",
-			"destination" : "BBC News",
+			"destination" : "BuckinghamPalace",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
-			"text" : "OPPORTUNITY to join BBC News\nMeet Normal Requirements",
+			"text" : "OPPORTUNITY to tour Buckingham Palace. Meet Normal Requirements",
 			"quantity" : 2
 		},
 		{
 			"number" : 10,
 			"card_type" : "occupation",
-			"destination" : "BBC News",
+			"destination" : "BuckinghamPalace",
 			"expenses_paid" : 1,
 			"double_happiness" : 0,
-			"text" : "SPECIAL OPPORTUNITY to join BBC News because of your journalism chops.\nAll expenses paid and no prior experience required.",
+			"text" : "SPECIAL OPPORTUNITY to tour Buckingham Palace by invitation of The Queen. All expenses paid and no prior experience required.",
 			"quantity" : 1		
 		},
 		{
 			"number" : 11,
 			"card_type" : "occupation",
-			"destination" : "Arsenal",
+			"destination" : "WestminsterAbbey",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
-			"text" : "OPPORTUNITY to join Arsenal\nMeet Normal Requirements",
+			"text" : "OPPORTUNITY to Westminster Abbey. Meet Normal Requirements",
 			"quantity" : 2
 		},
 		{
 			"number" : 12,
 			"card_type" : "occupation",
-			"destination" : "Arsenal",
+			"destination" : "WestminsterAbbey",
 			"expenses_paid" : 1,
 			"double_happiness" : 0,
-			"text" : "SPECIAL OPPORTUNITY to join Arsenal because of your football knowledge.\nAll expenses paid and no prior experience required.",
+			"text" : "SPECIAL OPPORTUNITY tour WestminsterAbbey because you know the Archbishop of Canterbury. All expenses paid and no prior experience required.",
 			"quantity" : 1
 		},
 		{
@@ -160,7 +160,7 @@
 			"destination" : "Oxford",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
-			"text" : "OPPORTUNITY to enter Oxford\nMeet Normal Requirements",
+			"text" : "OPPORTUNITY to tour Oxford. Meet Normal Requirements",
 			"quantity" : 3
 		},
 		{
@@ -169,25 +169,25 @@
 			"destination" : "Oxford",
 			"expenses_paid" : 1,
 			"double_happiness" : 0,
-			"text" : "SPECIAL OPPORTUNITY to enter Oxford on Scholarship, all expenses paid.",
+			"text" : "SPECIAL OPPORTUNITY to take a course in English Literature at Oxford, all expenses paid.",
 			"quantity" : 2
 		},
 		{
 			"number" : 15,
 			"card_type" : "occupation",
-			"destination" : "ListerAndBacon",
+			"destination" : "HousesOfParliament",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
-			"text" : "OPPORTUNITY to join Lister & Bacon\nMeet Normal Requirements",
+			"text" : "OPPORTUNITY to tour the Houses Of Parliament. Meet Normal Requirements",
 			"quantity" : 3
 		},
 		{
 			"number" : 16,
 			"card_type" : "occupation",
-			"destination" : "ListerAndBacon",
+			"destination" : "HousesOfParliament",
 			"expenses_paid" : 1,
 			"double_happiness" : 0,
-			"text" : "SPECIAL OPPORTUNITY to join Lister & Bacon because of your legal reputation\nAll expenses paid.",
+			"text" : "SPECIAL OPPORTUNITY tour the Houses Of Parliament because of your liberal connections. All expenses paid.",
 			"quantity" : 1
 		},
 		{
@@ -196,7 +196,7 @@
 			"destination" : "",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
-			"text" : "GOLDEN  OPPORTUNITY to join the Company of your choice\nMeet Normal Requirements",
+			"text" : "GOLDEN  OPPORTUNITY to join the Company of your choice. Meet Normal Requirements",
 			"quantity" : 20,
 			"special_processing" : {
 				"type" : "choose_occupation",
@@ -210,7 +210,7 @@
 			"destination" : "",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
-			"text" : "GOLDEN  OPPORTUNITY to advance to ANY border square\n*meet normal requirements for Occupation or College entrance*",
+			"text" : "GOLDEN  OPPORTUNITY to advance to ANY border square. Meet normal requirements for Occupation or College entrance.",
 			"quantity" : 2,
 			"special_processing" : {
 				"type" : "choose_destination",
@@ -224,7 +224,7 @@
 			"destination" : "BuyInsurance",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
-			"text" : "OPPORTUNITY to buy Insurance\nAdvance to the Insurance Store and pay £5,000 premium",
+			"text" : "OPPORTUNITY to buy Insurance. Advance to the Insurance Store and pay £5,000 premium",
 			"quantity" : 4,
 			"special_processing" : {
 				"type" : "buy_insurance"
@@ -254,7 +254,7 @@
 			"destination" : "HippodromeCasino",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
-			"text" : "OPPORTUNITY to Gamble at the Hippodrome Casino",
+			"text" : "OPPORTUNITY to Gamble at the Hippodrome.",
 			"quantity" : 3
 		},
 		{
@@ -263,13 +263,13 @@
 			"destination" : "BuyExperience",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
-			"text" : "SPECIAL OPPORTUNITY to buy needed padding! Advance to EXPERIENCE square and buy at least 1 and up to 3 EXPERIENCE cards.",
+			"text" : "SPECIAL OPPORTUNITY to buy needed padding! Advance to EXPERIENCE square and buy at least 1 and up to 4 EXPERIENCE cards.",
 			"quantity" : 2
 		},
 		{
 			"number" : 24,
 			"card_type" : "travel",
-			"destination" : "BritishRail",
+			"destination" : "rail",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
 			"text" : "TRAVEL OPPORTUNITY Advance to the nearest British Rail Station and roll again.",
@@ -278,7 +278,7 @@
 		{
 			"number" : 25,
 			"card_type" : "travel",
-			"destination" : "Underground",
+			"destination" : "underground",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
 			"text" : "TRAVEL OPPORTUNITY Advance to the nearest Underground Station and roll again.",
@@ -290,7 +290,7 @@
 			"destination" : "Opportunity",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
-			"text" : "OPPORTUNITY KNOCKS\nAdvance to the nearest OPPORTUNITY square and roll again",
+			"text" : "OPPORTUNITY KNOCKS. Advance to the nearest OPPORTUNITY square and roll again",
 			"quantity" : 3
 		},
 		{
@@ -300,7 +300,7 @@
 			"destination" : "",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
-			"text" : "SPECIAL OPPORTUNITY to gain EXPERIENCE!\nCollect one randomly selected EXPERIENCE card from each player.",
+			"text" : "SPECIAL OPPORTUNITY to gain EXPERIENCE! Collect one randomly selected EXPERIENCE card from each player.",
 			"quantity" : 2,
 			"special_processing" : {
 				"type" : "select_experience"
@@ -313,7 +313,7 @@
 			"destination" : "",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
-			"text" : "Get out of Unemployment free\nPlay this card to immediately leave Unemployment.",
+			"text" : "Get out of Unemployment free. Play this card at the start of your turn to immediately leave Unemployment.",
 			"quantity" : 4
 		},
 		{
@@ -323,8 +323,18 @@
 			"destination" : "",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
-			"text" : "SPECIAL OPPORTUNITY to Get an Extra Turn\nPlay at the start of your turn",
+			"text" : "SPECIAL OPPORTUNITY to get an Extra Turn. Play at the start of your turn",
 			"quantity" : 6
+		},
+		{
+			"number" : 30,
+			"card_type" : "action", 
+			"action_type" : "immunity",
+			"destination" : "",
+			"expenses_paid" : 0,
+			"double_happiness" : 0,
+			"text" : "SPECIAL OPPORTUNITY for immunity until next Payday. Play at the start of your turn.",
+			"quantity" : 2
 		}
 	]
 }
