@@ -8,6 +8,10 @@
 			"type" : "danger_square",
 			"Help" : "A square where the player can expect to lose points (cash, fame or happiness) or a salary cut."
 		},
+	    {
+			"type" : "danger_wormhole_square",
+			"Help" : "A square where the player is instantly transported to another danger_wormhole_square square."
+		},
 		{
 			"type" : "shortcut_square",
 			"Help" : "A square where the player can choose which patch to follow."			

@@ -95,10 +95,14 @@ class GameEngineCommands(object):
                 [2] entry amount owed, if any. Could be 0
                 [3] an error message if player cannot enter (blank string if player can enter)
                 [4] the occupation name
+            NOTES
+                This could leave the player with $0 cash if the entry fee exactly matches the player's cash
+                If the player landed here via wormhole and can't afford the entry fee, they are sent to Unemployment.
+            
         """
         message = ""
         entry_fee = occupation.entry_fee
-        has_fee = player.cash > entry_fee
+        has_fee = player.cash >= entry_fee
         occupationClass = occupation.occupationClass
         # anyone can go to college if they have the funds
         if occupationClass == 'college':
@@ -144,9 +148,9 @@ class GameEngineCommands(object):
         #
         if has_fee:
             return (True, entry_fee, message, occupation.name)
-        else:    # Can't afford College
+        else:    # Can't afford to enter
             message = f"Sorry, you don't meet the conditions for entering {occupation.name}, entry fee: {entry_fee}"
-    
+                
         return has_fee, entry_fee, message, occupation.name
 
     def can_backstab_player(self, player:Player, other_player:Player, occupation:Occupation) ->bool:

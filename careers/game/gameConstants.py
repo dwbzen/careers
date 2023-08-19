@@ -6,7 +6,7 @@ Created on Oct 21, 2022
 
 from enum import Enum
 from typing import List, Dict
-import importlib
+import random
 import pkgutil
 from game.environment import Environment
 
@@ -57,6 +57,7 @@ class SpecialProcessingType(Enum):
     BACKSTAB = "backstab"
     FAME_LOSS = "fame_loss"
     HAPPINESS_LOSS = "happiness_loss"
+    WORMHOLE = "wormhole"
     
     # common to Occupation and Border squares
     TRAVEL_BORDER = "travel_border"
@@ -76,13 +77,27 @@ class GameType(Enum):
     POINTS = "points"
 
 class BorderSquareType(str, Enum):
+    # CORNER_SQUARE is deprecated, replaced by the specific type of corner square: Hospital, Unemployment, Holiday
     CORNER_SQUARE = 'corner_square'
+    PAYDAY_SQUARE = 'payday_square'
+    HOSPITAL_SQUARE = 'hospital_square'
+    UNEMPLOYMENT_SQUARE = 'unemployment_square'
+    HOLIDAY_SQUARE = 'holiday_square'     # Holiday, Spring Break etc.
     OPPORTUNITY_SQUARE = 'opportunity_square'
     DANGER_SQUARE = 'danger_square'
     TRAVEL_SQUARE = 'travel_square'
     OCCUPATION_ENTRANCE_SQUARE = 'occupation_entrance_square'
     ACTION_SQUARE = 'action_square'
-    
+
+class OccupationSquareType(Enum):
+    ACTION_SQUARE = 'action_square'
+    DANGER_SQUARE = 'danger_square'
+    DANGER_WORMHOLE_SQUARE = 'danger_wormhole_square'
+    OCCUPATION_SQUARE = 'occupation_square'
+    SHORTCUT_SQUARE = 'shortcut_square'
+    OPPORTUNITY_SQUARE = 'opportunity_square'
+    TRAVEL_SQUARE = 'travel_square'
+
 class TravelClass(str, Enum):
     RAIL = 'rail'
     UNDERGROUND = 'underground'    # UK edition
@@ -119,11 +134,23 @@ class GameConstants(object):
     STAR = "star"
     FAME = "fame"
 
+    CORNER_SQUARE_TYPES = [BorderSquareType.PAYDAY_SQUARE, \
+                           BorderSquareType.HOSPITAL_SQUARE,\
+                           BorderSquareType.UNEMPLOYMENT_SQUARE,\
+                           BorderSquareType.HOLIDAY_SQUARE]
+    
+    #
+    # This structure is built in CareersGame load_occupations() -> Occupation._create_occupation_squares
+    #
+    wormholes:List[Dict] = []
+    
     def __init__(self, params:Dict={} ):
         '''
         Constructor
         '''
         self._params = params
+
+        self._wormhole_ref:List[Dict] = []
         
     @property
     def params(self) -> Dict:
@@ -143,7 +170,27 @@ class GameConstants(object):
     @staticmethod
     def set_currency_symbol(value:str):
         GameConstants.CURRENCY_SYMBOL = value
+        
+    @staticmethod
+    def get_wormholes() ->List[Dict]:
+        return GameConstants.wormholes
     
+    @staticmethod
+    def add_wormhole(wormhole:Dict):
+        """Adds a wormhole to the wormholes list
+            wormhole Dict format is { "occupation_name" : <occupation_name>, "number": <wormhole_square number> }
+            for example  {"occupation_name" : "VentureCapitalist" , "number" : 7}
+        """
+        GameConstants.wormholes.append(wormhole)
+    
+    @staticmethod
+    def pick_random_wormhole() -> Dict:
+        """Pick and return a wormhole at random from GameConstants.wormholes.
+            If there are no wormholes, return an empty Dict {}
+        """
+        wn = len(GameConstants.wormholes)
+        return GameConstants.wormholes[random.randrange(len(GameConstants.wormholes))] if wn > 0 else {}
+        
     @staticmethod
     def get_plugins(edition_name="All", apath=None) ->List[Dict]:
         """Discover and return game plugins.

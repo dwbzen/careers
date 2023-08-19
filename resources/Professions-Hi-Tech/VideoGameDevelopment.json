@@ -18,10 +18,10 @@
 		"ranking" : {
 			"points" : 5,
 			"stars" : 4,
-			"hearts" : 10,
-			"cash" : 5,
-			"salary" : 4,
-			"overall" : 7
+			"hearts" : 9,
+			"cash" : 7,
+			"salary" : 5,
+			"overall" : 5
 		},
 		"cards" : {
 			"experience" : 1,
@@ -32,11 +32,11 @@
 			"recommended_padding" : 2
 		},
 		"points" : {
-			"cash" : 7,
+			"cash" : 4,
 			"stars" : 32,
 			"hearts" : 6,
 			"salary" : 5,
-			"totalPoints" : 45
+			"totalPoints" : 42
 		}
 	},
 	"occupationSquares" : [
@@ -108,17 +108,15 @@
 		},
 		{
 			"number" : 6,
-			"text" : "Extreme measures taken to keep the company solvent",
-			"type" : "danger_square",
+			"text" : "Wormhole",
+			"type" : "danger_wormhole_square",
 			"stars" : 0,
 			"hearts" : 0,
 			"experience" : 0,
 			"opportunities" : 0,
-			"action_text" : "Cut salary by 1/2",
+			"action_text" : "You are being transported",
 			"specialProcessing" : {
-				"type" : "salary_cut",
-				"amount" : 0,
-				"percent" : 0.5
+				"type" : "wormhole"
 			}
 		},
 		{

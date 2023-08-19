@@ -6,21 +6,21 @@
 		"fullName" : "Aerospace Engineering",
 		"entry_fee" : 5000,
 		"prior_experience" : 1,
-		"size" : 13,
+		"size" : 15,
 		"entrance_square_number" : 40,
 		"exit_square_number" : 1,
-		"text" : "Must have: $5,000 recruiting fee, or Aerospace Engineering Degree, or Aerospace Engineering experience",
+		"text" : "Must have: $8,000 for special training, or Aerospace Engineering Degree, or Aerospace experience",
 		"degreeRequirements" : { 
 			"degreeName" : "Aerospace Engineering",
 			"numberRequired" : 1
 		},
 		"ranking" : {
 			"points" : 1,
-			"stars" : 3,
-			"hearts" : 2,
+			"stars" : 1,
+			"hearts" : 1,
 			"cash" : 2,
-			"salary" : 7,
-			"overall" : 3
+			"salary" : 10,
+			"overall" : 1
 		},
 		"cards" : {
 			"experience" : 2,
@@ -32,10 +32,10 @@
 		},
 		"points" : {
 			"cash" : 15,
-			"stars" : 34,
-			"hearts" : 24,
+			"stars" : 44,
+			"hearts" : 32,
 			"salary" : 2,
-			"totalPoints" : 73
+			"totalPoints" : 91
 		}
 	},
 	"occupationSquares" : [
@@ -63,10 +63,10 @@
 		},
 		{
 			"number" : 2,
-			"text" : "Dragon docking fails",
-			"type" : "danger_square",
+			"text" : "Meet your future spouse during training. How romantic!",
+			"type" : "occupation_square",
 			"stars" : 0,
-			"hearts" : 0,
+			"hearts" : 4,
 			"experience" : 0,
 			"opportunities" : 0,
 			"action_text" : "Lose ALL your <HAPPINESS>",
@@ -79,8 +79,19 @@
 		},
 		{
 			"number" : 3,
+			"text" : "Appear in Time Magazine’s Top 100 Influential People",
+			"stars" : 5,
+			"hearts" : 5,
+			"bonus" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "",
+			"specialProcessing" : {}
+		},
+		{
+			"number" : 4,
 			"text" : "New booster test explodes on the launchpad ",
-			"type" : "danger_square",
+			"type" : "occupation_square",
 			"stars" : 0,
 			"hearts" : 0,
 			"experience" : 0,
@@ -94,10 +105,23 @@
 			}
 		},
 		{
-			"number" : 4,
+			"number" : 5,
+			"text" : "Wormhole",
+			"type" : "danger_wormhole_square",
+			"stars" : 0,
+			"hearts" : 0,
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "You are being transported",
+			"specialProcessing" : {
+				"type" : "wormhole"
+			}
+		},
+		{
+			"number" : 6,
 			"text" : "Enhance thruster test facility",
 			"stars" : 2,
-			"hearts" : 4,
+			"hearts" : 6,
 			"bonus" : 0,
 			"experience" : 0,
 			"opportunities" : 0,
@@ -105,7 +129,7 @@
 			"specialProcessing" : {}
 		},
 		{
-			"number" : 5,
+			"number" : 7,
 			"text" : "Successful docking with Intl. Space Station",
 			"stars" : 0,
 			"hearts" : 0,
@@ -118,7 +142,7 @@
 			}
 		},
 		{
-			"number" : 6,
+			"number" : 8,
 			"text" : "Grueling avionics project",
 			"stars" : 0,
 			"hearts" : 0,
@@ -129,7 +153,7 @@
 			"specialProcessing" : {}
 		},
 		{
-			"number" : 7,
+			"number" : 9,
 			"text" : "Selected for 1st Mars Mission Crew",
 			"stars" : 16,
 			"hearts" : 0,
@@ -140,7 +164,7 @@
 			"specialProcessing" : {}
 		},
 		{
-			"number" : 8,
+			"number" : 10,
 			"text" : "Meeting with Mars Mission Commander",
 			"stars" : 2,
 			"hearts" : 10,
@@ -151,7 +175,7 @@
 			"specialProcessing" : {}
 		},
 		{
-			"number" : 9,
+			"number" : 11,
 			"text" : "Exhausted from conference keynote address",
 			"type" : "danger_square",
 			"stars" : 10,
@@ -165,7 +189,7 @@
 			}
 		},
 		{
-			"number" : 10,
+			"number" : 12,
 			"text" : "Advance for new Mars Mission book",
 			"stars" : 0,
 			"hearts" : 0, 
@@ -179,7 +203,7 @@
 			}
 		},
 		{
-			"number" : 11,
+			"number" : 13,
 			"text" : "Successful Starship launch. Next stop - Mars!",
 			"stars" : 6,
 			"hearts" : 4,
@@ -190,7 +214,7 @@
 			"specialProcessing" : {}
 		},
 		{
-			"number" : 12,
+			"number" : 14,
 			"text" : "Astronaut of the year",
 			"stars" : 2,
 			"hearts" : 4,

@@ -1,11 +1,23 @@
 {
 	"Help" : "Board layout for the Professions: Hi-Tech Edition.",
 	"types_list" : [
-		"corner_square", "opportunity_square", "danger_square", "travel_square", "occupation_entrance_square", "action_square"
+		"payday_square", "hospital_square", "unemployment_square", "holiday_square", "opportunity_square", "danger_square", "travel_square", "occupation_entrance_square", "action_square"
 	],
 	"types" : [
 		{
-			"type" : "corner_square",
+			"type" : "payday_square",
+			"Help" : "Payday, Hospital, Unemployment and SpringBreak are the corner squares."
+		},
+		{
+			"type" : "hospital_square",
+			"Help" : "Payday, Hospital, Unemployment and SpringBreak are the corner squares."
+		},
+		{
+			"type" : "unemployment_square",
+			"Help" : "Payday, Hospital, Unemployment and SpringBreak are the corner squares."
+		},
+		{
+			"type" : "holiday_square",
 			"Help" : "Payday, Hospital, Unemployment and SpringBreak are the corner squares."
 		},
 	    {
@@ -18,7 +30,7 @@
 		},
 	    {
 			"type" : "travel_square",
-			"Help" : "Travel by rail on Amtrak, or by air from LAX or LGA."
+			"Help" : "Travel by rail on Amtrak, or by air from LAX or LGA. Only travel forward is permitted."
 		},
 	    {
 			"type" : "occupation_entrance_square",
@@ -37,7 +49,7 @@
 			{
 				"number" : 0,
 				"name" : "Payday",
-				"type" : "corner_square",
+				"type" : "payday_square",
 				"text" : "PAYDAY",
 				"action_text" : "Collect Salary as you pass PAYDAY. Collect DOUBLE if you land here.",
 				"specialProcessing" : {
@@ -139,7 +151,7 @@
 			{
 				"number" : 9,
 				"name" : "Hospital",
-				"type" : "corner_square",
+				"type" : "hospital_square",
 				"text" : "HOSPITAL",
 				"action_text" : "You are LAID UP until you throw 5 or less\nor pay the Pharmacist/Paymaster 1/2 your salary for experimental drugs.",
 				"specialProcessing" : { 
@@ -275,7 +287,7 @@
 			{
 				"number" : 21,
 				"name" : "Unemployment",
-				"type" : "corner_square",
+				"type" : "unemployment_square",
 				"text" : "UNEMPLOYMENT",
 				"action_text" : "You were LAID OFF and must throw 7, 11, or doubles to move on.\nOR pay 1 year's Salary for additional training.",
 				"specialProcessing" : {
@@ -380,13 +392,13 @@
 			{
 				"number" : 30,
 				"name" : "SpringBreak",
-				"type" : "corner_square",
+				"type" : "holiday_square",
 				"background_image" : "DWBZen_Photo_of_Clearwater_Beach_Florida_small.png",
 				"text" : "Spring Break",
 				"action_text" : "You are on Spring Break! Collect 6 <HEART>s for landing here and 3 each time you stay with a roll of 7 or less",
 				"specialProcessing" : {
-					"type": "holiday",
-					"pending_action": "stay_or_move",
+					"type" : "holiday",
+					"pending_action" : "stay_or_move",
 					"must_roll" : [2, 3, 4, 5, 6, 7],
 					"hearts" : [3, 6]
 				}

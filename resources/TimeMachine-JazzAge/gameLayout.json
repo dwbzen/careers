@@ -1,12 +1,24 @@
 {
 	"Help" : "Board layout for the Time Machine: Jazz Age edition.",
 	"types_list" : [
-		"corner_square", "opportunity_square", "danger_square", "travel_square", "occupation_entrance_square", "action_square"
+		"payday_square", "hospital_square", "unemployment_square", "holiday_square", "opportunity_square", "danger_square", "travel_square", "occupation_entrance_square", "action_square"
 	],
 	"types" : [
 		{
-			"type" : "corner_square",
-			"Help" : "Payday, Hospital, Unemployment and ConeyIsland are the corner squares."
+			"type" : "payday_square",
+			"Help" : "Payday, Hospital, Unemployment and SpringBreak are the corner squares."
+		},
+		{
+			"type" : "hospital_square",
+			"Help" : "Payday, Hospital, Unemployment and SpringBreak are the corner squares."
+		},
+		{
+			"type" : "unemployment_square",
+			"Help" : "Payday, Hospital, Unemployment and SpringBreak are the corner squares."
+		},
+		{
+			"type" : "holiday_square",
+			"Help" : "Payday, Hospital, Unemployment and SpringBreak are the corner squares."
 		},
 	    {
 			"type" : "opportunity_square",
@@ -18,7 +30,7 @@
 		},
 	    {
 			"type" : "travel_square",
-			"Help" : "Travel by rail on the Union Pacific Railroad or NY Central."
+			"Help" : "Travel by rail on the Union Pacific Railroad or NY Central. Travel backwards to the nearest station of the same company is permitted."
 		},
 	    {
 			"type" : "occupation_entrance_square",
@@ -37,7 +49,7 @@
 			{
 				"number" : 0,
 				"name" : "Payday",
-				"type" : "corner_square",
+				"type" : "payday_square",
 				"text" : "PAYDAY",
 				"action_text" : "Collect Salary as you pass PAYDAY. Collect DOUBLE if you land here",
 				"specialProcessing" : {
@@ -74,8 +86,10 @@
 				"travel_class" : "rail",
 				"text" : "",
 				"specialProcessing" : {
-					"type" : "travel_border",
-					"next_square" : 12
+					"type" : "travel_choice",
+					"destination_names" : ["NYCentral","NYCentral"],
+					"destination_squares" : [12, 35],
+					"pending_action" : "travel_choice"
 				}
 			},
 			{
@@ -136,7 +150,7 @@
 			{
 				"number" : 9,
 				"name" : "Hospital",
-				"type" : "corner_square",
+				"type" : "hospital_square",
 				"text" : "HOSPITAL",
 				"action_text" : "You are LAID UP until you throw 5 or less, or pay the Doctor or Paymaster 1/2 your salary for experimental drugs",
 				"specialProcessing" : { 
@@ -177,8 +191,10 @@
 				"travel_class" : "rail",
 				"text" : "",
 				"specialProcessing" : {
-					"type" : "travel_border",
-					"next_square" : 22
+					"type" : "travel_choice",
+					"destination_names" : ["UnionPacific","UnionPacific"],
+					"destination_squares" : [22, 3],
+					"pending_action" : "travel_choice"
 				}
 			},
 			{
@@ -270,7 +286,7 @@
 			{
 				"number" : 21,
 				"name" : "Unemployment",
-				"type" : "corner_square",
+				"type" : "unemployment_square",
 				"text" : "UNEMPLOYMENT",
 				"action_text" : "You LOST YOUR JOB and must throw 7, 11, or doubles to move on, OR pay 1 year's Salary for additional training.",
 				"specialProcessing" : {
@@ -288,8 +304,10 @@
 				"travel_class" : "rail",
 				"text" : "",
 				"specialProcessing" : {
-					"type" : "travel_border",
-					"next_square" : 35
+					"type" : "travel_choice",
+					"destination_names" : ["NYCentral","NYCentral"],
+					"destination_squares" : [35, 12],
+					"pending_action" : "travel_choice"
 				}
 			}, 
 			{
@@ -373,7 +391,7 @@
 			{
 				"number" : 30,
 				"name" : "ConeyIsland",
-				"type" : "corner_square",
+				"type" : "holiday_square",
 				"text" : "Coney Island",
 				"action_text" : "You vacation to Coney Island! Collect 6 Hearts for landing here and 3 each time you stay with a roll of 7 or less",
 				"specialProcessing" : {
@@ -434,8 +452,10 @@
 				"travel_class" : "rail",
 				"text" : "",
 				"specialProcessing" : {
-					"type" : "travel_border",
-					"next_square" : 3
+					"type" : "travel_choice",
+					"destination_names" : ["UnionPacific","UnionPacific"],
+					"destination_squares" : [3, 22],
+					"pending_action" : "travel_choice"
 				}
 			},
 			{

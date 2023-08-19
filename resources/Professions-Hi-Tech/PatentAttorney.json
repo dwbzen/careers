@@ -16,11 +16,11 @@
 		},
 		"ranking" : {
 			"points" : 4,
-			"stars" : 1,
-			"hearts" : 9,
-			"cash" : 7,
+			"stars" : 2,
+			"hearts" : 10,
+			"cash" : 6,
 			"salary" : 2,
-			"overall" : 2
+			"overall" : 4
 		},
 		"cards" : {
 			"experience" : 2,

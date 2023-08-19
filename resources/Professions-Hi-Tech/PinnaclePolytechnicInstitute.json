@@ -13,11 +13,11 @@
 		"Help" : [ "Each Degree Program is with a specific profession. maxDegrees is the maximum number of degrees attainable in any degree program." ],
 		"ranking" : {
 			"points" : 9,
-			"stars" : 7,
-			"hearts" : 4,
+			"stars" : 8,
+			"hearts" : 7,
 			"cash" : 10,
-			"salary" : 10,
-			"overall" : 8
+			"salary" : 7,
+			"overall" : 9
 		},
 		"cards" : {
 			"experience" : 2,

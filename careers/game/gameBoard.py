@@ -6,6 +6,7 @@ Created on Aug 26, 2022
 
 import json
 from game.borderSquare import BorderSquare, BorderSquareType
+from game.gameConstants import GameConstants
 
 
 class GameBoard(object):
@@ -49,7 +50,8 @@ class GameBoard(object):
             if border_square.square_type is BorderSquareType.TRAVEL_SQUARE:
                 self._travel_squares.append(border_square)
         
-            if border_square.square_type is BorderSquareType.CORNER_SQUARE:
+            # the corner squares each have their own unique type
+            if border_square.square_type in GameConstants.CORNER_SQUARE_TYPES:
                 self._corner_squares[border_square.name] = border_square
                 
             if border_square.square_type is BorderSquareType.OPPORTUNITY_SQUARE:

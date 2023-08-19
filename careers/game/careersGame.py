@@ -16,14 +16,14 @@ from game.experienceCardDeck import ExperienceCardDeck
 from game.gameState import GameState
 from game.occupation import Occupation
 from game.gameBoard import GameBoard
-from game.borderSquare import BorderSquare, BorderSquareType
+from game.borderSquare import BorderSquare
 from game.occupationSquare import OccupationSquare
 from game.gameSquare import GameSquare
 from game.careersObject import CareersObject
 
 from game.boardLocation import BoardLocation
 from game.gameParameters import GameParameters
-from game.gameConstants import GameConstants, GameParametersType, GameType
+from game.gameConstants import GameConstants, GameParametersType, BorderSquareType, GameType
 from game.turnHistory import TurnHistory, Turn
 
 class CareersGame(CareersObject):
@@ -448,12 +448,12 @@ class CareersGame(CareersObject):
         self.game_duration = self.game_state.get_elapsed_time()
         return self.game_duration
     
-    def find_next_border_square(self, current_square_number, atype:BorderSquareType, name:str=None) -> Tuple[int,BorderSquare]:
+    def find_next_border_square(self, current_square_number:int, atype:BorderSquareType, name:str=None) -> Tuple[int,BorderSquare]:
         """Find the next border square of a given type and optional name
             Arguments:
                 current_square_number - square number on the game board
                 game_board - a GameBoard instance
-                atype - the square type to look for. Valid values are 'travel_square', 'corner_square', 'travel_square', and 'occupation_entrance_square'
+                atype - the square type to look for. Valid values are GameConstants.BorderSquareType
                 name - optional square.name to use for comparison. For example in the UK edition, the travel squares
                        all have different names.
             Returns: a 2-item tupple : the next square number OR None if no square of a given type/name is found,
@@ -472,7 +472,7 @@ class CareersGame(CareersObject):
         elif atype is BorderSquareType.OCCUPATION_ENTRANCE_SQUARE:
             squares = self.game_board.occupation_entrance_squares
             
-        elif atype is BorderSquareType.CORNER_SQUARE:
+        elif atype in GameConstants.CORNER_SQUARE_TYPES:
             squares = self.game_board.corner_squares
         
         for square in squares:      # square is a BorderSquare instance, they are in square# order

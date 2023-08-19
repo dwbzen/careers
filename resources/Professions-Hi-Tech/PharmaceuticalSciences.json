@@ -15,12 +15,12 @@
 			"numberRequired" : 2
 		},
 		"ranking" : {
-			"points" : 5,
-			"stars" : 2,
-			"hearts" : 1,
+			"points" : 3,
+			"stars" : 3,
+			"hearts" : 2,
 			"cash" : 8,
 			"salary" : 5,
-			"overall" : 4
+			"overall" : 3
 		},
 		"cards" : {
 			"experience" : 2,
@@ -31,7 +31,7 @@
 			"recommended_padding" : 4
 		},
 		"points" : {
-			"cash" : 4,
+			"cash" : 8,
 			"stars" : 34,
 			"hearts" : 28,
 			"salary" : 4,

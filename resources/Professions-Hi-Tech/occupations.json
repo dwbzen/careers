@@ -8,6 +8,10 @@
 			"type" : "danger_square",
 			"Help" : "A square where the player can expect to lose points (cash, fame or happiness) or a salary cut."
 		},
+	    {
+			"type" : "danger_wormhole_square",
+			"Help" : "A square where the player is instantly transported to another danger_wormhole_square square."
+		},
 		{
 			"type" : "shortcut_square",
 			"Help" : "A square where the player can choose which patch to follow."			
@@ -17,8 +21,8 @@
 			"Help" : "Perform a non-movement action."
 		},
 	    {
-			"type" : "regular_square",
-			"Help" : "A square that awards one or more hearts, stars, Opportunity cards, and/or Experience cards."
+			"type" : "occupation_square",
+			"Help" : "A square that awards one or more hearts, stars, Opportunity cards, and/or Experience cards, bonus or salary increase. This is the default type and optional in the occupation JSON."
 		},
 	    {
 			"type" : "travel_square",

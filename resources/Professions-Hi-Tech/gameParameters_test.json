@@ -1,7 +1,7 @@
 {
 	"description" : "Game parameters for testing",
-	"starting_salary" : 5000,
-	"starting_cash" : 10000,
+	"starting_salary" : 2000,
+	"starting_cash" : 1000,
 	"currency" : "dollars",
 	"currency_symbol" : "\u0024",
 	"date_format" : "yyyy-mm-dd",
@@ -9,7 +9,7 @@
 	"starting_opportunity_cards" : 2,
 	"starting_hearts" : 10,
 	"starting_stars" : 10,
-	"default_game_points" : 200,
+	"default_game_points" : 100,
 	"timed_game" : 0,
 	"default_game_minutes" : 60,
 	"allow_negative_experience" : 1,

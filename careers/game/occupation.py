@@ -55,16 +55,14 @@ class Occupation(object):
             assert isinstance(game,CareersGame)
             self._careersGame = game
         self._occupationSquares = self._create_occupation_squares(occupation_dict["occupationSquares"], self._careersGame)
-        
-    
+
     def _create_occupation_squares(self, occupationSquares:list, game) -> list:
         """For this Occupation create a list of OccupationSquare corresponding to the "occupationSquares".
             Returns: a List of  OccupationSquare
         """
         occupation_squares = list()
         for occupation_square_dict in occupationSquares:
-            occupation_square = OccupationSquare(occupation_square_dict, game=game)
-            occupation_square.name = self.name
+            occupation_square = OccupationSquare(occupation_square_dict, self.name, game=game)
             occupation_squares.append(occupation_square)
         return occupation_squares
     

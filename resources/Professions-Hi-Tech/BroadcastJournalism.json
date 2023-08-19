@@ -16,11 +16,11 @@
 		},
 		"ranking" : {
 			"points" : 8,
-			"stars" : 8,
+			"stars" : 6,
 			"hearts" : 8,
 			"cash" : 3,
-			"salary" : 3,
-			"overall" : 6
+			"salary" : 4,
+			"overall" : 7
 		},
 		"cards" : {
 			"experience" : 2,
@@ -32,10 +32,10 @@
 		},
 		"points" : {
 			"cash" : 8,
-			"stars" : 12,
-			"hearts" : 8,
+			"stars" : 14,
+			"hearts" : 12,
 			"salary" : 5,
-			"totalPoints" : 28
+			"totalPoints" : 34
 		}
 	},
 	"occupationSquares" : [

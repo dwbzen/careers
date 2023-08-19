@@ -14,10 +14,10 @@
 		"ranking" : {
 			"points" : 7,
 			"stars" : 10,
-			"hearts" : 5,
+			"hearts" : 4,
 			"cash" : 9,
-			"salary" : 9,
-			"overall" : 10
+			"salary" : 8,
+			"overall" : 8
 		},
 		"cards" : {
 			"experience" : 2,
@@ -163,15 +163,15 @@
 		},
 		{
 			"number" : 10,
-			"text" :  "Multi-car pileup on the commute to the office",
+			"text" : "Wormhole",
+			"type" : "danger_wormhole_square",
 			"stars" : 0,
 			"hearts" : 0,
-			"bonus" : 0,
 			"experience" : 0,
 			"opportunities" : 0,
-			"action_text" : "Lose next turn",
-			"specialProcessing" :  {
-				"type" : "lose_next_turn"
+			"action_text" : "You are being transported",
+			"specialProcessing" : {
+				"type" : "wormhole"
 			}
 		},
 		{

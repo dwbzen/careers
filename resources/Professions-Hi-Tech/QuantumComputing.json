@@ -17,10 +17,10 @@
 		"ranking" : {
 			"points" : 10,
 			"stars" : 9,
-			"hearts" : 7,
-			"cash" : 6,
+			"hearts" : 6,
+			"cash" : 5,
 			"salary" : 1,
-			"overall" : 5
+			"overall" : 10
 		},
 		"cards" : {
 			"experience" : 3,
@@ -31,10 +31,10 @@
 			"recommended_padding" : 3
 		},
 		"points" : {
-			"cash" : 6,
-			"stars" : 4,
-			"hearts" : 12,
-			"salary" : 8,
+			"cash" : 5,
+			"stars" : 9,
+			"hearts" : 6,
+			"salary" : 1,
 			"totalPoints" : 22
 		}
 	},
@@ -127,16 +127,15 @@
 		},
 		{
 			"number" : 7,
-			"text" : "Oh No! Caught in a massive RIF",
-			"type" : "danger_square",
+			"text" : "Wormhole",
+			"type" : "danger_wormhole_square",
 			"stars" : 0,
 			"hearts" : 0,
 			"experience" : 0,
 			"opportunities" : 0,
-			"action_text" : "Go to Unemployment",
+			"action_text" : "You are being transported",
 			"specialProcessing" : {
-				"type" : "travel_border",
-				"next_square" : "Unemployment"
+				"type" : "wormhole"
 			}
 		},
 		{

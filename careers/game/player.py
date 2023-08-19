@@ -65,7 +65,8 @@ class Player(CareersObject):
         # in addition to fulfilling their success formula
         #
         self._my_todos:TodoList = None    # filled in by applicable active plug-in(s)
-        self._my_game = None   # will be a CareersGame reference
+        self._my_game = None        # will be a CareersGame reference
+        self._in_transport = False   # True if the player has been transported to a occupation via wormhole
         
     def _initialize(self):
         """Sets the starting values for all properties reset under bankruptcy rules.
@@ -485,6 +486,14 @@ class Player(CareersObject):
     @turn_history.setter
     def turn_history(self, value):
         self._turn_history = value
+        
+    @property
+    def in_transport(self) ->bool:
+        return self._in_transport
+    
+    @in_transport.setter
+    def in_transport(self, value:bool):
+        self._in_transport = value
 
     def add_command(self, command:str):
         """Adds a command to the player's command_history and current Turn

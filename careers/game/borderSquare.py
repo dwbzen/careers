@@ -138,57 +138,44 @@ class BorderSquare(GameSquare):
                         message = f'Invalid SpecialProcessingType {sp_type} for {message}'
                         return CommandResult(CommandResult.ERROR, message, False)
             
-            case BorderSquareType.CORNER_SQUARE:
-                # check special processing type because corner square names are edition-dependent, specialProcessing type is independent of the edition
-                special_processing = self.special_processing
-                sp_type = special_processing.processing_type
-
-                match(sp_type):
-                    case SpecialProcessingType.UNEMPLOYMENT:
-                        player.is_unemployed = True
-                        self.update_board_location(player)
-                        player.can_use_opportunity = False
-                        player.clear_pending()
-                        result = CommandResult(CommandResult.SUCCESS, f'Player {player.player_initials}: {self.action_text}', True)
+            case BorderSquareType.UNEMPLOYMENT_SQUARE:
+                player.is_unemployed = True
+                self.update_board_location(player)
+                player.can_use_opportunity = False
+                player.clear_pending()
+                result = CommandResult(CommandResult.SUCCESS, f'Player {player.player_initials}: {self.action_text}', True)
                     
-                    case SpecialProcessingType.HOSPITAL:
-                        player.is_sick = True
-                        self.update_board_location(player)
-                        player.can_use_opportunity = False
-                        player.clear_pending()
-                        result = CommandResult(CommandResult.SUCCESS, f'Player {player.player_initials}: {self.action_text}', True)
+            case BorderSquareType.HOSPITAL_SQUARE:
+                player.is_sick = True
+                self.update_board_location(player)
+                player.can_use_opportunity = False
+                player.clear_pending()
+                result = CommandResult(CommandResult.SUCCESS, f'Player {player.player_initials}: {self.action_text}', True)
                                       
-                    case SpecialProcessingType.PAYDAY:
-                        salary = player.salary
-                        # if I am on Payday I get double salary
-                        # don't update the player's board_location 
-                        how = "passed" 
-                        if player.board_location.border_square_number == 0: 
-                            salary += salary
-                            how = "landed on"
-                        player.cash += salary
-                        player.laps += 1
-                        result = CommandResult(CommandResult.SUCCESS, f'Player {player.player_initials} {how} {self.name}\n{self.action_text}', True)
+            case BorderSquareType.PAYDAY_SQUARE:
+                salary = player.salary
+                # if I am on Payday I get double salary
+                # don't update the player's board_location 
+                how = "passed" 
+                if player.board_location.border_square_number == 0: 
+                    salary += salary
+                    how = "landed on"
+                player.cash += salary
+                player.laps += 1
+                result = CommandResult(CommandResult.SUCCESS, f'Player {player.player_initials} {how} {self.name}\n{self.action_text}', True)
                     
-                    case SpecialProcessingType.HOLIDAY:    # a.k.a. Spring Break, Holiday
-                        # the number of hearts you get is configured in the specialProcessing section
-                        # pending_action  "stay_or_move" - when a player's roll is in the must_roll list
-                        # they must "resolve stay_or_move stay" in order to stay on the square and collect hearts[1]
-                        # I know, complicated!
-                        nhearts = self.special_processing.hearts[0] if player.on_holiday else self.special_processing.hearts[1]
-                        player.add_hearts(nhearts)
-                        player.on_holiday = True
-                        player.add_pending_action(self.special_processing.pending_action, game_square_name=self.name, amount=0)
-                        roll_str = f"rolled a {sum(dice)}. " if dice is not None else ""
-                        message = f'Player {player.player_initials} {roll_str} {self.action_text}\n Collect {nhearts} {GameConstants.HEART}s'
-                        result = CommandResult(CommandResult.SUCCESS, message, True)
-                    
-                    case SpecialProcessingType.BUY_INSURANCE:
-                        player.pending_action = self.special_processing.pending_action
-                        # resolve with "resolve buy_insurance n"   where n is the number of policies to buy
-                        result = CommandResult(CommandResult.NEED_PLAYER_CHOICE, f'Player {player.player_initials} may buy insurance', False)
-                    
-                return result
+            case BorderSquareType.HOLIDAY_SQUARE:    # a.k.a. Spring Break, Holiday
+                # the number of hearts you get is configured in the specialProcessing section
+                # pending_action  "stay_or_move" - when a player's roll is in the must_roll list
+                # they must "resolve stay_or_move stay" in order to stay on the square and collect hearts[1]
+                # I know, complicated!
+                nhearts = self.special_processing.hearts[0] if player.on_holiday else self.special_processing.hearts[1]
+                player.add_hearts(nhearts)
+                player.on_holiday = True
+                player.add_pending_action(self.special_processing.pending_action, game_square_name=self.name, amount=0)
+                roll_str = f"rolled a {sum(dice)}. " if dice is not None else ""
+                message = f'Player {player.player_initials} {roll_str} {self.action_text}\n Collect {nhearts} {GameConstants.HEART}s'
+                result = CommandResult(CommandResult.SUCCESS, message, True)
             
             case BorderSquareType.DANGER_SQUARE:   # IncomeTax, DonateNow, CarPayment, PayRent, ShoppingSpree, DivorceCourt
                 sp_type = self.special_processing.processing_type    # special processing type independent of the square name

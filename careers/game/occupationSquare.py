@@ -7,17 +7,9 @@ from game.gameSquare import GameSquare, GameSquareClass
 from game.player import Player
 from game.commandResult import CommandResult
 from game.gameUtils import GameUtils
-from game.gameConstants import SpecialProcessingType, PendingActionType, GameConstants
-from enum import Enum
+from game.gameConstants import SpecialProcessingType, OccupationSquareType, PendingActionType, GameConstants
 import json, random
-from typing import Any
-
-class OccupationSquareType(Enum):
-    DANGER_SQUARE = 'danger_square'
-    SHORTCUT_SQUARE = 'shortcut_square'
-    ACTION_SQUARE = 'action_square'
-    REGULAR_SQUARE = 'regular_square'
-    TRAVEL_SQUARE = 'travel_square'
+from typing import Any, List, Dict
 
 
 class OccupationSquare(GameSquare):
@@ -29,14 +21,14 @@ class OccupationSquare(GameSquare):
     types_list = list(OccupationSquareType)
 
 
-    def __init__(self, occupation_square_dict:dict, game:Any=None):
+    def __init__(self, occupation_square_dict:Dict, name:str, game:Any=None):
         """Create a OccupationSquare instance.
             Arguments:
                 occupation_square_dict - the dictionary defining this OccupationSquare. This would be an element of occupationSquares.
                 game - a CareersGame instance
 
         """
-        super().__init__("Occupation", name=None, number= occupation_square_dict['number'], \
+        super().__init__("Occupation", name=name, number= occupation_square_dict['number'], \
                          text=occupation_square_dict['text'], special_processing_dict=occupation_square_dict['specialProcessing'], game=game)
         
         self._game_square_dict = occupation_square_dict
@@ -45,7 +37,8 @@ class OccupationSquare(GameSquare):
         self._hearts = occupation_square_dict["hearts"]
         self._experience = occupation_square_dict["experience"]         # the number of Experience cards to collect on this square
         self._opportunities = occupation_square_dict["opportunities"]   # the number of Opportunity cards to collect on this square
-        self._square_type = OccupationSquareType[occupation_square_dict.get('type', 'regular_square').upper()]    # square type is optional for OccupationSquare
+        # square type is optional for OccupationSquare and defaults to OCCUPATION_SQUARE
+        self._square_type = OccupationSquareType[occupation_square_dict.get('type', 'occupation_square').upper()]
         action_text = occupation_square_dict.get('action_text', None)
         if action_text is not None:
             action_text = action_text.replace("<HEART>", GameConstants.HEART)
@@ -54,6 +47,10 @@ class OccupationSquare(GameSquare):
             self.action_text = action_text.replace("<FAME>", GameConstants.FAME)
         self._bonus = occupation_square_dict.get('bonus',0)
         self._help_text = occupation_square_dict.get('help_text', None)
+
+        if self._square_type is OccupationSquareType.DANGER_WORMHOLE_SQUARE:
+            wormhole = {"occupation_name" : self.name, "number" : self.number}
+            GameConstants.add_wormhole(wormhole)   # occupation name : this square number
         
     @property
     def stars(self):
@@ -273,6 +270,24 @@ class OccupationSquare(GameSquare):
             
             case SpecialProcessingType.NEXT_SQUARE:
                 message = f'Next square: {self.special_processing.next_square}'
+                
+            case SpecialProcessingType.WORMHOLE:
+                if player.in_transport:     # how did we get here? Is this my beautiful house?
+                    player.in_transport = False
+                    message = ""
+                else:
+                    #
+                    # pick a profession/wormhole square at random.
+                    # It could be the same square the player now occupies.
+                    # 
+                    next_dest = GameConstants.pick_random_wormhole()
+                    occupation_name = next_dest["occupation_name"]
+                    if self.name == occupation_name:      # if the destination is the current square
+                        message = f'{self.action_text} nowhere'   # stay where we are
+                    else:
+                        message = f'{self.action_text} to {occupation_name} wormhole square {next_dest["number"]} '
+                        next_action = f'enter {occupation_name}; goto {next_dest["number"]}'
+                        player.in_transport = True
                 
             case _:
                 cmd_result = CommandResult.ERROR

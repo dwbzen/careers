@@ -619,7 +619,13 @@ class CareersGameEngine(object):
                 result = self.where("am","I")
                 return CommandResult(result.return_code, f'{result.message}', True)
             else:
-                return CommandResult(CommandResult.ERROR, message, False)
+                if player.in_transport:    # send the blighter to Unemployment
+                    player.in_transport = False
+                    goto_result = self.goto("Unemployment")
+                    message = f'{message} and are being sent to Unemployment. {goto_result.message}'
+                    return CommandResult(CommandResult.ERROR, message, False)
+                else:
+                    return CommandResult(CommandResult.ERROR, message, False)
         else:
             return CommandResult(CommandResult.ERROR, "No such occupation", False)
     
