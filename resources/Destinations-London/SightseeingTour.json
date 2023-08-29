@@ -1,28 +1,21 @@
 {
-	"name" : "Pfizer",
+	"name" : "SightseeingTour",
 	"configuration" : {
 		"occupationClass" : "occupation",
-		"fullName" : "Pfizer",
-		"background_image" : "occupation_entrance.png",
-		"image" : "Pfizer logo.jpg",
+		"fullName" : "Sightseeing Tour",
 		"entry_fee" : 10000,
 		"size" : 19,
 		"entrance_square_number" : 36,
 		"exit_square_number" : 37,
-		"text" : "Must have: £10,000 for special training; or Pharmacy Board Certification; or Pfizer experience",
-		"degreeRequirements" : { 
-			"degreeName" : "Pharmacy",
-			"numberRequired" : 2
-		}
+		"text" : "Must have: £8,000 for lifetime VIP pass, or Tour experience",
+		"degreeRequirements" : { }
 	},
 	"occupationSquares" : [
 		{
 			"number" : 0,
-			"background_image" : "occupation_square.png",
 			"text" : "Group lunch with CTO",
 			"stars" : 0,
 			"hearts" : 0,
-			"bonus" : 0,
 			"experience" : 0,
 			"opportunities" : 1,
 			"action_text" : "Draw 1 OPPORTUNITY CARD",
@@ -30,11 +23,9 @@
 		},
 		{
 			"number" : 1,
-			"background_image" : "occupation_square.png",
 			"text" : "Healthy lifestyle",
 			"stars" : 0,
 			"hearts" : 6,
-			"bonus" : 0,
 			"experience" : 0,
 			"opportunities" : 0,
 			"action_text" : "",
@@ -42,10 +33,8 @@
 		},
 		{
 			"number" : 2,
-			"background_image" : "occupation_square.png",
 			"text" : "Super-smart, may take shortcut",
 			"type" : "shortcut_square",
-			"image" : "shortcut_emoji.png",
 			"stars" : 0,
 			"hearts" : 0,
 			"bonus" : 0,
@@ -61,11 +50,9 @@
 		},
 		{
 			"number" : 3,
-			"background_image" : "occupation_square.png",
 			"text" : "Story about you on BBC America",
 			"stars" : 4,
 			"hearts" : 4,
-			"bonus" : 0,
 			"experience" : 0,
 			"opportunities" : 0,
 			"action_text" : "",
@@ -73,11 +60,9 @@
 		},		
 		{
 			"number" : 4,
-			"background_image" : "occupation_square.png",
 			"text" : "Attend mRNA seminar",
 			"stars" : 0,
 			"hearts" : 0,
-			"bonus" : 0,
 			"experience" : 2,
 			"opportunities" : 0,
 			"action_text" : "Draw 2 EXPERIENCE CARDS",
@@ -85,7 +70,6 @@
 		},
 		{
 			"number" : 5,
-			"background_image" : "occupation_square.png",
 			"text" : "Publish research paper",
 			"stars" : 0,
 			"hearts" : 0, 
@@ -99,11 +83,9 @@
 		},		
 		{
 			"number" : 6,
-			"background_image" : "occupation_square.png",
 			"text" : "On sabbatical to Pfizer USA",
 			"stars" : 2,
 			"hearts" : 3,
-			"bonus" : 0,
 			"experience" : 0,
 			"opportunities" : 0,
 			"action_text" : "",
@@ -111,7 +93,6 @@
 		},
 		{
 			"number" : 7,
-			"background_image" : "danger_occupation_square.png",
 			"text" : "Vaccine has weird side-effects",
 			"type" : "danger_square",
 			"stars" : 0,
@@ -126,11 +107,9 @@
 		},		
 		{
 			"number" : 8,
-			"background_image" : "occupation_square.png",
 			"text" : "Develop new Alzheimers drug",
 			"stars" : 6,
 			"hearts" : 2,
-			"bonus" : 0,
 			"experience" : 0,
 			"opportunities" : 0,
 			"action_text" : "",
@@ -138,7 +117,6 @@
 		},
 		{
 			"number" : 9,
-			"background_image" : "occupation_square.png",
 			"text" : "Promoted to Research Lead",
 			"stars" : 0,
 			"hearts" : 0,
@@ -151,12 +129,10 @@
 			}
 		},
 		{
-			"number" : 10,
-			"background_image" : "occupation_square.png",
+			"number" : 10,,
 			"text" : "Prime Minister advisor appointment",
 			"stars" : 4,
 			"hearts" : 4,
-			"bonus" : 0,
 			"experience" : 0,
 			"opportunities" : 0,
 			"action_text" : "",
@@ -164,7 +140,6 @@
 		},
 		{
 			"number" : 11,
-			"background_image" : "occupation_square.png",
 			"text" : "You have a bad feeling about this...",
 			"type" : "action_square",
 			"stars" : 0,
@@ -178,7 +153,6 @@
 		},
 		{
 			"number" : 12,
-			"background_image" : "danger_occupation_square.png",
 			"text" : "Accused of ethics violations",
 			"type" : "danger_square",
 			"stars" : 0,
@@ -195,11 +169,9 @@
 		},
 		{
 			"number" : 13,
-			"background_image" : "occupation_square.png",
 			"text" : "Work at Francis Crick Institute",
 			"stars" : 0,
 			"hearts" : 4,
-			"bonus" : 0,
 			"experience" : 0,
 			"opportunities" : 0,
 			"action_text" : "",
@@ -207,12 +179,10 @@
 		},
 		{
 			"number" : 14,
-			"background_image" : "occupation_square.png",
 			"text" : "May backstab colleague(s)",
 			"type" : "action_square",
 			"stars" : 0,
 			"hearts" : -4,
-			"bonus" : 0,
 			"experience" : 2,
 			"opportunities" : 0,
 			"action_text" : "You lose 4 Hearts. They lose 12 Hearts",
@@ -225,7 +195,6 @@
 		},		
 		{
 			"number" : 15,
-			"background_image" : "occupation_square.png",
 			"text" : "Forge agreement with BioTech",
 			"stars" : 0,
 			"hearts" : 0, 
@@ -239,7 +208,6 @@
 		},
 		{
 			"number" : 16,
-			"background_image" : "danger_occupation_square.png",
 			"text" : "Inappropriate behavior scandal",
 			"type" : "danger_square",
 			"stars" : 0,
@@ -256,11 +224,9 @@
 		},
 		{
 			"number" : 17,
-			"background_image" : "occupation_square.png",
 			"text" : "Promising vaccine trial results",
 			"stars" : 0,
 			"hearts" : 8,
-			"bonus" : 0,
 			"experience" : 0,
 			"opportunities" : 0,
 			"action_text" : "",
@@ -268,7 +234,6 @@
 		},
 		{
 			"number" : 18,
-			"background_image" : "occupation_square.png",
 			"text" : "Researcher of the year",
 			"stars" : 10,
 			"hearts" : 0, 

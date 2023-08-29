@@ -31,11 +31,11 @@
 			"recommended_padding" : 3
 		},
 		"points" : {
-			"cash" : 5,
-			"stars" : 9,
-			"hearts" : 6,
-			"salary" : 1,
-			"totalPoints" : 22
+			"cash" : 3,
+			"stars" : 4,
+			"hearts" : 12,
+			"salary" : 8,
+			"totalPoints" : 19
 		}
 	},
 	"occupationSquares" : [
@@ -145,7 +145,7 @@
 			"stars" : 0,
 			"hearts" : -4,
 			"bonus" : 0,
-			"experience" : 2,
+			"experience" : 0,
 			"opportunities" : 0,
 			"action_text" : "You lose 4 <HEART>s. They lose 12 <HEART>s",
 			"specialProcessing" : {

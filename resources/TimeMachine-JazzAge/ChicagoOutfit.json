@@ -55,7 +55,7 @@
 			"text" : "Move from New York to Chicago",
 			"type" : "action_square",
 			"stars" : 0,
-			"hearts" : 2,
+			"hearts" : 0,
 			"bonus" : 0,
 			"experience" : 0,
 			"opportunities" : 0,
@@ -94,7 +94,7 @@
 		{
 			"number" : 4,
 			"text" : "Thomas 'Fats' Waller makes an appearance in your speakeasy",
-			"stars" : 0,
+			"stars" : 1,
 			"hearts" : 2,
 			"bonus" : 0,
 			"experience" : 0,
@@ -158,7 +158,7 @@
 			"stars" : 0,
 			"hearts" : -4,
 			"bonus" : 0,
-			"experience" : 2,
+			"experience" : 0,
 			"opportunities" : 0,
 			"action_text" : "You lose 4 Hearts. They lose 12 Hearts",
 			"specialProcessing" : {

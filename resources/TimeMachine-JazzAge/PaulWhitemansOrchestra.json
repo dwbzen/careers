@@ -22,7 +22,7 @@
 			"overall" : 8
 		},
 		"cards" : {
-			"experience" : 1,
+			"experience" : 2,
 			"opportunity" : 2
 		},
 		"srategy" : {
@@ -33,7 +33,7 @@
 			"cash" : 3,
 			"stars" : 2,
 			"hearts" : 23,
-			"salary" : 1,
+			"salary" : 0,
 			"totalPoints" : 28
 		}
 	},
@@ -69,7 +69,7 @@
 			"stars" : 0,
 			"hearts" : 0,
 			"experience" : 0,
-			"opportunities" : 3,
+			"opportunities" : 2,
 			"action_text" : "Draw 2 OPPORTUNITY CARDS",
 			"specialProcessing" : {}
 		},
@@ -144,7 +144,7 @@
 		{
 			"number" : 8,
 			"text" : "Premier of Rhapsody in Blue",
-			"stars" : 0,
+			"stars" : 2,
 			"hearts" : 6,
 			"bonus" : 0,
 			"experience" : 0,

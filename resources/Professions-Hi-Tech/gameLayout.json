@@ -393,7 +393,6 @@
 				"number" : 30,
 				"name" : "SpringBreak",
 				"type" : "holiday_square",
-				"background_image" : "DWBZen_Photo_of_Clearwater_Beach_Florida_small.png",
 				"text" : "Spring Break",
 				"action_text" : "You are on Spring Break! Collect 6 <HEART>s for landing here and 3 each time you stay with a roll of 7 or less",
 				"specialProcessing" : {

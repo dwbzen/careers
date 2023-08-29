@@ -1,15 +1,13 @@
 {
-	"name" : "BBCNews",
+	"name" : "BuckinghamPalace",
 	"configuration" : {
 		"occupationClass" : "occupation",
-		"fullName" : "BBC News",
-		"background_image" : "occupation_entrance.png",
-		"image" : "BBC News logo.jpg",
+		"fullName" : "Buckingham Palace",
 		"entry_fee" : 500,
 		"size" : 11,
 		"entrance_square_number" : 27,
 		"exit_square_number" : 31,
-		"text" : "Must have: £2000 for a new laptop; or Journalism degree; or BBC News experience",
+		"text" : "Must have: £2000 for a new VIP visitor pass, or an existing visitor pass.",
 		"degreeRequirements" : { 
 			"degreeName" : "Business Admin",
 			"numberRequired" : 1
@@ -18,11 +16,9 @@
 	"occupationSquares" : [
 		{
 			"number" : 0,
-			"background_image" : "occupation_square.png",
 			"text" : "Your story picked up by Reuters",
 			"stars" : 2,
 			"hearts" : 0,
-			"bonus" : 0,
 			"experience" : 0,
 			"opportunities" : 0,
 			"action_text" : "",
@@ -30,11 +26,9 @@
 		},
 		{
 			"number" : 1,
-			"background_image" : "occupation_square.png",
 			"text" : "Write for BBC News Online",
 			"stars" : 0,
 			"hearts" : 0,
-			"bonus" : 0,
 			"experience" : 1,
 			"opportunities" : 0,
 			"action_text" : "Draw 1 EXPERIENCE CARD",
@@ -42,7 +36,6 @@
 		},
 		{
 			"number" : 2,
-			"background_image" : "occupation_square.png",
 			"text" : "Lunch with BBC Director of News",
 			"stars" : 0,
 			"hearts" : 0,
@@ -53,7 +46,6 @@
 		},
 		{
 			"number" : 3,
-			"background_image" : "occupation_square.png",
 			"text" : "Given your own programme",
 			"stars" : 6,
 			"hearts" : 2,
@@ -64,7 +56,6 @@
 		},
 		{
 			"number" : 4,
-			"background_image" : "occupation_square.png",
 			"text" : "Broker partnership with CBS News",
 			"stars" : 0,
 			"hearts" : 0,
@@ -78,7 +69,6 @@
 		},
 		{
 			"number" : 5,
-			"background_image" : "occupation_square.png",
 			"text" : "Cover Tech Conference in Geneva",
 			"stars" : 0,
 			"hearts" : 4,
@@ -89,7 +79,6 @@
 		},
 		{
 			"number" : 6,
-			"background_image" : "danger_occupation_square.png",
 			"text" : "Lose news anchor position",
 			"type" : "danger_square",
 			"stars" : 0,
@@ -105,7 +94,6 @@
 		},
 		{
 			"number" : 7,
-			"background_image" : "danger_occupation_square.png",
 			"text" : "Throw a wobbly on live TV",
 			"type" : "danger_square",
 			"stars" : 10,
@@ -122,8 +110,7 @@
 		},
 		{
 			"number" : 8,
-			"background_image" : "occupation_square.png",
-			"text" : "Stranded in Russion without a visa...",
+			"text" : "Stranded in Russia without a visa...",
 			"type" : "action_square",
 			"stars" : 4,
 			"hearts" : 0,
@@ -136,7 +123,6 @@
 		},
 		{
 			"number" : 9,
-			"background_image" : "occupation_square.png",
 			"text" : "Promoted to Director",
 			"stars" : 0,
 			"hearts" : 0,
@@ -151,7 +137,6 @@
 		},
 		{
 			"number" : 10,
-			"background_image" : "occupation_square.png",
 			"text" : "Win Orwell Prize for Journalism",
 			"stars" : 12,
 			"hearts" : 0, 

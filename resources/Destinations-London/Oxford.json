@@ -1,5 +1,5 @@
 {
-	"name" : "UF",
+	"name" : "Oxford",
 	"configuration" : {
 		"occupationClass" : "college",
 		"fullName" : "University of Oxford",
@@ -9,7 +9,7 @@
 		"size" : 11,
 		"entrance_square_number" : 7,
 		"exit_square_number" : 11,
-		"text" : "Must have: £1000 tuition\nDegrees available:Engineering, IT, Athletic Training, Law, \nHistory, Anthropology, Sales & Marketting, Journalism and Pharmacology",
+		"text" : "Must have: £1000 tuition. Degrees available: Anthropology, Architecture, Brewing Arts, Fine Arts, Law, Medieval History, ",
 		"Help" : [ "Each Degree Program is with a specific occupation. maxDegrees is the maximum number of degrees attainable in any degree program." ]
 	},
 	"occupationSquares" : [

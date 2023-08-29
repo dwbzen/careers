@@ -320,13 +320,13 @@
 			},
 			{
 				"number" : 24,
-				"name" : "HousesOfParliament",
+				"name" : "PalaceOfWestminster",
 				"type" : "occupation_entrance_square",
-				"text" : "Houses of Parliament",
+				"text" : "Palace Of Westminster",
 				"action_text" : "Must donate £8,000 to the Conservative Party, or a Law degree, or you've been here before.",
 				"specialProcessing" : {
 					"type" : "enter_occupation",
-					"destinationOccupation" : "HousesOfParliament"
+					"destinationOccupation" : "PalaceOfWestminster"
 				}
 			},
 			{

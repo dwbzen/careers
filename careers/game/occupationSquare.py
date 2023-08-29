@@ -53,19 +53,19 @@ class OccupationSquare(GameSquare):
             GameConstants.add_wormhole(wormhole)   # occupation name : this square number
         
     @property
-    def stars(self):
+    def stars(self)->int:
         return self._stars
     
     @property
-    def hearts(self):
+    def hearts(self)->int:
         return self._hearts
     
     @property
-    def experience(self):
+    def experience(self)->int:
         return self._experience
     
     @property
-    def opportunities(self):
+    def opportunities(self)->int:
         return self._opportunities
     
     @property
@@ -109,7 +109,7 @@ class OccupationSquare(GameSquare):
         cmd_result = CommandResult.SUCCESS
         next_action = None
         done_flag = True
-                
+        pending_action = self.special_processing.pending_action
         match sptype:
             case SpecialProcessingType.BONUS:
                 if dice > 0:
@@ -171,7 +171,7 @@ class OccupationSquare(GameSquare):
 
             case SpecialProcessingType.SHORTCUT:    # pending action amount is the square# to goto if the shortcut is taken
                 next_square = self.special_processing.next_square
-                player.add_pending_action(self.special_processing.pending_action, game_square_name=self.name, amount=next_square)
+                player.add_pending_action(pending_action, game_square_name=self.name, amount=next_square)
                 message = f'{player.player_initials} may take a shortcut to square {next_square}'
             
             case SpecialProcessingType.CASH_LOSS_OR_UNEMPLOYMENT:
@@ -292,7 +292,21 @@ class OccupationSquare(GameSquare):
             case _:
                 cmd_result = CommandResult.ERROR
                 message = f'New or unsupported SpecialProcessingType "{sptype}"'
-                
+        
+        #
+        # 
+        #
+        if pending_action is PendingActionType.CHOOSE_OCCUPATION:
+            #
+            # in this context choose_occupation is the result of landing on a gateway square
+            # connecting two professions/destinations via a road/bridge (rectangle on the game board)
+            # player can choose to take the road or not.
+            # TODO
+            next_square = self.special_processing.next_square
+            destation = self.special_processing.destination    # destination occupation name
+            player.add_pending_action(pending_action, game_square_name=destination, amount=next_square)
+            message = f'{player.player_initials} may take the bridge to {destination}, square {next_square}'
+        
         return CommandResult(cmd_result, message, done_flag, next_action=next_action)
     
     def to_JSON(self):

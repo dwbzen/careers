@@ -154,7 +154,7 @@
 			"Rules" : "rules.json",
 			"plugins" : {
 				"careers.game.plugins.careers_All_Strategy" : {"classname" : "Careers_All_Strategy", "active":1, "context":"turn", "strategy_level":"dumb" },
-				"careers.game.plugins.careers_All_Randomizer" : {"classname" : "Careers_All_Randomizer", "active":1, "context":"start" }
+				"careers.game.plugins.careers_All_Randomizer" : {"classname" : "Careers_All_Randomizer", "active":0, "context":"start" }
 			},
 			"configuration" : {
 					"starting_salary" : 1000,

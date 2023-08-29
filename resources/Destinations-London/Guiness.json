@@ -1,15 +1,13 @@
 {
-	"name" : "RollsRoyce",
+	"name" : "Guiness",
 	"configuration" : {
 		"occupationClass" : "occupation",
-		"fullName" : "Rolls Royce",
-		"background_image" : "occupation_entrance.png",
-		"image" : "800px-Rolls_royce_holdings_logo.svg.png",
-		"entry_fee" : 5000,
+		"fullName" : "Guiness",
+		"entry_fee" : 8000,
 		"size" : 13,
 		"entrance_square_number" : 40,
 		"exit_square_number" : 1,
-		"text" : "Must have: £5000 recruiting fee; or Engineering degree; or Rolls Royce experience",
+		"text" : "Must have: £8000 for internship, or Brewing Arts degree, or Guiness experience",
 		"degreeRequirements" : { 
 			"degreeName" : "Engineering",
 			"numberRequired" : 1
@@ -18,11 +16,9 @@
 	"occupationSquares" : [
 		{
 			"number" : 0,
-			"background_image" : "occupation_square.png",
 			"text" : "Assigned to artificial intelligence (AI) Unit",
 			"stars" : 0,
 			"hearts" : 2,
-			"bonus" : 0,
 			"experience" : 0,
 			"opportunities" : 0,
 			"action_text" : "",
@@ -30,11 +26,9 @@
 		},
 		{
 			"number" : 1,
-			"background_image" : "occupation_square.png",
 			"text" : "Pioneer UltraFan engine design",
 			"stars" : 6,
 			"hearts" : 0,
-			"bonus" : 0,
 			"experience" : 0,
 			"opportunities" : 0,
 			"action_text" : "",
@@ -42,8 +36,7 @@
 		},
 		{
 			"number" : 2,
-			"background_image" : "danger_occupation_square.png",
-			"text" : "Fired for inappropriate conduct",
+			"text" : "Reprimanded for inappropriate conduct and reprehensible tweets",
 			"type" : "danger_square",
 			"stars" : 0,
 			"hearts" : 0,
@@ -59,8 +52,7 @@
 		},
 		{
 			"number" : 3,
-			"background_image" : "danger_occupation_square.png",
-			"text" : "Prototype engine blows up in testing",
+			"text" : "Your wallet/purse is stolen during a beer tasting",
 			"type" : "danger_square",
 			"stars" : 0,
 			"hearts" : 0,
@@ -76,11 +68,9 @@
 		},
 		{
 			"number" : 4,
-			"background_image" : "occupation_square.png",
 			"text" : "Enhance Testbed 80 for Trent XWB engine",
 			"stars" : 2,
 			"hearts" : 4,
-			"bonus" : 0,
 			"experience" : 0,
 			"opportunities" : 0,
 			"action_text" : "",
@@ -88,7 +78,6 @@
 		},
 		{
 			"number" : 5,
-			"background_image" : "occupation_square.png",
 			"text" : "New intelligent engine design",
 			"stars" : 0,
 			"hearts" : 0,
@@ -102,11 +91,9 @@
 		},
 		{
 			"number" : 6,
-			"background_image" : "occupation_square.png",
 			"text" : "Grueling Avionics Programme",
 			"stars" : 0,
 			"hearts" : 0,
-			"bonus" : 0,
 			"experience" : 2,
 			"opportunities" : 0,
 			"action_text" : "Draw 2 EXPERIENCE CARDS",
@@ -114,7 +101,6 @@
 		},
 		{
 			"number" : 7,
-			"background_image" : "occupation_square.png",
 			"text" : "Sign contract with UK Ministry of Defense",
 			"stars" : 16,
 			"hearts" : 0,
@@ -126,7 +112,6 @@
 		},
 		{
 			"number" : 8,
-			"background_image" : "occupation_square.png",
 			"text" : "Lunch with Head of IT Innovation",
 			"stars" : 2,
 			"hearts" : 10,
@@ -138,7 +123,6 @@
 		},
 		{
 			"number" : 9,
-			"background_image" : "occupation_square.png",
 			"text" : "Cash advance for company tell-all book",
 			"stars" : 0,
 			"hearts" : 0, 
@@ -152,7 +136,6 @@
 		},
 		{
 			"number" : 10,
-			"background_image" : "danger_occupation_square.png",
 			"text" : "Exhausted from conference keynote address",
 			"type" : "danger_square",
 			"stars" : 10,
@@ -167,7 +150,6 @@
 		},
 		{
 			"number" : 11,
-			"background_image" : "occupation_square.png",
 			"text" : "Sign contract with UK Space Agency",
 			"stars" : 6,
 			"hearts" : 4,
@@ -179,7 +161,6 @@
 		},
 		{
 			"number" : 12,
-			"background_image" : "occupation_square.png",
 			"text" : "Employee of the year",
 			"stars" : 10,
 			"hearts" : 0, 

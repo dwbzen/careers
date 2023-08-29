@@ -35,7 +35,7 @@
 			"stars" : 34,
 			"hearts" : 28,
 			"salary" : 4,
-			"totalPoints" : 66
+			"totalPoints" : 70
 		}
 	},
 	"occupationSquares" : [
@@ -44,7 +44,6 @@
 			"text" : "Attend mRNA seminar",
 			"stars" : 0,
 			"hearts" : 0,
-			"bonus" : 0,
 			"experience" : 0,
 			"opportunities" : 1,
 			"action_text" : "Draw 1 OPPORTUNITY CARD",
@@ -55,7 +54,6 @@
 			"text" : "Promote a healthy lifestyle",
 			"stars" : 0,
 			"hearts" : 6,
-			"bonus" : 0,
 			"experience" : 0,
 			"opportunities" : 0,
 			"action_text" : "",
@@ -67,7 +65,6 @@
 			"type" : "shortcut_square",
 			"stars" : 0,
 			"hearts" : 0,
-			"bonus" : 0,
 			"experience" : 0,
 			"opportunities" : 0,
 			"action_text" : "",
@@ -83,7 +80,6 @@
 			"text" : "Story about your research on BBC America",
 			"stars" : 4,
 			"hearts" : 4,
-			"bonus" : 0,
 			"experience" : 0,
 			"opportunities" : 0,
 			"action_text" : "",
@@ -94,7 +90,6 @@
 			"text" : "Final push to get A1C drug to trial",
 			"stars" : 0,
 			"hearts" : 0,
-			"bonus" : 0,
 			"experience" : 2,
 			"opportunities" : 0,
 			"action_text" : "Draw 2 EXPERIENCE CARDS",
@@ -111,7 +106,8 @@
 			"full_action_text" : "Collect bonus $4,000",
 			"specialProcessing" : {
 				"type" : "bonus_all",
-				"amount" : 4000
+				"dice" : 1,
+				"amount" : 1000
 			}
 		},		
 		{
@@ -119,7 +115,6 @@
 			"text" : "Take a sabbatical  in Japan to study jellyfish",
 			"stars" : 2,
 			"hearts" : 6,
-			"bonus" : 0,
 			"experience" : 0,
 			"opportunities" : 0,
 			"action_text" : "",
@@ -144,7 +139,6 @@
 			"text" : "Develop promising new Alzheimers drug",
 			"stars" : 6,
 			"hearts" : 4,
-			"bonus" : 0,
 			"experience" : 0,
 			"opportunities" : 0,
 			"action_text" : "",
@@ -169,7 +163,6 @@
 			"text" : "POTUS advisor appointment",
 			"stars" : 4,
 			"hearts" : 4,
-			"bonus" : 0,
 			"experience" : 0,
 			"opportunities" : 0,
 			"action_text" : "",
@@ -209,7 +202,6 @@
 			"text" : "Celebrity tour of the CDC",
 			"stars" : 0,
 			"hearts" : 4,
-			"bonus" : 0,
 			"experience" : 0,
 			"opportunities" : 0,
 			"action_text" : "",
@@ -221,8 +213,7 @@
 			"type" : "action_square",
 			"stars" : 0,
 			"hearts" : -4,
-			"bonus" : 0,
-			"experience" : 2,
+			"experience" : 0,
 			"opportunities" : 0,
 			"action_text" : "You lose 4 <HEART>s. They lose 12 <HEART>s",
 			"specialProcessing" : {
@@ -264,8 +255,8 @@
 		{
 			"number" : 17,
 			"text" : "Extraordinary stem cell research buzz breaks the internet",
-			"stars" : 0,
-			"hearts" : 8,
+			"stars" : 8,
+			"hearts" : 0,
 			"bonus" : 0,
 			"experience" : 0,
 			"opportunities" : 0,

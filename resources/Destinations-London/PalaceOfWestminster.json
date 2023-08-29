@@ -1,15 +1,13 @@
 {
-	"name" : "ListerAndBacon",
+	"name" : "PalaceOfWestminster",
 	"configuration" : {
 		"occupationClass" : "occupation",
-		"fullName" : "Lister & Bacon",
-		"background_image" : "occupation_entrance.png",
-		"image" : "Lister and Bacon.jpg",
+		"fullName" : "Palace Of Westminster",
 		"entry_fee" : 8000,
 		"size" : 12,
 		"entrance_square_number" : 24,
 		"exit_square_number" : 25,
-		"text" : "Must have: £8000 for bar exam; or a Law Board Certification degree; or Law Firm experience",
+		"text" : "Must have: £8000 for bar exam, or a Law Board Certification degree, or Law Firm experience",
 		"degreeRequirements" : { 
 			"degreeName" : "Law",
 			"numberRequired" : 2
@@ -18,7 +16,6 @@
 	"occupationSquares" : [
 		{
 			"number" : 0,
-			"background_image" : "danger_occupation_square.png",
 			"text" : "Unable to find a tenancy",
 			"type" : "danger_square",
 			"stars" : 0,
@@ -33,7 +30,6 @@
 		},
 		{
 			"number" : 1,
-			"background_image" : "occupation_square.png",
 			"text" : "Join the Inner Temple Inn",
 			"stars" : 0,
 			"hearts" : 0,
@@ -44,7 +40,6 @@
 		},
 		{
 			"number" : 2,
-			"background_image" : "occupation_square.png",
 			"text" : "Complete 10 dinners and Called to the Bar",
 			"stars" : 4,
 			"hearts" : 0,
@@ -55,25 +50,25 @@
 		},
 		{
 			"number" : 3,
-			"background_image" : "occupation_square.png",
 			"text" : "Obtain pupilage from QC Barrister",
 			"stars" : 0,
 			"hearts" : 0,
 			"experience" : 0,
 			"opportunities" : 0,
-			"action_text" : "**Salary up** £2000",
+			"action_text" : "Salary up £2,000",
 			"specialProcessing" : {
 				"type" : "salary_increase",
-				"amount" : 2000
+				"amount" : 2000,
+				"pending_action" : "choose_occupation",
+				"destinationOccupation" : "WestminsterAbbey",
+				"next_square" : 8
 			}
 		},
 		{
 			"number" : 4,
-			"background_image" : "occupation_square.png",
 			"text" : "Represent Harrods in privacy litigation",
 			"stars" : 0,
 			"hearts" : 0,
-			"bonus" : 0,
 			"experience" : 2,
 			"opportunities" : 0,
 			"action_text" : "Draw 2 EXPERIENCE CARDS",
@@ -81,7 +76,6 @@
 		},
 		{
 			"number" : 5,
-			"background_image" : "occupation_square.png",
 			"text" : "Serve as Inner Temple Inns of Court President",
 			"stars" : 6,
 			"hearts" : 2,
@@ -92,8 +86,7 @@
 		},
 		{
 			"number" : 6,
-			"background_image" : "occupation_square.png",
-			"text" : "receive Channel 4 Rising Star Award",
+			"text" : "Receive Channel 4 Rising Star Award",
 			"stars" : 2,
 			"hearts" : 4,
 			"experience" : 0,
@@ -103,15 +96,13 @@
 		},
 		{
 			"number" : 7,
-			"background_image" : "occupation_square.png",
 			"text" : "May backstab learned friend(s)",
 			"type" : "action_square",
 			"stars" : 0,
 			"hearts" : -4,
-			"bonus" : 0,
 			"experience" : 2,
 			"opportunities" : 0,
-			"action_text" : "You lose 4 Hearts\n They lose 12 Hearts",
+			"action_text" : "You lose 4 Hearts. They lose 12 Hearts",
 			"specialProcessing" : {
 				"type" : "backstab",
 				"pending_action" : "backstab",
@@ -121,7 +112,6 @@
 		},
 		{
 			"number" : 8,
-			"background_image" : "occupation_square.png",
 			"text" : "Appointed Home Secretary by PM",
 			"stars" : 8,
 			"hearts" : 0,
@@ -132,7 +122,6 @@
 		},
 		{
 			"number" : 9,
-			"background_image" : "occupation_square.png",
 			"text" : "Win class action lawsuite",
 			"stars" : 6,
 			"hearts" : 0, 
@@ -146,7 +135,6 @@
 		},
 		{
 			"number" : 10,
-			"background_image" : "danger_occupation_square.png",
 			"text" : "Disciplined by Bar Standards Board",
 			"type" : "danger_square",
 			"stars" : 0,
@@ -163,7 +151,6 @@
 		},
 		{
 			"number" : 11,
-			"background_image" : "occupation_square.png",
 			"text" : "Appointed to Queens Council",
 			"stars" : 12,
 			"hearts" : 0, 

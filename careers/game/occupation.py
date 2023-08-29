@@ -4,6 +4,7 @@ Created on Aug 20, 2022
 @author: don_bacon
 '''
 from game.occupationSquare import OccupationSquare
+from game.gameConstants import SpecialProcessingType
 from typing import Dict
 
 class Occupation(object):
@@ -36,14 +37,20 @@ class Occupation(object):
         # if prior_experience ==1, entrance fee waived if previous experience (i.e. occupation completion)
         # otherwise entrance fee must be paid each time
         self._prior_experience = self._configuration.get('prior_experience', 1)
+        
         # ranking relative to other occupations/professions
         self._ranking = self._configuration.get('ranking', {"points" : 0,"stars" : 0,"hearts" : 0, "cash" : 0, "salary" : 0, "overall" : 0})
+        
         # number of potential experience and opportunity cards
-        self._cards = self._configuration.get('cards', {"experience" : 0, "opportunity" : 0})
+        self._cards = {"experience" : 0, "opportunity" : 0}
+        
         # strategy
         self._strategy = self._configuration.get('strategy', {"danger_squares" : 2, "recommended_padding" : 3})
+        
         # points is the number of potential points in the occupation. Cash and salary are in 1000's, so 5 points = $5,000
-        self._points = self._configuration.get('points',{"cash" : 0,"stars" : 0,"hearts" : 0,"salary" : 0,"totalPoints" : 0})
+        # values determined by roll of 1 die use the average 3
+        #
+        self._points =  {"cash" : 0,"stars" : 0,"hearts" : 0,"salary" : 0,"total_points" : 0} 
         
         self._double_happiness = False      # this is temporarily set by a "double_happiness" Opportunity card
         self._careersGame = None
@@ -59,13 +66,44 @@ class Occupation(object):
     def _create_occupation_squares(self, occupationSquares:list, game) -> list:
         """For this Occupation create a list of OccupationSquare corresponding to the "occupationSquares".
             Returns: a List of  OccupationSquare
+            This also updates configuration.points (cash, stars, hearts, salary, totalPoints)
         """
         occupation_squares = list()
         for occupation_square_dict in occupationSquares:
             occupation_square = OccupationSquare(occupation_square_dict, self.name, game=game)
             occupation_squares.append(occupation_square)
+            self._update_points(occupation_square)
+        self._points["total_points"] = self._points["cash"] + self._points["hearts"] + self._points["stars"]
         return occupation_squares
     
+    def _update_points(self, occupation_square:OccupationSquare):
+        self._points["hearts"] += occupation_square.hearts
+        self._points["stars"] += occupation_square.stars
+ 
+        if occupation_square.special_processing is not None:
+            dice = occupation_square.special_processing.dice
+            amount = occupation_square.special_processing.amount // 1000    # convert to points
+
+            if ( occupation_square.special_processing.processing_type is SpecialProcessingType.BONUS or \
+                 occupation_square.special_processing.processing_type is SpecialProcessingType.BONUS_ALL):
+
+                if dice == 0:
+                    self._points["cash"] += amount
+                else:
+                    self._points["cash"] += dice * 3 *amount     # 3 is avg roll for 1 die, 6 for 2 die
+            elif occupation_square.special_processing.processing_type is SpecialProcessingType.SALARY_INCREASE:
+                if dice == 0:
+                    self._points["salary"] += amount
+                else:
+                    self._points["salary"] += dice * 3 *amount     # 3 is avg roll for 1 die, 6 for 2 die
+            elif occupation_square.special_processing.processing_type is SpecialProcessingType.BACKSTAB:
+                # Back stabbing is optional - add back in the hearts loss
+                self._points["hearts"] -= occupation_square.hearts
+                
+            
+        self._cards["experience"] += occupation_square.experience
+        self._cards["opportunity"] += occupation_square.opportunities
+        
     @property
     def name(self):
         return self._name
@@ -127,10 +165,10 @@ class Occupation(object):
         return self._cards
     
     @property
-    def srategy(self) ->Dict:
+    def strategy(self) ->Dict:
         """Dictionary with the keys "danger_squares", "recommended_padding"
         """
-        return self._srategy
+        return self._strategy
     
     @property
     def points(self) ->Dict:
@@ -164,8 +202,5 @@ class Occupation(object):
     @property
     def configuration(self)->Dict:
         return self._configuration
-    
-    @property
-    def strategy(self)->Dict:
-        return self._strategy
+
     

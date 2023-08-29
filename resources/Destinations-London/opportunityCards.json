@@ -175,19 +175,19 @@
 		{
 			"number" : 15,
 			"card_type" : "occupation",
-			"destination" : "HousesOfParliament",
+			"destination" : "PalaceOfWestminster",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
-			"text" : "OPPORTUNITY to tour the Houses Of Parliament. Meet Normal Requirements",
+			"text" : "OPPORTUNITY to tour the Palace Of Westminster. Meet Normal Requirements",
 			"quantity" : 3
 		},
 		{
 			"number" : 16,
 			"card_type" : "occupation",
-			"destination" : "HousesOfParliament",
+			"destination" : "PalaceOfWestminster",
 			"expenses_paid" : 1,
 			"double_happiness" : 0,
-			"text" : "SPECIAL OPPORTUNITY tour the Houses Of Parliament because of your liberal connections. All expenses paid.",
+			"text" : "SPECIAL OPPORTUNITY tour the Palace Of Westminster because of your liberal connections. All expenses paid.",
 			"quantity" : 1
 		},
 		{
@@ -245,7 +245,7 @@
 			"destination" : "Payday",
 			"expenses_paid" : 0,
 			"double_happiness" : 0,
-			"text" : "SPECIAL OPPORTUNITY to collect needed cash!\nAdvance to PAYDAY and collect DOUBLE your annual salary.",
+			"text" : "SPECIAL OPPORTUNITY to collect needed cash! Advance to PAYDAY and collect DOUBLE your annual salary.",
 			"quantity" : 3
 		},
 		{

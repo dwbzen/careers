@@ -1,5 +1,5 @@
 {
-	"degreePrograms" : ["Anthropology", "Architecture", "Brewing Technology", "Fine Arts", "Law", "Medieval History"],
+	"degreePrograms" : ["Anthropology", "Architecture", "Brewing Arts", "Fine Arts", "Law", "Medieval History"],
 	"maxDegrees" : 4,
 	"salaryIncreases" : [1000, 2000, 3000, 5000],
 	"degreeNames" : ["Bachelors", "Masters", "PhD", "Post-Doc"]

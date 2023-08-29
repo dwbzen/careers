@@ -1,15 +1,13 @@
 {
-	"name" : "Arsenal",
+	"name" : "WestminsterAbbey",
 	"configuration" : {
 		"occupationClass" : "occupation",
-		"fullName" : "Arsenal",
-		"background_image" : "occupation_entrance.png",
-		"image" : "408px-Arsenal_FC.svg.png",
+		"fullName" : "Westminster Abbey",
 		"entry_fee" : 500,
 		"size" : 11,
 		"entrance_square_number" : 15,
 		"exit_square_number" : 16,
-		"text" : "Must have: £500 for sports training; or Athletic Training degree; or Arsenal experience",
+		"text" : "Must have: £500 temporary pass, or Architecture degree, or previous experience",
 		"degreeRequirements" : { 
 			"degreeName" : "Athletic Training",
 			"numberRequired" : 1
@@ -18,11 +16,9 @@
 	"occupationSquares" : [
 		{
 			"number" : 0,
-			"background_image" : "occupation_square.png",
 			"text" : "Big Florida Cup win over Orlando City",
 			"stars" : 0,
 			"hearts" : 4,
-			"bonus" : 0,
 			"experience" : 0,
 			"opportunities" : 0,
 			"action_text" : "",
@@ -30,7 +26,6 @@
 		},
 		{
 			"number" : 1,
-			"background_image" : "occupation_square.png",
 			"text" : "Lunch with commentator Martin Tyler",
 			"stars" : 0,
 			"hearts" : 0,
@@ -41,7 +36,6 @@
 		},
 		{
 			"number" : 2,
-			"background_image" : "occupation_square.png",
 			"text" : "Score Premier League goal of the season",
 			"stars" : 2,
 			"hearts" : 4,
@@ -52,11 +46,9 @@
 		},
 		{
 			"number" : 3,
-			"background_image" : "occupation_square.png",
 			"text" : "Trainer for Arsenal Women",
 			"stars" : 0,
 			"hearts" : 0,
-			"bonus" : 0,
 			"experience" : 2,
 			"opportunities" : 0,
 			"action_text" : "Draw 2 EXPERIENCE CARDS",
@@ -64,7 +56,6 @@
 		},
 		{
 			"number" : 4,
-			"background_image" : "occupation_square.png",
 			"text" : "Enrolled in the 100 Club",
 			"stars" : 0,
 			"hearts" : 0,
@@ -79,7 +70,6 @@
 		},
 		{
 			"number" : 5,
-			"background_image" : "danger_occupation_square.png",
 			"text" : "Collision with Chelsea forward",
 			"type" : "danger_square",
 			"stars" : 0,
@@ -94,7 +84,6 @@
 		},
 		{
 			"number" : 6,
-			"background_image" : "occupation_square.png",
 			"text" : "Need some opportunities quick!",
 			"type" : "action_square",
 			"stars" : 4,
@@ -108,7 +97,6 @@
 		},
 		{
 			"number" : 7,
-			"background_image" : "occupation_square.png",
 			"text" : "Interviewed on American late-night TV",
 			"stars" : 4,
 			"hearts" : 2,
@@ -119,21 +107,22 @@
 		},
 		{
 			"number" : 8,
-			"background_image" : "occupation_square.png",
 			"text" : "Commentator for FIFA World Cup",
 			"stars" : 0,
 			"hearts" : 0, 
 			"experience" : 0,
 			"opportunities" : 0,
-			"action_text" : "Collect bonus £5000",
+			"action_text" : "Collect bonus £5,000",
 			"specialProcessing" : {
 				"type" : "bonus",
-				"amount" : 5000
+				"amount" : 5000,
+				"pending_action" : "choose_occupation",
+				"destinationOccupation" : "HousesOfParliament",
+				"next_square" : 3
 			}
 		},
 		{
 			"number" : 9,
-			"background_image" : "danger_occupation_square.png",
 			"text" : "Sports betting scandal",
 			"type" : "danger_square",
 			"stars" : 0,
@@ -150,7 +139,6 @@
 		},
 		{
 			"number" : 10,
-			"background_image" : "occupation_square.png",
 			"text" : "Coach of the year",
 			"stars" : 6,
 			"hearts" : 0, 

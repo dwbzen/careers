@@ -3,13 +3,11 @@
 	"configuration" : {
 		"occupationClass" : "occupation",
 		"fullName" : "Tower of London",
-		"background_image" : "occupation_entrance.png",
-		"image" : "Tower of London.png",
 		"entry_fee" : 4000,
 		"size" : 14,
 		"entrance_square_number" : 33,
 		"exit_square_number" : 34,
-		"text" : "Must have: £4000 for special training; or History degree; or Tower of London experience",
+		"text" : "Must have: £4000 for raven awareness training, or a Medieval History degree, or Tower experience",
 		"degreeRequirements" : { 
 			"degreeName" : "History",
 			"numberRequired" : 1
@@ -18,11 +16,9 @@
 	"occupationSquares" : [
 		{
 			"number" : 0,
-			"background_image" : "occupation_square.png",
 			"text" : "View the Crown Jewels",
 			"stars" : 0,
 			"hearts" : 2,
-			"bonus" : 0,
 			"experience" : 0,
 			"opportunities" : 0,
 			"action_text" : "",
@@ -30,12 +26,10 @@
 		},
 		{
 			"number" : 1,
-			"background_image" : "occupation_square.png",
 			"text" : "You're needed at Develin Tower",
 			"type" : "action_square",
 			"stars" : 0,
 			"hearts" : 2,
-			"bonus" : 0,
 			"experience" : 0,
 			"opportunities" : 0,
 			"action_text" : "Roll again",
@@ -45,7 +39,6 @@
 		},
 		{
 			"number" : 2,
-			"background_image" : "danger_occupation_square.png",
 			"text" : "A tourist steals your tablet",
 			"type" : "danger_square",
 			"stars" : 0,
@@ -62,11 +55,9 @@
 		},
 		{
 			"number" : 3,
-			"background_image" : "occupation_square.png",
 			"text" : "Ceremony of the Keys",
 			"stars" : 0,
 			"hearts" : 2,
-			"bonus" : 0,
 			"experience" : 0,
 			"opportunities" : 0,
 			"action_text" : "",
@@ -74,11 +65,9 @@
 		},
 		{
 			"number" : 4,
-			"background_image" : "occupation_square.png",
 			"text" : "Lead celebrity Beefeater Tour",
 			"stars" : 0,
 			"hearts" : 2,
-			"bonus" : 0,
 			"experience" : 0,
 			"opportunities" : 0,
 			"action_text" : "",
@@ -86,11 +75,9 @@
 		},
 		{
 			"number" : 5,
-			"background_image" : "occupation_square.png",
 			"text" : "Interview with the Constable of the Tower",
 			"stars" : 0,
 			"hearts" : 0,
-			"bonus" : 0,
 			"experience" : 2,
 			"opportunities" : 0,
 			"action_text" : "Draw 2 EXPERIENCE CARDS",
@@ -98,7 +85,6 @@
 		},
 		{
 			"number" : 6,
-			"background_image" : "occupation_square.png",
 			"text" : "Promoted to Yeoman Warder",
 			"stars" : 4,
 			"hearts" : 0, 
@@ -112,11 +98,9 @@
 		},
 		{
 			"number" : 7,
-			"background_image" : "occupation_square.png",
 			"text" : "Post a photo of the Ghost of Henry VI",
 			"stars" : 6,
 			"hearts" : 0,
-			"bonus" : 0,
 			"experience" : 0,
 			"opportunities" : 0,
 			"action_text" : "",
@@ -124,7 +108,6 @@
 		},
 		{
 			"number" : 8,
-			"background_image" : "danger_occupation_square.png",
 			"text" : "Accident in the Royal Armouries",
 			"type" : "danger_square",
 			"stars" : 0,
@@ -139,12 +122,10 @@
 		},
 		{
 			"number" : 9,
-			"background_image" : "occupation_square.png",
 			"text" : "May backstab colleague(s)",
 			"type" : "action_square",
 			"stars" : 0,
 			"hearts" : -4,
-			"bonus" : 0,
 			"experience" : 2,
 			"opportunities" : 0,
 			"action_text" : "You lose 4 Hearts\n They lose 12 Hearts",
@@ -157,7 +138,6 @@
 		},
 		{
 			"number" : 10,
-			"background_image" : "occupation_square.png",
 			"text" : "Appointed Ravenmaster",
 			"stars" : 0,
 			"hearts" : 0, 
@@ -171,11 +151,9 @@
 		},
 		{
 			"number" : 11,
-			"background_image" : "occupation_square.png",
 			"text" : "Snapchat followers love your tour vids",
 			"stars" : 2,
 			"hearts" : 4,
-			"bonus" : 0,
 			"experience" : 0,
 			"opportunities" : 0,
 			"action_text" : "",
@@ -183,11 +161,9 @@
 		},
 		{
 			"number" : 12,
-			"background_image" : "occupation_square.png",
 			"text" : "Date night at a Tower Bridge restaurant",
 			"stars" : 0,
 			"hearts" : 6,
-			"bonus" : 0,
 			"experience" : 0,
 			"opportunities" : 0,
 			"action_text" : "",
@@ -195,7 +171,6 @@
 		},
 		{
 			"number" : 13,
-			"background_image" : "occupation_square.png",
 			"text" : "Become Resident Governor & Keeper of the Jewel House",
 			"stars" : 0,
 			"hearts" : 0, 

@@ -34,16 +34,16 @@
 		}
 	],
 	"occupations" : [
-		"Guiness", "BunchOfGrapes", "Oxford", "Harrods", "Westminster", "Stonehenge", "HousesOfParliament", "BuckinghamPalace", "TowerOfLondon", "SightseeingTour"
+		"Guiness", "BunchOfGrapes", "Oxford", "Harrods", "WestminsterAbbey", "Stonehenge", "PalaceOfWestminster", "BuckinghamPalace", "TowerOfLondon", "SightseeingTour"
 	],
 	"gameboard_mapping": {
 		"guiness": "Guiness",
 		"bunchOfGrapes": "BunchOfGrapes",
 		"oxford": "Oxford",
 		"harrods": "Harrods",
-		"westminster": "Westminster",
+		"westminster": "WestminsterAbbey",
 		"stonehenge": "Stonehenge",
-		"parliament": "HousesOfParliament",
+		"parliament": "PalaceOfWestminster",
 		"palace": "BuckinghamPalace",
 		"tower": "TowerOfLondon",
 		"sightseeing": "SightseeingTour"

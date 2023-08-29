@@ -84,8 +84,8 @@
 		{
 			"number" : 4,
 			"text" : "Advance for your new book, 'AI and You'",
-			"stars" : 0,
-			"hearts" : 0,
+			"stars" : 2,
+			"hearts" : 2,
 			"experience" : 0,
 			"opportunities" : 0,
 			"action_text" : "Collect $1000 x roll of 1 die",
@@ -111,7 +111,7 @@
 		},
 		{
 			"number" : 6,
-			"text" : "Ratings are down - need some Opportunities quick!",
+			"text" : "Your ratings are down. Need some Opportunities quick!",
 			"type" : "action_square",
 			"stars" : 0,
 			"hearts" : 0,

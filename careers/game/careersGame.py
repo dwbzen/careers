@@ -122,6 +122,7 @@ class CareersGame(CareersObject):
         
         # load the individual occupation files
         self._occupations = self.load_occupations()     # dictionary of Occupation instances keyed by name
+        
         #
         # add alternate names to occupation_names
         #
@@ -221,10 +222,11 @@ class CareersGame(CareersObject):
             p = Path(filepath)
             if p.exists():
                 fp = open(filepath, "r")
-                print(filepath)
+                logging.info(filepath)
                 occupation_dict = json.loads(fp.read())
                 # create an Occupation object for this occupation
                 occupation = Occupation(occupation_dict, game=self)
+                logging.info(f"{name} cards: {occupation.cards}\n points: {occupation.points}")
                 occupations[name] = occupation
                 occupations[name.lower()] = occupation
                 alternate_name = occupation.alternate_name

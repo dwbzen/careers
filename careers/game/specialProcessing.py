@@ -79,6 +79,8 @@ class SpecialProcessing(CareersObject):
             
         self._amount_dice = special_processing_dict.get('amount_dice', 0)  # the number of dice to use to determine an amount multiplier
         self._game_parameters = None    # set by GameSquare
+        
+        
     
     @property
     def square_type(self):

@@ -124,7 +124,7 @@
 			"stars" : 0,
 			"hearts" : -4,
 			"bonus" : 0,
-			"experience" : 2,
+			"experience" : 0,
 			"opportunities" : 0,
 			"action_text" : "You lose 4 Hearts. They lose 12 Hearts.",
 			"specialProcessing" : {

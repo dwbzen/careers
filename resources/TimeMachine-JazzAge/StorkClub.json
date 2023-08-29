@@ -33,7 +33,7 @@
 			"cash" : 9,
 			"stars" : 16,
 			"hearts" : 39,
-			"salary" : 9,
+			"salary" : 4,
 			"totalPoints" : 64
 		}
 	},
@@ -221,7 +221,7 @@
 			"stars" : 0,
 			"hearts" : -4,
 			"bonus" : 0,
-			"experience" : 2,
+			"experience" : 0,
 			"opportunities" : 0,
 			"action_text" : "You lose 4 Hearts. They lose 12 Hearts.",
 			"specialProcessing" : {

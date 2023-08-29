@@ -3,13 +3,11 @@
 	"configuration" : {
 		"occupationClass" : "occupation",
 		"fullName" : "Stonehenge",
-		"background_image" : "occupation_entrance.png",
-		"image" : "Stonehenge.jpg",
 		"entry_fee" : 500,
 		"size" : 11,
 		"entrance_square_number" : 18,
 		"exit_square_number" : 19,
-		"text" : "Must have: £500 for Ancient Site Coach; or a Anthropology degree; or Stonehenge experience",
+		"text" : "Must have: £500 for Ancient Site Coach, or an Anthropology degree, or Stonehenge experience",
 		"degreeRequirements" : { 
 			"degreeName" : "Anthropology",
 			"numberRequired" : 1
@@ -18,7 +16,6 @@
 	"occupationSquares" : [
 		{
 			"number" : 0,
-			"background_image" : "danger_occupation_square.png",
 			"text" : "Accident at neolithic site dig",
 			"type" : "danger_square",
 			"stars" : 0,
@@ -33,11 +30,9 @@
 		},
 		{
 			"number" : 1,
-			"background_image" : "occupation_square.png",
 			"text" : "Summer solstice at Stonehenge",
 			"stars" : 0,
 			"hearts" : 2,
-			"bonus" : 0,
 			"experience" : 0,
 			"opportunities" : 0,
 			"action_text" : "",
@@ -45,7 +40,6 @@
 		},
 		{
 			"number" : 2,
-			"background_image" : "occupation_square.png",
 			"text" : "Meet with Historic Properties Steward",
 			"stars" : 0,
 			"hearts" : 0,
@@ -56,12 +50,10 @@
 		},
 		{
 			"number" : 3,
-			"background_image" : "occupation_square.png",
 			"text" : "Fast Track!",
 			"type" : "travel_square",
 			"stars" : 0,
 			"hearts" : 3,
-			"bonus" : 0,
 			"experience" : 0,
 			"opportunities" : 0,
 			"action_text" : "Move ahead 5 squares",
@@ -72,12 +64,10 @@
 		},
 		{
 			"number" : 4,
-			"background_image" : "occupation_square.png",
 			"text" : "May backstab colleague(s)",
 			"type" : "action_square",
 			"stars" : 0,
 			"hearts" : -4,
-			"bonus" : 0,
 			"experience" : 2,
 			"opportunities" : 0,
 			"action_text" : "You lose 4 Hearts\n They lose 12 Hearts",
@@ -90,11 +80,9 @@
 		},
 		{
 			"number" : 5,
-			"background_image" : "occupation_square.png",
 			"text" : "Storm watch!",
 			"stars" : 0,
 			"hearts" : 0,
-			"bonus" : 0,
 			"experience" : 2,
 			"opportunities" : 0,
 			"action_text" : "Draw 1 EXPERIENCE CARD",
@@ -102,7 +90,6 @@
 		},
 		{
 			"number" : 6,
-			"background_image" : "occupation_square.png",
 			"text" : "Discover hidden runes",
 			"stars" : 0,
 			"hearts" : 0,
@@ -117,11 +104,9 @@
 		},
 		{
 			"number" : 7,
-			"background_image" : "occupation_square.png",
 			"text" : "Become English Heritage member",
 			"stars" : 0,
 			"hearts" : 4,
-			"bonus" : 0,
 			"experience" : 0,
 			"opportunities" : 0,
 			"action_text" : "",
@@ -129,11 +114,9 @@
 		},
 		{
 			"number" : 8,
-			"background_image" : "occupation_square.png",
 			"text" : "Have a Stone Circle Experience",
 			"stars" : 0,
 			"hearts" : 6,
-			"bonus" : 0,
 			"experience" : 0,
 			"opportunities" : 0,
 			"action_text" : "",
@@ -141,11 +124,9 @@
 		},
 		{
 			"number" : 9,
-			"background_image" : "occupation_square.png",
 			"text" : "Lead tour group",
 			"stars" : 0,
 			"hearts" : 0,
-			"bonus" : 0,
 			"experience" : 2,
 			"opportunities" : 0,
 			"action_text" : "Draw 1 EXPERIENCE CARD",
@@ -153,12 +134,10 @@
 		},
 		{
 			"number" : 10,
-			"background_image" : "occupation_square.png",
 			"text" :  "Scaring the tourists again!",
 			"image" : "frown_emoji.png",
 			"stars" : 0,
 			"hearts" : 0,
-			"bonus" : 0,
 			"experience" : 0,
 			"opportunities" : 0,
 			"action_text" : "Lose next turn",
@@ -168,7 +147,6 @@
 		},
 		{
 			"number" : 10,
-			"background_image" : "occupation_square.png",
 			"text" : "Employee of the year",
 			"stars" : 2,
 			"hearts" : 8, 

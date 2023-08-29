@@ -22,7 +22,7 @@
 			"overall" : 10
 		},
 		"cards" : {
-			"experience" : 1,
+			"experience" : 3,
 			"opportunity" : 2
 		},
 		"srategy" : {
@@ -147,7 +147,7 @@
 			"stars" : 0,
 			"hearts" : -4,
 			"bonus" : 0,
-			"experience" : 2,
+			"experience" : 0,
 			"opportunities" : 0,
 			"action_text" : "You lose 4 Hearts. They lose 12 Hearts.",
 			"specialProcessing" : {
