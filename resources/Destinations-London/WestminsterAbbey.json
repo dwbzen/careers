@@ -61,7 +61,7 @@
 			"hearts" : 0,
 			"experience" : 0,
 			"opportunities" : 0,
-			"action_text" : "Collect £1000 x roll of 1 die",
+			"action_text" : "Collect £1,000 x roll of 1 die",
 			"specialProcessing" : {
 				"type" : "bonus",
 				"dice" : 1,
@@ -107,17 +107,15 @@
 		},
 		{
 			"number" : 8,
-			"text" : "Commentator for FIFA World Cup",
-			"stars" : 0,
+			"text" : "An unexpected sponsor love your work",
+			"stars" : 4,
 			"hearts" : 0, 
 			"experience" : 0,
 			"opportunities" : 0,
-			"action_text" : "Collect bonus £5,000",
+			"action_text" : "Cross Abingdon St. to Palace Of Westminster",
 			"specialProcessing" : {
-				"type" : "bonus",
-				"amount" : 5000,
-				"pending_action" : "choose_occupation",
-				"destinationOccupation" : "HousesOfParliament",
+				"type" : "travel_occupation",
+				"destinationOccupation" : "PalaceOfWestminster",
 				"next_square" : 3
 			}
 		},

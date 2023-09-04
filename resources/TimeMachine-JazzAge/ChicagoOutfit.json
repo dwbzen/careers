@@ -8,7 +8,7 @@
 		"size" : 14,
 		"entrance_square_number" : 33,
 		"exit_square_number" : 34,
-		"text" : "Must have: $4000 to bribe the local boss; or Mob experience",
+		"text" : "Must have: $4,000 to bribe the local boss; or Mob experience",
 		"degreeRequirements" : { },
 		"ranking" : {
 			"points" : 3,

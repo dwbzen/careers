@@ -1442,8 +1442,8 @@ Where <what> is 'occupation' or 'command'
                 destinations = game_square.special_processing.destination_names
                 destination_squares = game_square.special_processing.destination_squares
                 #
-                # Player's choice must match one of the destinations and is case sensitive
-                # since it's an Border Square name
+                # Player's choice must match one of the destinations and is case sensitive since it's an Border Square name
+                # If the square# is < 0, the direction of travel is backwards!
                 #
                 if choice in destinations:
                     ind = destinations.index(choice)
@@ -1715,6 +1715,7 @@ Where <what> is 'occupation' or 'command'
             Otherwise, the square_ref refers to a BorderSquare name or number.
             NOTE that the border square number could be out of range. i.e. > game size. 
             If so, the square number adjusted and then the pass_payday() action is executed.
+            If the square_ref is negative, the direction of travel from the players current location is backwards.
             
             NOTE that when in an Occupation the designated square_number could be out of range. i.e. > the occupation exit_square_number.
             If so, the player is advanced to the next BorderSquare and the exit occupation logic is executed.
@@ -1730,7 +1731,7 @@ Where <what> is 'occupation' or 'command'
             square_number = bs.number
             player.board_location.occupation_name = None    # leaving the occupation (if in one) to go to a BorderSquare
 
-        return self._goto(square_number, player)    
+        return self._goto(square_number, player)
 
     def _goto(self, square_number:int, player:Player) -> CommandResult:
         """Immediately place the designated player on the designated BorderSquare OR OccupationSquare and execute that square.
@@ -1738,6 +1739,9 @@ Where <what> is 'occupation' or 'command'
             Otherwise, the square_number refers to a BorderSquare.
             NOTE that the border square number could be out of range. i.e. > game size. 
             If so, the square number adjusted and then the pass_payday() action is executed.
+            If the square_ref is negative, the direction of travel from the players current location is backwards.
+            
+            TODO - implement backwards travel
             
             NOTE that when in an Occupation the designated square_number could be out of range. i.e. > the occupation exit_square_number.
             If so, the player is advanced to the next BorderSquare and the exit occupation logic is executed.
@@ -1772,6 +1776,8 @@ Where <what> is 'occupation' or 'command'
         else:   # goto designated border square. Possible that square_number == the player's current position
                 # in that case the player stays on that space. For example, on Holiday and they choose to stay put.
                 # need to take into account if the player moved backwards using an Experience card
+                # or the square# is < 0
+                #
             moved_backwards = True if player.experience_card is not None \
                 and player.experience_card.card_type is ExperienceType.FIXED \
                 and player.experience_card.spaces < 0 else False

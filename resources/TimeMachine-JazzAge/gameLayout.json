@@ -88,7 +88,7 @@
 				"specialProcessing" : {
 					"type" : "travel_choice",
 					"destination_names" : ["NYCentral","NYCentral"],
-					"destination_squares" : [12, 35],
+					"destination_squares" : [12, -35],
 					"pending_action" : "travel_choice"
 				}
 			},
@@ -193,7 +193,7 @@
 				"specialProcessing" : {
 					"type" : "travel_choice",
 					"destination_names" : ["UnionPacific","UnionPacific"],
-					"destination_squares" : [22, 3],
+					"destination_squares" : [22, -3],
 					"pending_action" : "travel_choice"
 				}
 			},
@@ -306,7 +306,7 @@
 				"specialProcessing" : {
 					"type" : "travel_choice",
 					"destination_names" : ["NYCentral","NYCentral"],
-					"destination_squares" : [35, 12],
+					"destination_squares" : [35, -12],
 					"pending_action" : "travel_choice"
 				}
 			}, 
@@ -454,7 +454,7 @@
 				"specialProcessing" : {
 					"type" : "travel_choice",
 					"destination_names" : ["UnionPacific","UnionPacific"],
-					"destination_squares" : [3, 22],
+					"destination_squares" : [3, -22],
 					"pending_action" : "travel_choice"
 				}
 			},

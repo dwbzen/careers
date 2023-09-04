@@ -3,11 +3,11 @@
 	"configuration" : {
 		"occupationClass" : "occupation",
 		"fullName" : "Palace Of Westminster",
-		"entry_fee" : 8000,
+		"entry_fee" : 2000,
 		"size" : 12,
 		"entrance_square_number" : 24,
 		"exit_square_number" : 25,
-		"text" : "Must have: £8000 for bar exam, or a Law Board Certification degree, or Law Firm experience",
+		"text" : "Must donate £2,000 to the Conservatie Party, or have a Law degree, or you’ve been here before.",
 		"degreeRequirements" : { 
 			"degreeName" : "Law",
 			"numberRequired" : 2
@@ -50,16 +50,14 @@
 		},
 		{
 			"number" : 3,
-			"text" : "Obtain pupilage from QC Barrister",
-			"stars" : 0,
-			"hearts" : 0,
+			"text" : "Your 3D tour of the Royal Gallery gets rave reviews. ",
+			"stars" : 4,
+			"hearts" : 6,
 			"experience" : 0,
 			"opportunities" : 0,
-			"action_text" : "Salary up £2,000",
+			"action_text" : "Cross Abingdon St. to Westminster Abbey",
 			"specialProcessing" : {
-				"type" : "salary_increase",
-				"amount" : 2000,
-				"pending_action" : "choose_occupation",
+				"type" : "travel_occupation",
 				"destinationOccupation" : "WestminsterAbbey",
 				"next_square" : 8
 			}

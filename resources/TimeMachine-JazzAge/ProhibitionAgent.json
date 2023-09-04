@@ -4,11 +4,11 @@
 		"alternate_name" : "Agent",
 		"occupationClass" : "occupation",
 		"fullName" : "Prohibition Agent",
-		"entry_fee" : 5000,
+		"entry_fee" : 3000,
 		"size" : 12,
 		"entrance_square_number" : 24,
 		"exit_square_number" : 25,
-		"text" : "Must have: $5,000 for special training, or Law Enforcement degree, or prior experience",
+		"text" : "Must have: $3,000 for special training, or Law Enforcement degree, or prior experience",
 		"degreeRequirements" : { 
 			"degreeName" : "Law Enforcement",
 			"numberRequired" : 1

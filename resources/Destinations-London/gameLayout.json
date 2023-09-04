@@ -282,10 +282,10 @@
 			},
 			{
 				"number" : 21,
-				"name" : "Unemployment",
+				"name" : "TimeOut",
 				"type" : "unemployment_square",
-				"text" : "UNEMPLOYMENT",
-				"action_text" : "You were LAID OFF and must throw 7, 11, or doubles to move on, or pay 1 year's Salary for additional training.",
+				"text" : "TIME OUT",
+				"action_text" : "You’re STRESSED OUT and need a break. Throw 7, 11, or doubles to move on, OR pay 1 year’s annual salary for professional help.",
 				"specialProcessing" : {
 					"type" : "unemployment",
 					"must_roll" : [7, 11],

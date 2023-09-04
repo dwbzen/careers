@@ -9,7 +9,7 @@
 		"size" : 14,
 		"entrance_square_number" : 4,
 		"exit_square_number" : 5,
-		"text" : "Must have: $1,000 for special training, or Business Admininstration degree, or VC experience",
+		"text" : "Must have: $1,000 initial investment, or Business Admininstration degree, or VC experience",
 		"degreeRequirements" : { 
 			"degreeName" : "Business Admininstration",
 			"numberRequired" : 1

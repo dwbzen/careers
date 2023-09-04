@@ -69,13 +69,8 @@
 			"hearts" : 4,
 			"experience" : 0,
 			"opportunities" : 0,
-			"action_text" : "Lose ALL your <HAPPINESS>",
-			"specialProcessing" : {
-				"type" : "happiness_loss",
-				"amount" : 0,
-				"percent" : 1.0,
-				"of" : "hapiness"
-			}
+			"action_text" : "",
+			"specialProcessing" : {	}
 		},
 		{
 			"number" : 3,

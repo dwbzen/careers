@@ -9,7 +9,7 @@
 		"size" : 12,
 		"entrance_square_number" : 18,
 		"exit_square_number" : 19,
-		"text" : "Must have: $1,000 initial investment",
+		"text" : "Must have: $1,000 to build a new a web site",
 		"Help" : [ "Entrance fee must be paid each time, prior experience doesn't count. There is no degree requirment." ],
 		"ranking" : {
 			"points" : 7,
@@ -95,7 +95,7 @@
 			"bonus" : 0,
 			"experience" : 0,
 			"opportunities" : 0,
-			"action_text" : "You lose 4 <HEART>s. They lose 12 <HEART>s",
+			"action_text" : "You lose 4 Hearts. They lose 12 Hearts",
 			"specialProcessing" : {
 				"type" : "backstab",
 				"pending_action" : "backstab",

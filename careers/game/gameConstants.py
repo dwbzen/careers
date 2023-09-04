@@ -62,6 +62,7 @@ class SpecialProcessingType(Enum):
     # common to Occupation and Border squares
     TRAVEL_BORDER = "travel_border"
     TRAVEL_CHOICE = "travel_choice"    # go to nearest airline or rail station, also a PendingActionType to specify the choice
+    TRAVEL_OCCUPATION = "travel_occupation"
     BIDIRECTIONAL_TRAVEL_CHOICE = "bidirectional_travel_choice"     # forward of backward to travel square choice
     CASH_LOSS = "cash_loss"
     EXTRA_TURN = "extra_turn"

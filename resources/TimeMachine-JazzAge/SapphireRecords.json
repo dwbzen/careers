@@ -120,7 +120,7 @@
 			"experience" : 0,
 			"opportunities" : 0,
 			"action_text" : "Collect bonus",
-			"full_action_text" : "Collect bonus $3000",
+			"full_action_text" : "Collect bonus $3,000",
 			"specialProcessing" : {
 				"type" : "bonus",
 				"amount" : 3000

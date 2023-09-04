@@ -4,12 +4,12 @@
 		"alternate_name" : "Attorney",
 		"occupationClass" : "occupation",
 		"fullName" : "Patent Attorney",
-		"entry_fee" : 8000,
+		"entry_fee" : 5000,
 		"prior_experience" : 1,
 		"size" : 12,
 		"entrance_square_number" : 24,
 		"exit_square_number" : 25,
-		"text" : "Must have: $8,000 for bar exam prep, or Law Board Certification, or Patent Attorney experience",
+		"text" : "Must have: $5,000 for bar exam prep, or Law Board Certification, or Patent Attorney experience",
 		"degreeRequirements" : { 
 			"degreeName" : "Law",
 			"numberRequired" : 2
@@ -127,7 +127,7 @@
 			"bonus" : 0,
 			"experience" : 0,
 			"opportunities" : 0,
-			"action_text" : "You lose 4 <HEART>s. They lose 12 <HEART>s.",
+			"action_text" : "You lose 4 Hearts. They lose 12 Hearts.",
 			"specialProcessing" : {
 				"type" : "backstab",
 				"pending_action" : "backstab",
@@ -161,13 +161,13 @@
 		},
 		{
 			"number" : 10,
-			"text" : "Your  cease-and-desist order is a social media joke",
+			"text" : "Your cease-and-desist order is a social media joke",
 			"type" : "danger_square",
 			"stars" : 0,
 			"hearts" : 0,
 			"experience" : 0,
 			"opportunities" : 0,
-			"action_text" : "Lose 10% x roll of 1 die of your <FAME>",
+			"action_text" : "Lose 10% x roll of 1 die of your Stars",
 			"specialProcessing" : {
 				"type" : "fame_loss",
 				"amount" : 0,

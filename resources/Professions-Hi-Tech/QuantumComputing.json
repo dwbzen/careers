@@ -114,7 +114,7 @@
 		},
 		{
 			"number" : 6,
-			"text" : "Demo at Quantum.Tech  trade show is a hit",
+			"text" : "Demo at Quantum.Tech trade show is a hit",
 			"stars" : 0,
 			"hearts" : 0, 
 			"experience" : 0,
@@ -147,7 +147,7 @@
 			"bonus" : 0,
 			"experience" : 0,
 			"opportunities" : 0,
-			"action_text" : "You lose 4 <HEART>s. They lose 12 <HEART>s",
+			"action_text" : "You lose 4 Hearts. They lose 12 Hearts",
 			"specialProcessing" : {
 				"type" : "backstab",
 				"pending_action" : "backstab",
