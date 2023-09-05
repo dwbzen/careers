@@ -8,7 +8,7 @@
 		"size" : 14,
 		"entrance_square_number" : 33,
 		"exit_square_number" : 34,
-		"text" : "Must have: $4,000 to bribe the local boss; or Mob experience",
+		"text" : "Must have: $4,000 to bribe the local boss or Mob experience",
 		"degreeRequirements" : { },
 		"ranking" : {
 			"points" : 3,
@@ -66,7 +66,7 @@
 		},
 		{
 			"number" : 2,
-			"text" : "Johnny Torrio wants you to buy protection and HIS beer",
+			"text" : "Johnny Torrio wants you to buy protection and his beer",
 			"type" : "danger_square",
 			"stars" : 0,
 			"hearts" : 0,

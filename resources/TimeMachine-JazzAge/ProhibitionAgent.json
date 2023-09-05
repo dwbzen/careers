@@ -46,10 +46,10 @@
 			"hearts" : 0,
 			"experience" : 0,
 			"opportunities" : 0,
-			"action_text" : "Go to Unemployment",
+			"action_text" : "Go to Hospital",
 			"specialProcessing" : {
 				"type" : "travel_border",
-				"next_square" : "Unemployment"
+				"next_square" : "Hospital"
 			}
 		},
 		{
@@ -119,7 +119,7 @@
 		},
 		{
 			"number" : 7,
-			"text" : "May backstab fellow cop(s)",
+			"text" : "May backstab fellow agents(s)",
 			"type" : "action_square",
 			"stars" : 0,
 			"hearts" : -4,
@@ -146,7 +146,7 @@
 		},
 		{
 			"number" : 9,
-			"text" : "Destroy bootlegging operations worth $500,000",
+			"text" : "Destroy bootlegging operations worth $500K",
 			"stars" : 4,
 			"hearts" : 0, 
 			"experience" : 0,

@@ -9,7 +9,7 @@
 		"size" : 11,
 		"entrance_square_number" : 15,
 		"exit_square_number" : 16,
-		"text" : "Must have: $500 for batting coach; or MLB experience",
+		"text" : "Must have: $500 for batting coach or MLB experience",
 		"degreeRequirements" : { },
 		"ranking" : {
 			"points" : 7,
@@ -94,7 +94,7 @@
 		},
 		{
 			"number" : 5,
-			"text" : "Pulled hamstring sliding into 2nd base",
+			"text" : "Pull a hamstring sliding into 2nd base",
 			"type" : "danger_square",
 			"stars" : 0,
 			"hearts" : 0,
@@ -121,7 +121,7 @@
 		},
 		{
 			"number" : 7,
-			"text" : "Murderers Row declared best team of all time (1927)",
+			"text" : "Yankees Murderers Row declared best team of all time (1927)",
 			"stars" : 4,
 			"hearts" : 2,
 			"experience" : 0,
