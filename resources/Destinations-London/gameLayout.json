@@ -97,7 +97,7 @@
 				"name" : "BunchOfGrapes",
 				"type" : "occupation_entrance_square",
 				"text" : "The Bunch Of Grapes Knightsbridge",
-				"action_text" : "Must have: £1,000 to file paperwork or Greene King experience",
+				"action_text" : "Must have: £1,000 for transportation, tour and lunch, or previous experience",
 				"specialProcessing" : {
 					"type" : "enter_occupation",
 					"destinationOccupation" : "BunchOfGrapes"
@@ -130,7 +130,7 @@
 				"name" : "Oxford",
 				"type" : "occupation_entrance_square",
 				"text" : "Oxford",
-				"action_text" : "Must have £500 continuing education tuition. Available degrees: Anthropology, Architecture, Brewing Technology, Fine Arts, Law, Medieval History",
+				"action_text" : "Must have £500 continuing education tuition. Available degrees: Anthropology, Architecture, Brewing Arts, Fine Arts, Law, Medieval History",
 				"specialProcessing" : {
 					"type" : "enter_college",
 					"pending_action" : "select_degree",
@@ -191,7 +191,7 @@
 				"specialProcessing" : {
 					"type" : "travel_choice",
 					"destination_names" : ["Euston","EdgwareRd","Victoria"],
-					"destination_squares" : [22, 3"5, 3],
+					"destination_squares" : [22, 35, 3],
 					"pending_action" : "travel_choice"					
 				}
 			},
@@ -201,7 +201,7 @@
 				"type" : "occupation_entrance_square",
 				"background_image" : "occupation_entrance_square.png",
 				"text" : "Harrods",
-				"action_text" : "Must have: £1,000 for Retail Sales training, or Harrods experience",
+				"action_text" : "Must have: £1,000 shopping credit or Harrods experience",
 				"specialProcessing" : {
 					"type" : "enter_occupation",
 					"destinationOccupation" : "Harrods"
@@ -221,7 +221,7 @@
 				"name" : "WestminsterAbbey",
 				"type" : "occupation_entrance_square",
 				"text" : "Westminster Abbey",
-				"action_text" : "Must have £500 for temporay pass, or Architecture degree, or previous experience",
+				"action_text" : "Must have £500 for annual pass, or Architecture degree, or previous experience",
 				"specialProcessing" : {
 					"type" : "enter_occupation",
 					"destinationOccupation" : "WestminsterAbbey"
@@ -249,13 +249,13 @@
 			},
 			{
 				"number" : 18,
-				"name" : "Stonehenge",
+				"name" : "PalaceOfWestminster",
 				"type" : "occupation_entrance_square",
-				"text" : "Stonehenge",
-				"action_text" : "Must have £500 for ancient site coach, or Anthropology degree, or Stonehenge experience",
+				"text" : "Palace Of Westminster",
+				"action_text" : "Must donate £2,000 to the Conservative Party, or a Law degree, or you've been here before.",
 				"specialProcessing" : {
 					"type" : "enter_occupation",
-					"destinationOccupation" : "Stonehenge"
+					"destinationOccupation" : "PalaceOfWestminster"
 				}
 			},
 			{
@@ -320,13 +320,13 @@
 			},
 			{
 				"number" : 24,
-				"name" : "PalaceOfWestminster",
+				"name" : "Stonehenge",
 				"type" : "occupation_entrance_square",
-				"text" : "Palace Of Westminster",
-				"action_text" : "Must donate £8,000 to the Conservative Party, or a Law degree, or you've been here before.",
+				"text" : "Stonehenge",
+				"action_text" : "Must have £500 for ancient site coach, or Anthropology degree, or Stonehenge experience",
 				"specialProcessing" : {
 					"type" : "enter_occupation",
-					"destinationOccupation" : "PalaceOfWestminster"
+					"destinationOccupation" : "Stonehenge"
 				}
 			},
 			{
@@ -356,7 +356,7 @@
 				"name" : "BuckinghamPalace",
 				"type" : "occupation_entrance_square",
 				"text" : "Buckingham Palace",
-				"action_text" : "Must have £2,0000 for  a VIP visitor pass, or previously completed visit(s)",
+				"action_text" : "Must have £2,0000 for a VIP visitor pass, or previously completed visit(s)",
 				"specialProcessing" : {
 					"type" : "enter_occupation",
 					"destinationOccupation" : "BuckinghamPalace"
@@ -503,7 +503,7 @@
 				"name" : "Guiness",
 				"type" : "occupation_entrance_square",
 				"text" : "Guiness",
-				"action_text" : "Must have £8,000 for intership, or a degree in Brewing Technology, or Guiness experience.",
+				"action_text" : "Must have £5,000 for VIP tour, or a degree in Brewing Arts, or Guiness experience.",
 				"specialProcessing" : {
 					"type" : "enter_occupation",
 					"destinationOccupation" : "Guiness"

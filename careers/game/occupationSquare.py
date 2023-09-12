@@ -44,7 +44,12 @@ class OccupationSquare(GameSquare):
             action_text = action_text.replace("<HEART>", GameConstants.HEART)
             action_text = action_text.replace("<STAR>", GameConstants.STAR)
             action_text = action_text.replace("<HAPPINESS>", GameConstants.HAPPINESS)
-            self.action_text = action_text.replace("<FAME>", GameConstants.FAME)
+            action_text = action_text.replace("<FAME>", GameConstants.FAME)
+            
+            action_text = action_text.replace("<HEART_LC>", GameConstants.HEART_LC)
+            action_text = action_text.replace("<STAR_LC>", GameConstants.STAR_LC)
+            action_text = action_text.replace("<HAPPINESS_LC>", GameConstants.HAPPINESS_LC)
+            self.action_text = action_text.replace("<FAME_LC>", GameConstants.FAME_LC)
         self._bonus = occupation_square_dict.get('bonus',0)
         self._help_text = occupation_square_dict.get('help_text', None)
 

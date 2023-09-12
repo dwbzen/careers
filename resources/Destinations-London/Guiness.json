@@ -3,11 +3,11 @@
 	"configuration" : {
 		"occupationClass" : "occupation",
 		"fullName" : "Guiness",
-		"entry_fee" : 8000,
+		"entry_fee" : 5000,
 		"size" : 13,
 		"entrance_square_number" : 40,
 		"exit_square_number" : 1,
-		"text" : "Must have: £8000 for internship, or Brewing Arts degree, or Guiness experience",
+		"text" : "Must have:  £5,000 for VIP tour, or a degree in Brewing Arts, or prior experience",
 		"degreeRequirements" : { 
 			"degreeName" : "Engineering",
 			"numberRequired" : 1
@@ -16,7 +16,7 @@
 	"occupationSquares" : [
 		{
 			"number" : 0,
-			"text" : "Assigned to artificial intelligence (AI) Unit",
+			"text" : "Meet the Brew-master and enjoy a pint of stout",
 			"stars" : 0,
 			"hearts" : 2,
 			"experience" : 0,
@@ -26,9 +26,9 @@
 		},
 		{
 			"number" : 1,
-			"text" : "Pioneer UltraFan engine design",
+			"text" : "Live stream tour of the tasting room - with the host's permission of course",
 			"stars" : 6,
-			"hearts" : 0,
+			"hearts" : 4,
 			"experience" : 0,
 			"opportunities" : 0,
 			"action_text" : "",
@@ -68,9 +68,9 @@
 		},
 		{
 			"number" : 4,
-			"text" : "Enhance Testbed 80 for Trent XWB engine",
+			"text" : "Greet a bus of American and Spanish tourists",
 			"stars" : 2,
-			"hearts" : 4,
+			"hearts" : 6,
 			"experience" : 0,
 			"opportunities" : 0,
 			"action_text" : "",
@@ -78,12 +78,12 @@
 		},
 		{
 			"number" : 5,
-			"text" : "New intelligent engine design",
+			"text" : "Design active-ware based on the Guinness harp logo",
 			"stars" : 0,
 			"hearts" : 0,
 			"experience" : 0,
 			"opportunities" : 0,
-			"action_text" : "**Salary up** £2000",
+			"action_text" : "Salary up £2000",
 			"specialProcessing" : {
 				"type" : "salary_increase",
 				"amount" : 2000
@@ -91,8 +91,8 @@
 		},
 		{
 			"number" : 6,
-			"text" : "Grueling Avionics Programme",
-			"stars" : 0,
+			"text" : "Live stream yourself taking an online Zymurgy course",
+			"stars" : 4,
 			"hearts" : 0,
 			"experience" : 2,
 			"opportunities" : 0,
@@ -101,18 +101,7 @@
 		},
 		{
 			"number" : 7,
-			"text" : "Sign contract with UK Ministry of Defense",
-			"stars" : 16,
-			"hearts" : 0,
-			"bonus" : 0,
-			"experience" : 0,
-			"opportunities" : 0,
-			"action_text" : "",
-			"specialProcessing" : {}
-		},
-		{
-			"number" : 8,
-			"text" : "Lunch with Head of IT Innovation",
+			"text" : "Dinner at The Langham  with Guinness CEO, CTO and Chief Quality Officer",
 			"stars" : 2,
 			"hearts" : 10,
 			"bonus" : 0,
@@ -122,21 +111,19 @@
 			"specialProcessing" : {}
 		},
 		{
-			"number" : 9,
-			"text" : "Cash advance for company tell-all book",
-			"stars" : 0,
-			"hearts" : 0, 
+			"number" : 8,
+			"text" : "Take a selfie at a crosswalk looking left instead of right",
+			"stars" : 10,
+			"hearts" : 0,
+			"bonus" : 0,
 			"experience" : 0,
 			"opportunities" : 0,
-			"action_text" : "Collect Bonus £10,000",
-			"specialProcessing" : {
-				"type" : "bonus",
-				"amount" : 10000
-			}
+			"action_text" : "",
+			"specialProcessing" : {}
 		},
 		{
-			"number" : 10,
-			"text" : "Exhausted from conference keynote address",
+			"number" : 9,
+			"text" : "Live stream yourself making traditional beef stew with Guinness gravy",
 			"type" : "danger_square",
 			"stars" : 10,
 			"hearts" : 0,
@@ -149,9 +136,22 @@
 			}
 		},
 		{
+			"number" : 10,
+			"text" : "Made an honorary Brew Master",
+			"stars" : 0,
+			"hearts" : 0, 
+			"experience" : 0,
+			"opportunities" : 0,
+			"action_text" : "Collect Bonus £10,000",
+			"specialProcessing" : {
+				"type" : "bonus",
+				"amount" : 10000
+			}
+		},
+		{
 			"number" : 11,
-			"text" : "Sign contract with UK Space Agency",
-			"stars" : 6,
+			"text" : "Execs love your YouTube videos!",
+			"stars" : 2,
 			"hearts" : 4,
 			"bonus" : 0,
 			"experience" : 0,
@@ -161,8 +161,8 @@
 		},
 		{
 			"number" : 12,
-			"text" : "Employee of the year",
-			"stars" : 10,
+			"text" : "Win award for best travel Blog",
+			"stars" : 2,
 			"hearts" : 0, 
 			"experience" : 0,
 			"opportunities" : 0,

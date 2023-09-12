@@ -130,10 +130,15 @@ class GameConstants(object):
     #
     # point_icon definitions initially defaulted, can be updated with load_point_icons()
     #
-    HEART = "heart"
-    HAPPINESS = "happiness"
-    STAR = "star"
-    FAME = "fame"
+    HEART = "Heart"
+    HAPPINESS = "Happiness"
+    STAR = "Star"
+    FAME = "Fame"
+    
+    HEART_LC = "heart"
+    HAPPINESS_LC = "happiness"
+    STAR_LC = "star"
+    FAME_LC = "fame"
 
     CORNER_SQUARE_TYPES = [BorderSquareType.PAYDAY_SQUARE, \
                            BorderSquareType.HOSPITAL_SQUARE,\
@@ -222,10 +227,15 @@ class GameConstants(object):
     @staticmethod
     def load_point_icons(point_icons:Dict):
         if point_icons is not None and len(point_icons) > 0:
-            GameConstants.HEART = point_icons["heart"]
-            GameConstants.HAPPINESS = point_icons["happiness"]
-            GameConstants.STAR = point_icons["star"]
-            GameConstants.FAME = point_icons["fame"]
+            GameConstants.HEART = point_icons["Heart"]
+            GameConstants.HAPPINESS = point_icons["Happiness"]
+            GameConstants.STAR = point_icons["Star"]
+            GameConstants.FAME = point_icons["Fame"]
+            
+            GameConstants.HEART_LC = point_icons["heart"]
+            GameConstants.HAPPINESS_LC = point_icons["happiness"]
+            GameConstants.STAR_LC = point_icons["star"]
+            GameConstants.FAME_LC = point_icons["fame"]
         # else use the default vales
 
     

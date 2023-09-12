@@ -120,6 +120,12 @@ class CareersGame(CareersObject):
             self._occupation_names = occupations_dict['occupations']
         fp.close()
         
+        #
+        # load point icons
+        #
+        self._point_icons =  self._edition["point_icons"] if "point_icons" in self._edition else None
+        GameConstants.load_point_icons(self._point_icons)
+        
         # load the individual occupation files
         self._occupations = self.load_occupations()     # dictionary of Occupation instances keyed by name
         
@@ -132,11 +138,6 @@ class CareersGame(CareersObject):
             else:
                 self._occupation_names.append(key.lower())
                 
-        #
-        # load point icons
-        #
-        self._point_icons =  self._edition["point_icons"] if "point_icons" in self._edition else None
-        GameConstants.load_point_icons(self._point_icons)
             
         self._turn_outcome_parameters_filename = f'{self._resource_folder}/{self._edition_path}/turnOutcomeParameters.json'
         with open(self._turn_outcome_parameters_filename, "r") as fp:

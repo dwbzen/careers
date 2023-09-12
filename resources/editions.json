@@ -40,13 +40,10 @@
 				"careers.game.plugins.careers_All_Strategy" : {"classname" : "Careers_All_Strategy", "active":1, "context":"turn", "strategy_level":"dumb"  },
 				"careers.game.plugins.careers_All_Randomizer" : {"classname" : "Careers_All_Randomizer", "active":0, "context":"start" }
 			},
-			"configuration" : {
-					"starting_salary" : 2000,
-					"initial_cash" : 2000
-			},
+			"configuration" : {  },
 			"Help" : "point_icons are aliases to use for this edition.",
 			"point_icons" : {
-				"heart" : "heart", "Heart" : "Heart",
+				"heart" : "fart", "Heart" : "Fart",
 				"star" : "star", "Star" : "Star",
 				"happiness" : "happiness", "Happiness" : "Happiness",
 				"fame" : "fame", "Fame" : "Fame"
@@ -69,10 +66,7 @@
 				"careers.game.plugins.careers_All_Strategy" : {"classname" : "Careers_All_Strategy", "active":1, "context":"turn", "strategy_level":"dumb"  },
 				"careers.game.plugins.careers_All_Randomizer" : {"classname" : "Careers_All_Randomizer", "active":0, "context":"start" }
 			},
-			"configuration" : {
-					"starting_salary" : 2000,
-					"initial_cash" : 2000
-			},
+			"configuration" : { },
 			"Help" : "point_icons are aliases to use for this edition.",
 			"point_icons" : {
 				"heart" : "charm", "Heart" : "Charm",
@@ -98,10 +92,7 @@
 				"careers.game.plugins.careers_All_Strategy" : {"classname" : "Careers_All_Strategy", "active":1, "context":"turn", "strategy_level":"dumb" },
 				"careers.game.plugins.careers_All_Randomizer" : {"classname" : "Careers_All_Randomizer", "active":1, "context":"start" }
 			},
-			"configuration" : {
-					"starting_salary" : 2000,
-					"initial_cash" : 2500
-			},
+			"configuration" : {	},
 			"Help" : "point_icons are aliases to use for this edition.",
 			"point_icons" : {
 				"heart" : "heart", "Heart" : "Heart",
@@ -128,8 +119,12 @@
 				"careers.game.plugins.careers_All_Randomizer" : {"classname" : "Careers_All_Randomizer", "active":0, "context":"start" }
 			},
 			"configuration" : {
-					"starting_salary" : 2000,
-					"initial_cash" : 2500
+				"heart_units" : 1,
+				"hearts_format" : "{0} ",
+				"star_units" : 1000,
+				"star_format" : "{:,} ",
+				"cash_units" : 1,
+				"cash_format" : "${:,}"
 			},
 			"Help" : "point_icons are aliases to use for this edition.",
 			"point_icons" : {
@@ -156,10 +151,7 @@
 				"careers.game.plugins.careers_All_Strategy" : {"classname" : "Careers_All_Strategy", "active":1, "context":"turn", "strategy_level":"dumb" },
 				"careers.game.plugins.careers_All_Randomizer" : {"classname" : "Careers_All_Randomizer", "active":0, "context":"start" }
 			},
-			"configuration" : {
-					"starting_salary" : 1000,
-					"initial_cash" : 1000
-			}	
+			"configuration" : { }
 	},
 	"TimeMachine-JazzAge" : {
 			"version" : "0.0.1",
@@ -178,10 +170,7 @@
 				"careers.game.plugins.careers_All_Strategy" : {"classname" : "Careers_All_Strategy", "active":1, "context":"turn", "strategy_level":"dumb"  },
 				"careers.game.plugins.careers_All_Randomizer" : {"classname" : "Careers_All_Randomizer", "active":0, "context":"start" }
 			},
-			"configuration" : {
-					"starting_salary" : 1000,
-					"initial_cash" : 1000
-			},
+			"configuration" : { },
 			"Help" : "point_icons are aliases to use for this edition.",
 			"point_icons" : {
 				"heart" : "heart", "Heart" : "Heart",
