@@ -34,6 +34,10 @@ def userReadyToStart(userId: str, gameId: str, ready: bool, gameInstance: Career
 def createUser(user: User):
     return userManager.createUser(user)
 
+@app.delete('/user/{userId}')
+def deleteUser(userId: str):
+    userManager.deleteUser(userId)
+
 @app.put('/game/{userId}/{points}', status_code=201)
 def createGame(userId: str, points: int):
     """Creates a new game and returns the game id"""

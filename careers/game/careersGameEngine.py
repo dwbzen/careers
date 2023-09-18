@@ -1178,7 +1178,7 @@ Where <what> is 'occupation' or 'command'
                 card_list = self._careersGame.opportunities.draw_cards(starting_opportunities)
                 player.add_opportunity_card(card_list)
                 
-            message = f"ADDED {player.player_name}"
+            message = player.to_JSON() 
 
         else:    
             # adds a degree in the current (or named) player's degree programs
