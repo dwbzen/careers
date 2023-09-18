@@ -56,7 +56,7 @@ class CareersGameManager(object):
         """
         gameEngine = CareersGameEngine()
         newGame = gameEngine.create(edition, userId, 'points', points).message
-        gameId = json.loads(newGame)['gameId']
+        gameId = json.loads(newGame)['game_id']
 
         "Add the creator as a player"
         user = self.userManager.getUserByUserId(userId)
@@ -96,16 +96,16 @@ class CareersGameManager(object):
     def getPlayers(self, gameEngine: CareersGameEngine):
         """Get all the players"""
         #return json.loads(gameEngine.game_state.to_JSON())    
-        game = self.getGameById(gameEngine.gameId)
+        game = self.getGameById(gameEngine.game_id)
         return game
     
     def userReady(self, userId: str, ready: bool, gameEngine: CareersGameEngine):
         """Mark a user ready to start. All users must mark ready before game can begin"""
 
         if(ready == True):
-            self.database['games'].update_one({"_id": gameEngine.gameId}, {'$addToSet': {'ready': userId}, '$set': {'updateDate': str(datetime.now())}}, upsert=True)
+            self.database['games'].update_one({"_id": gameEngine.game_id}, {'$addToSet': {'ready': userId}, '$set': {'updateDate': str(datetime.now())}}, upsert=True)
         else:
-            self.database['games'].update_one({"_id": gameEngine.gameId}, {'$pull': {'ready': userId}})
+            self.database['games'].update_one({"_id": gameEngine.game_id}, {'$pull': {'ready': userId}})
 
     def getGameByJoinCode(self, joinCode: str):
         """
@@ -148,14 +148,14 @@ class CareersGameManager(object):
 
         if(game['startDate'] is None):
             """Havent started the game yet"""
-            result = self.database['games'].update_one({"_id": gameEngine.gameId}, 
+            result = self.database['games'].update_one({"_id": gameEngine.game_id}, 
                                             {"$set": {
                                                 'startDate': str(datetime.now())
                                             }})
         
             if (result.modified_count == 1):
                 gameEngine.start()
-                self.saveGame(gameEngine.gameId, gameEngine.installationId, gameEngine)
+                self.saveGame(gameEngine.game_id, gameEngine.installationId, gameEngine)
             else:
                 raise Exception("Game modified by another player before starting.")
         
@@ -166,7 +166,7 @@ class CareersGameManager(object):
 
         game = self.getGameDictionary(gameId, userId, "Hi-Tech", gameEngine.careersGame)
 
-        self.database['games'].update_one({"_id": gameEngine.gameId}, 
+        self.database['games'].update_one({"_id": gameEngine.game_id}, 
             {"$set": 
                 {
                     'gameState': game["gameState"],

@@ -34,6 +34,9 @@ class CareersUserManager(object):
     
     def getUserByUserId(self, userId: str) -> User:
         return self.collection.find_one({"_id": userId})
+    
+    def deleteUser(self, userId: str):
+        self.collection.delete_one({"_id": userId})
 
     def updateUser(self, user: User):
         self.collection.update_one({"_id": user['_id']}, {"$set": {'number': user["number"]}})
