@@ -1044,7 +1044,7 @@ Insured: {self.is_insured}, Unemployed: {self.is_unemployed}, Sick: {self.is_sic
         self.can_roll = player_dict["can_roll"]
         self.can_use_opportunity = player_dict["can_use_opportunity"]
         success_formula = player_dict["success_formula"]
-        self.success_formula = SuccessFormula(stars=success_formula["stars"], hearts=success_formula["hearts"], money=success_formula["money"])
+        self.success_formula = SuccessFormula(stars=success_formula[GameConstants.STAR], hearts=success_formula[GameConstants.HEART], money=success_formula["cash"])
         
         board_location = player_dict["board_location"]
         self.board_location = BoardLocation(board_location["border_square_number"], board_location["border_square_name"],

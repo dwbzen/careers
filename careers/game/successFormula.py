@@ -48,7 +48,7 @@ class SuccessFormula(CareersObject):
         return f'cash: {cash_str}  {GameConstants.STAR}s: {self.stars}  {GameConstants.HEART}s: {self.hearts}  points: {self.total_points} '
     
     def to_dict(self):
-        return { "cash" : self.money, f"{GameConstants.STAR}s" : self.stars, f"{GameConstants.HEART}s" : self.hearts, "points" : self.total_points}
+        return { "cash" : self.money, f"{GameConstants.STAR}" : self.stars, f"{GameConstants.HEART}" : self.hearts, "points" : self.total_points}
 
     def to_JSON(self):
         """Returns the JSON serialization of SuccessFormula.
